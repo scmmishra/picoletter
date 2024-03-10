@@ -1,0 +1,24 @@
+<div class="max-w-md mx-auto py-20">
+  <h1 class="text-3xl text-stone-900">Welcome back 👋</h1>
+  <p class="text-xl text-stone-700 mt-2">Sign in with your email and password to continue or <%= link_to "create a new account.", "/reset/password", class: "text-zinc-500 hover:underline" %></p>
+  <div class="bg-white rounded-xl border py-5 px-6 border-neutral-200 mt-5 shadow-sm">
+    <%= form_with url: login_path, class: "flex flex-col gap-4" do |form| %>
+      <label>
+        <%= form.label :email, class: "text-stone-500"  %>
+        <%= form.email_field :email, required: true, class: "input w-full", autofocus: true, autocomplete: "username", placeholder: "Enter your email address", value: params[:email_address] %>
+      </label>
+
+      <label>
+        <%= form.label :password, class: "text-stone-500"  %>
+        <%= form.password_field :password, required: true, class: "input w-full", autocomplete: "current-password", placeholder: "Enter your password" %>
+      </label>
+
+      <div class="mt-1">
+        <%= form.submit "Log in", class: "btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+  <div class="mt-5 flex gap-2 justify-between">
+    <p><%= link_to "Forgot your password?", "/reset/password", class: "text-zinc-500 hover:underline" %></p>
+  </div>
+</div>

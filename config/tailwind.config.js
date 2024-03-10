@@ -10,7 +10,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter va./bin/devr", ...defaultTheme.fontFamily.sans],
+        serif: ["Lora Variable", ...defaultTheme.fontFamily.serif],
+        sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
       },
     },
   },
