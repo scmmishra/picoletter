@@ -10,13 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_10_090049) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_10_143624) do
+  create_table "newsletters", force: :cascade do |t|
+    t.string "title"
+    t.text "description"
+    t.integer "user_id", null: false
+    t.string "status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_newsletters_on_user_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
-    t.integer "user_id"
+    t.integer "user_id", null: false
     t.string "token"
     t.boolean "active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -29,4 +40,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_10_090049) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "newsletters", "users"
+  add_foreign_key "sessions", "users"
 end
