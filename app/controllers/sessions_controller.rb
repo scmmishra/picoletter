@@ -3,7 +3,8 @@ class SessionsController < ApplicationController
 
   def create
     if user = User.active.authenticate_by(email: params[:email], password: params[:password])
-      start_new_session_for(user)
+      start_new_session_for user
+      redirect_to_newsletter_home
     else
       render_rejection :unauthorized
     end
@@ -16,19 +17,14 @@ class SessionsController < ApplicationController
 
   private
 
-  def start_new_session_for(user)
-    user.sessions.create!.tap do |session|
-      authenticated_as session
-    end
-  end
-
   def render_rejection(status)
     flash.now[:alert] = "Invalid email or password. Please try again."
     render :new, status: status
   end
 
-  def authenticated_as(session)
-    Current.user = session.user
-    cookies.signed.permanent[:session_token] = { value: session.token, httponly: true, same_site: :lax }
+  def redirect_to_newsletter_home
+    has_newsletter = Current.user.newsletter.present?
+    redirect_to has_newsletter ? newsletter_url(Current.user.newsletter) : new_newsletter_url
+    redirect_to newsletter_url(user.newsletter), notice: "Logged in successfully."
   end
 end

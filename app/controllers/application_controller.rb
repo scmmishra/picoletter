@@ -1,7 +1,29 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user
+  def ensure_authenticated
+    session = find_session_by_cookie
 
-  def current_user
-    @current_user ||= User.find_by(id: session[:user_id]) if session[:user_id]
+    if session
+      Current.user = session.user
+    else
+      redirect_to login_path, alert: "Please log in to continue."
+    end
+  end
+
+  private
+
+  def find_session_by_cookie
+    if token = cookies.signed[:session_token]
+      Session.find_by(token: token)
+    end
+  end
+
+  def start_new_session_for(user)
+    session = user.sessions.create!
+    authenticate_session session
+  end
+
+  def authenticate_session(session)
+    Current.user = session.user
+    cookies.signed.permanent[:session_token] = { value: session.token, httponly: true, same_site: :lax }
   end
 end
