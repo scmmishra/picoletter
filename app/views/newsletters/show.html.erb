@@ -6,6 +6,9 @@
         <li>
           <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
             <span>Posts</span>
+            <span class="rounded-md px-2 py-0.5 leading-none bg-stone-200 text-xs">
+              <%= @newsletter.posts.published.count %>
+            </span>
           </a>
         </li>
       </ul>
@@ -13,6 +16,9 @@
         <li>
           <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
             <span>Drafts</span>
+            <span class="rounded-md px-2 py-0.5 leading-none bg-stone-200 text-xs">
+              <%= @newsletter.posts.drafts.count %>
+            </span>
           </a>
         </li>
       </ul>

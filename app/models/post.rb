@@ -22,12 +22,11 @@
 #
 class Post < ApplicationRecord
   belongs_to :newsletter
-  belongs_to :user, through: :newsletter
   enum status: { draft: "draft", scheduled: "scheduled", published: "published", archived: "archived" }
 
   scope :published, -> { where(status: "published") }
   scope :scheduled, -> { where(status: "scheduled") }
-  scope :draft, -> { where(status: "draft") }
+  scope :drafts, -> { where(status: "draft") }
   scope :archived, -> { where(status: "archived") }
 
   def publish
