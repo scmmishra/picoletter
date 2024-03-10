@@ -1,4 +1,40 @@
-<div>
-  <h1 class="font-bold text-4xl">Newsletters#show</h1>
-  <p>Find me in app/views/newsletters/show.html.erb</p>
-</div>
+<main class="flex flex-wrap gap-4">
+  <div class="h-screen py-5 pr-5 space-y-5 border-r basis-44 grow border-stone-300">
+    <h1 class="text-xl"><%= @newsletter.title %></h1>
+    <nav class="grid gap-1 text-stone-500">
+      <ul>
+        <li>
+          <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
+            <span>Posts</span>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
+            <span>Drafts</span>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
+            <span>Subscribers</span>
+            <span class="rounded-md px-2 py-0.5 leading-none bg-stone-200 text-xs">
+              <%= @newsletter.subscribers.verified.count %>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <ul>
+        <li>
+          <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="basis-0 flex-grow-[999] [min-inline-size_50%]">
+  </div>
+</main>
