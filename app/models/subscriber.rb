@@ -6,9 +6,9 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
-#  status             :string
+#  status             :integer
 #  verification_token :string
-#  verified_at        :boolean
+#  verified_at        :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  newsletter_id      :integer          not null
@@ -23,4 +23,11 @@
 #
 class Subscriber < ApplicationRecord
   belongs_to :newsletter
+
+  scope :verified, -> { where(status: "verified") }
+  enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
+
+  def verify!
+    update(status: "verified", verified_at: Time.current)
+  end
 end

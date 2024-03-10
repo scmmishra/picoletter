@@ -6,9 +6,9 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
-#  status             :string
+#  status             :integer
 #  verification_token :string
-#  verified_at        :boolean
+#  verified_at        :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
 #  newsletter_id      :integer          not null
