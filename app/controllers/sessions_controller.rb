@@ -25,6 +25,5 @@ class SessionsController < ApplicationController
   def redirect_to_newsletter_home
     has_newsletter = Current.user.newsletters.present?
     redirect_to has_newsletter ? newsletter_url(Current.user.newsletters.first) : new_newsletter_url
-    redirect_to newsletter_url(user.newsletter), notice: "Logged in successfully."
   end
 end
