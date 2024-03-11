@@ -1,5 +1,14 @@
 class Auth::SessionsController < ApplicationController
-  def new; end
+  before_action :ensure_authenticated, only: [ :destroy ]
+  before_action :resume_session_if_present, only: [ :new ]
+
+  def new
+    if Current.user.present?
+      redirect_to_newsletter_home
+    else
+      render :new
+    end
+  end
 
   def create
     if user = User.active.authenticate_by(email: params[:email], password: params[:password])

@@ -9,6 +9,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def resume_session_if_present
+    session = find_session_by_cookie
+    Current.user = session.user if session.present?
+  end
+
   private
 
   def find_session_by_cookie
