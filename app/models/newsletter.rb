@@ -21,6 +21,10 @@
 #  user_id  (user_id => users.id)
 #
 class Newsletter < ApplicationRecord
+  include Sluggable
+
+  sluggable_on :title
+
   belongs_to :user
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy

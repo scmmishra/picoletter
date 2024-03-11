@@ -24,6 +24,10 @@
 #  newsletter_id  (newsletter_id => newsletters.id)
 #
 class Post < ApplicationRecord
+  include Sluggable
+
+  sluggable_on :title, scope: :newsletter_id
+
   belongs_to :newsletter
   enum status: { draft: "draft", scheduled: "scheduled", published: "published", archived: "archived" }
 
@@ -31,6 +35,10 @@ class Post < ApplicationRecord
   scope :scheduled, -> { where(status: "scheduled") }
   scope :drafts, -> { where(status: "draft") }
   scope :archived, -> { where(status: "archived") }
+
+  def self.slug_uniqueness_scope
+    { scope: :newsletter_id }
+  end
 
   def publish
     update(status: "published", published_at: Time.current)
