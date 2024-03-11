@@ -5,7 +5,10 @@ Rails.application.routes.draw do
     delete "logout", to: "sessions#destroy"
   end
 
-  resources :newsletters, only: [ :index, :new, :show ]
+  resources :newsletters, only: [ :new ], path: ""
+  get "/:slug", to: "newsletters#show", as: :newsletter
+
+  root "newsletters#index"
 
   get "up" => "rails/health#show", as: :rails_health_check
 end

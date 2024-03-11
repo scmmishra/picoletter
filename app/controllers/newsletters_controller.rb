@@ -6,7 +6,7 @@ class NewslettersController < ApplicationController
   end
 
   def show
-    @newsletter = Current.user.newsletters.find(params[:id])
+    @newsletter = Current.user.newsletters.from_slug(params[:slug])
   end
 
   def new
