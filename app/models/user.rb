@@ -18,4 +18,12 @@ class User < ApplicationRecord
   has_many :newsletters, dependent: :destroy
 
   scope :active, -> { where(active: true) }
+
+  before_create :activate_user
+
+  private
+
+  def activate_user
+    self.active = true if self.active.nil?
+  end
 end
