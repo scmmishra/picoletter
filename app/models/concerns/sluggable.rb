@@ -1,3 +1,10 @@
+# Sluggable is a concern that handles generating a unique slug from another attribute and validating its presence and uniqueness.
+#
+# It adds a before_validation callback to generate the slug, and validations on the slug attribute.
+# It also adds class methods to find records by slug, set the slug column and uniqueness scope, etc.
+#
+# When included, it will generate the slug before validation based on the configured slug column,
+# retrying with an incrementing counter suffix if needed for uniqueness.
 module Sluggable
   extend ActiveSupport::Concern
 
