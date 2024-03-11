@@ -4,6 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  description :text
+#  slug        :string           not null
 #  status      :string
 #  title       :string
 #  created_at  :datetime         not null
@@ -12,6 +13,7 @@
 #
 # Indexes
 #
+#  index_newsletters_on_slug     (slug)
 #  index_newsletters_on_user_id  (user_id)
 #
 # Foreign Keys

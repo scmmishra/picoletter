@@ -6,6 +6,7 @@
 #  content       :text
 #  published_at  :datetime
 #  scheduled_at  :datetime
+#  slug          :string           not null
 #  status        :string           default("draft")
 #  title         :string
 #  created_at    :datetime         not null
@@ -14,7 +15,9 @@
 #
 # Indexes
 #
-#  index_posts_on_newsletter_id  (newsletter_id)
+#  index_posts_on_newsletter_id           (newsletter_id)
+#  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
+#  index_posts_on_slug                    (slug)
 #
 # Foreign Keys
 #

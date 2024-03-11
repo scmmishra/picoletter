@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_10_162315) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_11_071911) do
   create_table "newsletters", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -18,6 +18,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_10_162315) do
     t.string "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
   end
 
@@ -30,7 +32,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_10_162315) do
     t.datetime "published_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["newsletter_id", "slug"], name: "index_posts_on_newsletter_id_and_slug", unique: true
     t.index ["newsletter_id"], name: "index_posts_on_newsletter_id"
+    t.index ["slug"], name: "index_posts_on_slug"
   end
 
   create_table "sessions", force: :cascade do |t|
