@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
-  get "login", to: "sessions#new"
-  post "login", to: "sessions#create"
-  delete "logout", to: "sessions#destroy"
+  namespace :auth do
+    get "login", to: "sessions#new"
+    post "login", to: "sessions#create"
+    delete "logout", to: "sessions#destroy"
+  end
 
   resources :newsletters, only: [ :index, :new, :show ]
 
