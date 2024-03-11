@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
     if session
       Current.user = session.user
     else
-      redirect_to login_path, alert: "Please log in to continue."
+      redirect_to auth_login_path, alert: "Please log in to continue."
     end
   end
 
