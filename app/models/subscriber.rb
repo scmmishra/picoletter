@@ -7,6 +7,7 @@
 #  email              :string
 #  full_name          :string
 #  status             :integer
+#  unsubscribed_at    :datetime
 #  verification_token :string
 #  verified_at        :datetime
 #  created_at         :datetime         not null
@@ -25,6 +26,10 @@ class Subscriber < ApplicationRecord
   belongs_to :newsletter
 
   scope :verified, -> { where(status: "verified") }
+  scope :unverified, -> { where(status: "unverified") }
+  scope :unsubscribed, -> { where(status: "unsubscribed") }
+  scope :subscribed, -> { verified.or(unverified) }
+
   enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
 
   before_create :generate_verification_token

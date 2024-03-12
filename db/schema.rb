@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_11_071911) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_12_110810) do
   create_table "newsletters", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -57,6 +57,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_11_071911) do
     t.integer "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "unsubscribed_at"
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
   end
 

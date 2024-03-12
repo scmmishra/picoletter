@@ -7,6 +7,7 @@
 #  email              :string
 #  full_name          :string
 #  status             :integer
+#  unsubscribed_at    :datetime
 #  verification_token :string
 #  verified_at        :datetime
 #  created_at         :datetime         not null
