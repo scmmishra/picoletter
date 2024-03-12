@@ -62,6 +62,8 @@ group :development do
   gem "byebug", "~> 11.1"
   gem "rubocop-rails-omakase", require: false
   gem "annotate"
+  gem "kramdown"
+  gem "faker"
 end
 
 group :test do
