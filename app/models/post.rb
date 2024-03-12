@@ -51,4 +51,8 @@ class Post < ApplicationRecord
   def archive
     update(status: "archived")
   end
+
+  def published_on_date
+    published_at.strftime("%B %d, %Y") if published_at.present?
+  end
 end

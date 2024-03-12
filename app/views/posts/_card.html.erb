@@ -1,0 +1,13 @@
+<a href="#" class="grid grid-cols-4 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
+  <div class="col-span-2">
+    <h2><%= post.title %></h2>
+  </div>
+  <div class="text-right text-stone-500">
+    <% if post.published? %>
+      Published on <%= post.published_on_date %>
+    <% end %>
+  </div>
+  <div class="text-right text-stone-500">
+    Created on <%= post.created_at.strftime("%B %d, %Y") %>
+  </div>
+</a>
