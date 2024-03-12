@@ -12,7 +12,7 @@
   }
 
   .btn-secondary {
-    @apply px-4 py-2 rounded-lg shadow-sm cursor-pointer bg-stone-200 text-stone-600 hover:bg-stone-300;
+    @apply px-4 py-2 rounded-lg shadow-sm cursor-pointer bg-stone-200 text-stone-500 hover:bg-stone-300;
   }
 
   .next,
