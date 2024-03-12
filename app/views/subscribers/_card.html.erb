@@ -1,17 +1,20 @@
-<a href="#" class="grid grid-cols-4 py-4 font-sans hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
-  <div class="col-span-2">
+<div class="grid grid-cols-10 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
+  <div class="col-span-3 font-medium text-stone-800">
+    <h2><%= subscriber.full_name %></h2>
+  </div>
+  <div class="col-span-3 font-sans text-sm text-stone-500">
     <h2><%= subscriber.email %></h2>
   </div>
-  <div class="font-sans text-sm leading-6 text-right text-stone-500">
+  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
       <% if subscriber.status == 'unsubscribed' %>
-        Unsubscribed on <b class="font-medium text-stone-700"><%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %></b>
+        <%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
       <% elsif subscriber.status == 'verified' %>
-        Verified on <b class="font-medium text-stone-700"><%= subscriber.verified_at.strftime("%B %d, %Y") %></b>
+        <%= subscriber.verified_at.strftime("%B %d, %Y") %>
       <% elsif subscriber.status == 'unverified' %>
-        Signed up on <b class="font-medium text-stone-700"><%= subscriber.created_at.strftime("%B %d, %Y") %></b>
+        <%= subscriber.created_at.strftime("%B %d, %Y") %>
       <% end %>
   </div>
-  <div class="font-sans text-sm leading-6 text-right text-stone-500">
-    Created on <b class="font-medium text-stone-700"><%= subscriber.created_at.strftime("%B %d, %Y") %></b>
+  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
+    <%= subscriber.created_at.strftime("%B %d, %Y") %>
   </div>
-</a>
+</div>

@@ -10,7 +10,7 @@ class Newsletters::SubscribersController < ApplicationController
       .order(created_at: :desc)
       .page(params[:page] || 0)
       .where(status: status)
-      .per(50)
+      .per(30)
   end
 
   private
