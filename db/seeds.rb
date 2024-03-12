@@ -67,23 +67,26 @@ Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
 end
 
 # loop 100 times and create subscribers
-100.times do
-  email = Faker::Internet.email
-  full_name = Faker::Name.name
-  status = [ :verified, :unverified, :unsubscribed ].sample
+5.times do |i|
+  subscribers = 1000.times.map do
+    email = Faker::Internet.email
+    full_name = Faker::Name.name
+    status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
+    created_at = Time.now - rand(1..3).months
+    verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
+    unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
 
-  # get a random date in the last 3 months
-  created_at = Time.now - rand(1..3).months
-  subscriber = newsletter.subscribers.create!(
-    email: email,
-    full_name: full_name,
-    status: status,
-    created_at: created_at,
-    updated_at: created_at,
-  )
-
-  if status == :verified || status == :unsubscribed
-    subscriber.verified_at = created_at + rand(1..30).hours
+    {
+      email: email,
+      full_name: full_name,
+      status: status,
+      created_at: created_at,
+      updated_at: created_at,
+      verified_at: verified_at,
+      unsubscribed_at: unsubscribed_at
+    }
   end
-  subscriber.save!
+
+  newsletter.subscribers.create!(subscribers)
+  puts "  Created #{subscribers.count} subscribers"
 end
