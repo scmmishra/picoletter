@@ -11,24 +11,24 @@
       </div>
 
       <div class="grid gap-2 mt-5 md:grid-cols-3">
-        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+        <%= link_to subscribers_path(@newsletter.slug, status: :verified), class: "px-4 py-2 space-y-2 rounded-md bg-stone-100" do %>
           <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Verified Subscribers</div>
           <div class="text-3xl font-medium text-stone-900">
             <%= @newsletter.subscribers.verified.count %>
           </div>
-        </div>
-        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+        <% end %>
+        <%= link_to subscribers_path(@newsletter.slug, status: :unverified), class: "px-4 py-2 space-y-2 rounded-md bg-stone-100" do %>
           <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Unverified Subscribers</div>
           <div class="text-3xl font-medium text-stone-900">
             <%= @newsletter.subscribers.unverified.count %>
           </div>
-        </div>
-        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+        <% end %>
+        <%= link_to subscribers_path(@newsletter.slug, status: :unsubscribed), class: "px-4 py-2 space-y-2 rounded-md bg-stone-100" do %>
           <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Unsubscribed</div>
           <div class="text-3xl font-medium text-stone-900">
             <%= @newsletter.subscribers.unsubscribed.count %>
           </div>
-        </div>
+        <% end %>
       </div>
       </div>
       <% if @subscribers.empty? %>

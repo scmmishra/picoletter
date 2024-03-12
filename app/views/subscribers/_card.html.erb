@@ -3,7 +3,7 @@
     <h2><%= subscriber.email %></h2>
   </div>
   <div class="font-sans text-sm leading-6 text-right text-stone-500">
-    <span class="px-2 py-1 text-xs font-medium tracking-widest uppercase rounded-md <%= 'bg-red-100 text-red-600' if subscriber.unsubscribed? %> <%= 'bg-green-100 text-green-700' if subscriber.verified? %> <%= 'bg-stone-100 text-stone-700' if subscriber.unverified? %>"
+    <span class="px-2 py-1 text-xs font-medium tracking-widest uppercase rounded-md <%= 'bg-red-100 text-red-600' if subscriber.status == 'unsubscribed' %> <%= 'bg-green-100 text-green-700' if subscriber.status == 'verified' %> <%= 'bg-stone-100 text-stone-700' if subscriber.status == 'unverified' %>"
     >
       <%= subscriber.status %>
     </span>
