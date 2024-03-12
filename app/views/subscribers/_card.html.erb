@@ -3,12 +3,15 @@
     <h2><%= subscriber.email %></h2>
   </div>
   <div class="font-sans text-sm leading-6 text-right text-stone-500">
-    <span class="px-2 py-1 text-xs font-medium tracking-widest uppercase rounded-md <%= 'bg-red-100 text-red-600' if subscriber.status == 'unsubscribed' %> <%= 'bg-green-100 text-green-700' if subscriber.status == 'verified' %> <%= 'bg-stone-100 text-stone-700' if subscriber.status == 'unverified' %>"
-    >
-      <%= subscriber.status %>
-    </span>
+      <% if subscriber.status == 'unsubscribed' %>
+        Unsubscribed on <b class="font-medium text-stone-700"><%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %></b>
+      <% elsif subscriber.status == 'verified' %>
+        Verified on <b class="font-medium text-stone-700"><%= subscriber.verified_at.strftime("%B %d, %Y") %></b>
+      <% elsif subscriber.status == 'unverified' %>
+        Signed up on <b class="font-medium text-stone-700"><%= subscriber.created_at.strftime("%B %d, %Y") %></b>
+      <% end %>
   </div>
   <div class="font-sans text-sm leading-6 text-right text-stone-500">
-    Created on <%= subscriber.created_at.strftime("%B %d, %Y") %>
+    Created on <b class="font-medium text-stone-700"><%= subscriber.created_at.strftime("%B %d, %Y") %></b>
   </div>
 </a>

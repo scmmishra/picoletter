@@ -11,7 +11,7 @@
       </div>
 
       <div class="grid gap-2 mt-5 md:grid-cols-3">
-        <%= link_to subscribers_path(@newsletter.slug, status: :verified), class: "px-4 py-2 space-y-2 rounded-md #{params['status'] == 'verified' ? 'bg-stone-100 shadow-sm' : 'bg-stone-50 opacity-50'}" do %>
+        <%= link_to subscribers_path(@newsletter.slug), class: "px-4 py-2 space-y-2 rounded-md #{params['status'] == 'verified' || params['status'].nil? ? 'bg-stone-100 shadow-sm' : 'bg-stone-50 opacity-50'}" do %>
           <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Verified Subscribers</div>
           <div class="text-3xl font-medium text-stone-900">
             <%= @newsletter.subscribers.verified.count %>
