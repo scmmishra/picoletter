@@ -14,4 +14,20 @@
   .btn-secondary {
     @apply px-4 py-2 rounded-lg shadow-sm cursor-pointer bg-stone-200 text-stone-600 hover:bg-stone-300;
   }
+
+  .next,
+  .last,
+  .prev,
+  .first,
+  .page > a {
+    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center rounded-md min-w-8 text-stone-500 hover:bg-stone-100;
+  }
+
+  .page > a {
+    @apply bg-stone-100 hover:bg-stone-200;
+  }
+
+  .page.current {
+    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center text-white rounded-md min-w-8 bg-stone-800;
+  }
 }

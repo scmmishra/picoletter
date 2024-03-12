@@ -41,8 +41,8 @@
             <%= render 'subscribers/card', subscriber: subscriber %>
           <% end %>
         </section>
-        <div class="mt-4">
-          <%= paginate @subscribers %>
+        <div class="flex items-center justify-end mt-4">
+          <%= paginate @subscribers, window: 2 %>
         </div>
       <% end %>
     </section>
