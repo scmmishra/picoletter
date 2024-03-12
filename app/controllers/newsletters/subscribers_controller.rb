@@ -3,7 +3,14 @@ class Newsletters::SubscribersController < ApplicationController
   before_action :set_newsletter
 
   def index
-    @subscribers = @newsletter.subscribers.all
+    page = params[:page] || 0
+    status = params[:status] || "verified"
+
+    @subscribers = @newsletter.subscribers
+      .order(created_at: :desc)
+      .page(params[:page] || 0)
+      .where(status: status)
+      .per(50)
   end
 
   private

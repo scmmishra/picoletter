@@ -38,6 +38,22 @@ class Subscriber < ApplicationRecord
     update(status: "verified", verified_at: Time.current)
   end
 
+  def verified?
+    status == "verified"
+  end
+
+  def subscribed?
+    status == "verified" || status == "unverified"
+  end
+
+  def unsubscribed?
+    status == "unsubscribed"
+  end
+
+  def unverified?
+    status == "unsubscribed"
+  end
+
   def generate_verification_token
     self.verification_token = SecureRandom.urlsafe_base64
     self.verification_token = verification_token.first(24)

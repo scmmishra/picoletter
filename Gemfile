@@ -73,3 +73,4 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 2.3"
+gem "kaminari"

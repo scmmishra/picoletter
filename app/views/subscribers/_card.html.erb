@@ -1,0 +1,14 @@
+<a href="#" class="grid grid-cols-4 py-4 font-sans hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
+  <div class="col-span-2">
+    <h2><%= subscriber.email %></h2>
+  </div>
+  <div class="font-sans text-sm leading-6 text-right text-stone-500">
+    <span class="px-2 py-1 text-xs font-medium tracking-widest uppercase rounded-md <%= 'bg-red-100 text-red-600' if subscriber.unsubscribed? %> <%= 'bg-green-100 text-green-700' if subscriber.verified? %> <%= 'bg-stone-100 text-stone-700' if subscriber.unverified? %>"
+    >
+      <%= subscriber.status %>
+    </span>
+  </div>
+  <div class="font-sans text-sm leading-6 text-right text-stone-500">
+    Created on <%= subscriber.created_at.strftime("%B %d, %Y") %>
+  </div>
+</a>

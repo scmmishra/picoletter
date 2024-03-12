@@ -2,13 +2,49 @@
   <%= render 'newsletters/sidebar' %>
   <section class="basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-5">
     <section class="w-full min-h-full p-5 bg-white border rounded-md shadow-sm border-zinc-100">
-      <section class="flex items-center justify-between gap-2">
+      <div class="flex items-center justify-between gap-2">
         <h2 class="text-xl font-medium">Subscribers</h2>
         <div class="space-x-1">
           <button class="font-sans text-sm btn-secondary">Import Subscribers</button>
           <button class="font-sans text-sm btn-secondary">Export to CSV</button>
         </div>
-      </section>
+      </div>
+
+      <div class="grid gap-2 mt-5 md:grid-cols-3">
+        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+          <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Verified Subscribers</div>
+          <div class="text-3xl font-medium text-stone-900">
+            <%= @newsletter.subscribers.verified.count %>
+          </div>
+        </div>
+        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+          <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Unverified Subscribers</div>
+          <div class="text-3xl font-medium text-stone-900">
+            <%= @newsletter.subscribers.unverified.count %>
+          </div>
+        </div>
+        <div class="px-4 py-2 space-y-2 rounded-md bg-stone-100">
+          <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">Unsubscribed</div>
+          <div class="text-3xl font-medium text-stone-900">
+            <%= @newsletter.subscribers.unsubscribed.count %>
+          </div>
+        </div>
+      </div>
+      </div>
+      <% if @subscribers.empty? %>
+        <div class="h-full py-20 mt-8 border border-dashed rounded-md border-stone-300">
+          <p class="text-center text-stone-500">No subscribers found</p>
+        </div>
+      <% else %>
+        <section class="mt-8 divide-y divide-stone-200 border-y border-stone-200">
+          <% @subscribers.each do |subscriber| %>
+            <%= render 'subscribers/card', subscriber: subscriber %>
+          <% end %>
+        </section>
+        <div class="mt-4">
+          <%= paginate @subscribers %>
+        </div>
+      <% end %>
     </section>
   </section>
 </main>
