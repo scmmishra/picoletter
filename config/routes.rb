@@ -15,6 +15,8 @@ Rails.application.routes.draw do
         get :drafts
       end
     end
+
+    resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
   end
 
   get "/:slug", to: "newsletters#show", as: :newsletter

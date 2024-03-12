@@ -4,10 +4,14 @@
 
 @layer components {
   .input {
-    @apply py-2 px-4 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 placeholder:text-zinc-400 placeholder:font-light border-0;
+    @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 placeholder:text-zinc-400 placeholder:font-light;
   }
 
   .btn-primary {
-    @apply py-2 px-4 rounded-lg bg-zinc-800 text-white shadow-sm cursor-pointer hover:bg-zinc-900;
+    @apply px-4 py-2 text-white rounded-lg shadow-sm cursor-pointer bg-zinc-800 hover:bg-zinc-900;
+  }
+
+  .btn-secondary {
+    @apply px-4 py-2 rounded-lg shadow-sm cursor-pointer bg-stone-200 text-stone-600 hover:bg-stone-300;
   }
 }

@@ -1,4 +1,4 @@
-<aside class="sticky top-0 grid h-screen py-5 basis-40">
+<aside class="sticky top-0 grid h-screen py-5 basis-44">
   <section class="flex flex-col justify-between flex-grow space-y-5">
     <div class="space-y-5">
       <h1 class="mt-1 text-xl"><%= @newsletter.title %></h1>
@@ -25,12 +25,12 @@
         </ul>
         <ul>
           <li>
-            <a class="flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" href="">
+            <%= link_to subscribers_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
               <span>Subscribers</span>
               <span class="rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums">
                 <%= @newsletter.subscribers.verified.count %>
               </span>
-            </a>
+            <% end %>
           </li>
         </ul>
         <ul>
