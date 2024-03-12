@@ -27,7 +27,14 @@ class Subscriber < ApplicationRecord
   scope :verified, -> { where(status: "verified") }
   enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
 
+  before_create :generate_verification_token
+
   def verify!
     update(status: "verified", verified_at: Time.current)
+  end
+
+  def generate_verification_token
+    self.verification_token = SecureRandom.urlsafe_base64
+    self.verification_token = verification_token.first(24)
   end
 end
