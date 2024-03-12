@@ -20,7 +20,8 @@ class Auth::SessionsController < ApplicationController
   end
 
   def destroy
-    session.delete(:user_id)
+    session = find_session_by_cookie
+    session.destroy
     redirect_to auth_login_path, notice: "Logged out successfully."
   end
 
