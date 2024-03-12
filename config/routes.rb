@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     delete "logout", to: "sessions#destroy"
   end
 
+  # redirect /login to /auth/login
+  get "/login", to: redirect("/auth/login")
+
   resources :newsletters, only: [ :new ], path: ""
   get "/:slug", to: "newsletters#show", as: :newsletter
 
