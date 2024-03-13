@@ -1,6 +1,6 @@
-<%= form_with model: @post, url: new_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
-  <div class="prose field">
+<%= form_with model: @post, url: create_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
+  <div class="mx-auto prose">
     <%= form.rich_text_area :content %>
   </div>
-  <%= form.submit 'save' %>
+  <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
 <% end %>

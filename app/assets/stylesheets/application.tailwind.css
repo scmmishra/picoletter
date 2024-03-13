@@ -8,7 +8,7 @@
   }
 
   .btn-primary {
-    @apply px-4 py-2 text-white rounded-lg shadow-sm cursor-pointer bg-zinc-800 hover:bg-zinc-900;
+    @apply px-4 py-2 font-normal text-white rounded-lg shadow-sm cursor-pointer bg-zinc-800 hover:bg-zinc-900;
   }
 
   .btn-secondary {
@@ -35,8 +35,12 @@
     @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center text-white rounded-md min-w-8 bg-stone-800;
   }
 
+  .trix-button-row {
+    @apply space-x-2;
+  }
+
   .trix-button {
-    @apply px-1 py-2 text-xs rounded-md bg-stone-200;
+    @apply px-2 py-2 font-sans text-xs uppercase rounded-md bg-stone-200;
   }
 }
 

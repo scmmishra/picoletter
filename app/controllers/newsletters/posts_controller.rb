@@ -23,12 +23,12 @@ class Newsletters::PostsController < ApplicationController
 
   def new
     @post = @newsletter.posts.new
+  end
 
-    if request.post?
-      @post.attributes = post_params
-      if @post.save
-        redirect_to newsletter_post_url(@newsletter, @post), notice: "Post was successfully created."
-      end
+  def create
+    @post = @newsletter.posts.new(post_params)
+    if @post.save
+      redirect_to post_url(@newsletter, @post), notice: "Post was successfully created."
     end
   end
 
