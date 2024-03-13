@@ -1,1 +1,6 @@
-new
+<%= form_with model: @post do |form| %>
+  <div class="prose field">
+    <%= form.label :content %>
+    <%= form.rich_text_area :content %>
+  </div>
+<% end %>

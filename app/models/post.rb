@@ -27,6 +27,7 @@ class Post < ApplicationRecord
   include Sluggable
 
   sluggable_on :title, scope: :newsletter_id
+  has_rich_text :content
 
   belongs_to :newsletter
   enum status: { draft: "draft", scheduled: "scheduled", published: "published", archived: "archived" }
