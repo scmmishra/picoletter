@@ -1,4 +1,4 @@
-<a href="#" class="grid grid-cols-4 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
+<%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-4 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
   <div class="col-span-2">
     <h2><%= post.title %></h2>
   </div>
@@ -10,4 +10,4 @@
   <div class="font-sans text-sm leading-6 text-right text-stone-500">
     Created on <b class="font-medium text-stone-700"><%= post.created_at.strftime("%B %d, %Y") %></b>
   </div>
-</a>
+<% end %>

@@ -9,14 +9,14 @@ Rails.application.routes.draw do
   get "/login", to: redirect("/auth/login")
 
   scope "/:slug" do
+    resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
+
     resources :posts, only: [ :index, :edit, :show ], path: "", module: "newsletters" do
       collection do
         get :archive
         get :drafts
       end
     end
-
-    resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
   end
 
   get "/:slug", to: "newsletters#show", as: :newsletter
