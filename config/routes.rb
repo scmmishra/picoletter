@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get "/login", to: redirect("/auth/login")
 
   scope "/:slug" do
-    resources :posts, only: [ :index ], path: "", module: "newsletters" do
+    resources :posts, only: [ :index, :edit, :show ], path: "", module: "newsletters" do
       collection do
         get :archive
         get :drafts

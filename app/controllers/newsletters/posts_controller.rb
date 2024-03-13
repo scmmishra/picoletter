@@ -1,6 +1,7 @@
 class Newsletters::PostsController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
+  before_action :set_post, only: [ :show, :edit ]
 
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
@@ -14,10 +15,18 @@ class Newsletters::PostsController < ApplicationController
     @posts = @newsletter.posts.archived.order(updated_at: :desc)
   end
 
+  def show
+    @post = @newsletter.posts.find(params[:id])
+  end
+
   private
 
   def set_newsletter
     @newsletter = Current.user.newsletters.from_slug(params[:slug])
     redirect_to newsletter_url(Current.user.newsletters.first.slug) unless @newsletter
+  end
+
+  def set_post
+    @post = @newsletter.posts.find(params[:id])
   end
 end
