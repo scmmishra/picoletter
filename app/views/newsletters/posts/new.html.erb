@@ -1,6 +1,6 @@
-<%= form_with model: @post do |form| %>
+<%= form_with model: @post, url: new_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
   <div class="prose field">
-    <%= form.label :content %>
     <%= form.rich_text_area :content %>
   </div>
+  <%= form.submit 'save' %>
 <% end %>
