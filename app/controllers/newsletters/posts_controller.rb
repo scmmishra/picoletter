@@ -1,6 +1,6 @@
 class Newsletters::PostsController < ApplicationController
   layout "newsletters"
-  
+
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_post, only: [ :show, :edit ]
@@ -17,9 +17,9 @@ class Newsletters::PostsController < ApplicationController
     @posts = @newsletter.posts.archived.order(updated_at: :desc)
   end
 
-  def show
-    @post = @newsletter.posts.find(params[:id])
-  end
+  def show; end
+
+  def edit; end
 
   private
 
