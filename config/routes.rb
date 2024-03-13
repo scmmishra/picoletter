@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   scope "/:slug" do
     resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
-    resources :posts, only: [ :index, :edit, :show ], path: "", module: "newsletters" do
+    resources :posts, only: [ :index, :edit, :show, :new ], path: "", module: "newsletters" do
       collection do
         get :archive
         get :drafts

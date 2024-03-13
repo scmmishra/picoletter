@@ -1,6 +1,8 @@
 <section class="flex items-center justify-between gap-2">
   <h2 class="text-xl font-medium">Published Posts</h2>
-  <button class="btn-primary">Compose</button>
+  <%= link_to new_post_path, class: 'btn-primary' do %>
+    Compose
+  <% end %>
 </section>
 <% if @posts.empty? %>
 <div class="py-12">

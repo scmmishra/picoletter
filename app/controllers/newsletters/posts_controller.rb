@@ -21,6 +21,17 @@ class Newsletters::PostsController < ApplicationController
 
   def edit; end
 
+  def new
+    @post = @newsletter.posts.new
+
+    if request.post?
+      @post.attributes = post_params
+      if @post.save
+        redirect_to newsletter_post_url(@newsletter, @post), notice: "Post was successfully created."
+      end
+    end
+  end
+
   private
 
   def set_newsletter
@@ -30,5 +41,9 @@ class Newsletters::PostsController < ApplicationController
 
   def set_post
     @post = @newsletter.posts.find(params[:id])
+  end
+
+  def post_params
+    params.require(:post).permit(:title, :content)
   end
 end
