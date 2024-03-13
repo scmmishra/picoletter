@@ -10,17 +10,20 @@
 require "kramdown"
 require 'faker'
 
-def extract_frontmatter(content)
+def parse_md_file(content)
   if content.start_with?("---")
     end_index = content.index("---", 3)
     if end_index
       yaml_content = content[3...end_index].strip
       frontmatter = YAML.load(yaml_content)
-      return frontmatter
+
+      body = content[end_index + 3..-1].strip.gsub('---', '')
+      body_html = Kramdown::Document.new(body).to_html
+      return [ frontmatter, body_html ]
     end
   end
 
-  nil
+  [ nil, nil ]
 end
 
 
@@ -45,11 +48,11 @@ seed_data_path = Rails.root.join("db", "seed_data", "posts")
 publish_date = Time.now
 
 Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
-  content = File.read(file)
-  frontmatter = extract_frontmatter(content)
+  frontmatter, html_content = parse_md_file(File.read(file))
+  return if frontmatter.nil? || html_content.nil?
+
   title = frontmatter["title"]
 
-  html_content = Kramdown::Document.new(content).to_html
   created_at = publish_date - rand(1..3).days
 
   newsletter.posts.create!(
@@ -67,26 +70,24 @@ Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
 end
 
 # loop 100 times and create subscribers
-5.times do |i|
-  subscribers = 1000.times.map do
-    email = Faker::Internet.email
-    full_name = Faker::Name.name
-    status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
-    created_at = Time.now - rand(1..3).months
-    verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
-    unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
+subscribers = 500.times.map do
+  email = Faker::Internet.email
+  full_name = Faker::Name.name
+  status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
+  created_at = Time.now - rand(1..3).months
+  verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
+  unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
 
-    {
-      email: email,
-      full_name: full_name,
-      status: status,
-      created_at: created_at,
-      updated_at: created_at,
-      verified_at: verified_at,
-      unsubscribed_at: unsubscribed_at
-    }
-  end
-
-  newsletter.subscribers.create!(subscribers)
-  puts "  Created #{subscribers.count} subscribers"
+  {
+    email: email,
+    full_name: full_name,
+    status: status,
+    created_at: created_at,
+    updated_at: created_at,
+    verified_at: verified_at,
+    unsubscribed_at: unsubscribed_at
+  }
 end
+
+newsletter.subscribers.create!(subscribers)
+puts "  Created #{subscribers.count} subscribers"
