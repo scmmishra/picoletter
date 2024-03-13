@@ -3,11 +3,11 @@
   <button class="btn-primary">Compose</button>
 </section>
 <% if @posts.empty? %>
-<div class="h-full py-20 mt-8 border border-dashed rounded-md border-stone-300">
+<div class="h-full py-20 mt-6 border border-dashed rounded-md border-stone-300">
   <p class="text-center text-stone-500">No posts found</p>
 </div>
 <% else %>
-<section class="mt-8 divide-y divide-stone-200 border-y border-stone-200">
+<section class="mt-6 divide-y divide-stone-200 border-y border-stone-200">
   <% @posts.each do |post| %>
     <%= render 'posts/card', post: post %>
   <% end %>
