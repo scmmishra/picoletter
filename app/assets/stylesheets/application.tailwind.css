@@ -27,6 +27,10 @@
     @apply bg-stone-100 hover:bg-stone-200;
   }
 
+  .page.gap {
+    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center rounded-md min-w-8 text-stone-500;
+  }
+
   .page.current {
     @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center text-white rounded-md min-w-8 bg-stone-800;
   }
