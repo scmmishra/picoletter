@@ -34,5 +34,10 @@
   .page.current {
     @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center text-white rounded-md min-w-8 bg-stone-800;
   }
+
+  .trix-button {
+    @apply px-1 py-2 text-xs rounded-md bg-stone-200;
+  }
 }
-@import 'actiontext.css';
+
+@import "actiontext.css";
