@@ -1,4 +1,6 @@
 class Newsletters::PostsController < ApplicationController
+  layout "newsletters"
+  
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_post, only: [ :show, :edit ]

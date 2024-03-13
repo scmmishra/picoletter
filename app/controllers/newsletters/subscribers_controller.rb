@@ -1,4 +1,6 @@
 class Newsletters::SubscribersController < ApplicationController
+  layout "newsletters"
+
   before_action :ensure_authenticated
   before_action :set_newsletter
 

@@ -1,4 +1,6 @@
 class NewslettersController < ApplicationController
+  layout "newsletters"
+
   before_action :ensure_authenticated
 
   def index

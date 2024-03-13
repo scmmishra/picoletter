@@ -1,22 +1,15 @@
-<main class="flex flex-wrap gap-4">
-  <%= render 'newsletters/sidebar' %>
-  <section class="basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-5">
-    <section class="w-full min-h-full p-5 bg-white border rounded-md shadow-sm border-zinc-100">
-      <section class="flex items-center justify-between gap-2">
-        <h2 class="text-xl font-medium">Drafts</h2>
-        <button class="btn-primary">Compose</button>
-      </section>
-      <% if @posts.empty? %>
-      <div class="h-full py-20 mt-8 border border-dashed rounded-md border-stone-300">
-        <p class="text-center text-stone-500">No posts found</p>
-      </div>
-      <% else %>
-      <section class="mt-8 divide-y divide-stone-200 border-y border-stone-200">
-        <% @posts.each do |post| %>
-          <%= render 'posts/card', post: post %>
-        <% end %>
-      </section>
-      <% end %>
-    </section>
-  </section>
-</main>
+<section class="flex items-center justify-between gap-2">
+  <h2 class="text-xl font-medium">Drafts</h2>
+  <button class="btn-primary">Compose</button>
+</section>
+<% if @posts.empty? %>
+<div class="h-full py-20 mt-8 border border-dashed rounded-md border-stone-300">
+  <p class="text-center text-stone-500">No posts found</p>
+</div>
+<% else %>
+<section class="mt-8 divide-y divide-stone-200 border-y border-stone-200">
+  <% @posts.each do |post| %>
+    <%= render 'posts/card', post: post %>
+  <% end %>
+</section>
+<% end %>
