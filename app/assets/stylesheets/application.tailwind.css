@@ -63,7 +63,7 @@
   }
 
   trix-editor {
-    @apply px-2 py-1 border rounded-md outline-none border-stone-200 min-h-60;
+    @apply px-2 py-1 border rounded-lg outline-none border-stone-200 min-h-60;
   }
 
   trix-toolbar * {
