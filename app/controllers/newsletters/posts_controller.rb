@@ -3,7 +3,7 @@ class Newsletters::PostsController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
-  before_action :set_post, only: [ :show, :edit ]
+  before_action :set_post, only: [ :show, :edit, :publish, :destroy ]
 
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
@@ -30,6 +30,16 @@ class Newsletters::PostsController < ApplicationController
     if @post.save
       redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post was successfully created."
     end
+  end
+
+  def publish
+    @post.publish
+    redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
+  end
+
+  def destroy
+    @post.destroy
+    redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post deleted successfully."
   end
 
   private

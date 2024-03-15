@@ -1,4 +1,4 @@
-<%= form_with model: @post, url: create_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
+<%= form_with model: @post, url: publish_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
   <%= form.hidden_field :newsletter_id, value: @newsletter.id %>
   <div class="max-w-2xl mx-auto">
     <label class="space-y-1">
@@ -9,7 +9,8 @@
   <div class="max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl">
     <%= form.rich_text_area :content %>
   </div>
-  <div class="flex items-end max-w-2xl mx-auto mt-2">
-    <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
+  <div class="flex items-end justify-between max-w-2xl gap-2 mx-auto mt-2">
+    <%= form.submit 'Publish & Send', class: 'btn btn-success' %>
+    <%= link_to 'Delete', post_path(slug: @newsletter.slug, id: @post.id), class: 'btn btn-danger', data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this post?' } %>
   </div>
 <% end %>

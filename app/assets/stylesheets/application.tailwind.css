@@ -21,6 +21,14 @@
     @apply text-white bg-stone-600 border-stone-600 hover:bg-stone-700 hover:border-stone-700 from-black/20 ring-stone-500/40 active:bg-stone-700 active:border-stone-700;
   }
 
+  .btn-success {
+    @apply text-white bg-green-600 border-green-600 hover:bg-green-700 hover:border-green-700 from-black/20 ring-green-500/40 active:bg-green-700 active:border-green-700;
+  }
+
+  .btn-danger {
+    @apply text-white bg-red-600 border-red-600 hover:bg-red-700 hover:border-red-700 from-black/20 ring-red-500/40 active:bg-red-700 active:border-red-700;
+  }
+
   .btn-secondary {
     @apply bg-stone-200 border-stone-200 text-stone-500 hover:bg-stone-300 hover:border-stone-300 from-black/10 ring-stone-300/30;
   }

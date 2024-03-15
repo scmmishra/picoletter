@@ -15,6 +15,11 @@ Rails.application.routes.draw do
     resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
     resources :posts, only: [ :index, :edit, :show ], path: "", module: "newsletters" do
+      member do
+        post :publish
+        delete :destroy
+      end
+
       collection do
         get :archive
         get :drafts
