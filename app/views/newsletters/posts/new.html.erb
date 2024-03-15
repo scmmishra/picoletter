@@ -1,6 +1,8 @@
 <%= form_with model: @post, url: create_post_path(slug: @newsletter.slug, id: @post.id), method: :post do |form| %>
-  <div class="mx-auto prose">
+  <div class="max-w-2xl mx-auto prose">
     <%= form.rich_text_area :content %>
   </div>
-  <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
+  <div class="flex items-end max-w-2xl mx-auto mt-2">
+    <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
+  </div>
 <% end %>
