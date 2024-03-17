@@ -28,7 +28,7 @@ class Newsletters::PostsController < ApplicationController
   def create
     @post = @newsletter.posts.new(post_params)
     if @post.save
-      redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post was successfully created."
+      redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully created."
     end
   end
 
