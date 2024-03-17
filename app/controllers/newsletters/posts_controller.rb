@@ -3,7 +3,7 @@ class Newsletters::PostsController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
-  before_action :set_post, only: [ :show, :edit, :publish, :destroy ]
+  before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update ]
 
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
@@ -20,6 +20,11 @@ class Newsletters::PostsController < ApplicationController
   def show; end
 
   def edit; end
+
+  def update
+    @post.update(post_params)
+    # redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully updated."
+  end
 
   def new
     @post = @newsletter.posts.new
