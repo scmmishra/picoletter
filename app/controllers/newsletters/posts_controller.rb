@@ -23,7 +23,6 @@ class Newsletters::PostsController < ApplicationController
 
   def update
     @post.update(post_params)
-    # redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully updated."
   end
 
   def new
@@ -59,6 +58,6 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content)
+    params.require(:post).permit(:title, :content, :scheduled_at)
   end
 end
