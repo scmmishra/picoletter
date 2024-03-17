@@ -1,13 +1,17 @@
-<%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-4 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
-  <div class="col-span-2">
+<%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-7 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
+  <div class="col-span-3">
     <h2><%= post.title %></h2>
   </div>
-  <div class="font-sans text-sm leading-6 text-right text-stone-500">
+  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
     <% if post.published? %>
       Published on <b class="font-medium text-stone-700"><%= post.published_on_date %></b>
+    <% elsif post.scheduled_at.present? %>
+      Scheduled for <span class="font-medium text-stone-800"><%= post.scheduled_at.strftime("%B %e, %Y") %></span> at <span class="font-medium text-stone-800"><%= post.scheduled_at.strftime("%H:%M %p") %></span>
+    <% else %>
+     <span class="text-stone-500"> — </span>
     <% end %>
   </div>
-  <div class="font-sans text-sm leading-6 text-right text-stone-500">
+  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
     Created on <b class="font-medium text-stone-700"><%= post.created_at.strftime("%B %d, %Y") %></b>
   </div>
 <% end %>
