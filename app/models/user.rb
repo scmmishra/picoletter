@@ -23,8 +23,11 @@ class User < ApplicationRecord
   has_many :newsletters, dependent: :destroy
 
   scope :active, -> { where(active: true) }
-
   before_create :activate_user
+
+  def super?
+    self.is_superadmin
+  end
 
   private
 
