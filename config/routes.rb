@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 
-  scope "/dashboard/:slug" do
+  scope "/app/:slug" do
     get "new", to: "newsletters/posts#new", as: :new_post
     post "new", to: "newsletters/posts#create", as: :create_post
 
