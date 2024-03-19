@@ -12,8 +12,8 @@ class UsersController < ApplicationController
   def create
     @user = User.new(user_params)
     if @user.save
-      # Handle successful signup, e.g., redirect to onboarding or login page
-      redirect_to onboarding_path, notice: "Signup successful!"
+      start_new_session_for @user
+      redirect_to_newsletter_home
     else
       # Handle signup errors
       render :new
@@ -23,6 +23,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :password, :password_confirmation)
+    params.permit(:email, :password, :name)
   end
 end

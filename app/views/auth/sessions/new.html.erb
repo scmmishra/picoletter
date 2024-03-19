@@ -5,7 +5,7 @@
     <%= form_with url: auth_login_path, class: "flex flex-col gap-4" do |form| %>
       <label class="space-y-1">
         <%= form.label :email, class: "ml-px text-stone-500"  %>
-        <%= form.email_field :email, required: true, class: "input w-full", autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address] %>
+        <%= form.email_field :email, required: true, class: "input w-full", autofocus: true, autocomplete: "email", placeholder: "you@example.com", value: params[:email_address] %>
       </label>
 
       <label class="space-y-1">
