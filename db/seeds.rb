@@ -30,7 +30,7 @@ end
 user = User.create!(
   name: "Neo Anderson",
   email: "neo@example.com",
-  password: "root",
+  password: "admin@123456",
   is_superadmin: true
 )
 
