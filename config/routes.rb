@@ -11,21 +11,26 @@ Rails.application.routes.draw do
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 
-  scope "/app/:slug" do
-    get "new", to: "newsletters/posts#new", as: :new_post
-    post "new", to: "newsletters/posts#create", as: :create_post
+  scope "/app" do
+    get "new", to: "newsletters#new", as: :new_newsletter
+    post "new", to: "newsletters#create", as: :create_newsletter
 
-    resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
+    scope "/:slug" do
+      get "new", to: "newsletters/posts#new", as: :new_post
+      post "new", to: "newsletters/posts#create", as: :create_post
 
-    resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do
-      member do
-        post :publish
-        delete :destroy
-      end
+      resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
-      collection do
-        get :archive
-        get :drafts
+      resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do
+        member do
+          post :publish
+          delete :destroy
+        end
+
+        collection do
+          get :archive
+          get :drafts
+        end
       end
     end
   end

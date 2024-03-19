@@ -1,4 +1,26 @@
-<div>
-  <h1 class="font-bold text-4xl">Newsletters#new</h1>
-  <p>Find me in app/views/newsletters/new.html.erb</p>
+<div class="max-w-md py-20 mx-auto">
+  <% if @new_signup %>
+    <h1 class="text-3xl text-stone-900">Create your first newsletter</h1>
+  <% elsif %>
+    <h1 class="text-3xl text-stone-900">Create a new newsletter</h1>
+  <% end %>
+  <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
+    <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4" do |form| %>
+      <label class="space-y-1">
+        <%= form.label :title, class: "ml-px text-stone-500"  %>
+        <%= form.text_field :title, required: true, class: "input w-full", autofocus: true, placeholder: "Name of the newsletter" %>
+        <div class="font-sans text-xs text-stone-400">You cannot change it later</div>
+      </label>
+
+      <label class="space-y-1">
+        <%= form.label :description, class: "ml-px text-stone-500"  %>
+        <%= form.text_area :description, required: true, class: "input w-full", rows: 5, placeholder: "What is the newsletter is about, write what you want your users to know" %>
+        <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
+      </label>
+
+      <div class="mt-1">
+        <%= form.submit "Create newsletter", class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
 </div>

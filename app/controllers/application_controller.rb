@@ -33,7 +33,7 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_newsletter_home
-    has_newsletter = Current.user.newsletters.present?
+    has_newsletter = Current.user.newsletters.count > 0
     redirect_to has_newsletter ? posts_url(Current.user.newsletters.first.slug) : new_newsletter_url
   end
 end
