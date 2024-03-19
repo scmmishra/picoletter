@@ -31,9 +31,4 @@ class Auth::SessionsController < ApplicationController
     flash.now[:alert] = "Invalid email or password. Please try again."
     render :new, status: status
   end
-
-  def redirect_to_newsletter_home
-    has_newsletter = Current.user.newsletters.present?
-    redirect_to has_newsletter ? posts_url(Current.user.newsletters.first.slug) : new_newsletter_url
-  end
 end

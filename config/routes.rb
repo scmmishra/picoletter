@@ -5,6 +5,9 @@ Rails.application.routes.draw do
     delete "logout", to: "sessions#destroy"
   end
 
+  get "/signup", to: "users#new"
+  post "/signup", to: "users#create"
+
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 

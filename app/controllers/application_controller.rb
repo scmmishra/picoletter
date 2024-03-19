@@ -31,4 +31,9 @@ class ApplicationController < ActionController::Base
     Current.user = session.user
     cookies.signed.permanent[:session_token] = { value: session.token, httponly: true, same_site: :lax }
   end
+
+  def redirect_to_newsletter_home
+    has_newsletter = Current.user.newsletters.present?
+    redirect_to has_newsletter ? posts_url(Current.user.newsletters.first.slug) : new_newsletter_url
+  end
 end
