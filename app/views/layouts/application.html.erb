@@ -10,8 +10,16 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-stone-100 font-serif">
-    <main class="container mx-auto px-5">
+  <body class="font-serif bg-stone-100">
+    <% if notice = flash[:notice] || flash[:alert] %>
+      <div class="flash" data-controller="element-removal" data-action="animationend->element-removal#remove">
+        <div class="flash__inner">
+          <%= notice %>
+        </div>
+      </div>
+    <% end %>
+
+    <main class="container px-5 mx-auto">
       <%= yield %>
     </main>
   </body>
