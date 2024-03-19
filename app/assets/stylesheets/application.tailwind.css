@@ -78,7 +78,7 @@
   }
 
   .flash__inner {
-    animation: appear-then-fade 5s 300ms both;
+    animation: appear-then-fade 3s 300ms both;
   }
 
   .trix-button-row {
