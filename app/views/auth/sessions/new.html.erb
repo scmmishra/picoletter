@@ -1,6 +1,6 @@
 <div class="max-w-md py-20 mx-auto">
   <h1 class="text-3xl text-stone-900">Welcome back 👋</h1>
-  <p class="mt-2 text-xl text-stone-700">Sign in with your email address and password to continue or <%= link_to "create a new account.", "/reset/password", class: "text-zinc-500 hover:underline" %></p>
+  <p class="mt-2 text-xl text-stone-700">Sign in with your email address and password to continue or <%= link_to "create a new account.", signup_url, class: "text-zinc-500 hover:underline" %></p>
   <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
     <%= form_with url: auth_login_path, class: "flex flex-col gap-4" do |form| %>
       <label class="space-y-1">
