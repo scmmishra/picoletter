@@ -31,6 +31,7 @@ user = User.create!(
   name: "Neo Anderson",
   email: "neo@example.com",
   password: "root",
+  is_superadmin: true
 )
 
 user.save!
