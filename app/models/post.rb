@@ -30,10 +30,9 @@ class Post < ApplicationRecord
   has_rich_text :content
 
   belongs_to :newsletter
-  enum status: { draft: "draft", scheduled: "scheduled", published: "published", archived: "archived" }
+  enum status: { draft: "draft", published: "published", archived: "archived" }
 
   scope :published, -> { where(status: "published") }
-  scope :scheduled, -> { where(status: "scheduled") }
   scope :drafts, -> { where(status: "draft") }
   scope :archived, -> { where(status: "archived") }
 
@@ -46,11 +45,15 @@ class Post < ApplicationRecord
   end
 
   def schedule(publish_at)
-    update(status: "scheduled", scheduled_at: publish_at)
+    update(scheduled_at: publish_at)
   end
 
   def archive
     update(status: "archived")
+  end
+
+  def scheduled?
+    scheduled_at.present?
   end
 
   def published_on_date

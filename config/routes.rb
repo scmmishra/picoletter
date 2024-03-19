@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do
         member do
           post :publish
+          post :schedule
           delete :destroy
         end
 
