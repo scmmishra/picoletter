@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 
-  scope "/:slug" do
+  scope "/dashboard/:slug" do
     get "new", to: "newsletters/posts#new", as: :new_post
     post "new", to: "newsletters/posts#create", as: :create_post
 
@@ -26,10 +26,6 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  get "/:slug", to: "newsletters#show", as: :newsletter
-
-  root "newsletters#index"
 
   get "up" => "rails/health#show", as: :rails_health_check
 end
