@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_20_095050) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_20_175742) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -57,6 +57,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_20_095050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.string "timezone", default: "UTC", null: false
+    t.string "template"
+    t.string "website"
+    t.text "email_css"
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
   end
