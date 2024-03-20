@@ -9,7 +9,7 @@
   <p class="text-center text-stone-500">No posts found</p>
 </div>
 <% else %>
-<section class="mt-6 divide-y divide-stone-200 border-y border-stone-200">
+<section class="mt-6 divide-y divide-stone-200">
   <% @posts.each do |post| %>
     <%= render 'posts/card', post: post %>
   <% end %>
