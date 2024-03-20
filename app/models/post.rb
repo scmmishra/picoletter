@@ -48,6 +48,10 @@ class Post < ApplicationRecord
     update(scheduled_at: publish_at)
   end
 
+  def unschedule
+    update(scheduled_at: nil)
+  end
+
   def archive
     update(status: "archived")
   end

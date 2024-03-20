@@ -3,7 +3,7 @@ class Newsletters::PostsController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
-  before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule ]
+  before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule, :unschedule ]
 
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
@@ -40,6 +40,11 @@ class Newsletters::PostsController < ApplicationController
   def schedule
     @post.schedule(post_params[:scheduled_at])
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
+  end
+
+  def unschedule
+    @post.unschedule
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully unscheduled."
   end
 
   def publish

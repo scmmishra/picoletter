@@ -26,6 +26,7 @@ Rails.application.routes.draw do
           post :publish
           post :schedule
           delete :destroy
+          post :unschedule
         end
 
         collection do
