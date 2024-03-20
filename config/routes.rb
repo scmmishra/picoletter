@@ -19,7 +19,9 @@ Rails.application.routes.draw do
       get "new", to: "newsletters/posts#new", as: :new_post
       post "new", to: "newsletters/posts#create", as: :create_post
 
-      resources :settings, only: [ :index, :update ], path: "settings", module: "newsletters"
+      get "settings", to: "newsletters/settings#index", as: :settings
+      patch "settings", to: "newsletters/settings#update", as: :update_settings
+
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do

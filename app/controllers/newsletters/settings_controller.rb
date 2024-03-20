@@ -6,11 +6,18 @@ class Newsletters::SettingsController < ApplicationController
 
   def index; end
 
-  def update; end
+  def update
+    @newsletter.update(newsletter_params)
+    redirect_to settings_url(slug: @newsletter.slug), notice: "Newsletter successfully updated."
+  end
 
   private
 
   def set_newsletter
     @newsletter = Newsletter.find_by(slug: params[:slug])
+  end
+
+  def newsletter_params
+    params.require(:newsletter).permit(:title, :description, :timezone, :website)
   end
 end
