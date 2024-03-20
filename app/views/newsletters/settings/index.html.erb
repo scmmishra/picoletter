@@ -1,0 +1,22 @@
+<section class="mb-12">
+  <div class="flex items-center gap-6 mb-4">
+    <h2 class="text-xl font-medium">General</h2>
+    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Profile</h2>
+    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Design</h2>
+    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Sign up flow</h2>
+  </div>
+
+  <%= form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+    <div class="max-w-xl space-y-4">
+      <label class="block space-y-1">
+        <%= form.label :title, "Title", class: "ml-px text-stone-500"  %>
+        <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
+      </label>
+      <label class="block space-y-1">
+        <%= form.label :description, class: "ml-px text-stone-500"  %>
+        <%= form.text_area :description, required: true, class: "input w-full", rows: 5, placeholder: "What is the newsletter is about, write what you want your users to know" %>
+        <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
+      </label>
+    </div>
+  <% end %>
+</section>
