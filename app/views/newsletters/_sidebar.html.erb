@@ -35,7 +35,7 @@
         </ul>
         <ul>
           <li>
-            <%= link_to settings_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
+            <%= link_to settings_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(settings_path(@newsletter.slug))}" do %>
               <span>Settings</span>
             <% end %>
           </li>
