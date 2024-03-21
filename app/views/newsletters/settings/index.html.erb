@@ -1,36 +1,29 @@
-<section class="mb-12">
-  <div class="flex items-center gap-6 mb-4">
-    <h2 class="text-xl font-medium">General</h2>
-    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Profile</h2>
-    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Design</h2>
-    <h2 class="text-xl font-medium cursor-pointer text-stone-400 hover:text-stone-500">Sign up flow</h2>
-  </div>
+<%= render 'newsletters/settings/partials/header' %>
 
-  <%= form_with model: @newsletter, url: update_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
-    <div class="max-w-xl space-y-4">
-      <label class="block space-y-1">
-        <%= form.label :title, "Title", class: "ml-px text-stone-500 text-sm"  %>
-        <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
-        <div class="font-mono text-xs text-stone-400">picoletter.com/<%= @newsletter.slug %></div>
-      </label>
-      <label class="block space-y-1">
-        <%= form.label :description, class: "ml-px text-stone-500 text-sm"  %>
-        <%= form.text_area :description, required: true, class: "input w-full block", rows: 5, placeholder: "What is the newsletter is about, write what you want your users to know" %>
-        <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.</div>
-      </label>
-      <label class="block space-y-1">
-        <%= form.label :timezone, class: "ml-px text-stone-500 text-sm"  %>
-        <%= form.time_zone_select :timezone, nil, {}, { class: "input w-full" } %>
-        <div class="font-sans text-xs text-stone-400">Timezone in which scheduled posts will be sent.</div>
-      </label>
-      <label class="block space-y-1">
-        <%= form.label :website, class: "ml-px text-stone-500 text-sm"  %>
-        <%= form.url_field :website, class: "input w-full" %>
-        <div class="font-sans text-xs text-stone-400">Website that will be linked on the archive page, in case you post these elsewhere.</div>
-      </label>
-    </div>
-    <div class="mt-5">
-      <%= form.submit 'Update Settings', class: 'btn btn-primary' %>
-    </div>
-  <% end %>
-</section>
+<%= form_with model: @newsletter, url: update_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+  <div class="max-w-xl space-y-4">
+    <label class="block space-y-1">
+      <%= form.label :title, "Title", class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
+      <div class="font-mono text-xs text-stone-400">picoletter.com/<%= @newsletter.slug %></div>
+    </label>
+    <label class="block space-y-1">
+      <%= form.label :description, class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.text_area :description, required: true, class: "input w-full block", rows: 5, placeholder: "What is the newsletter is about, write what you want your users to know" %>
+      <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.</div>
+    </label>
+    <label class="block space-y-1">
+      <%= form.label :timezone, class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.time_zone_select :timezone, nil, {}, { class: "input w-full" } %>
+      <div class="font-sans text-xs text-stone-400">Timezone in which scheduled posts will be sent.</div>
+    </label>
+    <label class="block space-y-1">
+      <%= form.label :website, class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.url_field :website, class: "input w-full" %>
+      <div class="font-sans text-xs text-stone-400">Website that will be linked on the archive page, in case you post these elsewhere.</div>
+    </label>
+  </div>
+  <div class="mt-5">
+    <%= form.submit 'Update Settings', class: 'btn btn-primary' %>
+  </div>
+<% end %>

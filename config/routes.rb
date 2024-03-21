@@ -22,6 +22,15 @@ Rails.application.routes.draw do
       get "settings", to: "newsletters/settings#index", as: :settings
       patch "settings", to: "newsletters/settings#update", as: :update_settings
 
+      get "settings/profile", to: "newsletters/settings#profile", as: :profile_settings
+      patch "settings/profile", to: "newsletters/settings#update_profile", as: :update_profile_settings
+
+      get "settings/design", to: "newsletters/settings#design", as: :design_settings
+      patch "settings/design", to: "newsletters/settings#update_design", as: :update_design_settings
+
+      get "settings/signup", to: "newsletters/settings#signup", as: :signup_settings
+      patch "settings/signup", to: "newsletters/settings#update_signup", as: :update_signup_settings
+
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do

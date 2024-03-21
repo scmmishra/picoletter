@@ -11,6 +11,15 @@ class Newsletters::SettingsController < ApplicationController
     redirect_to settings_url(slug: @newsletter.slug), notice: "Newsletter successfully updated."
   end
 
+  def profile; end
+  def update_profile; end
+
+  def design; end
+  def update_design; end
+
+  def signup; end
+  def update_signup; end
+
   private
 
   def set_newsletter
