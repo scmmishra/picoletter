@@ -12,10 +12,18 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def profile; end
-  def update_profile; end
+
+  def update_profile
+    Current.user.update(profile_params)
+    redirect_to profile_settings_url, notice: "Profile successfully updated."
+  end
 
   def design; end
-  def update_design; end
+
+  def update_design
+    @newsletter.update(design_params)
+    redirect_to design_settings_url(slug: @newsletter.slug), notice: "Design successfully updated."
+  end
 
   def signup; end
   def update_signup; end
@@ -28,5 +36,13 @@ class Newsletters::SettingsController < ApplicationController
 
   def newsletter_params
     params.require(:newsletter).permit(:title, :description, :timezone, :website)
+  end
+
+  def design_params
+    params.require(:newsletter).permit(:email_css, :email_footer, :font_preference, :primary_color)
+  end
+
+  def profile_params
+    params.require(:user).permit(:bio, :email, :name)
   end
 end
