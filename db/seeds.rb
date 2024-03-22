@@ -92,3 +92,60 @@ end
 
 newsletter.subscribers.create!(subscribers)
 puts "  Created #{subscribers.count} subscribers"
+
+# ActiveRecord::Base.transaction do
+#   users_data = 300.times.map do
+#     {
+#       name: Faker::Name.name,
+#       email: Faker::Internet.unique.email,
+#       password_digest: '$2a$12$D09QEBe7KHeS5W3YvC2VzuOYVljkzPXyeBZ6FlkQhG7oBt22bh8Qe',
+#       active: true,
+#       bio: Faker::Lorem.paragraph
+#     }
+#   end
+
+#   users = User.insert_all(users_data)
+# end
+
+# puts "Created 300 users"
+
+
+# User.all.each do |user|
+#   next if user.email == 'neo@example.com'
+#   ActiveRecord::Base.transaction do
+#     number_of_newsletters = rand(1..5)
+#     newsletters_data = number_of_newsletters.times.map do
+#       title = Faker::Lorem.sentence(word_count: 3)
+
+#       {
+#         user_id: user['id'],
+#         slug: Faker::Internet.slug(words: title),
+#         title: title,
+#         description: Faker::Lorem.paragraph
+#       }
+#     end
+
+#     newsletters = Newsletter.insert_all(newsletters_data)
+
+#     newsletters.each do |newsletter|
+#       number_of_posts = rand(50..1000)
+#       posts_data = number_of_posts.times.map do
+#         title = Faker::Lorem.sentence(word_count: 5)
+
+#         {
+#           newsletter_id: newsletter['id'],
+#           title: title,
+#           slug: Faker::Internet.slug(words: title),
+#           content: Faker::Lorem.paragraph(sentence_count: 10),
+#           status: [ :draft, :published ].sample,
+#           published_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
+#           created_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
+#           updated_at: Faker::Time.between(from: 1.year.ago, to: Time.now)
+#         }
+#       end
+
+#       Post.insert_all(posts_data)
+#     end
+#     puts "Seeded #{user.email} with #{number_of_newsletters} newsletters"
+#   end
+# end
