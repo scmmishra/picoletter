@@ -14,6 +14,11 @@ module.exports = {
         serif: ["Lora Variable", ...defaultTheme.fontFamily.serif],
         sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
       },
+      colors: {
+        newsletter: {
+          primary: "var(--color-newsletter-primary)",
+        },
+      },
     },
   },
   plugins: [
