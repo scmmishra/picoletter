@@ -35,4 +35,16 @@ class Newsletter < ApplicationRecord
   belongs_to :user
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
+
+  enum status: { active: "active", archived: "archived" }
+
+  validates :title, presence: true
+  validates :slug, presence: true, uniqueness: true
+
+  attr_accessor :timezone_offset
+  before_validation :set_timezone
+
+  def set_timezone
+    self.timezone = ActiveSupport::TimeZone[timezone_offset.to_i]
+  end
 end

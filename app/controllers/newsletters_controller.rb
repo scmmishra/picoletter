@@ -21,16 +21,15 @@ class NewslettersController < ApplicationController
   def create
     @newsletter = Current.user.newsletters.new(newsletter_params)
     if @newsletter.save
-      redirect_to_newsletter_home
+      redirect_to posts_url(@newsletter.slug)
+    else
+      redirect_to new_newsletter_path, notice: @newsletter.errors.full_messages.to_sentence
     end
   end
 
   private
 
   def newsletter_params
-    params = params.require(:newsletter).permit(:title, :description, :timezone_offset)
-    params[:timezone] = ActiveSupport::TimeZone[params.delete(:timezone_offset)]
-
-    params
+    params.require(:newsletter).permit(:title, :description, :slug, :timezone_offset)
   end
 end
