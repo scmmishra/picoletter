@@ -28,6 +28,9 @@ class NewslettersController < ApplicationController
   private
 
   def newsletter_params
-    params.require(:newsletter).permit(:title, :description)
+    params = params.require(:newsletter).permit(:title, :description, :timezone_offset)
+    params[:timezone] = ActiveSupport::TimeZone[params.delete(:timezone_offset)]
+
+    params
   end
 end
