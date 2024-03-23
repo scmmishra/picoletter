@@ -1,1 +1,20 @@
 <%= render 'newsletters/settings/partials/header' %>
+
+<%= form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+  <div class="max-w-lg space-y-4">
+
+    <label class="flex items-center gap-1">
+      <%= form.check_box :use_custom_domain %>
+      <%= form.label :use_custom_domain, "Use Custom Domain", class: "ml-px text-stone-500 text-sm"  %>
+    </label>
+
+    <label class="block space-y-1">
+      <%= form.label :email_footer, "Footer", class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.text_field :email_footer, rows: 5, class: "input w-full block" %>
+      <div class="font-sans text-xs text-stone-400">This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
+    </label>
+  </div>
+  <div class="mt-5">
+    <%= form.submit 'Update Settings', class: 'btn btn-primary' %>
+  </div>
+<% end %>
