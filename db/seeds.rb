@@ -1,14 +1,8 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
 require "kramdown"
 require 'faker'
+
+scale = ENV['SCALE'] || 1
+seed_perf = ENV['SEED_PERF'] || false
 
 def parse_md_file(content)
   if content.start_with?("---")
@@ -70,8 +64,7 @@ Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
   publish_date -= 1.week
 end
 
-# loop 100 times and create subscribers
-subscribers = 500.times.map do
+subscribers = (50 * scale).times.map do
   email = Faker::Internet.email
   full_name = Faker::Name.name
   status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
@@ -93,61 +86,63 @@ end
 newsletter.subscribers.create!(subscribers)
 puts "  Created #{subscribers.count} subscribers"
 
-# password_digest = User.new(password: "admin@123456").password_digest
+return unless seed_perf
 
-# ActiveRecord::Base.transaction do
-#   users_data = 300.times.map do
-#     {
-#       name: Faker::Name.name,
-#       email: Faker::Internet.unique.email,
-#       password_digest: password_digest,
-#       active: true,
-#       bio: Faker::Lorem.paragraph
-#     }
-#   end
+password_digest = User.new(password: "admin@123456").password_digest
 
-#   users = User.insert_all(users_data)
-# end
+ActiveRecord::Base.transaction do
+  users_data = 300.times.map do
+    {
+      name: Faker::Name.name,
+      email: Faker::Internet.unique.email,
+      password_digest: password_digest,
+      active: true,
+      bio: Faker::Lorem.paragraph
+    }
+  end
 
-# puts "Created 300 users"
+  users = User.insert_all(users_data)
+end
+
+puts "Created 300 users"
 
 
-# User.all.each do |user|
-#   next if user.email == 'neo@example.com'
-#   ActiveRecord::Base.transaction do
-#     number_of_newsletters = rand(1..5)
-#     newsletters_data = number_of_newsletters.times.map do
-#       title = Faker::Lorem.sentence(word_count: 3)
+User.all.each do |user|
+  next if user.email == 'neo@example.com'
+  ActiveRecord::Base.transaction do
+    number_of_newsletters = rand(1..5)
+    newsletters_data = number_of_newsletters.times.map do
+      title = Faker::Lorem.sentence(word_count: 3)
 
-#       {
-#         user_id: user['id'],
-#         slug: Faker::Internet.slug(words: title),
-#         title: title,
-#         description: Faker::Lorem.paragraph
-#       }
-#     end
+      {
+        user_id: user['id'],
+        slug: Faker::Internet.slug(words: title),
+        title: title,
+        description: Faker::Lorem.paragraph
+      }
+    end
 
-#     newsletters = Newsletter.insert_all(newsletters_data)
+    newsletters = Newsletter.insert_all(newsletters_data)
 
-#     newsletters.each do |newsletter|
-#       number_of_posts = rand(50..1000)
-#       posts_data = number_of_posts.times.map do
-#         title = Faker::Lorem.sentence(word_count: 5)
+    newsletters.each do |newsletter|
+      number_of_posts = rand(50..1000)
+      posts_data = number_of_posts.times.map do
+        title = Faker::Lorem.sentence(word_count: 5)
 
-#         {
-#           newsletter_id: newsletter['id'],
-#           title: title,
-#           slug: Faker::Internet.slug(words: title),
-#           content: Faker::Lorem.paragraph(sentence_count: 10),
-#           status: [ :draft, :published ].sample,
-#           published_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
-#           created_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
-#           updated_at: Faker::Time.between(from: 1.year.ago, to: Time.now)
-#         }
-#       end
+        {
+          newsletter_id: newsletter['id'],
+          title: title,
+          slug: Faker::Internet.slug(words: title),
+          content: Faker::Lorem.paragraph(sentence_count: 10),
+          status: [ :draft, :published ].sample,
+          published_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
+          created_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
+          updated_at: Faker::Time.between(from: 1.year.ago, to: Time.now)
+        }
+      end
 
-#       Post.insert_all(posts_data)
-#     end
-#     puts "Seeded #{user.email} with #{number_of_newsletters} newsletters"
-#   end
-# end
+      Post.insert_all(posts_data)
+    end
+    puts "Seeded #{user.email} with #{number_of_newsletters} newsletters"
+  end
+end
