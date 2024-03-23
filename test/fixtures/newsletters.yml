@@ -2,21 +2,26 @@
 #
 # Table name: newsletters
 #
-#  id              :integer          not null, primary key
-#  description     :text
-#  email_css       :text
-#  email_footer    :string
-#  font_preference :string           default("sans-serif")
-#  primary_color   :string           default("#09090b")
-#  slug            :string           not null
-#  status          :string
-#  template        :string
-#  timezone        :string           default("UTC"), not null
-#  title           :string
-#  website         :string
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  user_id         :integer          not null
+#  id                        :integer          not null, primary key
+#  description               :text
+#  domain                    :string
+#  domain_verification_token :string
+#  email_css                 :text
+#  email_footer              :string
+#  font_preference           :string           default("sans-serif")
+#  primary_color             :string           default("#09090b")
+#  reply_to                  :string
+#  sending_address           :string
+#  slug                      :string           not null
+#  status                    :string
+#  template                  :string
+#  timezone                  :string           default("UTC"), not null
+#  title                     :string
+#  use_custom_domain         :boolean
+#  website                   :string
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  user_id                   :integer          not null
 #
 # Indexes
 #

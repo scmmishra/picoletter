@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_21_134947) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_23_074351) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -64,6 +64,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_21_134947) do
     t.string "primary_color", default: "#09090b"
     t.string "font_preference", default: "sans-serif"
     t.string "email_footer"
+    t.boolean "use_custom_domain"
+    t.string "domain"
+    t.string "sending_address"
+    t.string "reply_to"
+    t.string "domain_verification_token"
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
   end
