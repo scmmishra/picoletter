@@ -93,12 +93,14 @@ end
 newsletter.subscribers.create!(subscribers)
 puts "  Created #{subscribers.count} subscribers"
 
+password_digest = User.new(password: "admin@123456").password_digest
+
 # ActiveRecord::Base.transaction do
 #   users_data = 300.times.map do
 #     {
 #       name: Faker::Name.name,
 #       email: Faker::Internet.unique.email,
-#       password_digest: '$2a$12$D09QEBe7KHeS5W3YvC2VzuOYVljkzPXyeBZ6FlkQhG7oBt22bh8Qe',
+#       password_digest: password_digest,
 #       active: true,
 #       bio: Faker::Lorem.paragraph
 #     }
