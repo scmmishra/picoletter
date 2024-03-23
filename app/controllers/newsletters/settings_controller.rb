@@ -25,8 +25,8 @@ class Newsletters::SettingsController < ApplicationController
     redirect_to design_settings_url(slug: @newsletter.slug), notice: "Design successfully updated."
   end
 
-  def signup; end
-  def update_signup; end
+  def sending; end
+  def update_sending; end
 
   private
 
