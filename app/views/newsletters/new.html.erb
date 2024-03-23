@@ -5,16 +5,16 @@
     <h1 class="text-3xl text-stone-900">Create a new newsletter</h1>
   <% end %>
   <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
-    <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4" do |form| %>
+    <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
       <div class="space-y-1">
         <%= form.label :title, class: "ml-px text-stone-500"  %>
-        <%= form.text_field :title, required: true, class: "input w-full", autofocus: true, placeholder: "Name of the newsletter" %>
+        <%= form.text_field :title, required: true, class: "input w-full", data: { 'auto-slug-target': "title" }, autofocus: true, placeholder: "Name of the newsletter" %>
       </div>
 
       <div class="space-y-1">
         <%= form.label :slug, class: "ml-px text-stone-500"  %>
-        <%= form.text_field :slug, required: true, class: "input w-full", autofocus: true, placeholder: "your-title-here" %>
-        <div class="font-sans text-xs text-stone-400">Used on the public archive link. You cannot change this later</div>
+        <%= form.text_field :slug, required: true, class: "input w-full", data: { 'auto-slug-target': "slug" }, placeholder: "your-title-here" %>
+        <div class="font-sans text-xs text-stone-400">Used on the public archive link. <span class="font-medium text-stone-700">You cannot change this later.</span></div>
       </div>
 
       <div class="space-y-1">
