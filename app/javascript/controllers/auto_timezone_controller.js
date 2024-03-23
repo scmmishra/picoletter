@@ -6,6 +6,6 @@ export default class extends Controller {
   }
 
   getCurrentTimezoneFromBrowser() {
-    return new Date().getTimezoneOffset() / -60;
+    return Intl.DateTimeFormat().resolvedOptions().timeZone;
   }
 }

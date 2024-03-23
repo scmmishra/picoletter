@@ -40,11 +40,4 @@ class Newsletter < ApplicationRecord
 
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true
-
-  attr_accessor :timezone_offset
-  before_validation :set_timezone
-
-  def set_timezone
-    self.timezone = ActiveSupport::TimeZone[timezone_offset.to_i]
-  end
 end

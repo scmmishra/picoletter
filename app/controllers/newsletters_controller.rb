@@ -30,6 +30,6 @@ class NewslettersController < ApplicationController
   private
 
   def newsletter_params
-    params.require(:newsletter).permit(:title, :description, :slug, :timezone_offset)
+    params.require(:newsletter).permit(:title, :description, :slug, :timezone)
   end
 end

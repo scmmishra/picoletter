@@ -93,7 +93,7 @@ end
 newsletter.subscribers.create!(subscribers)
 puts "  Created #{subscribers.count} subscribers"
 
-password_digest = User.new(password: "admin@123456").password_digest
+# password_digest = User.new(password: "admin@123456").password_digest
 
 # ActiveRecord::Base.transaction do
 #   users_data = 300.times.map do

@@ -31,9 +31,9 @@
         <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
       </div>
 
-      <div class="space-y-1">
-        <%= form.label :timezone_offset, class: "ml-px text-stone-500" %>
-        <%= form.text_field :timezone_offset, class: "input w-full", data: { controller: "auto-timezone" }  %>
+      <div class="hidden space-y-1">
+        <%= form.label :timezone, class: "ml-px text-stone-500" %>
+        <%= form.text_field :timezone, class: "input w-full", data: { controller: "auto-timezone" }  %>
       </div>
 
       <div class="mt-1">
