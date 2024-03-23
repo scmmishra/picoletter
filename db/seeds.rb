@@ -47,16 +47,17 @@ Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
   return if frontmatter.nil? || html_content.nil?
 
   title = frontmatter["title"]
+  is_draft = frontmatter["draft"]
 
   created_at = publish_date - rand(1..3).days
 
   newsletter.posts.create!(
     title: title,
     content: html_content,
-    published_at: publish_date,
+    published_at: is_draft ? nil : publish_date,
     created_at: created_at,
     updated_at: created_at,
-    status: :published,
+    status: is_draft ? :draft : :published,
   )
 
   puts "  Created post #{title}"
