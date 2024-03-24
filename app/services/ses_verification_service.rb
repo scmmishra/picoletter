@@ -6,12 +6,14 @@ class SesVerificationService
   end
 
   def create_identity(domain)
+    # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/SESV2/Client.html#create_email_identity-instance_method
     @client.create_email_identity({
       email_identity: domain
     })
   end
 
   def get_identity(domain)
+    # https://docs.aws.amazon.com/sdk-for-ruby/v3/api/Aws/SESV2/Client.html#get_email_identity-instance_method
     @client.get_email_identity({
       email_identity: domain
     })
