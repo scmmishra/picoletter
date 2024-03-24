@@ -26,7 +26,10 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending; end
-  def update_sending; end
+  def update_sending
+    @newsletter.update(sending_params)
+    redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
+  end
 
   private
 
@@ -40,6 +43,10 @@ class Newsletters::SettingsController < ApplicationController
 
   def design_params
     params.require(:newsletter).permit(:email_css, :email_footer, :font_preference, :primary_color)
+  end
+
+  def sending_params
+    params.require(:newsletter).permit(:reply_to, :domain, :sending_address, :use_custom_domain)
   end
 
   def profile_params

@@ -28,8 +28,8 @@ Rails.application.routes.draw do
       get "settings/design", to: "newsletters/settings#design", as: :design_settings
       patch "settings/design", to: "newsletters/settings#update_design", as: :update_design_settings
 
-      get "settings/sending", to: "newsletters/settings#sending", as: :sending
-      patch "settings/sending", to: "newsletters/settings#sending", as: :sending_settings
+      get "settings/sending", to: "newsletters/settings#sending", as: :sending_settings
+      patch "settings/sending", to: "newsletters/settings#update_sending", as: :update_sending_settings
 
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 
