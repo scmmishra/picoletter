@@ -19,7 +19,10 @@ class SesVerificationService
 
   def create_tokens(domain)
     response = create_identity(domain)
-    response.dkim_attributes.token
+    response.dkim_attributes.tokens
+  rescue Aws::SESV2::Errors::AlreadyExistsException
+    response = get_identity(domain)
+    response.dkim_attributes.tokens
   end
 
   def verified?(domain)
