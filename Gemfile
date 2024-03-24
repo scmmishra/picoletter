@@ -78,3 +78,4 @@ end
 
 gem "tailwindcss-rails", "~> 2.3"
 gem "kaminari"
+gem 'aws-sdk-rails'
