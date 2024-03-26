@@ -74,7 +74,6 @@ class Newsletter < ApplicationRecord
 
   private
 
-
   def verify_dns_records
     ses_verification_service = SESVerificationService.new
     ses_verification_service.verify_dns_tokens(dkim_tokens, domain)
