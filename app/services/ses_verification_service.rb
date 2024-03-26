@@ -27,6 +27,17 @@ class SESVerificationService
     response.dkim_attributes.tokens
   end
 
+  def verify_dns_tokens(tokens, domain)
+    verified = tokens.map do |token|
+      domain_to_check = "#{token}._domainkey.#{domain}"
+      value_to_check = "#{token}.dkim.amazonses.com"
+
+      DNSService.fetch_cname(domain_to_check) == value_to_check
+    end
+
+    verified.all?
+  end
+
   def verified?(domain)
     response = get_identity(domain)
     response.verified_for_sending_status && response.dkim_attributes.status == "SUCCESS"
