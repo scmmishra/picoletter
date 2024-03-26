@@ -6,6 +6,7 @@
 #  description               :text
 #  domain                    :string
 #  domain_verification_token :string
+#  domain_verified           :boolean          default(FALSE)
 #  email_css                 :text
 #  email_footer              :string
 #  font_preference           :string           default("sans-serif")
