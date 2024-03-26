@@ -69,7 +69,18 @@ class Newsletter < ApplicationRecord
 
   def verify_domain
     return false unless use_custom_domain
-    update(domain_verified: verify_dns_records && verify_ses_identity)
+
+    if !verify_dns_records
+      update(domain_verified: false)
+      return false
+    end
+
+    if !verify_ses_identity
+      update(domain_verified: false)
+      return false
+    end
+
+    update(domain_verified: true)
   end
 
   private
