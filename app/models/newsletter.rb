@@ -67,7 +67,23 @@ class Newsletter < ApplicationRecord
     end
   end
 
+  def verify_domain
+    return false unless use_custom_domain
+    update(domain_verified: verify_dns_records && verify_ses_identity)
+  end
+
   private
+
+
+  def verify_dns_records
+    ses_verification_service = SESVerificationService.new
+    ses_verification_service.verify_dns_tokens(dkim_tokens, domain)
+  end
+
+  def verify_ses_identity
+    ses_verification_service = SESVerificationService.new
+    ses_verification_service.verified?(domain)
+  end
 
   def update_ses_domain_verification
     # if `use_custom_domain` changes to true, create a new SES domain verification token
