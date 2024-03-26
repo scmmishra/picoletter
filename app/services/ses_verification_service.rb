@@ -1,4 +1,4 @@
-class SesVerificationService
+class SESVerificationService
   REGION = "us-east-1".freeze
 
   def initialize

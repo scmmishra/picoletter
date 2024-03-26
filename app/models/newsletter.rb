@@ -73,7 +73,7 @@ class Newsletter < ApplicationRecord
     return unless saved_change_to_use_custom_domain? or saved_change_to_domain?
     return unless use_custom_domain
 
-    ses_verification_service = SesVerificationService.new
+    ses_verification_service = SESVerificationService.new
     tokens = ses_verification_service.create_tokens(domain)
     update(domain_verification_token: tokens.join(","))
   end
