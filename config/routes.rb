@@ -19,17 +19,16 @@ Rails.application.routes.draw do
       get "new", to: "newsletters/posts#new", as: :new_post
       post "new", to: "newsletters/posts#create", as: :create_post
 
-      get "settings", to: "newsletters/settings#index", as: :settings
-      patch "settings", to: "newsletters/settings#update", as: :update_settings
+      resource :settings, only: [ :show, :update ], path: "settings", module: "newsletters" do
+        get :profile
+        patch :profile, action: :update_profile, as: :update_profile
 
-      get "settings/profile", to: "newsletters/settings#profile", as: :profile_settings
-      patch "settings/profile", to: "newsletters/settings#update_profile", as: :update_profile_settings
+        get :design
+        patch :design, action: :update_design, as: :update_design
 
-      get "settings/design", to: "newsletters/settings#design", as: :design_settings
-      patch "settings/design", to: "newsletters/settings#update_design", as: :update_design_settings
-
-      get "settings/sending", to: "newsletters/settings#sending", as: :sending_settings
-      patch "settings/sending", to: "newsletters/settings#update_sending", as: :update_sending_settings
+        get :sending
+        patch :sending, action: :update_sending, as: :update_sending
+      end
 
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
 

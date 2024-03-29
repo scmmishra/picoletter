@@ -25,7 +25,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :name, presence: true
   validates :bio, length: { maximum: 500 }
-  validates :password, presence: true, length: { minimum: 12 }
 
   scope :active, -> { where(active: true) }
   before_create :activate_user

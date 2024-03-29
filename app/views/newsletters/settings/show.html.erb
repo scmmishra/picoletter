@@ -1,6 +1,6 @@
 <%= render 'newsletters/settings/partials/header' %>
 
-<%= form_with model: @newsletter, url: update_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+<%= form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch do |form| %>
   <div class="max-w-lg space-y-4">
     <label class="block space-y-1">
       <%= form.label :title, "Title", class: "ml-px text-stone-500 text-sm"  %>

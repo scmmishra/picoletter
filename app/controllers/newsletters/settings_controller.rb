@@ -4,7 +4,7 @@ class Newsletters::SettingsController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
 
-  def index; end
+  def show; end
 
   def update
     @newsletter.update(newsletter_params)
