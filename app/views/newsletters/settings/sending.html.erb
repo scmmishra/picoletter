@@ -30,7 +30,7 @@
 <% end %>
 
 <% if @newsletter.use_custom_domain %>
-<section class="mt-8">
+  <%= form_with model: @newsletter, url: verify_domain_settings_path(slug: @newsletter.slug), method: :post, class: "mt-8" do |form| %>
   <div class="max-w-lg">
     <h3 class="text-lg font-medium text-stone-800">Domain Verificaiton Pending</h3>
     <p class="mt-1 text-stone-600">Add the following DNS records to your DNS settings, to verify your domain. Verification ensures your emails are delivered properly and does not end up in spam.</p>
@@ -80,10 +80,7 @@
   </div>
   <p class="mt-1 ml-1 font-sans text-xs text-stone-400">In case you're facing any trouble, you can drop us an email, and we will help you set it up.</p>
   <div class="mt-4">
-    <%= link_to %>
-    <button class="btn btn-secondary">
-      Verify DNS Records
-    </button>
+    <%= form.submit 'Verify DNS Records', class: 'btn btn-secondary' %>
   </div>
-</section>
+  <% end %>
 <% end %>

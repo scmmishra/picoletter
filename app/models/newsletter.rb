@@ -70,7 +70,7 @@ class Newsletter < ApplicationRecord
   def verify_domain
     return false unless use_custom_domain
 
-    if verify_dns_records
+    if !verify_dns_records
       update(domain_verified: false)
       return false
     end

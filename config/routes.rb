@@ -28,6 +28,7 @@ Rails.application.routes.draw do
 
         get :sending
         patch :sending, action: :update_sending, as: :update_sending
+        post :verify_domain, action: :verify_domain, as: :verify_domain
       end
 
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
