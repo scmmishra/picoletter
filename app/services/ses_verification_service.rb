@@ -3,6 +3,7 @@ class SESVerificationService
 
   def initialize
     @client = Aws::SESV2::Client.new(region: REGION)
+    @verify_client = Aws::SES::Client.new(region: REGION)
   end
 
   def create_identity(domain)
@@ -36,6 +37,10 @@ class SESVerificationService
     end
 
     verified.all?
+  end
+
+  def verify_ses_identity(domain)
+    @verify_client.verify_domain_dkim(domain: domain)
   end
 
   def verified?(domain)

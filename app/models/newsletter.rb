@@ -70,17 +70,17 @@ class Newsletter < ApplicationRecord
   def verify_domain
     return false unless use_custom_domain
 
-    if !verify_dns_records
+    if verify_dns_records
       update(domain_verified: false)
       return false
     end
 
-    if !verify_ses_identity
-      update(domain_verified: false)
-      return false
-    end
+    verify_ses_identity
 
-    update(domain_verified: true)
+    verified = is_verified_on_ses?
+    update(domain_verified: verified)
+
+    verified
   end
 
   private
@@ -91,6 +91,11 @@ class Newsletter < ApplicationRecord
   end
 
   def verify_ses_identity
+    ses_verification_service = SESVerificationService.new
+    ses_verification_service.verify_ses_identity(domain)
+  end
+
+  def is_verified_on_ses?
     ses_verification_service = SESVerificationService.new
     ses_verification_service.verified?(domain)
   end
