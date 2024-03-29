@@ -86,17 +86,14 @@ class Newsletter < ApplicationRecord
   private
 
   def verify_dns_records
-    ses_verification_service = SESVerificationService.new
     ses_verification_service.verify_dns_tokens(dkim_tokens, domain)
   end
 
   def verify_ses_identity
-    ses_verification_service = SESVerificationService.new
     ses_verification_service.verify_ses_identity(domain)
   end
 
   def is_verified_on_ses?
-    ses_verification_service = SESVerificationService.new
     ses_verification_service.verified?(domain)
   end
 
@@ -105,8 +102,11 @@ class Newsletter < ApplicationRecord
     return unless saved_change_to_use_custom_domain? or saved_change_to_domain?
     return unless use_custom_domain
 
-    ses_verification_service = SESVerificationService.new
     tokens = ses_verification_service.create_tokens(domain)
     update(domain_verification_token: tokens.join(","))
+  end
+
+  def ses_verification_service
+    SESVerificationService.new
   end
 end
