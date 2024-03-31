@@ -60,6 +60,11 @@ class Post < ApplicationRecord
     scheduled_at.present?
   end
 
+  def publish_and_send_post
+    publish
+    PostMailer.with(post: self).publish.deliver_later
+  end
+
   def published_on_date
     published_at.strftime("%B %d, %Y") if published_at.present?
   end

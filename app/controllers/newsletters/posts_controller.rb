@@ -48,7 +48,7 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def publish
-    @post.publish
+    @post.publish_and_send_post
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
   end
 
