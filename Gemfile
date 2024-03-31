@@ -69,6 +69,7 @@ group :development do
   gem "annotate"
   gem "kramdown"
   gem "faker"
+  gem "letter_opener"
 end
 
 group :test do
