@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount MissionControl::Jobs::Engine, at: "/admin/jobs"
+
   namespace :auth do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
