@@ -30,10 +30,11 @@ class Post < ApplicationRecord
   has_rich_text :content
 
   belongs_to :newsletter
-  enum status: { draft: "draft", published: "published", archived: "archived" }
+  enum status: { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 
   scope :published, -> { where(status: "published") }
   scope :drafts, -> { where(status: "draft") }
+  scope :processing, -> { where(status: "processing") }
   scope :archived, -> { where(status: "archived") }
 
   def self.slug_uniqueness_scope
@@ -60,7 +61,8 @@ class Post < ApplicationRecord
     scheduled_at.present?
   end
 
-  def publish_and_send_post
+  def publish_and_send_later
+    return unless status == "draft"
     publish
     PostMailer.with(post: self).publish.deliver_later
   end
