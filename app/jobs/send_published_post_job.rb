@@ -6,7 +6,7 @@ class SendPublishedPostJob < ApplicationJob
   def perform
     Rails.logger.info "[SendPublishedPostJob] Sending published post to subscribers"
 
-    Post.all.each do |post|
+    posts_to_send.all.each do |post|
       Rails.logger.info "[SendPublishedPostJob] Sending post #{post.title} to subscribers"
       begin
         post.update(status: "processing")
