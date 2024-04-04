@@ -10,7 +10,7 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def drafts
-    @posts = @newsletter.posts.drafts.order(updated_at: :desc)
+    @posts = @newsletter.posts.drafts_and_processing.order(updated_at: :desc)
   end
 
   def archive
