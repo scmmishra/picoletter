@@ -5,7 +5,7 @@ default: &default
       recurring_tasks:
         send_published_post:
           class: SendPublishedPostJob
-          schedule: every minute
+          schedule: every minutes
   workers:
     - queues: "*"
       threads: 5

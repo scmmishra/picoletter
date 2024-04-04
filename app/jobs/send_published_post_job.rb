@@ -12,6 +12,6 @@ class SendPublishedPostJob < ApplicationJob
   end
 
   def posts_to_send
-    Post.drafts.where(published_at: Time.now..(Time.now + 5.minutes))
+    Post.drafts.where(scheduled_at: Time.now..(Time.now + 5.minutes), status: "draft")
   end
 end
