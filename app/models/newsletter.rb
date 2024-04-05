@@ -58,13 +58,26 @@ class Newsletter < ApplicationRecord
   def dns_records
     return [] unless use_custom_domain
 
-    dkim_tokens.map do |token|
+    records = dkim_tokens.map do |token|
       {
         name: "#{token}._domainkey.#{domain}",
         type: "CNAME",
         value: "#{token}.dkim.amazonses.com"
       }
     end
+
+    records + [
+      {
+        name: "_dmarc.#{domain}",
+        type: "TXT",
+        value: "v=DMARC1;p=quarantine;rua=mailto:report@#{domain}"
+      },
+      {
+        name: "send",
+        value: "v=spf1 include:amazonses.com ~all",
+        type: "TXT"
+      }
+    ]
   end
 
   def verify_domain
@@ -86,7 +99,11 @@ class Newsletter < ApplicationRecord
   private
 
   def verify_dns_records
-    ses_verification_service.verify_dns_tokens(dkim_tokens, domain)
+    verified = dns_records.map do |record|
+      DNSService.verify_record(record[:name], record[:value], record[:type])
+    end
+
+    verified.all?
   end
 
   def verify_ses_identity

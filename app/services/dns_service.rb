@@ -24,4 +24,27 @@ class DNSService
   rescue Resolv::ResolvError
     []
   end
+
+  def self.verify_record(name, value, type)
+    case type
+    when "CNAME"
+      verify_cname(name, value)
+    when "TXT"
+      verify_txt(name, value)
+    when "MX"
+      verify_mx(name, value)
+    end
+  end
+
+  def self.verify_txt(name, value)
+    fetch_txt(name).include?(value)
+  end
+
+  def self.verify_cname(name, value)
+    fetch_cname(name) == value
+  end
+
+  def self.verify_mx(name, value)
+    fetch_mx(name).include?(value)
+  end
 end
