@@ -1,0 +1,13 @@
+Hey <%= @user.name %>,
+
+We wanted to reach out and let you know that we've noticed some issues with your domain's DNS records. These issues could be affecting the deliverability of your emails, and we want to help you get things back on track.
+
+When DNS records aren't configured correctly, you might experience:
+
+- Emails from your domain not reaching their intended recipients
+- Emails sent to your domain bouncing back or failing to deliver
+- our domain being flagged as a potential source of spam
+
+The good news is that these issues can be resolved by reviewing and updating your DNS records. This will help ensure that your emails are properly authenticated and delivered to
+the right inboxes. You can find the settings here: <%= sending_settings_url(slug: @newsletter.slug) %>
+
