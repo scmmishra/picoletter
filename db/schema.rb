@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_06_105600) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_06_105914) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -68,7 +68,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_105600) do
     t.string "domain"
     t.string "sending_address"
     t.string "reply_to"
-    t.string "domain_verification_token"
     t.boolean "domain_verified", default: false
     t.string "domain_id"
     t.json "dns_records"
