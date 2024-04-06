@@ -7,7 +7,7 @@ class VerifyDNSRecordsJob < ApplicationJob
     newsletters_with_custom_domain.each do |newsletter|
       is_verified = newsletter.verify_domain
       Rails.logger.info "[VerifyDNSRecordsJob] Domain #{newsletter.domain} is verified: #{is_verified}"
-      notify_dns_records_broken(newsletter)
+      notify_dns_records_broken(newsletter) unless is_verified
     end
   end
 

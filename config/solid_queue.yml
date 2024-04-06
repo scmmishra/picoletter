@@ -6,6 +6,9 @@ default: &default
         send_published_post:
           class: SendPublishedPostJob
           schedule: every minutes
+        verify_dns:
+          class: VerifyDNSRecordsJob
+          schedule: 0 0 */3 * *
   workers:
     - queues: "*"
       threads: 5
