@@ -70,10 +70,10 @@ class Newsletter < ApplicationRecord
       {
         name: "_dmarc.#{domain}",
         type: "TXT",
-        value: "v=DMARC1;p=quarantine;rua=mailto:report@#{domain}"
+        value: "v=DMARC1;p=quarantine;rua=mailto:report@#{domain};"
       },
       {
-        name: "send",
+        name: "send.#{domain}",
         value: "v=spf1 include:amazonses.com ~all",
         type: "TXT"
       }
@@ -100,7 +100,9 @@ class Newsletter < ApplicationRecord
 
   def verify_dns_records
     verified = dns_records.map do |record|
-      DNSService.verify_record(record[:name], record[:value], record[:type])
+      is_verified = DNSService.verify_record(record[:name], record[:value], record[:type])
+      Rails.logger.info "DNS record #{record[:name]} is verified: #{is_verified}"
+      is_verified
     end
 
     verified.all?
