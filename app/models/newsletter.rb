@@ -4,6 +4,7 @@
 #
 #  id                        :integer          not null, primary key
 #  description               :text
+#  dns_records               :json
 #  domain                    :string
 #  domain_verification_token :string
 #  domain_verified           :boolean          default(FALSE)
@@ -22,6 +23,7 @@
 #  website                   :string
 #  created_at                :datetime         not null
 #  updated_at                :datetime         not null
+#  domain_id                 :string
 #  user_id                   :integer          not null
 #
 # Indexes
