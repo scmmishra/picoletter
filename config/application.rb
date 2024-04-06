@@ -16,6 +16,7 @@ module PicoLetter
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # jobs
     config.mission_control.jobs.base_controller_class = "AdminController"
     config.mission_control.jobs.adapters = [ :solid_queue ]
 
@@ -26,5 +27,12 @@ module PicoLetter
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    # pico config
+    config.host = ENV.fetch("PICO_HOST", "http://localhost:3000")
+    config.support_email = ENV.fetch("PICO_SUPPORT_EMAIL", "support@picoletter.com")
+
+    # action mailer
+    config.action_mailer.default_url_options = { host: config.host }
   end
 end
