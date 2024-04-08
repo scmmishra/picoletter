@@ -81,5 +81,6 @@ end
 gem "tailwindcss-rails", "~> 2.3"
 gem "kaminari"
 gem "aws-sdk-rails"
+gem 'resend'
 
 gem "activerecord-enhancedsqlite3-adapter", "~> 0.5.0"
