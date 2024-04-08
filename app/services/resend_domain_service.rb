@@ -9,6 +9,12 @@ class ResendDomainService
     Resend::Domains.get(domain_id)
   end
 
+  def verify_domain(domain_id)
+    Resend::Domains.verify(domain_id)
+
+    Resend::Domains.get(domain_id)
+  end
+
   def delete_domain(domain_id)
     Resend::Domains.remove(domain_id)
   rescue StandardError => e
