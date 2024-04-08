@@ -1,11 +1,14 @@
 <div class="px-4 py-2 mt-4 space-y-2 font-mono text-xs rounded-lg bg-stone-100 text-stone-800">
-  <div class="grid grid-cols-8 gap-2 font-medium tracking-widest uppercase text-stone-500">
+  <div class="grid grid-cols-10 gap-2 font-medium tracking-widest uppercase text-stone-500">
     <div class="col-span-1">Type</div>
     <div class="col-span-2">Name</div>
-    <div class="col-span-5">Value</div>
+    <div class="col-span-4">Value</div>
+    <div class="col-span-1 text-right">TTL</div>
+    <div class="col-span-1 text-right">Priority</div>
+    <div class="col-span-1 text-right">Status</div>
   </div>
   <% newsletter.dns_records&.each do |record| %>
-    <div class="grid grid-cols-8 gap-2">
+    <div class="grid grid-cols-10 gap-2">
       <div class="flex items-center col-span-1 gap-1">
         <%= record['type'] %>
       </div>
@@ -23,8 +26,8 @@
           </svg>
         <% end %>
       </div>
-      <div class="flex items-center col-span-5 gap-1 overflow-hidden">
-        <span class="max-w-lg truncate"><%= record['value'] %></span>
+      <div class="flex items-center col-span-4 gap-1 overflow-hidden">
+        <span class="max-w-sm truncate"><%= record['value'] %></span>
         <%= button_to_copy_to_clipboard(record['value']) do %>
           <span class="sr-only">Copy URL</span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" class="size-3 default-icon text-stone-400">
@@ -36,6 +39,17 @@
             <path fill-rule="evenodd" d="M2 7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V7Zm6.585 1.08a.75.75 0 0 1 .336 1.005l-1.75 3.5a.75.75 0 0 1-1.16.234l-1.75-1.5a.75.75 0 0 1 .977-1.139l1.02.875 1.321-2.64a.75.75 0 0 1 1.006-.336Z" clip-rule="evenodd" />
           </svg>
         <% end %>
+      </div>
+      <div class="flex items-center justify-end col-span-1 gap-1">
+        <%= record['ttl'] %>
+      </div>
+      <div class="flex items-center justify-end col-span-1 gap-1">
+        <%= record['priority'] %>
+      </div>
+      <div class="flex items-center justify-end col-span-1 gap-1">
+        <span class="px-2 py-1 text-[10px] uppercase outline outline-1 outline-stone-200 rounded-md text-stone-700 bg-stone-50 font-medium tracking-wide">
+        <%= record['status'].titleize %>
+        </span>
       </div>
     </div>
   <% end %>

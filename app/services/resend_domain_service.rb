@@ -10,7 +10,9 @@ class ResendDomainService
   end
 
   def delete_domain(domain_id)
-    Resend::Domains.delete(domain_id)
+    Resend::Domains.remove(domain_id)
+  rescue StandardError => e
+    Rails.logger.error("Error deleting domain: #{e.message}")
   end
 
   def create_or_fetch_domain(domain, domain_id)

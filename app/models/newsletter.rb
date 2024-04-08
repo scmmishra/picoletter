@@ -54,33 +54,38 @@ class Newsletter < ApplicationRecord
 
   def setup_custom_domain
     return unless use_custom_domain
-    return unless saved_change_to_use_custom_domain?
     return unless saved_change_to_domain?
 
-    remove_old_domain if saved_change_to_domain?
+    Rails.logger.info("Setting up custom domain: #{domain}")
 
-    setup_custom_domain
+    remove_old_domain
+    setup_domain_on_resend
   end
 
   private
 
-  def resend_service
-    ResendDomainService.new
-  end
-
   def remove_old_domain
     return unless domain_id
 
+    Rails.logger.info("Removing old domain: #{domain_id}")
     resend_service.delete_domain(domain_id)
+    update_column(:domain_id, nil)
+    Rails.logger.info("Old domain removed: #{domain_id}")
   end
 
   def setup_domain_on_resend
+    Rails.logger.info("Setting up domain on Resend: #{domain}")
     response = resend_service.create_or_fetch_domain(self.domain, self.domain_id)
     return unless response
 
     is_verified = response[:status] == "verified"
     update_columns(domain_id: response[:id], dns_records: response[:records], domain_verified: is_verified)
 
+    Rails.logger.info("Domain setup completed. Domain ID: #{response[:id]}, Verified: #{is_verified}")
     response
+  end
+
+  def resend_service
+    ResendDomainService.new
   end
 end
