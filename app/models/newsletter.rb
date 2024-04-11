@@ -52,6 +52,17 @@ class Newsletter < ApplicationRecord
 
   attr_accessor :dkim_tokens
 
+  def dmarc_record
+    {
+      "record" => "DMARC",
+      "name" => "_dmarc",
+      "type" => "TXT",
+      "ttl" => "Auto",
+      "value" => "v=DMARC1; p=none;",
+      "priority" => nil
+    }
+  end
+
   def setup_custom_domain
     return unless use_custom_domain
     return unless saved_change_to_domain?
