@@ -122,7 +122,8 @@ class Newsletter < ApplicationRecord
 
   def verify_dns_records
     verified = self.dns_records.map do |record|
-      DNSService.verify_record(record["name"], record["value"], record["type"])
+      name = "#{record["name"]}.#{domain}"
+      DNSService.verify_record(name, record["value"], record["type"])
     end
 
     verified.all?
