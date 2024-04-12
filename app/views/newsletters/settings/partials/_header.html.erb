@@ -3,4 +3,5 @@
     <%= link_to "Profile", profile_settings_path(slug: @newsletter.slug), class: current_page?(profile_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
     <%= link_to "Design", design_settings_path(slug: @newsletter.slug), class: current_page?(design_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
     <%= link_to "Sending Domain", sending_settings_path(slug: @newsletter.slug), class: current_page?(sending_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
+    <%= link_to "Sign Up Flow", signup_flow_settings_path(slug: @newsletter.slug), class: current_page?(signup_flow_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
 </div>

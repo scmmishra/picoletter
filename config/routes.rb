@@ -31,6 +31,9 @@ Rails.application.routes.draw do
         get :sending
         patch :sending, action: :update_sending, as: :update_sending
         post :verify_domain, action: :verify_domain, as: :verify_domain
+
+        get :signup_flow
+        patch :signup_flow, action: :update_signup_flow, as: :update_signup_flow
       end
 
       resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
