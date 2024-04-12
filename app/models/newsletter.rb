@@ -77,7 +77,16 @@ class Newsletter < ApplicationRecord
     return unless use_custom_domain
 
     Rails.logger.info("Verifying custom domain: #{domain}")
-    verify_domain_on_resend
+
+    is_verified_on_dns = verify_dns_records
+    Rails.logger.info("Domain verification on DNS completed. Verified: #{is_verified_on_dns}")
+    return unless is_verified_on_dns
+
+    is_verified, dns_records = verify_domain_on_resend
+    Rails.logger.info("Domain verification on Resend completed. Verified: #{is_verified}")
+    update_columns(domain_verified: is_verified, dns_records: dns_records)
+
+    is_verified
   end
 
   private
@@ -86,8 +95,8 @@ class Newsletter < ApplicationRecord
     return unless domain_id
 
     Rails.logger.info("Removing old domain: #{domain_id}")
-    resend_service.delete_domain(domain_id)
-    update_column(:domain_id, nil)
+    resend_service.delete_domain(domain_id) if domain_verified
+    update_columns(domain_id: nil, domain_verified: false)
     Rails.logger.info("Old domain removed: #{domain_id}")
   end
 
@@ -105,20 +114,18 @@ class Newsletter < ApplicationRecord
 
   def verify_domain_on_resend
     return unless domain_id
-
-    Rails.logger.info("Verifying domain on Resend: #{domain_id}")
     response = resend_service.verify_domain(domain_id)
     is_verified = response[:status] == "verified"
-    update_column(:domain_verified, is_verified)
 
-    Rails.logger.info("Domain verification completed. Verified: #{is_verified}")
-    response
+    [ is_verified, response[:records] ]
   end
 
   def verify_dns_records
     verified = self.dns_records.map do |record|
       DNSService.verify_record(record["name"], record["value"], record["type"])
     end
+
+    verified.all?
   end
 
   def resend_service

@@ -32,7 +32,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def verify_domain
-    @newsletter.verify_domain
+    @newsletter.verify_custom_domain
     notice = @newsletter.domain_verified ? "Domain successfully verified." : "Waiting for domain verification."
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: notice
   end
