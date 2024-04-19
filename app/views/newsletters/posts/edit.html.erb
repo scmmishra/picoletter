@@ -13,8 +13,13 @@
     <div>
       <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
     </div>
+    
     <div>
-      <%= link_to 'Publish & Send', publish_post_path(slug: @newsletter.slug, id: @post.id), class: 'btn btn-success', data: { turbo_method: :post, turbo_confirm: 'Are you sure you want to publish and send this post now?' } %>
+      <% if flash[:has_link_error] %>
+        <%= link_to 'Publish Anyway', publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: true), class: 'btn btn-warning', data: { turbo_method: :post, turbo_confirm: 'Some links might be broken, ensure you have verified them. Once published the post will be sent. Are you sure you want to publish anyway?' } %>
+      <% else %>
+        <%= link_to 'Publish & Send', publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: false), class: 'btn btn-success', data: { turbo_method: :post, turbo_confirm: 'Are you sure you want to publish and send this post now?' } %>
+      <% end %>
     </div>
   </div>
 <% end %>

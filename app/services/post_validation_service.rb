@@ -19,7 +19,7 @@ class PostValidationService
     links.each do |link|
       url = link["href"]
       unless active_link?(url)
-        raise "Invalid link found: #{url}"
+        raise Exceptions::InvalidLinkError, "Invalid link found: #{url}"
       end
     end
   end

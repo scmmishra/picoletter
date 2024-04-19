@@ -48,8 +48,13 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def publish
-    @post.publish_and_send
+    no_verify = params[:no_verify] == "true"
+    @post.publish_and_send(no_verify)
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
+  rescue Exceptions::InvalidLinkError => e
+    Rails.logger.error("Error sending post: #{e.message}")
+    flash[:has_link_error] = true
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "We found invalid links in your post."
   rescue StandardError => e
     Rails.logger.error("Error sending post: #{e.message}")
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: e.message
