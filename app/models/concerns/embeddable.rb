@@ -79,4 +79,15 @@ module Embeddable
     }
     CSS
   end
+
+  def codepen_payload
+    payload = {
+      "title" => "#{self.title} - Picoletter Embed Form",
+      "private" => true,
+      "html" => self.embded_form,
+      "css" => self.embded_form_css
+    }
+
+    ERB::Util.json_escape(payload.to_json)
+  end
 end
