@@ -17,7 +17,7 @@ module Embeddable
 
       <input type="submit" value="Subscribe" />
       <p>
-        <a href="#{Rails.application.config.host}?from=#{slug}" target="_blank">Managed by PicoLetter.</a>
+        <a href="#{Rails.application.config.host}?from=#{slug}" target="_blank">Built using PicoLetter.</a>
       </p>
     </form>
     HTML
