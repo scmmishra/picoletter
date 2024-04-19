@@ -36,7 +36,7 @@ module Embeddable
     .picoletter-form-embed {
       display: flex;
       flex-direction: column;
-      font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+      font-family: #{font_family};
     }
 
     .picoletter-form-embed label {
@@ -84,10 +84,25 @@ module Embeddable
     payload = {
       "title" => "#{self.title} - Picoletter Embed Form",
       "private" => true,
-      "html" => self.embded_form,
+      "html" => self.embded_form(with_name: true),
       "css" => self.embded_form_css
     }
 
     ERB::Util.json_escape(payload.to_json)
+  end
+
+  private
+
+  def font_family
+    case font_preference
+    when "sans-serif"
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    when "serif"
+      "ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif"
+    when "monospace"
+      "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+    else
+      "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
+    end
   end
 end
