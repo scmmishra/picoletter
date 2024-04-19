@@ -10,7 +10,7 @@ class SendPublishedPostJob < ApplicationJob
       Rails.logger.info "[SendPublishedPostJob] Sending post #{post.title} to subscribers"
       begin
         post.update(status: "processing")
-        post.publish_and_send_later
+        post.publish_and_send
         post.update(status: "published")
       rescue StandardError => e
         Rails.logger.error "[SendPublishedPostJob] Error sending post #{post.title}: #{e.message}"

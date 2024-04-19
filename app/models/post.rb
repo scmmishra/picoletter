@@ -62,9 +62,9 @@ class Post < ApplicationRecord
     scheduled_at.present?
   end
 
-  def publish_and_send_later
+  def publish_and_send
     return unless status == "draft"
-    publish
+    PostValidationService.new(self).perform
     PostMailer.with(post: self).publish.deliver_later
   end
 

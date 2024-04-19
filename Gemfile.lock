@@ -407,6 +407,7 @@ DEPENDENCIES
   kramdown
   letter_opener
   mission_control-jobs
+  nokogiri
   puma (>= 5.0)
   rack-mini-profiler
   rails (~> 7.1.3, >= 7.1.3.2)
