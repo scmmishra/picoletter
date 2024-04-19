@@ -37,8 +37,8 @@ class Newsletters::SettingsController < ApplicationController
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: notice
   end
 
-  def signup_flow; end
-  def update_signup_flow
+  def embedding; end
+  def update_embedding
   end
 
   private

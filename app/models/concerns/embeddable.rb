@@ -26,7 +26,7 @@ module Embeddable
   def embded_form_css(with_name: false)
     <<~CSS
     :root {
-      --accent: "#{primary_color}";
+      --accent: #{primary_color};
       --accent-light: color-mix(in srgb, var(--accent), white 30%);
       --accent-lightest: color-mix(in srgb, var(--accent), white 90%);
       --accent-dark: color-mix(in srgb, var(--accent), black 30%);
