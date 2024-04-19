@@ -38,7 +38,7 @@
   </div>
   <% if record['status'] %>
     <div class="flex items-center justify-end col-span-1 gap-1">
-      <span class="px-2 py-1 text-[10px] uppercase outline outline-1 outline-stone-200 rounded-md text-stone-700 bg-stone-50 font-medium tracking-wide">
+      <span class="px-2 py-1 text-[10px] uppercase outline outline-1 rounded-md font-medium tracking-wide <%= "outline-stone-200 text-stone-700 bg-stone-50" if record['status'] == "not_started" %> <%= "outline-yellow-400 text-yellow-700 bg-yellow-50" if record['status'] == "pending" %> <%= "outline-green-400 text-green-700 bg-green-50" if record['status'] == "verified" %> <%= "outline-red-400 text-red-700 bg-red-50" if record['status'] == "failure" %>%">
       <%= record['status'].titleize %>
       </span>
     </div>
