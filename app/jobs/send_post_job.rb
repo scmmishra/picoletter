@@ -13,7 +13,11 @@ class SendPostJob < ApplicationJob
       layout: false
     )
 
-    from_email = newsletter.sending_address || "#{newsletter.slug}@mail.picoletter.com"
+    from_email = "#{newsletter.slug}@mail.picoletter.com"
+    if newsletter.use_custom_domain && newsletter.domain_verified
+      from_email = "#{newsletter.title} <#{newsletter.sending_address}>"
+    end
+
 
     newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch_subscribers|
       Rails.logger.info "[PostMailer] Sending #{post.title} to #{batch_subscribers.count} subscribers"
