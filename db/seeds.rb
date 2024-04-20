@@ -65,24 +65,34 @@ Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
   publish_date -= 1.week
 end
 
-subscribers = (50 * scale).times.map do
-  email = Faker::Internet.email
-  full_name = Faker::Name.name
-  status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
-  created_at = Time.now - rand(1..3).months
-  verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
-  unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
+# subscribers = (50 * scale).times.map do
+#   email = Faker::Internet.email
+#   full_name = Faker::Name.name
+#   status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
+#   created_at = Time.now - rand(1..3).months
+#   verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
+#   unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
 
+#   {
+#     email: email,
+#     full_name: full_name,
+#     status: status,
+#     created_at: created_at,
+#     updated_at: created_at,
+#     verified_at: verified_at,
+#     unsubscribed_at: unsubscribed_at
+#   }
+# end
+
+subscribers = [
   {
-    email: email,
-    full_name: full_name,
-    status: status,
-    created_at: created_at,
-    updated_at: created_at,
-    verified_at: verified_at,
-    unsubscribed_at: unsubscribed_at
+    email: "shivam@shivam.dev",
+    full_name: "Shivam Mishra",
+    status: :verified,
+    created_at: Time.now - rand(1..3).months,
+    verified_at: Time.now - rand(1..3).months
   }
-end
+]
 
 newsletter.subscribers.create!(subscribers)
 puts "  Created #{subscribers.count} subscribers"

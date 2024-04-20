@@ -65,8 +65,7 @@ class Post < ApplicationRecord
   def publish_and_send(ingore_checks = false)
     return unless status == "draft"
     PostValidationService.new(self).perform unless ingore_checks
-    publish
-    PostMailer.with(post: self).publish.deliver_later
+    SendPostJob.perform_later(self.id)
   end
 
   def published_on_date
