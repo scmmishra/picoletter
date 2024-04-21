@@ -38,8 +38,22 @@ class Subscriber < ApplicationRecord
     update(status: "verified", verified_at: Time.current)
   end
 
+  def unsubscribe!
+    update(status: "unsubscribed", unsubscribed_at: Time.current)
+  end
+
   def generate_verification_token
     self.verification_token = SecureRandom.urlsafe_base64
     self.verification_token = verification_token.first(24)
+  end
+
+  def generate_unsubscribe_token
+    payload = {
+      sub: subscriber.id,
+      newsletter: newsletter.id,
+      iat: Time.current.to_i
+    }
+
+    JWT.encode(payload, Rails.application.credentials.secret_key_base, HS256)
   end
 end
