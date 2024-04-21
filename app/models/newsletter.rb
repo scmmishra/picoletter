@@ -91,7 +91,7 @@ class Newsletter < ApplicationRecord
   end
 
   def footer_html
-    Kramdown::Document.new(self.email_footer).to_html
+    Kramdown::Document.new(self.email_footer || "").to_html
   end
 
   private
