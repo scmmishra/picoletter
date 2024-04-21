@@ -89,3 +89,6 @@ gem "nokogiri"
 
 # Markdown
 gem "kramdown"
+
+# JWT tokens for subscription
+gem "jwt"
