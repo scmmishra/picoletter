@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_06_105914) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_21_101647) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -63,7 +63,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_06_105914) do
     t.text "email_css"
     t.string "primary_color", default: "#09090b"
     t.string "font_preference", default: "sans-serif"
-    t.string "email_footer"
+    t.text "email_footer", default: ""
     t.boolean "use_custom_domain"
     t.string "domain"
     t.string "sending_address"

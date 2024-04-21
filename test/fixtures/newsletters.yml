@@ -8,7 +8,7 @@
 #  domain            :string
 #  domain_verified   :boolean          default(FALSE)
 #  email_css         :text
-#  email_footer      :string
+#  email_footer      :text             default("")
 #  font_preference   :string           default("sans-serif")
 #  primary_color     :string           default("#09090b")
 #  reply_to          :string

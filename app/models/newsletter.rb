@@ -8,7 +8,7 @@
 #  domain            :string
 #  domain_verified   :boolean          default(FALSE)
 #  email_css         :text
-#  email_footer      :string
+#  email_footer      :text             default("")
 #  font_preference   :string           default("sans-serif")
 #  primary_color     :string           default("#09090b")
 #  reply_to          :string
@@ -88,6 +88,10 @@ class Newsletter < ApplicationRecord
     update_columns(domain_verified: is_verified, dns_records: dns_records)
 
     is_verified
+  end
+
+  def footer_html
+    Kramdown::Document.new(self.email_footer).to_html
   end
 
   private
