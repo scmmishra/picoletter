@@ -35,6 +35,5 @@ module PicoLetter
     # default host for emails and rendering
     config.action_mailer.default_url_options = { host: config.host }
     config.action_controller.default_url_options = { host: config.host }
-    config.routes.default_url_options = { host: config.host }
   end
 end
