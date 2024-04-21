@@ -82,7 +82,7 @@ gem "kaminari"
 gem "aws-sdk-rails"
 gem "resend"
 
-gem "activerecord-enhancedsqlite3-adapter", "~> 0.5.0"
+gem "activerecord-enhancedsqlite3-adapter", "~> 0.6.0"
 
 # HTML parsing
 gem "nokogiri"
