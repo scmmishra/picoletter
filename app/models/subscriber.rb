@@ -49,11 +49,11 @@ class Subscriber < ApplicationRecord
 
   def generate_unsubscribe_token
     payload = {
-      sub: subscriber.id,
+      sub: id,
       newsletter: newsletter.id,
       iat: Time.current.to_i
     }
 
-    JWT.encode(payload, Rails.application.credentials.secret_key_base, HS256)
+    JWT.encode(payload, Rails.application.credentials.secret_key_base, "HS256")
   end
 end

@@ -2,6 +2,7 @@ class SendPostJob < ApplicationJob
   queue_as :default
 
   BATCH_SIZE = 100
+  UNSUBSCRIBE_PLACEHOLDER = "{{unsubscribe_link}}"
 
   def perform(post_id)
     post = Post.find(post_id)
@@ -23,16 +24,26 @@ class SendPostJob < ApplicationJob
       Rails.logger.info "[PostMailer] Sending #{post.title} to #{batch_subscribers.count} subscribers"
 
       batch_params = batch_subscribers.map do |subscriber|
+        token = subscriber.generate_unsubscribe_token
+        html = html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(token, newsletter.slug))
+
         {
           to: [ subscriber.email ],
           from: from_email,
           reply_to: newsletter.reply_to || newsletter.user.email,
           subject: post.title,
-          html: html_content
+          html: html
         }
       end
 
       Resend::Batch.send(batch_params)
     end
+  end
+
+  private
+
+  def unsubscribe_link(token, slug)
+    url = Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token)
+    "<a href=\"#{url}\">unsubscribe</a>"
   end
 end

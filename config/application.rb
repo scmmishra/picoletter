@@ -32,7 +32,9 @@ module PicoLetter
     config.host = ENV.fetch("PICO_HOST", "http://localhost:3000")
     config.support_email = ENV.fetch("PICO_SUPPORT_EMAIL", "support@picoletter.com")
 
-    # action mailer
+    # default host for emails and rendering
     config.action_mailer.default_url_options = { host: config.host }
+    config.action_controller.default_url_options = { host: config.host }
+    config.routes.default_url_options = { host: config.host }
   end
 end
