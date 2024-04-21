@@ -43,7 +43,7 @@ class SendPostJob < ApplicationJob
   private
 
   def unsubscribe_link(token, slug)
-    url = Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token)
+    url = Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token, default_url_options: { host: Rails.application.config.host })
     "<a href=\"#{url}\">unsubscribe</a>"
   end
 end

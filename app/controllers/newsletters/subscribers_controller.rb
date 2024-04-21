@@ -1,8 +1,8 @@
 class Newsletters::SubscribersController < ApplicationController
   layout "newsletters"
 
-  before_action :ensure_authenticated
-  before_action :set_newsletter
+  before_action :ensure_authenticated, only: [ :index ]
+  before_action :set_newsletter, only: [ :index ]
 
   def index
     page = params[:page] || 0
@@ -17,20 +17,19 @@ class Newsletters::SubscribersController < ApplicationController
 
   def unsubscribe
     token = params[:token]
+    @newsletter = Newsletter.from_slug(params[:slug])
 
-    begin
-      decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, { algorithm: "HS256" })
-      subscriber_id = decoded_token.first["sub"]
-      subscriber = newsletter.subscribers.find(subscriber_id)
-      subscriber.unsubscribe!
-      # Log the unsubscribe activity
-      Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{newsletter.id}")
-      redirect_to root_path, notice: "You have been unsubscribed successfully."
-    rescue JWT::ExpiredSignature
-      redirect_to root_path, alert: "Unsubscribe link has expired."
-    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
-      redirect_to root_path, alert: "Invalid unsubscribe link."
-    end
+    decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" })
+    subscriber_id = decoded_token.first["sub"]
+    subscriber = @newsletter.subscribers.find(subscriber_id)
+    subscriber.unsubscribe!
+    # Log the unsubscribe activity
+    Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{@newsletter.id}")
+    render :unsubscribed, layout: "application"
+  rescue JWT::ExpiredSignature
+    render :expired, layout: "application"
+  rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+    render :invalid, layout: "application"
   end
 
   private
