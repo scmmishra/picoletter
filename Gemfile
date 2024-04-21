@@ -67,7 +67,6 @@ group :development do
   gem "byebug", "~> 11.1"
   gem "rubocop-rails-omakase", require: false
   gem "annotate"
-  gem "kramdown"
   gem "faker"
   gem "letter_opener"
 end
@@ -87,3 +86,6 @@ gem "activerecord-enhancedsqlite3-adapter", "~> 0.5.0"
 
 # HTML parsing
 gem "nokogiri"
+
+# Markdown
+gem "kramdown"
