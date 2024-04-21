@@ -15,6 +15,24 @@ class Newsletters::SubscribersController < ApplicationController
       .per(30)
   end
 
+  def unsubscribe
+    token = params[:token]
+
+    begin
+      decoded_token = JWT.decode(token, Rails.application.secrets.secret_key_base, true, { algorithm: "HS256" })
+      subscriber_id = decoded_token.first["sub"]
+      subscriber = newsletter.subscribers.find(subscriber_id)
+      subscriber.unsubscribe!
+      # Log the unsubscribe activity
+      Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{newsletter.id}")
+      redirect_to root_path, notice: "You have been unsubscribed successfully."
+    rescue JWT::ExpiredSignature
+      redirect_to root_path, alert: "Unsubscribe link has expired."
+    rescue JWT::DecodeError, ActiveRecord::RecordNotFound
+      redirect_to root_path, alert: "Invalid unsubscribe link."
+    end
+  end
+
   private
 
   def set_newsletter

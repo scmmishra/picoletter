@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 
+  # unsubscribe
+
+  get "/unsubscribe/:slug/:token", to: "subscribers#unsubscribe", as: :unsubscribe
+
   scope "/app" do
     get "new", to: "newsletters#new", as: :new_newsletter
     post "new", to: "newsletters#create", as: :create_newsletter
