@@ -10,7 +10,7 @@ class Newsletters::SubscribersController < ApplicationController
 
     @subscribers = @newsletter.subscribers
       .order(created_at: :desc)
-      .page(params[:page] || 0)
+      .page(page || 0)
       .where(status: status)
       .per(30)
   end
