@@ -40,13 +40,15 @@ class SendPostJob < ApplicationJob
       subject: @post.title,
       html: html,
       headers: {
-        'List-Unsubscribe': "<#{unsub_url}>"
+        'List-Unsubscribe': "<#{unsub_url}>",
+        'List-Unsubscribe-Post': "List-Unsubscribe=One-Click",
+        'X-Newsletter-id': "picoletter-#{@newsletter.slug}-#{@post.slug}-#{subscriber.id}"
       }
     }
   end
 
   def render_html_content
-    html_content = ApplicationController.render(
+    ApplicationController.render(
       template: "publish",
       assigns: { post: @post, newsletter: @newsletter },
       layout: false
