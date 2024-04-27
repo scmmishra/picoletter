@@ -16,7 +16,7 @@ Rails.application.routes.draw do
 
   # unsubscribe
 
-  get "/unsubscribe/:slug", to: "newsletters/subscribers#unsubscribe", as: :unsubscribe
+  match "/unsubscribe/:slug", to: "newsletters/subscribers#unsubscribe", as: :unsubscribe, via: [ :get, :post ]
 
   scope "/app" do
     get "new", to: "newsletters#new", as: :new_newsletter

@@ -25,7 +25,12 @@ class Newsletters::SubscribersController < ApplicationController
     subscriber.unsubscribe!
     # Log the unsubscribe activity
     Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{@newsletter.id}")
-    render :unsubscribed, layout: "application"
+    # if request is a get, render the layout, or respond with 200 and json ok if it is a post
+    if request.post?
+      render json: { ok: true }
+    else
+      render :unsubscribed, layout: "application"
+    end
   rescue JWT::ExpiredSignature, JWT::DecodeError, ActiveRecord::RecordNotFound
     render :invalid, layout: "application"
   end
