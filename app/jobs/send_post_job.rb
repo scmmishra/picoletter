@@ -5,45 +5,67 @@ class SendPostJob < ApplicationJob
   UNSUBSCRIBE_PLACEHOLDER = "{{unsubscribe_link}}"
 
   def perform(post_id)
-    post = Post.find(post_id)
-    newsletter = post.newsletter
+    @post = Post.find(post_id)
+    @newsletter = @post.newsletter
 
-    html_content = ApplicationController.render(
-      template: "publish",
-      assigns: { post: post, newsletter: newsletter },
-      layout: false
-    )
-
-    from_email = "#{newsletter.slug}@mail.picoletter.com"
-    if newsletter.use_custom_domain && newsletter.domain_verified
-      from_email = "#{newsletter.title} <#{newsletter.sending_address}>"
-    end
+    @html_content = render_html_content
+    @from_email = from_email
 
 
-    newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch_subscribers|
-      Rails.logger.info "[PostMailer] Sending #{post.title} to #{batch_subscribers.count} subscribers"
-
-      batch_params = batch_subscribers.map do |subscriber|
-        token = subscriber.generate_unsubscribe_token
-        html = html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(token, newsletter.slug))
-
-        {
-          to: [ subscriber.email ],
-          from: from_email,
-          reply_to: newsletter.reply_to || newsletter.user.email,
-          subject: post.title,
-          html: html
-        }
-      end
-
-      Resend::Batch.send(batch_params)
+    @newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch_subscribers|
+      send_batch(batch_subscribers)
     end
   end
 
   private
 
-  def unsubscribe_link(token, slug)
-    url = Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token, default_url_options: { host: Rails.application.config.host })
+  def send_batch(subscribers)
+    Rails.logger.info "[PostMailer] Sending #{@post.title} to #{subscribers.count} subscribers"
+    batch_params = subscribers.map do |subscriber|
+      prepare_email_payload(subscriber)
+    end
+
+    Resend::Batch.send(batch_params)
+  end
+
+  def prepare_email_payload(subscriber)
+    token = subscriber.generate_unsubscribe_token
+    unsub_url = unsubscribe_url(token, @newsletter.slug)
+    html = @html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(unsub_url))
+
+    {
+      to: [ subscriber.email ],
+      from: @from_email,
+      reply_to: @newsletter.reply_to || @newsletter.user.email,
+      subject: @post.title,
+      html: html,
+      headers: {
+        'List-Unsubscribe': "<#{unsub_url}>"
+      }
+    }
+  end
+
+  def render_html_content
+    html_content = ApplicationController.render(
+      template: "publish",
+      assigns: { post: @post, newsletter: @newsletter },
+      layout: false
+    )
+  end
+
+  def from_email
+    if @newsletter.use_custom_domain && @newsletter.domain_verified
+      "#{@newsletter.title} <#{@newsletter.sending_address}>"
+    else
+      "#{@newsletter.slug}@mail.picoletter.com"
+    end
+  end
+
+  def unsubscribe_link(url)
     "<a href=\"#{url}\">unsubscribe</a>"
+  end
+
+  def unsubscribe_url(token, slug)
+    Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token)
   end
 end
