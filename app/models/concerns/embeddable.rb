@@ -4,7 +4,7 @@ module Embeddable
   def embded_form(with_name: false)
     <<~HTML
     <form
-      action="#{Rails.application.config.host}/embed/#{slug}/subscribe"
+      action="#{embed_url}"
       method="post"
       target="popupwindow"
       onsubmit="window.open('#{Rails.application.config.host}/#{slug}', 'popupwindow')"
@@ -92,6 +92,10 @@ module Embeddable
   end
 
   private
+
+  def embed_url
+    Rails.application.routes.url_helpers.embed_subscribe_url(slug: slug)
+  end
 
   def font_family
     case font_preference
