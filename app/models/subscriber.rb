@@ -6,7 +6,7 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
-#  status             :integer
+#  status             :integer          default("unverified")
 #  unsubscribed_at    :datetime
 #  verification_token :string
 #  verified_at        :datetime
@@ -55,5 +55,9 @@ class Subscriber < ApplicationRecord
     }
 
     JWT.encode(payload, Rails.application.credentials.secret_key_base, "HS256")
+  end
+
+  def send_confirmation_email
+    # Send confirmation email
   end
 end
