@@ -3,6 +3,8 @@ class Newsletters::SubscribersController < ApplicationController
 
   before_action :ensure_authenticated, only: [ :index ]
   before_action :set_newsletter, only: [ :index ]
+  skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
+
 
   def index
     page = params[:page] || 0
@@ -13,6 +15,25 @@ class Newsletters::SubscribersController < ApplicationController
       .page(page || 0)
       .where(status: status)
       .per(30)
+  end
+
+  def embed_subscribe
+    subscriber = subscribe
+    subscriber.update(created_via: "embed")
+  end
+
+  def subscribe
+    name = params[:name]
+    email = params[:email]
+    @newsletter = Newsletter.from_slug(params[:slug])
+
+    subscriber = @newsletter.subscribers.create(
+      email: email,
+      full_name: name
+    )
+
+    subscriber.send_confirmation_email
+    subscriber
   end
 
   def unsubscribe
