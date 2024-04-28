@@ -42,7 +42,7 @@ class SendPostJob < ApplicationJob
       headers: {
         'List-Unsubscribe': "<#{unsub_url}>",
         'List-Unsubscribe-Post': "List-Unsubscribe=One-Click",
-        'X-Newsletter-id': "picoletter-#{@newsletter.slug}-#{@post.slug}-#{subscriber.id}"
+        'X-Newsletter-id': "picoletter-#{@newsletter.id}-#{@post.id}-#{subscriber.id}"
       }
     }
   end
