@@ -66,6 +66,7 @@ class Post < ApplicationRecord
     return unless status == "draft"
     PostValidationService.new(self).perform unless ingore_checks
     SendPostJob.perform_later(self.id)
+    publish
   end
 
   def published_on_date
