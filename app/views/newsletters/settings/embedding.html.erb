@@ -33,8 +33,3 @@
     </div>
   </div>
 </section>
-<%= form_with model: @newsletter, url: update_embedding_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
-  <div class="mt-5">
-    <%= form.submit 'Update Settings', class: 'btn btn-primary' %>
-  </div>
-<% end %>
