@@ -31,11 +31,16 @@ class Subscriber < ApplicationRecord
   scope :subscribed, -> { verified.or(unverified) }
 
   enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
+  validates :email, presence: true, uniqueness: { case_sensitive: false, scope: :newsletter_id, message: "has already subscribed" }
 
   before_create :generate_verification_token
 
   def verify!
     update(status: "verified", verified_at: Time.current)
+  end
+
+  def verified?
+    status == "verified"
   end
 
   def unsubscribe!
