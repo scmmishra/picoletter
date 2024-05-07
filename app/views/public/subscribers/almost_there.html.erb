@@ -1,12 +1,13 @@
 <div class="relative max-w-md py-20 mx-auto">
-  <div class="inline-flex items-center justify-center w-10 h-10 mb-4 text-green-500 bg-green-100 rounded-lg shadow shadow-green-700/20 sm:-left-14 sm:absolute">
+  <div class="inline-flex items-center justify-center w-10 h-10 mb-4 text-yellow-500 bg-yellow-100 rounded-lg shadow shadow-yellow-700/20 sm:-left-14 sm:absolute">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
-      <path fill-rule="evenodd" d="M12.516 2.17a.75.75 0 0 0-1.032 0 11.209 11.209 0 0 1-7.877 3.08.75.75 0 0 0-.722.515A12.74 12.74 0 0 0 2.25 9.75c0 5.942 4.064 10.933 9.563 12.348a.749.749 0 0 0 .374 0c5.499-1.415 9.563-6.406 9.563-12.348 0-1.39-.223-2.73-.635-3.985a.75.75 0 0 0-.722-.516l-.143.001c-2.996 0-5.717-1.17-7.734-3.08Zm3.094 8.016a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+      <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25ZM12.75 6a.75.75 0 0 0-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 0 0 0-1.5h-3.75V6Z" clip-rule="evenodd" />
     </svg>
+
   </div>
-  <h1 class="text-3xl leading-10 text-stone-900">Verfication Pending</h1>
-  <p class="mt-2 text-xl text-stone-700">Thank you for signing up for <%= @newsletter.title %>!. We've sent a confirmation email to <%= @email ? @email : "the address you provided." %>.</p>
-  <p class="mt-2 text-xl text-stone-700">Check your inbox for a confirmation email and click the verification link. Then you're all set to recieve the latest editions!</p>
+  <h1 class="text-3xl leading-10 text-stone-900">Verfication pending</h1>
+  <p class="mt-2 text-xl text-stone-600">Thank you for signing up for <span class="font-medium text-stone-900"><%= @newsletter.title %></span>. We've sent a confirmation email to <span class="<%= "font-medium text-stone-900" if @email.present? %>"><%= @email.present? ? @email : "the address you provided" %></span>.</p>
+  <p class="mt-2 text-xl text-stone-600">Check your inbox for a confirmation email and click the verification link. Then you're all set to recieve the latest editions!</p>
 
   <div class="mt-5 space-y-3">
     <p class="font-sans text-sm text-stone-400">Open your email app</p>
