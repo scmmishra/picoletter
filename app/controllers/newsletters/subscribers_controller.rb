@@ -3,7 +3,6 @@ class Newsletters::SubscribersController < ApplicationController
 
   before_action :ensure_authenticated, only: [ :index ]
   before_action :set_newsletter
-  skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
 
   def index
