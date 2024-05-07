@@ -9,7 +9,7 @@ class SendPostJob < ApplicationJob
     @newsletter = @post.newsletter
 
     @html_content = render_html_content
-    @from_email = from_email
+    @from_email = "#{title} <#{@newsletter.sending_from}>"
 
 
     @newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch_subscribers|
@@ -53,14 +53,6 @@ class SendPostJob < ApplicationJob
       assigns: { post: @post, newsletter: @newsletter },
       layout: false
     )
-  end
-
-  def from_email
-    if @newsletter.use_custom_domain && @newsletter.domain_verified
-      "#{@newsletter.title} <#{@newsletter.sending_address}>"
-    else
-      "#{@newsletter.slug}@mail.picoletter.com"
-    end
   end
 
   def unsubscribe_link(url)

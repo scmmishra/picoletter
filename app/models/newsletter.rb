@@ -64,6 +64,14 @@ class Newsletter < ApplicationRecord
     }
   end
 
+  def sending_from
+    if use_custom_domain && domain_verified
+      sending_address
+    else
+      "#{slug}@mail.picoletter.com"
+    end
+  end
+
   def setup_custom_domain
     return unless use_custom_domain
     return unless saved_change_to_domain?
