@@ -1,3 +1,5 @@
+require "email_provider_info"
+
 class Public::SubscribersController < ApplicationController
   layout "application"
 
@@ -14,21 +16,8 @@ class Public::SubscribersController < ApplicationController
   def almost_there
     @email = params[:email]
     return unless @email.present?
-
-    @provider = case @email.split("@").last
-    when "gmail.com", "google.com", "googlemail.com"
-      "Google"
-    when "yahoo.com", "ymail.com", "@yahoo.co.uk", "@yahoo.fr"
-      "Yahoo"
-    when "outlook.com", "hotmail.com", "live.com", "microsoft.com"
-      "Outlook"
-    when "icloud.com"
-      "iCloud"
-    when "zoho.com", "zohomail.com", "zohocorp.com"
-      "Zoho"
-    when "protonmail.com", "pm.me"
-      "ProtonMail"
-    end
+    @provider = EmailInformationService.new(@email)
+    @search_url = @provider.search_url(sender: @newsletter.sending_from)
   end
 
   def subscribe
