@@ -8,10 +8,27 @@ class Public::SubscribersController < ApplicationController
     subscriber = subscribe
     subscriber.update(created_via: "embed")
 
-    redirect_to almost_there_path(@newsletter.slug)
+    redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   end
 
   def almost_there
+    @email = params[:email]
+    return unless @email.present?
+
+    @provider = case @email.split("@").last
+    when "gmail.com", "google.com", "googlemail.com"
+      "Google"
+    when "yahoo.com", "ymail.com", "@yahoo.co.uk", "@yahoo.fr"
+      "Yahoo"
+    when "outlook.com", "hotmail.com", "live.com", "microsoft.com"
+      "Outlook"
+    when "icloud.com"
+      "iCloud"
+    when "zoho.com", "zohomail.com", "zohocorp.com"
+      "Zoho"
+    when "protonmail.com", "pm.me"
+      "ProtonMail"
+    end
   end
 
   def subscribe
