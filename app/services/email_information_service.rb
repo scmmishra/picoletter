@@ -6,6 +6,8 @@ class EmailInformationService
     host = email.to_s.downcase.split("@").last
     @provider = providers.find { |provider| provider["hosts"].include?(host) }
 
+    return unless @provider.present?
+
     @name = @provider["name"]
     @url = @provider["url"]
     @email = @email

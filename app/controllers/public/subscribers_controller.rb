@@ -16,8 +16,9 @@ class Public::SubscribersController < ApplicationController
   def almost_there
     @email = params[:email]
     return unless @email.present?
+
     @provider = EmailInformationService.new(@email)
-    @search_url = @provider.search_url(sender: @newsletter.sending_from)
+    @search_url = @provider.search_url(sender: @newsletter.sending_from) if @provider.name.present?
   end
 
   def subscribe
