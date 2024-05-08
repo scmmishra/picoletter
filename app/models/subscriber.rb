@@ -23,6 +23,11 @@
 #  newsletter_id  (newsletter_id => newsletters.id)
 #
 class Subscriber < ApplicationRecord
+  include Tokenable
+
+  tokenable_on :unsubscribe
+  tokenable_on :confirmation, expiry: 48.hours
+
   belongs_to :newsletter
 
   scope :verified, -> { where(status: "verified") }
@@ -32,8 +37,6 @@ class Subscriber < ApplicationRecord
 
   enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
   validates :email, presence: true, uniqueness: { case_sensitive: false, scope: :newsletter_id, message: "has already subscribed" }
-
-  before_create :generate_verification_token
 
   def verify!
     update(status: "verified", verified_at: Time.current)
@@ -45,21 +48,6 @@ class Subscriber < ApplicationRecord
 
   def unsubscribe!
     update(status: "unsubscribed", unsubscribed_at: Time.current)
-  end
-
-  def generate_verification_token
-    self.verification_token = SecureRandom.urlsafe_base64
-    self.verification_token = verification_token.first(24)
-  end
-
-  def generate_unsubscribe_token
-    payload = {
-      sub: id,
-      newsletter: newsletter.id,
-      iat: Time.current.to_i
-    }
-
-    JWT.encode(payload, Rails.application.credentials.secret_key_base, "HS256")
   end
 
   def send_confirmation_email
