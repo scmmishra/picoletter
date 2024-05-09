@@ -55,6 +55,10 @@ class Public::SubscribersController < ApplicationController
     render :invalid
   end
 
+  def confirm_subscriber
+    #
+  end
+
   private
 
   def set_newsletter
