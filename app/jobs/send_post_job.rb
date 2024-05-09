@@ -9,7 +9,7 @@ class SendPostJob < ApplicationJob
     @newsletter = @post.newsletter
 
     @html_content = render_html_content
-    @from_email = "#{title} <#{@newsletter.sending_from}>"
+    @from_email = @newsletter.full_sending_address
 
 
     @newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch_subscribers|

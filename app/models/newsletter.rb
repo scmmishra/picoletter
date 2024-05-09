@@ -72,6 +72,10 @@ class Newsletter < ApplicationRecord
     end
   end
 
+  def full_sending_address
+    "#{title} <#{sending_from}>"
+  end
+
   def setup_custom_domain
     return unless use_custom_domain
     return unless saved_change_to_domain?
