@@ -50,6 +50,6 @@ class Subscriber < ApplicationRecord
   end
 
   def send_confirmation_email
-    # Send confirmation email
+    SubscriptionMailer.with(subscriber: self).confirmation.deliver_now
   end
 end
