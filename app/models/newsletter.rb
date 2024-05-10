@@ -53,6 +53,14 @@ class Newsletter < ApplicationRecord
 
   attr_accessor :dkim_tokens
 
+  ThemeConfig = Struct.new(:name, :primary, keyword_init: true)
+
+  def self.theme_config
+    # load colors from conifg/colors.yml
+    data = YAML.load_file(Rails.root.join("config", "colors.yml"))
+    data.map { |item| ThemeConfig.new(item) }
+  end
+
   def dmarc_record
     {
       "record" => "DMARC",
