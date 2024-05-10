@@ -91,12 +91,6 @@ module Embeddable
     ERB::Util.json_escape(payload.to_json)
   end
 
-  private
-
-  def embed_url
-    Rails.application.routes.url_helpers.embed_subscribe_url(slug: slug)
-  end
-
   def font_family
     case font_preference
     when "sans-serif"
@@ -108,5 +102,11 @@ module Embeddable
     else
       "ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji'"
     end
+  end
+
+  private
+
+  def embed_url
+    Rails.application.routes.url_helpers.embed_subscribe_url(slug: slug)
   end
 end
