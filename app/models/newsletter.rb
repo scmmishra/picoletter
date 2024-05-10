@@ -53,7 +53,7 @@ class Newsletter < ApplicationRecord
 
   attr_accessor :dkim_tokens
 
-  ThemeConfig = Struct.new(:name, :primary, keyword_init: true)
+  ThemeConfig = Struct.new(:name, :primary, :text_on_primary, :primary_hover, keyword_init: true)
 
   def self.theme_config
     # load colors from conifg/colors.yml
