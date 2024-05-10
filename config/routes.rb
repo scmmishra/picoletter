@@ -14,6 +14,10 @@ Rails.application.routes.draw do
   # redirect /login to /auth/login
   get "/login", to: redirect("/auth/login")
 
+  if Rails.env.development?
+    get "/dev/playground", to: "playground#show", as: :playground
+  end
+
   # unsubscribe
 
   scope "/:slug" do
