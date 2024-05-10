@@ -136,7 +136,7 @@
       border: solid 2px #ffffff;
       border-radius: 4px;
       box-sizing: border-box;
-      color: <%= @newsletter.primary_color %>;
+      color: <%= @newsletter.theme.primary %>;
       cursor: pointer;
       display: inline-block;
       font-size: 16px;
@@ -149,22 +149,22 @@
     }
     
     .btn-primary table td {
-      background-color: <%= @newsletter.primary_color %>;
+      background-color: <%= @newsletter.theme.primary %>;
     }
     
     .btn-primary a {
-      background-color: <%= @newsletter.primary_color %>;
-      border-color: <%= @newsletter.primary_color %>;
-      color: #fffff;
+      background-color: <%= @newsletter.theme.primary %>;
+      border-color: <%= @newsletter.theme.primary %>;
+      color: <%= @newsletter.theme.text_on_primary %>;
     }
     
     @media all {
       .btn-primary table td:hover {
-        background-color: #ec0867 !important;
+        background-color: <%= @newsletter.theme.primary_hover %> !important;
       }
       .btn-primary a:hover {
-        background-color: #ec0867 !important;
-        border-color: #ec0867 !important;
+        background-color: <%= @newsletter.theme.primary_hover %> !important;
+        border-color: <%= @newsletter.theme.primary_hover %> !important;
       }
     }
     
