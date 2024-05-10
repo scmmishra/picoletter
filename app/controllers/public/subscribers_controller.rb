@@ -1,5 +1,3 @@
-require "email_provider_info"
-
 class Public::SubscribersController < ApplicationController
   layout "application"
 
