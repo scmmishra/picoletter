@@ -92,3 +92,6 @@ gem "kramdown"
 
 # JWT tokens for subscription
 gem "jwt"
+
+# For handling email styles
+gem "premailer-rails"
