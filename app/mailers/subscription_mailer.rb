@@ -3,6 +3,7 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = params[:subscriber]
     @newsletter = @subscriber.newsletter
     @confirmation_url = confirmation_url(@subscriber)
+    @title = "Confirm your subscription"
     mail(to: @subscriber.email, from: @newsletter.full_sending_address, subject: "Confirm your subscription")
   end
 
