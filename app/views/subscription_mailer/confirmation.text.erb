@@ -2,3 +2,5 @@ Hey<%= @subscriber.full_name.present? ? " #{@subscriber.full_name}" : "" %>,
 
 Thank you for subscribing to <%= @newsletter.title %>. 
 To confirm your email address, please click on the following link: <%= @confirmation_url %>
+
+If you didn't subscribe to this list, you can ignore this email. You will not receive any emails if you don't click on the link above.
