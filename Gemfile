@@ -95,3 +95,6 @@ gem "jwt"
 
 # For handling email styles
 gem "premailer-rails"
+
+# monitoring
+gem "rorvswild"
