@@ -7,7 +7,7 @@ module Embeddable
       action="#{embed_url}"
       method="post"
       target="popupwindow"
-      onsubmit="window.open('#{Rails.application.config.host}/#{slug}', 'popupwindow')"
+      onsubmit="window.open('#{Rails.application.config.host}/#{slug}', popupwindow)"
       class="picoletter-form-embed"
     >
       #{ with_name ? "<label for=\"pico-name\">Enter your name</label>\n  <input type=\"text\" name=\"name\" id=\"pico-name\" />" : "" }
