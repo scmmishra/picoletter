@@ -99,13 +99,13 @@ module Embeddable
   def font_family
     case font_preference
     when "sans-serif"
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif"
+      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
     when "serif"
       "Georgia, ui-serif, Cambria, Times New Roman, Times, serif"
     when "monospace"
       "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
     else
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Open Sans,Helvetica Neue,sans-serif"
+      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
     end
   end
 
