@@ -1,5 +1,4 @@
-
 Hey<%= @subscriber.full_name.present? ? " #{@subscriber.full_name}" : "" %>,
 
 Thank you for subscribing to <%= @newsletter.title %>. 
-To confirm your email address and complete the subscription process, please click on the following link: <%= @confirmation_url %>
+To confirm your email address, please click on the following link: <%= @confirmation_url %>
