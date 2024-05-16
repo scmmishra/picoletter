@@ -3,11 +3,16 @@ class SubscriptionMailer < ApplicationMailer
     @subscriber = params[:subscriber]
     @newsletter = @subscriber.newsletter
     @confirmation_url = confirmation_url(@subscriber)
-    @title = "Confirm your subscription"
-    mail(to: @subscriber.email, from: @newsletter.full_sending_address, subject: "Confirm your subscription")
+    subject = "Confirm your subscription to #{@newsletter.title}"
+    mail(to: @subscriber.email, from: @newsletter.full_sending_address, subject: subject)
   end
 
-  def confirmation_reminder(subscriber)
+  def confirmation_reminder
+    @subscriber = params[:subscriber]
+    @newsletter = @subscriber.newsletter
+    @confirmation_url = confirmation_url(@subscriber)
+    subject= "Reminder: Confirm your subscription to #{@newsletter.title}"
+    mail(to: @subscriber.email, from: @newsletter.full_sending_address, subject: subject)
   end
 
   private
