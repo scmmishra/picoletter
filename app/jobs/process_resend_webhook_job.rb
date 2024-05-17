@@ -32,12 +32,4 @@ class ProcessResendWebhookJob < ApplicationJob
   def process_email_bounced
     pp @payload
   end
-
-  def process_email_opened
-    pp @payload
-  end
-
-  def process_email_clicked
-    pp @payload
-  end
 end
