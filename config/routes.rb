@@ -2,6 +2,8 @@ Rails.application.routes.draw do
   default_url_options host: Rails.application.config.host
   mount MissionControl::Jobs::Engine, at: "/admin/jobs"
 
+  post "/webhook/resend", to: "webhook#resend"
+
   namespace :auth do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
