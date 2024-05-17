@@ -20,7 +20,15 @@ class SendPostBatchJob < ApplicationJob
       prepare_email_payload(subscriber)
     end
 
-    Resend::Batch.send(batch_params)
+    response = Resend::Batch.send(batch_params)
+    sends = response[:data].map do |payload|
+      {
+        email_id: payload["id"],
+        post_id: @post.id
+      }
+    end
+
+    EmailSend.insert_all(sends)
   end
 
   def prepare_email_payload(subscriber)
@@ -29,7 +37,7 @@ class SendPostBatchJob < ApplicationJob
     html = @html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(unsub_url))
 
     {
-      to: [subscriber.email],
+      to: [ subscriber.email ],
       from: @from_email,
       reply_to: @newsletter.reply_to || @newsletter.user.email,
       subject: @post.title,
