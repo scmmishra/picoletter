@@ -36,10 +36,7 @@ class Public::SubscribersController < ApplicationController
 
   def unsubscribe
     token = params[:token]
-
-    decoded_token = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" })
-    subscriber_id = decoded_token.first["sub"]
-    subscriber = @newsletter.subscribers.find(subscriber_id)
+    subscriber = Subscriber.decode_unsubscribe_token(token)
     subscriber.unsubscribe!
     # Log the unsubscribe activity
     Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{@newsletter.id}")
@@ -50,11 +47,16 @@ class Public::SubscribersController < ApplicationController
       render :unsubscribed
     end
   rescue JWT::ExpiredSignature, JWT::DecodeError, ActiveRecord::RecordNotFound
-    render :invalid
+    render :invalid_unsubscribe
   end
 
   def confirm_subscriber
-    #
+    token = params[:token]
+    subscriber = Subscriber.decode_confirmation_token(token)
+
+    subscriber.verify!
+  rescue JWT::ExpiredSignature, JWT::DecodeError, ActiveRecord::RecordNotFound
+    render :invalid_confirmation
   end
 
   private

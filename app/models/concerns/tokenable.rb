@@ -16,6 +16,16 @@ module Tokenable
       define_method("verify_#{scope}_token") do |token|
         verify_jwt(token, scope)
       end
+
+      define_singleton_method("decode_#{scope}_token") do |token|
+        payload = JWT.decode(token, Rails.application.credentials.secret_key_base, true, { algorithm: "HS256" }).first
+        scope = payload["scope"]
+        newsletter = Newsletter.find_by(id: payload["newsletter"])
+        subscriber = newsletter.subscribers.find_by(id: payload["sub"])
+        subscriber.send("verify_#{scope}_token", token)
+
+        subscriber
+      end
     end
   end
 
