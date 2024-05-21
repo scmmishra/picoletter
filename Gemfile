@@ -98,3 +98,5 @@ gem "premailer-rails"
 
 # monitoring
 gem "rorvswild"
+
+gem "litestream", "~> 0.10.1"
