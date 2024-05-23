@@ -30,6 +30,8 @@ class Post < ApplicationRecord
   has_rich_text :content
 
   belongs_to :newsletter
+
+  has_many :emails, dependent: :destroy_async
   enum status: { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 
   scope :published, -> { where(status: "published") }
