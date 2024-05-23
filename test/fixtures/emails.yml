@@ -2,12 +2,14 @@
 #
 # Table name: emails
 #
-#  id         :integer          not null, primary key
-#  status     :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  email_id   :string
-#  post_id    :integer          not null
+#  id           :integer          not null, primary key
+#  delivered_at :datetime
+#  sent_at      :datetime
+#  status       :string           default(NULL)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  email_id     :string
+#  post_id      :integer          not null
 #
 # Indexes
 #
