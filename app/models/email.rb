@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: email_sends
+# Table name: emails
 #
 #  id         :integer          not null, primary key
 #  status     :string
@@ -11,13 +11,13 @@
 #
 # Indexes
 #
-#  index_email_sends_on_post_id  (post_id)
+#  index_emails_on_post_id  (post_id)
 #
 # Foreign Keys
 #
 #  post_id  (post_id => posts.id)
 #
-class EmailSend < ApplicationRecord
+class Email < ApplicationRecord
   belongs_to :post
   enum status: [ :sent, :delivered, :delivery_delayed, :complained, :bounced ]
 end

@@ -28,7 +28,7 @@ class SendPostBatchJob < ApplicationJob
       }
     end
 
-    EmailSend.insert_all(sends)
+    Email.insert_all(sends)
   end
 
   def prepare_email_payload(subscriber)

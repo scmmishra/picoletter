@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: email_sends
+# Table name: emails
 #
 #  id         :integer          not null, primary key
 #  status     :string
@@ -11,7 +11,7 @@
 #
 # Indexes
 #
-#  index_email_sends_on_post_id  (post_id)
+#  index_emails_on_post_id  (post_id)
 #
 # Foreign Keys
 #
@@ -19,7 +19,7 @@
 #
 require "test_helper"
 
-class EmailSendTest < ActiveSupport::TestCase
+class EmailTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
