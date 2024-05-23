@@ -25,6 +25,7 @@ class SendPostBatchJob < ApplicationJob
       {
         email_id: payload["id"],
         post_id: @post.id
+        status: :sent
       }
     end
 
