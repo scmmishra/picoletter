@@ -24,7 +24,7 @@ class SendPostBatchJob < ApplicationJob
     sends = response[:data].map do |payload|
       {
         email_id: payload["id"],
-        post_id: @post.id
+        post_id: @post.id,
         status: :sent
       }
     end
