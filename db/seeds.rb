@@ -91,6 +91,34 @@ subscribers = [
     status: :verified,
     created_at: Time.now - rand(1..3).months,
     verified_at: Time.now - rand(1..3).months
+  },
+  {
+    email: "neo@example.com",
+    full_name: "Neo",
+    status: :verified,
+    created_at: Time.now - rand(1..3).months,
+    verified_at: Time.now - rand(1..3).months
+  },
+  {
+    email: "the-one@example.com",
+    full_name: "The One",
+    status: :verified,
+    created_at: Time.now - rand(1..3).months,
+    verified_at: Time.now - rand(1..3).months
+  },
+  {
+    email: "morpheus@example.com",
+    full_name: "Morpheus",
+    status: :verified,
+    created_at: Time.now - rand(1..3).months,
+    verified_at: Time.now - rand(1..3).months
+  },
+  {
+    email: "trinity@example.com",
+    full_name: "Trinity",
+    status: :verified,
+    created_at: Time.now - rand(1..3).months,
+    verified_at: Time.now - rand(1..3).months
   }
 ]
 
