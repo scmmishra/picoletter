@@ -53,7 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_17_074134) do
     t.integer "post_id", null: false
     t.string "email_id"
     t.string "status", default: "sent"
-    t.datetime "sent_at"
+    t.datetime "bounced_at"
     t.datetime "delivered_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

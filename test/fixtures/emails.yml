@@ -3,8 +3,8 @@
 # Table name: emails
 #
 #  id           :integer          not null, primary key
+#  bounced_at   :datetime
 #  delivered_at :datetime
-#  sent_at      :datetime
 #  status       :string           default(NULL)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -23,9 +23,9 @@
 one:
   post: one
   status: MyString
-  sent_at: 2024-05-17 13:11:34
+  bounced_at: 2024-05-17 13:11:34
 
 two:
   post: two
   status: MyString
-  sent_at: 2024-05-17 13:11:34
+  bounced_at: 2024-05-17 13:11:34
