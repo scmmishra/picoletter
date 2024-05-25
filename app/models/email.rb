@@ -5,7 +5,7 @@
 #  id            :integer          not null, primary key
 #  bounced_at    :datetime
 #  delivered_at  :datetime
-#  status        :string           default(NULL)
+#  status        :string           default("sent")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  email_id      :string
@@ -26,5 +26,5 @@ class Email < ApplicationRecord
   belongs_to :post
   belongs_to :subscriber, optional: true
 
-  enum status: { sent: "sent", delivered: "delivered", delivery_delayed: "delivery_delayed", complained: "complained", bounced: "bounced" }
+  enum status: { sent: "sent", delivered: "delivered", complained: "complained", bounced: "bounced" }
 end

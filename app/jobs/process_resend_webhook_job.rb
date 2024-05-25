@@ -17,10 +17,6 @@ class ProcessResendWebhookJob < ApplicationJob
     @email.update(status: "delivered", delivered_at: @payload.dig(:data, :created_at))
   end
 
-  def process_email_delivery_delayed
-    @email.update(status: "delivery_delayed", delivered_at: @payload.dig(:data, :created_at))
-  end
-
   def process_email_complained
     @email.update(status: "complained", delivered_at: @payload.dig(:data, :created_at))
     @email.subscriber.update(unsubscribed_at: @payload.dig(:data, :created_at), status: :unsubscribed)
