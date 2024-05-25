@@ -105,3 +105,6 @@ gem "litestream", "~> 0.10.1"
 
 # webhooks
 gem "svix"
+
+# production
+gem "thruster"
