@@ -19,14 +19,14 @@ class ProcessResendWebhookJob < ApplicationJob
 
   def process_email_complained
     @email.update(status: "complained", delivered_at: @payload.dig(:data, :created_at))
-    @email.subscriber.update(unsubscribed_at: @payload.dig(:data, :created_at), status: :unsubscribed)
+    @email.subscriber.update(unsubscribed_at: @payload.dig(:data, :created_at), status: :unsubscribed, unsubscribe_reason: :complained)
   end
 
   def process_email_bounced
     @email.update(status: "bounced", delivered_at: @payload.dig(:data, :created_at))
     # if bounced more than 3 times, unsubscribe the subscriber
     bounce_count = Email.where(subscriber: @email.subscriber).bounced.count
-    @email.subscriber.update(unsubscribed_at: @payload.dig(:data, :created_at), status: :unsubscribed) if bounce_count >= 3
+    @email.subscriber.update(unsubscribed_at: @payload.dig(:data, :created_at), status: :unsubscribed, unsubscribe_reason: :bounced) if bounce_count >= 3
   end
 
   private
