@@ -18,12 +18,12 @@
 #  user_id  (user_id => users.id)
 #
 
-one:
-  user_id: 1
-  token: MyString
-  active: false
+# one:
+#   user_id: 1
+#   token: MyString
+#   active: false
 
-two:
-  user_id: 1
-  token: MyString
-  active: false
+# two:
+#   user_id: 1
+#   token: MyString
+#   active: false

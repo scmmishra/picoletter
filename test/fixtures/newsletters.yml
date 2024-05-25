@@ -37,12 +37,14 @@
 
 one:
   title: MyString
+  slug: one
   description: MyText
   user: one
   status: MyString
 
 two:
   title: MyString
+  slug: two
   description: MyText
   user: two
   status: MyString

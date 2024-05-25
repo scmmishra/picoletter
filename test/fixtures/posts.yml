@@ -28,6 +28,7 @@ one:
   title: MyString
   content: MyText
   newsletter: one
+  slug: one
   scheduled_at: 2024-03-10 21:53:15
   status: MyString
   published_at: 2024-03-10 21:53:15
@@ -36,6 +37,7 @@ two:
   title: MyString
   content: MyText
   newsletter: two
+  slug: two
   scheduled_at: 2024-03-10 21:53:15
   status: MyString
   published_at: 2024-03-10 21:53:15
