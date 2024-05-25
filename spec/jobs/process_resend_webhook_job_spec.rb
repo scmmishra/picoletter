@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe ProcessResendWebhookJob, type: :job do
-  let(:email) { create(:email, email_id: "10000", status: :sent) }
+  include ActiveJob::TestHelper
+
+  let(:email) { create(:email, email_id: "uuid-for-email-log", status: :sent) }
   let(:email_id) { email.email_id }
 
   let(:email_delivered_payload) do
@@ -20,7 +22,10 @@ RSpec.describe ProcessResendWebhookJob, type: :job do
 
   context "when email is delivered" do
     it "updates the status" do
-      described_class.perform_now(email_delivered_payload)
+      perform_enqueued_jobs do
+        described_class.perform_later(email_delivered_payload)
+      end
+
       expect(email.reload.status).to eq("delivered")
     end
   end

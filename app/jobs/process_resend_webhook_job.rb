@@ -1,24 +1,19 @@
 class ProcessResendWebhookJob < ApplicationJob
   queue_as :default
 
-  def perform
-    @payload = payload
-    type = payload[:type]
-    # replace . with _
-    type_name = type.to_s.gsub(".", "_")
+  def perform(payload)
+    @payload = payload.with_indifferent_access
+    @email = find_email_log
 
-    # check if method exists before calling
-    if self.respond_to?("process_#{type_name}")
-      send("process_#{type_name}", payload)
+    event_name = @payload[:type].to_s.gsub(".", "_")
+
+    if self.respond_to?("process_#{event_name}")
+      send("process_#{event_name}")
     end
   end
 
-  def process_email_sent
-    pp @payload
-  end
-
   def process_email_delivered
-    pp @payload
+    @email.update(status: "delivered", delivered_at: @payload.dig(:data, :created_at))
   end
 
   def process_email_delivery_delayed
@@ -31,5 +26,11 @@ class ProcessResendWebhookJob < ApplicationJob
 
   def process_email_bounced
     pp @payload
+  end
+
+  private
+
+  def find_email_log
+    Email.find_by(email_id: @payload.dig(:data, :email_id))
   end
 end
