@@ -24,7 +24,7 @@
 #
 class Email < ApplicationRecord
   belongs_to :post
-  belongs_to :subscriber
+  belongs_to :subscriber, optional: true
 
   enum status: { sent: "sent", delivered: "delivered", delivery_delayed: "delivery_delayed", complained: "complained", bounced: "bounced" }
 end
