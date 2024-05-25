@@ -100,3 +100,6 @@ gem "premailer-rails"
 gem "rorvswild"
 
 gem "litestream", "~> 0.10.1"
+
+# webhooks
+gem "svix"
