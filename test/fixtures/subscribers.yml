@@ -28,7 +28,6 @@ one:
   newsletter: one
   created_via: MyString
   verified_at: false
-  verification_token: MyString
   status: MyString
 
 two:
@@ -37,5 +36,4 @@ two:
   newsletter: two
   created_via: MyString
   verified_at: false
-  verification_token: MyString
   status: MyString
