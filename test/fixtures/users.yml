@@ -19,14 +19,14 @@
 
 one:
   name: MyString
-  email_address: MyString
+  email: MyString
   password_digest: MyString
   active: false
   bio: MyText
 
 two:
   name: MyString
-  email_address: MyString
+  email: MyString
   password_digest: MyString
   active: false
   bio: MyText
