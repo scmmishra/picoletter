@@ -2,16 +2,17 @@
 #
 # Table name: subscribers
 #
-#  id              :integer          not null, primary key
-#  created_via     :string
-#  email           :string
-#  full_name       :string
-#  status          :integer          default("unverified")
-#  unsubscribed_at :datetime
-#  verified_at     :datetime
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
-#  newsletter_id   :integer          not null
+#  id                 :integer          not null, primary key
+#  created_via        :string
+#  email              :string
+#  full_name          :string
+#  status             :integer          default("unverified")
+#  unsubscribe_reason :string
+#  unsubscribed_at    :datetime
+#  verified_at        :datetime
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  newsletter_id      :integer          not null
 #
 # Indexes
 #
