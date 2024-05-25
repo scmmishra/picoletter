@@ -28,7 +28,7 @@ class Subscriber < ApplicationRecord
   tokenable_on :confirmation, expiry: 48.hours
 
   belongs_to :newsletter
-  has_many :emails
+  has_many :emails, dependent: :destroy
 
   scope :verified, -> { where(status: "verified") }
   scope :unverified, -> { where(status: "unverified") }

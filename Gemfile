@@ -55,6 +55,7 @@ group :development, :test do
   gem "rspec-rails", "~> 6.1.0"
   gem "byebug", "~> 11.1"
   gem "factory_bot_rails"
+  gem "faker"
 end
 
 group :development do
@@ -69,7 +70,6 @@ group :development do
 
   gem "rubocop-rails-omakase", require: false
   gem "annotate"
-  gem "faker"
   gem "letter_opener"
 end
 
