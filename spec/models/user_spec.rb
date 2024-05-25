@@ -16,17 +16,8 @@
 #
 #  index_users_on_is_superadmin  (is_superadmin)
 #
+require 'rails_helper'
 
-one:
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  active: false
-  bio: MyText
-
-two:
-  name: MyString
-  email: MyString
-  password_digest: MyString
-  active: false
-  bio: MyText
+RSpec.describe User, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end

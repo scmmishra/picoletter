@@ -34,17 +34,8 @@
 #
 #  user_id  (user_id => users.id)
 #
+require 'rails_helper'
 
-one:
-  title: MyString
-  slug: one
-  description: MyText
-  user: one
-  status: MyString
-
-two:
-  title: MyString
-  slug: two
-  description: MyText
-  user: two
-  status: MyString
+RSpec.describe Newsletter, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end

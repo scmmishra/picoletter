@@ -17,13 +17,8 @@
 #
 #  user_id  (user_id => users.id)
 #
+require 'rails_helper'
 
-# one:
-#   user_id: 1
-#   token: MyString
-#   active: false
-
-# two:
-#   user_id: 1
-#   token: MyString
-#   active: false
+RSpec.describe Session, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end

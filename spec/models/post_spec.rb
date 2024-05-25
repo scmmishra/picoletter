@@ -23,21 +23,8 @@
 #
 #  newsletter_id  (newsletter_id => newsletters.id)
 #
+require 'rails_helper'
 
-one:
-  title: MyString
-  content: MyText
-  newsletter: one
-  slug: one
-  scheduled_at: 2024-03-10 21:53:15
-  status: MyString
-  published_at: 2024-03-10 21:53:15
-
-two:
-  title: MyString
-  content: MyText
-  newsletter: two
-  slug: two
-  scheduled_at: 2024-03-10 21:53:15
-  status: MyString
-  published_at: 2024-03-10 21:53:15
+RSpec.describe Post, type: :model do
+  pending "add some examples to (or delete) #{__FILE__}"
+end
