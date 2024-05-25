@@ -12,7 +12,8 @@ FactoryBot.define do
     timezone { "UTC" }
     title { "TinyJS" }
     use_custom_domain { true }
-    user_id { 16 }
     website { nil }
+
+    user
   end
 end
