@@ -1,0 +1,23 @@
+name: Docker Build & Push CI
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag scmmishra/picoletter:${{ github.sha }} --tag scmmishra/picoletter:latest
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Push to DockerHub
+        run: |
+          docker push scmmishra/picoletter:${{ github.sha }}
+          docker push scmmishra/picoletter:latest
