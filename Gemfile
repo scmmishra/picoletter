@@ -108,3 +108,4 @@ gem "svix"
 
 # production
 gem "thruster"
+gem 'dotenv-rails'
