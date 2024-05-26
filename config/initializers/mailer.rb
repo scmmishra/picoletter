@@ -1,2 +1,2 @@
 # get rails encrypted credentials
-Resend.api_key = Rails.application.credentials.resend.api_key
+Resend.api_key = AppConfig.get("RESEND__API_KEY")
