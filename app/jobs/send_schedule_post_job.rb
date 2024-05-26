@@ -1,6 +1,6 @@
 # This job is triggered every 1 minute and it looks ahead 2 minutes to find any posts that are scheduled to be published in the next 2 minutes.
 # This difference in time is to ensure that the job has enough time to process the posts before they are published.
-class SendScheduledPost < ApplicationJob
+class SendSchedulePostJob < ApplicationJob
   queue_as :default
 
   def perform
