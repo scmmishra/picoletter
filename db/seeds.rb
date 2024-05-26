@@ -1,6 +1,13 @@
 require "kramdown"
 require 'faker'
 
+# This is a seed file for development purposes only.
+# It should not be used in production.
+
+if Rails.env.production?
+  return
+end
+
 scale = ENV['SCALE'] || 1
 seed_perf = ENV['SEED_PERF'] || false
 
