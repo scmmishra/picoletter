@@ -1,0 +1,21 @@
+app:
+  name: "picoletter"
+  image: "scmmishra/picoletter"
+  container_port: 3000
+  env:
+    - SECRET_KEY_BASE
+    - RESEND__API_KEY
+    - RESEND__WEBHOOK_SECRET
+  volumes:
+    - "/app/storage:/data"
+  port_range:
+    start: 8000
+    end: 9000
+
+caddy:
+  admin_api: "http://localhost:2019"
+  rules:
+    - match: "picoletter.com"
+      reverse_proxy:
+        - path: ""
+          to: "http://localhost:{port}"
