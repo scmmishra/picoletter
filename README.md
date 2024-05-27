@@ -10,7 +10,6 @@ Picoletter is a [ONCE](once.com) style (sort of) newsletter app for independent 
 
 ![design](.github/screenshots/design.webp)
 ![embed](.github/screenshots/embed.webp)
-![published](.github/screenshots/published.webp)
 
 </details>
 
