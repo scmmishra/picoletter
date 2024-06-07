@@ -9,11 +9,9 @@ default: &default
         verify_dns:
           class: VerifyDNSRecordsJob
           schedule: 0 0 */3 * *
-  workers:
-    - queues: "*"
-      threads: 5
-      processes: 1
-      polling_interval: 0.1
+        periodic_litestream_backup_verfication_job:
+          class: Litestream::VerificationJob
+          schedule: every day at 1am EST
 
 development:
   <<: *default

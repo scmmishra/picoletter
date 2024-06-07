@@ -10,9 +10,18 @@ default: &default
   retries: 100
   default_transaction_mode: immediate
 
-development:
+queue: &queue
   <<: *default
-  database: storage/development.sqlite3
+  migrations_paths: db/queue_migrate
+  database: storage/<%= Rails.env %>-queue.sqlite3
+
+primary: &primary
+  <<: *default
+  database: storage/<%= Rails.env %>.sqlite3
+
+development:
+  primary: *primary
+  queue: *queue
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
