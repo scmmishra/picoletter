@@ -25,9 +25,9 @@ class PostValidationService
   end
 
   def active_link?(url, attempt = 1)
-    raise "[PostValidationService] Too many connectionr resets" if attempt > 3
+    raise "[PostValidationService] Too many connection resets" if attempt > 3
 
-    response = HTTParty.get(url, follow_redirect: true)
+    response = HTTParty.head(url, follow_redirect: true)
     response.success?
   rescue Errno::ECONNRESET
     active_link?(url, attempt + 1)
