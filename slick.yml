@@ -7,7 +7,7 @@ app:
     - RESEND__API_KEY
     - RESEND__WEBHOOK_SECRET
   volumes:
-    - "/app/storage:/data"
+    - "/rails/storage:/data"
   port_range:
     start: 8000
     end: 9000
