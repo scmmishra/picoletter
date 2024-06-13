@@ -27,9 +27,9 @@ development:
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  <<: *default
-  database: storage/test.sqlite3
+  primary: *primary
+  queue: *queue
 
 production:
-  <<: *default
-  database: storage/production.sqlite3
+  primary: *primary
+  queue: *queue
