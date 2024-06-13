@@ -81,7 +81,6 @@ end
 
 gem "tailwindcss-rails", "~> 2.6.0"
 gem "kaminari"
-gem "aws-sdk-rails"
 gem "resend"
 
 gem "activerecord-enhancedsqlite3-adapter", "~> 0.8.0"
@@ -108,4 +107,4 @@ gem "svix"
 
 # production
 gem "thruster"
-gem 'dotenv-rails'
+gem "dotenv-rails"
