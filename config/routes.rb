@@ -28,6 +28,7 @@ Rails.application.routes.draw do
     match "embed/subscribe", to: "public/subscribers#embed_subscribe", as: :embed_subscribe, via: [ :post ]
     get "confirm", to: "public/subscribers#confirm_subscriber", as: :confirm
     get "almost-there", to: "public/subscribers#almost_there", as: :almost_there
+    get "/", to: "public/newsletters#show", as: :newsletter
   end
 
   scope "/app" do

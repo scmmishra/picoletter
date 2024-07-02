@@ -55,6 +55,10 @@ class Newsletter < ApplicationRecord
 
   ThemeConfig = Struct.new(:name, :primary, :text_on_primary, :primary_hover, keyword_init: true)
 
+  def description_html
+    Kramdown::Document.new(description).to_html.html_safe
+  end
+
   def self.theme_config
     # load colors from conifg/colors.yml
     data = YAML.load_file(Rails.root.join("config", "colors.yml"))
