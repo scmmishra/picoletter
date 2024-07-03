@@ -8,9 +8,14 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <style>
+      :root {
+        <%= @newsletter.primary_styles %>;
+      }
+    </style>
   </head>
 
-  <body class="font-serif bg-stone-100">
+  <body class="bg-stone-100 <%= @newsletter.font_class %>">
     <% if notice = flash[:notice] || flash[:alert] %>
       <div
         class="flash"

@@ -8,11 +8,6 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
-    <style>
-      :root {
-        --color-newsletter-primary: <%= @newsletter.primary_color %>;
-      }
-    </style>
   </head>
 
   <body class="font-serif bg-stone-100">
