@@ -10,12 +10,12 @@
     <%= javascript_importmap_tags %>
     <style>
       :root {
-        <%= @newsletter.primary_styles %>;
+        <%= @newsletter&.primary_styles || "" %>;
       }
     </style>
   </head>
 
-  <body class="bg-stone-100 <%= @newsletter.font_class %>">
+  <body class="bg-stone-100 <%= @newsletter&.font_class || "font-serif" %>">
     <% if notice = flash[:notice] || flash[:alert] %>
       <div
         class="flash"
