@@ -1,5 +1,12 @@
 <div class="p-5 -mx-5 border rounded-xl border-red-100/50 bg-red-50">
   <h3 class="font-sans text-xs font-bold tracking-widest text-red-800 uppercase">Delete post</h3>
-  <p class="mt-1 text-red-800/70">This is an unpublished post, deleting this means you will forever loose this.</p>
-  <%= link_to 'Delete post forever', post_path(slug: post.newsletter.slug, id: post.id), class: 'btn btn-danger mt-4', data: { turbo_method: :delete, turbo_confirm: 'Are you sure you want to delete this post?' } %>
+  <p class="mt-1 text-red-800/70">This is an unpublished post, deleting this means you will forever loose
+    this.</p>
+  <%= link_to "Delete post forever",
+  post_path(slug: post.newsletter.slug, id: post.id),
+  class: "btn btn-danger mt-4",
+  data: {
+    turbo_method: :delete,
+    turbo_confirm: "Are you sure you want to delete this post?",
+  } %>
 </div>

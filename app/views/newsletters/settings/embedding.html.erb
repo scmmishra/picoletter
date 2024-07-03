@@ -1,10 +1,11 @@
-<%= render 'newsletters/settings/partials/header' %>
+<%= render "newsletters/settings/partials/header" %>
 <section>
   <div class="flex items-start justify-between my-5">
     <div class="max-w-lg text-stone-600">
-      <p>Below is an example of customizable HTML code for an email subscription form that you can easily integrate and style to match your site.</p>
+      <p>Below is an example of customizable HTML code for an email subscription
+        form that you can easily integrate and style to match your site.</p>
     </div>
-    <div> 
+    <div>
       <form
         class="code--codeopen-form"
         action="https://codepen.io/pen/define"
@@ -20,7 +21,12 @@
     <div class="absolute right-2 top-2">
       <%= button_to_copy_to_clipboard(@newsletter.embded_form(with_name: true)) %>
     </div>
-    <div class="px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100 text-stone-800 max-h-80">
+    <div
+      class="
+        px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100
+        text-stone-800 max-h-80
+      "
+    >
       <pre><%= render html: @newsletter.embded_form(with_name: true) %></pre>
     </div>
   </div>
@@ -28,7 +34,12 @@
     <div class="absolute top-2 right-2">
       <%= button_to_copy_to_clipboard(@newsletter.embded_form_css) %>
     </div>
-    <div class="px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100 text-stone-800 max-h-80">
+    <div
+      class="
+        px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100
+        text-stone-800 max-h-80
+      "
+    >
       <pre><%= render html: @newsletter.embded_form_css %></pre>
     </div>
   </div>

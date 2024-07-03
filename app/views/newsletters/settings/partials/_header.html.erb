@@ -1,7 +1,52 @@
 <div class="flex items-center gap-6 mb-4 text-xl font-medium text-stone-400">
-    <%= link_to "General", settings_path(slug: @newsletter.slug), class: current_page?(settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
-    <%= link_to "Profile", profile_settings_path(slug: @newsletter.slug), class: current_page?(profile_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
-    <%= link_to "Sending Domain", sending_settings_path(slug: @newsletter.slug), class: current_page?(sending_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
-    <%= link_to "Design", design_settings_path(slug: @newsletter.slug), class: current_page?(design_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
-    <%= link_to "Embedding", embedding_settings_path(slug: @newsletter.slug), class: current_page?(embedding_settings_path(@newsletter.slug)) ? "text-stone-800" : "hover:text-stone-500" %>
+  <%= link_to "General",
+  settings_path(slug: @newsletter.slug),
+  class:
+    (
+      if current_page?(settings_path(@newsletter.slug))
+        "text-stone-800"
+      else
+        "hover:text-stone-500"
+      end
+    ) %>
+  <%= link_to "Profile",
+  profile_settings_path(slug: @newsletter.slug),
+  class:
+    (
+      if current_page?(profile_settings_path(@newsletter.slug))
+        "text-stone-800"
+      else
+        "hover:text-stone-500"
+      end
+    ) %>
+  <%= link_to "Sending Domain",
+  sending_settings_path(slug: @newsletter.slug),
+  class:
+    (
+      if current_page?(sending_settings_path(@newsletter.slug))
+        "text-stone-800"
+      else
+        "hover:text-stone-500"
+      end
+    ) %>
+  <%= link_to "Design",
+  design_settings_path(slug: @newsletter.slug),
+  class:
+    (
+      if current_page?(design_settings_path(@newsletter.slug))
+        "text-stone-800"
+      else
+        "hover:text-stone-500"
+      end
+    ) %>
+  <%= link_to "Embedding",
+  embedding_settings_path(slug: @newsletter.slug),
+  class:
+    (
+      if current_page?(embedding_settings_path(@newsletter.slug))
+        "text-stone-800"
+      else
+        "hover:text-stone-500"
+      end
+    ) %>
 </div>

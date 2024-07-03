@@ -2,29 +2,47 @@
   <%= form.hidden_field :newsletter_id, value: @newsletter.id %>
   <div class="max-w-2xl mx-auto">
     <label class="space-y-1">
-      <%= form.label :title, "Subject", class: "ml-px text-stone-500"  %>
+      <%= form.label :title, "Subject", class: "ml-px text-stone-500" %>
       <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
     </label>
   </div>
-  <div class="max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl prose-headings:text-newsletter-primary prose-a:text-newsletter-primary">
+  <div
+    class="
+      max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl
+      prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
+    "
+  >
     <%= form.rich_text_area :content %>
   </div>
   <div class="flex items-end justify-between max-w-2xl gap-2 mx-auto mt-2">
     <div>
-      <%= form.submit 'Save Draft', class: 'btn btn-primary' %>
+      <%= form.submit "Save Draft", class: "btn btn-primary" %>
     </div>
-    
+
     <div>
       <% if flash[:has_link_error] %>
-        <%= link_to 'Publish Anyway', publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: true), class: 'btn btn-warning', data: { turbo_method: :post, turbo_confirm: 'Some links might be broken, ensure you have verified them. Once published the post will be sent. Are you sure you want to publish anyway?' } %>
+        <%= link_to "Publish Anyway",
+        publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: true),
+        class: "btn btn-warning",
+        data: {
+          turbo_method: :post,
+          turbo_confirm:
+            "Some links might be broken, ensure you have verified them. Once published the post will be sent. Are you sure you want to publish anyway?",
+        } %>
       <% else %>
-        <%= link_to 'Publish & Send', publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: false), class: 'btn btn-success', data: { turbo_method: :post, turbo_confirm: 'Are you sure you want to publish and send this post now?' } %>
+        <%= link_to "Publish & Send",
+        publish_post_path(slug: @newsletter.slug, id: @post.id, no_verify: false),
+        class: "btn btn-success",
+        data: {
+          turbo_method: :post,
+          turbo_confirm: "Are you sure you want to publish and send this post now?",
+        } %>
       <% end %>
     </div>
   </div>
 <% end %>
 
 <div class="max-w-2xl mx-auto mt-8 space-y-5">
-  <%= render 'posts/scheduled', post: @post %>
-  <%= render 'posts/delete', post: @post %>
+  <%= render "posts/scheduled", post: @post %>
+  <%= render "posts/delete", post: @post %>
 </div>

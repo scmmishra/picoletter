@@ -1,6 +1,15 @@
 <% if @newsletter.errors.any? %>
-  <div class="flash" data-controller="element-removal" data-action="animationend->element-removal#remove">
-    <div class="flex items-center justify-center px-4 py-2 m-auto mt-3 bg-white rounded-md shadow-sm text-stone-700 flash__inner">
+  <div
+    class="flash"
+    data-controller="element-removal"
+    data-action="animationend->element-removal#remove"
+  >
+    <div
+      class="
+        flex items-center justify-center px-4 py-2 m-auto mt-3 bg-white rounded-md
+        shadow-sm text-stone-700 flash__inner
+      "
+    >
       <%= @newsletter.errors.full_messages.to_sentence %>
     </div>
   </div>
@@ -12,28 +21,59 @@
   <% elsif %>
     <h1 class="text-3xl text-stone-900">Create a new newsletter</h1>
   <% end %>
-  <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
+  <div
+    class="
+      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
+    "
+  >
     <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
       <div class="space-y-1">
-        <%= form.label :title, class: "ml-px text-stone-500"  %>
-        <%= form.text_field :title, required: true, class: "input w-full", data: { 'auto-slug-target': "title" }, autofocus: true, placeholder: "Name of the newsletter" %>
+        <%= form.label :title, class: "ml-px text-stone-500" %>
+        <%= form.text_field :title,
+                        required: true,
+                        class: "input w-full",
+                        data: {
+                          "auto-slug-target": "title",
+                        },
+                        autofocus: true,
+                        placeholder: "Name of the newsletter" %>
       </div>
 
       <div class="space-y-1">
-        <%= form.label :slug, class: "ml-px text-stone-500"  %>
-        <%= form.text_field :slug, required: true, class: "input w-full", data: { 'auto-slug-target': "slug" }, placeholder: "your-title-here" %>
-        <div class="font-sans text-xs text-stone-400">Used on the public archive link. <span class="font-medium text-stone-700">You cannot change this later.</span></div>
+        <%= form.label :slug, class: "ml-px text-stone-500" %>
+        <%= form.text_field :slug,
+                        required: true,
+                        class: "input w-full",
+                        data: {
+                          "auto-slug-target": "slug",
+                        },
+                        placeholder: "your-title-here" %>
+        <div class="font-sans text-xs text-stone-400">Used on the public archive link.
+          <span class="font-medium text-stone-700">You cannot change this later.</span></div>
       </div>
 
       <div class="space-y-1">
-        <%= form.label :description, class: "ml-px text-stone-500"  %>
-        <%= form.text_area :description, class: "input w-full block", rows: 5, placeholder: "What is the newsletter is about, write what you want your users to know" %>
-        <div class="font-sans text-xs text-stone-400">Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
+        <%= form.label :description, class: "ml-px text-stone-500" %>
+        <%= form.text_area :description,
+                       class: "input w-full block",
+                       rows: 5,
+                       placeholder:
+                         "What is the newsletter is about, write what you want your users to know" %>
+        <div class="font-sans text-xs text-stone-400">Supports
+          <a
+            class="underline hover:text-stone-500"
+            target="blank"
+            href="https://www.markdownguide.org/basic-syntax/"
+          >markdown</a></div>
       </div>
 
       <div class="hidden space-y-1">
         <%= form.label :timezone, class: "ml-px text-stone-500" %>
-        <%= form.text_field :timezone, class: "input w-full", data: { controller: "auto-timezone" }  %>
+        <%= form.text_field :timezone,
+                        class: "input w-full",
+                        data: {
+                          controller: "auto-timezone",
+                        } %>
       </div>
 
       <div class="mt-1">

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head>
-  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
-  <style>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <style>
     /* Add your custom styles here */
     body {
       font-family: Arial, sans-serif;
@@ -35,25 +35,32 @@
       font-size: 14px;
       text-align: center;
     }
-  </style>
-</head>
+    </style>
+  </head>
 
-<body>
-  <div class="container">
-    <p>Hey <%= @user.name %>,</p>
+  <body>
+    <div class="container">
+      <p>Hey
+        <%= @user.name %>,</p>
 
-    <p>We wanted to reach out and let you know that we've noticed some issues with your domain's DNS records. These
-      issues could be affecting the deliverability of your emails, and we want to help you get things back on track.</p>
+      <p>We wanted to reach out and let you know that we've noticed some issues
+        with your domain's DNS records. These issues could be affecting the
+        deliverability of your emails, and we want to help you get things back
+        on track.</p>
 
-    <p>When DNS records aren't configured correctly, you might experience:</p>
-    <ul>
-      <li>Emails from your domain not reaching their intended recipients</li>
-      <li>Emails sent to your domain bouncing back or failing to deliver</li>
-      <li>Your domain being flagged as a potential source of spam</li>
-    </ul>
+      <p>When DNS records aren't configured correctly, you might experience:</p>
+      <ul>
+        <li>Emails from your domain not reaching their intended recipients</li>
+        <li>Emails sent to your domain bouncing back or failing to deliver</li>
+        <li>Your domain being flagged as a potential source of spam</li>
+      </ul>
 
-    <p>The good news is that these issues can be resolved by reviewing and updating your DNS records. This will help ensure that your emails are properly authenticated and delivered to
-      the right inboxes. You can find the settings <%= link_to "here", sending_settings_url(slug: @newsletter.slug) %> </p>
-  </div>
-</body>
+      <p>The good news is that these issues can be resolved by reviewing and
+        updating your DNS records. This will help ensure that your emails are
+        properly authenticated and delivered to the right inboxes. You can find
+        the settings
+        <%= link_to "here", sending_settings_url(slug: @newsletter.slug) %>
+      </p>
+    </div>
+  </body>
 </html>

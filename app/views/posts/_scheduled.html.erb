@@ -1,15 +1,31 @@
 <% if post.scheduled? %>
   <%= form_with model: post, url: unschedule_post_path(slug: post.newsletter.slug, id: post.id), class: 'p-5 -mx-5 border rounded-xl border-yellow-100 bg-yellow-50', method: :post do |form| %>
-    <h3 class="font-sans text-xs font-bold tracking-widest text-yellow-900 uppercase">✅ Post Scheduled</h3>
-    <p class="mt-1 text-yellow-900/70">This post will automatically be sent to all your subscribers on <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%B %e, %Y") %></span> at <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%H:%M %p") %></span>. You can unschedule this post if you think something is wrong, you will be notified via email when the post is sent.</p>
-    <%= form.submit 'Unschedule post', class: 'btn btn-warning mt-4' %>
+    <h3
+      class="
+        font-sans text-xs font-bold tracking-widest text-yellow-900 uppercase
+      "
+    >✅ Post Scheduled</h3>
+    <p class="mt-1 text-yellow-900/70">This post will automatically be sent to all your subscribers on
+      <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%B %e, %Y") %></span>
+      at
+      <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%H:%M %p") %></span>. You can unschedule this post if you think something is wrong, you will
+      be notified via email when the post is sent.</p>
+    <%= form.submit "Unschedule post", class: "btn btn-warning mt-4" %>
   <% end %>
 <% else %>
   <%= form_with model: post, url: schedule_post_path(slug: post.newsletter.slug, id: post.id), class: 'p-5 -mx-5 border rounded-xl border-stone-100 bg-stone-50', method: :post do |form| %>
-    <h3 class="font-sans text-xs font-bold tracking-widest uppercase text-stone-800">Schedule post</h3>
+    <h3
+      class="
+        font-sans text-xs font-bold tracking-widest uppercase text-stone-800
+      "
+    >Schedule post</h3>
     <p class="mt-1 text-stone-800/70">Schedule it to automatically send it later. You can disable this later.</p>
-    <%= form.label :scheduled_at, "Send at", class: "block text-sm font-medium text-stone-700 sr-only" %>
-    <%= form.datetime_field :scheduled_at, required: true, class: "mt-1 input w-full font-sans" %>
-    <%= form.submit 'Schedule for later', class: 'btn btn-secondary mt-4' %>
+    <%= form.label :scheduled_at,
+               "Send at",
+               class: "block text-sm font-medium text-stone-700 sr-only" %>
+    <%= form.datetime_field :scheduled_at,
+                        required: true,
+                        class: "mt-1 input w-full font-sans" %>
+    <%= form.submit "Schedule for later", class: "btn btn-secondary mt-4" %>
   <% end %>
 <% end %>

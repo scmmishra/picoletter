@@ -7,7 +7,11 @@
           <li>
             <%= link_to posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(posts_path(@newsletter.slug))}" do %>
               <span>Posts</span>
-              <span class="rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums">
+              <span
+                class="
+                  rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums
+                "
+              >
                 <%= @newsletter.posts.published.count %>
               </span>
             <% end %>
@@ -17,7 +21,11 @@
           <li>
             <%= link_to drafts_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(drafts_posts_path(@newsletter.slug))}" do %>
               <span>Drafts</span>
-              <span class="rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums">
+              <span
+                class="
+                  rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums
+                "
+              >
                 <%= @newsletter.posts.drafts.count %>
               </span>
             <% end %>
@@ -27,7 +35,11 @@
           <li>
             <%= link_to subscribers_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
               <span>Subscribers</span>
-              <span class="rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums">
+              <span
+                class="
+                  rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] font-sans tabular-nums
+                "
+              >
                 <%= @newsletter.subscribers.verified.count %>
               </span>
             <% end %>
@@ -57,7 +69,7 @@
       <ul>
         <li>
           <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" do %>
-          <span>Logout</span>
+            <span>Logout</span>
           <% end %>
         </li>
       </ul>

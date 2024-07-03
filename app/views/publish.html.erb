@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
     <style>
       /* Add your custom styles here */
       body {
@@ -45,7 +45,8 @@
         <%= sanitize @newsletter.footer_html %>
       </div>
       <div class="footer">
-        You are receiving this email because you are subscribed to <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        You are receiving this email because you are subscribed to
+        <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
       </div>
     </div>
   </body>

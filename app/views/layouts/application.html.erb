@@ -12,8 +12,17 @@
 
   <body class="font-serif bg-stone-100">
     <% if notice = flash[:notice] || flash[:alert] %>
-      <div class="flash" data-controller="element-removal" data-action="animationend->element-removal#remove">
-        <div class="flex items-center justify-center px-4 py-2 m-auto mt-3 bg-white rounded-md shadow-sm text-stone-700 flash__inner">
+      <div
+        class="flash"
+        data-controller="element-removal"
+        data-action="animationend->element-removal#remove"
+      >
+        <div
+          class="
+            flex items-center justify-center px-4 py-2 m-auto mt-3 bg-white rounded-md
+            shadow-sm text-stone-700 flash__inner
+          "
+        >
           <%= notice %>
         </div>
       </div>

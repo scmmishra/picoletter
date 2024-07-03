@@ -1,49 +1,85 @@
-<%= render 'newsletters/settings/partials/header' %>
+<%= render "newsletters/settings/partials/header" %>
 
 <%= form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
   <div class="max-w-lg space-y-4">
     <div class="space-y-2">
       <%= form.label :primary_color, "Color", class: "ml-px text-stone-500" %>
-      
+
       <div class="flex flex-wrap gap-1.5">
         <% Newsletter.theme_config.each do |theme| %>
-          <%= form.radio_button :primary_color, theme.primary, class: "block w-7 h-7 rounded-full border-0 focus:ring-2 focus:ring-[var(--pl-current-color)] !bg-[var(--pl-current-color)]", style: "--pl-current-color: #{theme.primary}", id: "color_#{theme.name.downcase}", title: theme.name %>
+          <%= form.radio_button :primary_color,
+                            theme.primary,
+                            class:
+                              "block w-7 h-7 rounded-full border-0 focus:ring-2 focus:ring-[var(--pl-current-color)] !bg-[var(--pl-current-color)]",
+                            style: "--pl-current-color: #{theme.primary}",
+                            id: "color_#{theme.name.downcase}",
+                            title: theme.name %>
         <% end %>
       </div>
     </div>
 
-
     <div class="space-y-2">
       <%= form.label :font_preference, "Font", class: "ml-px text-stone-500" %>
       <div class="flex flex-wrap gap-1.5">
-        <label for="font-serif" class="px-4 py-1 font-serif text-lg border-0 rounded-md ring-1 ring-stone-300 ring-inset text-stone-500 has-[:checked]:bg-stone-100 has-[:checked]:text-stone-900">
+        <label
+          for="font-serif"
+          class="
+            px-4 py-1 font-serif text-lg border-0 rounded-md ring-1 ring-stone-300
+            ring-inset text-stone-500 has-[:checked]:bg-stone-100
+            has-[:checked]:text-stone-900
+          "
+        >
           <%= form.radio_button :font_preference, "serif", class: "sr-only", id: "font-serif" %>
           Serif
         </label>
-        <label for="font-sans-serif" class="px-4 py-1 font-sans text-lg border-0 rounded-md ring-1 ring-stone-300 ring-inset text-stone-500 has-[:checked]:bg-stone-100 has-[:checked]:text-stone-900">
-          <%= form.radio_button :font_preference, "sans-serif", class: "sr-only", id: "font-sans-serif" %>
+        <label
+          for="font-sans-serif"
+          class="
+            px-4 py-1 font-sans text-lg border-0 rounded-md ring-1 ring-stone-300 ring-inset
+            text-stone-500 has-[:checked]:bg-stone-100 has-[:checked]:text-stone-900
+          "
+        >
+          <%= form.radio_button :font_preference,
+                            "sans-serif",
+                            class: "sr-only",
+                            id: "font-sans-serif" %>
           Sans Serif
         </label>
-        <label for="font-mono" class="px-4 py-1 font-mono text-lg border-0 rounded-md ring-1 ring-stone-300 ring-inset text-stone-500 has-[:checked]:bg-stone-100 has-[:checked]:text-stone-900">
-          <%= form.radio_button :font_preference, "monospace", class: "sr-only", id: "font-mono" %>
+        <label
+          for="font-mono"
+          class="
+            px-4 py-1 font-mono text-lg border-0 rounded-md ring-1 ring-stone-300 ring-inset
+            text-stone-500 has-[:checked]:bg-stone-100 has-[:checked]:text-stone-900
+          "
+        >
+          <%= form.radio_button :font_preference,
+                            "monospace",
+                            class: "sr-only",
+                            id: "font-mono" %>
           Monospace
         </label>
       </div>
     </div>
 
     <label class="block space-y-1">
-      <%= form.label :email_css, "Email CSS", class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.label :email_css, "Email CSS", class: "ml-px text-stone-500 text-sm" %>
       <%= form.text_area :email_css, rows: 8, class: "input w-full font-mono block" %>
       <div class="font-sans text-xs text-stone-400">Use this to modify the styles of your email.</div>
     </label>
 
     <label class="block space-y-1">
-      <%= form.label :email_footer, "Footer", class: "ml-px text-stone-500 text-sm"  %>
+      <%= form.label :email_footer, "Footer", class: "ml-px text-stone-500 text-sm" %>
       <%= form.text_area :email_footer, rows: 5, class: "input w-full block font-mono" %>
-      <div class="font-sans text-xs text-stone-400">This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a></div>
+      <div class="font-sans text-xs text-stone-400">This footer will automatically be added at the end of every email.
+        Supports
+        <a
+          class="underline hover:text-stone-500"
+          target="blank"
+          href="https://www.markdownguide.org/basic-syntax/"
+        >markdown</a></div>
     </label>
   </div>
   <div class="mt-5">
-    <%= form.submit 'Update Settings', class: 'btn btn-primary' %>
+    <%= form.submit "Update Settings", class: "btn btn-primary" %>
   </div>
 <% end %>

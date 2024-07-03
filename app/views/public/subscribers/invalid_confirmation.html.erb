@@ -1,9 +1,16 @@
 <div class="relative max-w-md py-20 mx-auto">
-  <div class="inline-flex items-center justify-center w-10 h-10 mb-4 text-yellow-500 bg-yellow-100 rounded-lg shadow shadow-yellow-700/20 sm:-left-14 sm:absolute">
+  <div
+    class="
+      inline-flex items-center justify-center w-10 h-10 mb-4 text-yellow-500
+      bg-yellow-100 rounded-lg shadow shadow-yellow-700/20 sm:-left-14 sm:absolute
+    "
+  >
     <%= lucide("triangle-alert", class: "size-6") %>
   </div>
   <h1 class="text-3xl leading-10 text-stone-900">Invalid, failed to scubscribe</h1>
-  <p class="mt-2 text-xl text-stone-700">Seems like the link you have entered is either invalid or has expired. Please check the link and try again.</p>
+  <p class="mt-2 text-xl text-stone-700">Seems like the link you have entered is either invalid or has expired.
+    Please check the link and try again.</p>
   <hr class="my-5">
-  <p class="text-xl text-stone-700">This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.</p>
+  <p class="text-xl text-stone-700">This newsletter is managed by
+    <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.</p>
 </div>

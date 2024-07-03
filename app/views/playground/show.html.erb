@@ -3,49 +3,77 @@
   <p>Find me in app/views/playground/show.html.erb</p>
 
   <div class="grid grid-cols-4 gap-8 mt-8">
-  <% Newsletter.theme_config.each do |theme| %>
-  <div class="space-y-2">
-    <h3 class="mb-2"><%= theme.name %></h3>
-    <div style="--pl-current-color: <%= theme.primary %>" class="p-4 bg-[var(--pl-current-color)] rounded-lg">
-      <p class="text-sm tracking-wider text-center uppercase " style="color: <%= theme.text_on_primary %>">This is text on <%= theme.name %></p>
-    </div>
-    <div style="--pl-current-color: <%= theme.primary_hover %>" class="p-4 bg-[var(--pl-current-color)] rounded-lg">
-      <p class="text-sm tracking-wider text-center uppercase " style="color: <%= theme.text_on_primary %>">This is hover state</p>
-    </div>
-    <div class="p-4 bg-white rounded-lg shadow-sm">
-      <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
-      <p>
-        This is how a body will look like in an email,
-        <a href="https://picoletter.app" class="underline" style="color: <%= theme.primary %>">This is how a link will show up.</a>
-      </p>
-      <p>
-        <i>This is italic</i> and
-        <b>this is bold.</b>
-      </p>
-    </div>
-    <div class="p-4 font-serif bg-white rounded-lg shadow-sm">
-      <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
-      <p>
-        This is how a body will look like in an email,
-        <a href="https://picoletter.app" class="underline" style="color: <%= theme.primary %>">This is how a link will show up.</a>
-      </p>
-      <p>
-        <i>This is italic</i> and
-        <b>this is bold.</b>
-      </p>
-    </div>
-    <div class="p-4 font-mono bg-white rounded-lg shadow-sm">
-      <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
-      <p>
-        This is how a body will look like in an email,
-        <a href="https://picoletter.app" class="underline" style="color: <%= theme.primary %>">This is how a link will show up.</a>
-      </p>
-      <p>
-        <i>This is italic</i> and
-        <b>this is bold.</b>
-      </p>
-    </div>
-  </div>
-  <% end %>
+    <% Newsletter.theme_config.each do |theme| %>
+      <div class="space-y-2">
+        <h3 class="mb-2"><%= theme.name %></h3>
+        <div
+          style="--pl-current-color: <%= theme.primary %>"
+          class="p-4 bg-[var(--pl-current-color)] rounded-lg"
+        >
+          <p
+            class="text-sm tracking-wider text-center uppercase"
+            style="color: <%= theme.text_on_primary %>"
+          >This is text on
+            <%= theme.name %></p>
+        </div>
+        <div
+          style="--pl-current-color: <%= theme.primary_hover %>"
+          class="p-4 bg-[var(--pl-current-color)] rounded-lg"
+        >
+          <p
+            class="text-sm tracking-wider text-center uppercase"
+            style="color: <%= theme.text_on_primary %>"
+          >This is hover state</p>
+        </div>
+        <div class="p-4 bg-white rounded-lg shadow-sm">
+          <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
+          <p>
+            This is how a body will look like in an email,
+            <a
+              href="https://picoletter.app"
+              class="underline"
+              style="color: <%= theme.primary %>"
+            >This is how a link will show up.</a>
+          </p>
+          <p>
+            <i>This is italic</i>
+            and
+            <b>this is bold.</b>
+          </p>
+        </div>
+        <div class="p-4 font-serif bg-white rounded-lg shadow-sm">
+          <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
+          <p>
+            This is how a body will look like in an email,
+            <a
+              href="https://picoletter.app"
+              class="underline"
+              style="color: <%= theme.primary %>"
+            >This is how a link will show up.</a>
+          </p>
+          <p>
+            <i>This is italic</i>
+            and
+            <b>this is bold.</b>
+          </p>
+        </div>
+        <div class="p-4 font-mono bg-white rounded-lg shadow-sm">
+          <h3 class="mb-2 text-xl font-semibold">This is a heading</h3>
+          <p>
+            This is how a body will look like in an email,
+            <a
+              href="https://picoletter.app"
+              class="underline"
+              style="color: <%= theme.primary %>"
+            >This is how a link will show up.</a>
+          </p>
+          <p>
+            <i>This is italic</i>
+            and
+            <b>this is bold.</b>
+          </p>
+        </div>
+      </div>
+    <% end %>
   </div>
 </div>
