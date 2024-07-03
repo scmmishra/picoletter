@@ -1,6 +1,11 @@
-<div class="max-w-4xl pt-20 pb-10 mx-auto flex flex-col justify-between min-h-screen">
-  <section class="md:gap-x-8 gap-y-5 gap-6 grid md:grid-cols-2">
-    <div class="col-span-2">
+<main
+  class="
+    max-w-4xl pt-20 pb-10 mx-auto md:flex md:flex-col md:justify-between
+    min-h-screen
+  "
+>
+  <section class="md:gap-x-8 gap-y-5 gap-6 grid grid-cols-1 md:grid-cols-2">
+    <div class="md:col-span-2">
       <h1 class="text-3xl leading-10 text-stone-900"><%= @newsletter.title %></h1>
     </div>
     <div class="text-stone-700 prose">
@@ -10,13 +15,23 @@
       <div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">
         <%= form_with url: subscribe_path, class: "flex flex-col gap-4" do |form| %>
           <label class="space-y-1">
-            <%= form.label :email, class: "ml-px text-stone-500"  %>
-            <%= form.email_field :email, required: true, class: "input w-full", autofocus: true, autocomplete: "email", placeholder: "you@example.com", value: params[:email_address] %>
+            <%= form.label :email, class: "ml-px text-stone-500" %>
+            <%= form.email_field :email,
+                             required: true,
+                             class: "input w-full",
+                             autofocus: true,
+                             autocomplete: "email",
+                             placeholder: "you@example.com",
+                             value: params[:email_address] %>
           </label>
 
           <label class="space-y-1">
-            <%= form.label :full_name, class: "ml-px text-stone-500"  %>
-            <%= form.text_field :name, required: true, class: "input w-full", autocomplete: "name", placeholder: "Jake Ashby" %>
+            <%= form.label :full_name, class: "ml-px text-stone-500" %>
+            <%= form.text_field :name,
+                            required: true,
+                            class: "input w-full",
+                            autocomplete: "name",
+                            placeholder: "Jake Ashby" %>
           </label>
 
           <div>
@@ -25,12 +40,29 @@
         <% end %>
       </div>
       <hr class="my-5">
-      <div class="text-stone-700 flex items-center gap-1">
-        View the archive <%= lucide_icon('arrow-right', class: "h-4 w-4") %>
+      <div class="space-y-2">
+        <% if @newsletter.website.present? %>
+          <%= link_to @newsletter.website, class: "text-stone-700 flex items-center gap-1 group"  do %>
+            Visit Website
+            <%= lucide_icon(
+              "arrow-right",
+              class: "h-4 w-4 group-hover:translate-x-1 duration-200",
+            ) %>
+          <% end %>
+        <% end %>
+        <a href="/posts" class="text-stone-700 flex items-center gap-1 group">
+          View the archive
+          <%= lucide_icon(
+            "arrow-right",
+            class: "h-4 w-4 group-hover:translate-x-1 duration-200",
+          ) %>
+        </a>
       </div>
     </div>
   </section>
-  <footer class="max-w-3xl mx-auto">
-    <p class="text-sm text-stone-500 text-center">This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.</p>
+  <footer class="max-w-3xl mx-auto mt-12">
+    <p class="text-sm text-stone-500 text-center">This newsletter is managed by
+      <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+    </p>
   </footer>
 </main>
