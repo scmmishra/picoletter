@@ -6,7 +6,7 @@
 >
   <section class="md:gap-x-8 gap-y-5 gap-6 grid grid-cols-1 md:grid-cols-2">
     <div class="md:col-span-2">
-      <h1 class="text-3xl leading-10 text-stone-900"><%= @newsletter.title %></h1>
+      <h1 class="text-3xl leading-10 text-stone-900 font-bold"><%= @newsletter.title %></h1>
     </div>
     <div class="text-stone-700 prose">
       <%= sanitize @newsletter.description_html %>
@@ -35,7 +35,9 @@
           </label>
 
           <div>
-            <%= form.submit "Subscribe", class: "btn btn-primary w-full" %>
+            <%= form.submit "Subscribe",
+                        class: "btn btn-tinted w-full",
+                        style: @newsletter.primary_styles %>
           </div>
         <% end %>
       </div>

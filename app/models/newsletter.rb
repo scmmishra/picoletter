@@ -72,6 +72,14 @@ class Newsletter < ApplicationRecord
     end
   end
 
+  def primary_styles
+    primary = "--pl-primary-color: #{theme.primary};"
+    hover = "--pl-primary-hover-color: #{theme.primary_hover};"
+    text = "--pl-primary-text-color:  #{theme.text_on_primary};"
+
+    "#{primary} #{text} #{hover}"
+  end
+
   def self.theme_config
     # load colors from conifg/colors.yml
     data = YAML.load_file(Rails.root.join("config", "colors.yml"))

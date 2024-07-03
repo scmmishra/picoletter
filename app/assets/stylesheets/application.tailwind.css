@@ -10,11 +10,19 @@
   .btn {
     @apply box-border inline-block px-4 py-1.5 m-0 font-sans text-base leading-6 text-center align-middle border rounded-lg shadow-sm cursor-pointer select-none bg-gradient-to-t to-transparent focus:outline-0 focus:ring-2 active:bg-none active:shadow focus:shadow;
 
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-      border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    box-shadow: rgba(255, 255, 255, 0.15) 0 1px 0 inset,
+    transition:
+      color 0.15s ease-in-out,
+      background-color 0.15s ease-in-out,
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+    box-shadow:
+      rgba(255, 255, 255, 0.15) 0 1px 0 inset,
       rgba(46, 54, 80, 0.075) 0 1px 1px;
     touch-action: manipulation;
+  }
+
+  .btn-tinted {
+    @apply text-[var(--pl-primary-text-color)] bg-[var(--pl-primary-color)] border-[var(--pl-primary-color)] hover:bg-[var(--pl-primary-hover-color)] from-black/20 ring-[var(--pl-primary-hover-color)] active:bg-[var(--pl-primary-hover-color)] active:border-[var(--pl-primary-hover-color)];
   }
 
   .btn-primary {
