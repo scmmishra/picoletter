@@ -118,6 +118,8 @@ GEM
       dotenv (= 3.1.2)
       railties (>= 6.1)
     drb (2.2.1)
+    erb-formatter (0.7.3)
+      syntax_tree (~> 6.0)
     erubi (1.13.0)
     et-orbi (1.2.11)
       tzinfo
@@ -245,6 +247,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
+    prettier_print (1.2.1)
     psych (5.1.2)
       stringio
     public_suffix (6.0.0)
@@ -386,6 +389,8 @@ GEM
     strscan (3.1.0)
     svix (1.24.0)
       typhoeus (~> 1.0, >= 1.0.1)
+    syntax_tree (6.2.0)
+      prettier_print (>= 1.2.0)
     tailwindcss-rails (2.6.1-aarch64-linux)
       railties (>= 7.0.0)
     tailwindcss-rails (2.6.1-arm64-darwin)
@@ -434,6 +439,7 @@ DEPENDENCIES
   capybara
   debug
   dotenv-rails
+  erb-formatter
   factory_bot_rails
   faker
   image_processing (~> 1.2)

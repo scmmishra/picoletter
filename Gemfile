@@ -71,6 +71,7 @@ group :development do
   gem "rubocop-rails-omakase", require: false
   gem "annotate"
   gem "letter_opener"
+  gem "erb-formatter"
 end
 
 group :test do
