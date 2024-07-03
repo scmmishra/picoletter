@@ -3,7 +3,7 @@
     <h1 class="text-3xl leading-10 text-stone-900"><%= @newsletter.title %></h1>
   </section>
   <section class="text-stone-700 prose">
-    <%= raw @newsletter.description_html %>
+    <%= sanitize @newsletter.description_html %>
   </section>
   <section>
     <div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">

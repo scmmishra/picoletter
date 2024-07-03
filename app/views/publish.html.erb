@@ -42,7 +42,7 @@
         <%= @post.content %>
       </div>
       <div class="footer">
-        <%= raw @newsletter.footer_html %>
+        <%= sanitize @newsletter.footer_html %>
       </div>
       <div class="footer">
         You are receiving this email because you are subscribed to <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
