@@ -1,0 +1,29 @@
+<div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">
+  <%= form_with url: subscribe_path, class: "flex flex-col gap-4" do |form| %>
+    <label class="space-y-1">
+      <%= form.label :email, class: "ml-px text-stone-500" %>
+      <%= form.email_field :email,
+                       required: true,
+                       class: "input w-full",
+                       autofocus: true,
+                       autocomplete: "email",
+                       placeholder: "you@example.com",
+                       value: params[:email_address] %>
+    </label>
+
+    <label class="space-y-1">
+      <%= form.label :full_name, class: "ml-px text-stone-500" %>
+      <%= form.text_field :name,
+                      required: true,
+                      class: "input w-full",
+                      autocomplete: "name",
+                      placeholder: "Jake Ashby" %>
+    </label>
+
+    <div>
+      <%= form.submit "Subscribe",
+                  class: "btn btn-tinted w-full",
+                  style: @newsletter.primary_styles %>
+    </div>
+  <% end %>
+</div>
