@@ -29,7 +29,8 @@ Rails.application.routes.draw do
     get "confirm", to: "public/subscribers#confirm_subscriber", as: :confirm
     get "almost-there", to: "public/subscribers#almost_there", as: :almost_there
     get "/", to: "public/newsletters#show", as: :newsletter
-    get "/post/:post_slug", to: "public/newsletters#show_post", as: :newsletter_post
+    get "/posts", to: "public/newsletters#all_posts", as: :newsletter_all_posts
+    get "/posts/:post_slug", to: "public/newsletters#show_post", as: :newsletter_post
   end
 
   scope "/app" do

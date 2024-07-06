@@ -8,6 +8,10 @@ class Public::NewslettersController < ApplicationController
   def show_post
   end
 
+  def all_posts
+    @posts = @newsletter.posts.published
+  end
+
   private
 
   def set_post

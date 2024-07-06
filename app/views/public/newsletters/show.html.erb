@@ -24,13 +24,13 @@
             ) %>
           <% end %>
         <% end %>
-        <a href="/posts" class="text-stone-700 flex items-center gap-1 group">
+        <%= link_to newsletter_all_posts_path, class: "text-stone-700 flex items-center gap-1 group" do %>
           View all posts
           <%= lucide_icon(
             "arrow-right",
             class: "h-4 w-4 group-hover:translate-x-1 duration-200",
           ) %>
-        </a>
+        <% end %>
       </div>
     </div>
   </section>
