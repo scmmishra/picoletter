@@ -1,3 +1,5 @@
+<% autofocus = local_assigns.fetch(:autofocus, false) %>
+
 <div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">
   <%= form_with url: subscribe_path, class: "flex flex-col gap-4" do |form| %>
     <label class="space-y-1">
@@ -5,7 +7,7 @@
       <%= form.email_field :email,
                        required: true,
                        class: "input w-full",
-                       autofocus: true,
+                       autofocus: autofocus,
                        autocomplete: "email",
                        placeholder: "you@example.com",
                        value: params[:email_address] %>

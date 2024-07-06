@@ -34,5 +34,8 @@
       <%= @newsletter.title %>
     </p>
     <%= render "public/newsletters/partials/subscribe" %>
+    <p class="text-sm text-stone-500 text-center">This newsletter is managed by
+      <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+    </p>
   </footer>
 </main>
