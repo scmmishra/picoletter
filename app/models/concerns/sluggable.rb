@@ -8,6 +8,8 @@
 module Sluggable
   extend ActiveSupport::Concern
 
+  excluded_candidates = %w[new edit create update destroy show index app dev admin auth login logout sign_in sign_out sign_up home about contact privacy terms faq help search api feed rss xml json sitemap settings profile account dashboard blog news articles posts get post put patch delete options head html htm php asp aspx js css png jpg gif pdf]
+
   included do
     before_validation :generate_slug
     validates :slug, presence: true, uniqueness: { scope: slug_uniqueness_scope }
@@ -41,8 +43,9 @@ module Sluggable
 
   def generate_unique_slug(base_slug, counter = 0)
     slug_candidate = counter.zero? ? base_slug : "#{base_slug}-#{counter}"
-    return slug_candidate unless self.class.exists?(slug: slug_candidate)
+    return generate_unique_slug(base_slug, counter + 1) if excluded_candidates.include?(slug_candidate)
+    return generate_unique_slug(base_slug, counter + 1) if self.class.exists?(slug: slug_candidate)
 
-    generate_unique_slug(base_slug, counter + 1)
+    slug_candidate
   end
 end
