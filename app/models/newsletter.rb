@@ -9,6 +9,7 @@
 #  domain_verified   :boolean          default(FALSE)
 #  email_css         :text
 #  email_footer      :text             default("")
+#  enable_archive    :boolean
 #  font_preference   :string           default("sans-serif")
 #  primary_color     :string           default("#09090b")
 #  reply_to          :string
