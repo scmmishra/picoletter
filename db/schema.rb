@@ -84,7 +84,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_055938) do
     t.boolean "domain_verified", default: false
     t.string "domain_id"
     t.json "dns_records"
-    t.boolean "enable_archive"
+    t.boolean "enable_archive", default: true
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
   end

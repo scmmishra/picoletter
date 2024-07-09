@@ -1,6 +1,7 @@
 class Public::NewslettersController < ApplicationController
   before_action :set_newsletter
   before_action :set_post, only: [ :show_post ]
+  before_action :ensure_archive_enabled, only: [ :show_post, :all_posts ]
 
   def show
   end
@@ -13,6 +14,10 @@ class Public::NewslettersController < ApplicationController
   end
 
   private
+
+  def ensure_archive_enabled
+    redirect_to newsletter_url(@newsletter.slug) unless @newsletter.enable_archive
+  end
 
   def set_post
     @post = @newsletter.posts.published.from_slug(params[:post_slug])
