@@ -45,6 +45,10 @@ class Subscriber < ApplicationRecord
     update(status: "verified", verified_at: Time.current)
   end
 
+  def display_name
+    full_name.presence || email
+  end
+
   def verified?
     status == "verified"
   end

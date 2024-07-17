@@ -1,7 +1,7 @@
 class Newsletters::SubscribersController < ApplicationController
   layout "newsletters"
 
-  before_action :ensure_authenticated, only: [ :index ]
+  before_action :ensure_authenticated
   before_action :set_newsletter
 
 
@@ -14,6 +14,10 @@ class Newsletters::SubscribersController < ApplicationController
       .page(page || 0)
       .where(status: status)
       .per(30)
+  end
+
+  def show
+    @subscriber = @newsletter.subscribers.find(params[:id])
   end
 
   private

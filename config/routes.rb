@@ -56,7 +56,9 @@ Rails.application.routes.draw do
         patch :embedding, action: :update_embedding, as: :update_embedding
       end
 
-      resources :subscribers, only: [ :index ], path: "subscribers", module: "newsletters"
+      resources :subscribers, only: [ :index, :show ], path: "subscribers", module: "newsletters" do
+        get ":id", to: "subscribers#show", on: :collection, as: :subscriber
+      end
 
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do
         member do

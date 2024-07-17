@@ -1,25 +1,27 @@
-<div
-  class="
-    grid grid-cols-10 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50
-    to-slate-50/10
-  "
->
-  <div class="col-span-3 font-medium text-stone-800">
-    <h2><%= subscriber.full_name %></h2>
-  </div>
-  <div class="col-span-3 font-sans text-sm text-stone-500">
-    <h2><%= subscriber.email %></h2>
-  </div>
-  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
-    <% if subscriber.status == 'unsubscribed' %>
-      <%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
-    <% elsif subscriber.status == 'verified' %>
-      <%= subscriber.verified_at.strftime("%B %d, %Y") %>
-    <% elsif subscriber.status == 'unverified' %>
+<%= link_to subscriber_path(@newsletter.slug, subscriber.id) do %>
+  <div
+    class="
+      grid grid-cols-10 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50
+      to-slate-50/10
+    "
+  >
+    <div class="col-span-3 font-medium text-stone-800">
+      <h2><%= subscriber.full_name %></h2>
+    </div>
+    <div class="col-span-3 font-sans text-sm text-stone-500">
+      <h2><%= subscriber.email %></h2>
+    </div>
+    <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
+      <% if subscriber.status == 'unsubscribed' %>
+        <%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
+      <% elsif subscriber.status == 'verified' %>
+        <%= subscriber.verified_at.strftime("%B %d, %Y") %>
+      <% elsif subscriber.status == 'unverified' %>
+        <%= subscriber.created_at.strftime("%B %d, %Y") %>
+      <% end %>
+    </div>
+    <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
       <%= subscriber.created_at.strftime("%B %d, %Y") %>
-    <% end %>
+    </div>
   </div>
-  <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
-    <%= subscriber.created_at.strftime("%B %d, %Y") %>
-  </div>
-</div>
+<% end %>
