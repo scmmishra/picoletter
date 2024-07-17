@@ -6,6 +6,7 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
+#  notes              :text
 #  status             :integer          default("unverified")
 #  unsubscribe_reason :string
 #  unsubscribed_at    :datetime

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_09_055938) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_17_074555) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -227,6 +227,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_09_055938) do
     t.datetime "updated_at", null: false
     t.datetime "unsubscribed_at"
     t.string "unsubscribe_reason"
+    t.text "notes"
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
   end
 
