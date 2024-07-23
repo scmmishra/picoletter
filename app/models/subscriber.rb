@@ -25,6 +25,7 @@
 #
 class Subscriber < ApplicationRecord
   include Tokenable
+  include Statusable
 
   tokenable_on :unsubscribe
   tokenable_on :confirmation, expiry: 48.hours
@@ -47,10 +48,6 @@ class Subscriber < ApplicationRecord
 
   def display_name
     full_name.presence || email
-  end
-
-  def verified?
-    status == "verified"
   end
 
   def unsubscribe!

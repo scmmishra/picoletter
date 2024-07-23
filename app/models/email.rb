@@ -23,6 +23,8 @@
 #  subscriber_id  (subscriber_id => subscribers.id)
 #
 class Email < ApplicationRecord
+  include Statusable
+
   belongs_to :post
   belongs_to :subscriber, optional: true
 
