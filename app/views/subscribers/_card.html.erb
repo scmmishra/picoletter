@@ -12,11 +12,11 @@
       <h2><%= subscriber.email %></h2>
     </div>
     <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
-      <% if subscriber.status == 'unsubscribed' %>
+      <% if subscriber.unsubscribed? %>
         <%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
-      <% elsif subscriber.status == 'verified' %>
+      <% elsif subscriber.verified? %>
         <%= subscriber.verified_at.strftime("%B %d, %Y") %>
-      <% elsif subscriber.status == 'unverified' %>
+      <% elsif subscriber.unverified? %>
         <%= subscriber.created_at.strftime("%B %d, %Y") %>
       <% end %>
     </div>
