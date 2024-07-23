@@ -2,8 +2,8 @@
   <section class="flex flex-col justify-between flex-grow space-y-5">
     <div class="space-y-5">
       <h1 class="mt-1 text-xl"><%= @newsletter.title %></h1>
-      <nav class="grid flex-grow gap-1 text-stone-500">
-        <ul>
+      <nav class="flex-grow text-stone-500">
+        <ul class="grid gap-1">
           <li>
             <%= link_to posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(posts_path(@newsletter.slug))}" do %>
               <span>Posts</span>
@@ -16,8 +16,6 @@
               </span>
             <% end %>
           </li>
-        </ul>
-        <ul>
           <li>
             <%= link_to drafts_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(drafts_posts_path(@newsletter.slug))}" do %>
               <span>Drafts</span>
@@ -30,8 +28,6 @@
               </span>
             <% end %>
           </li>
-        </ul>
-        <ul>
           <li>
             <%= link_to subscribers_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
               <span>Subscribers</span>
@@ -44,8 +40,6 @@
               </span>
             <% end %>
           </li>
-        </ul>
-        <ul>
           <li>
             <%= link_to settings_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(settings_path(@newsletter.slug))}" do %>
               <span>Settings</span>
@@ -54,8 +48,14 @@
         </ul>
       </nav>
     </div>
-    <nav class="grid gap-1 text-stone-500 justify-self-end">
-      <ul>
+    <nav class="text-stone-500 justify-self-end">
+      <ul class="grid gap-1">
+        <li>
+          <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md" do %>
+            <span>Public View</span>
+            <%= lucide_icon("external-link", class: "size-3") %>
+          <% end %>
+        </li>
         <li>
           <%= link_to archive_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(archive_posts_path(@newsletter.slug))}" do %>
             <span>Archived</span>
@@ -64,9 +64,7 @@
             </span>
           <% end %>
         </li>
-      </ul>
-      <%# logout %>
-      <ul>
+        <%# logout %>
         <li>
           <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" do %>
             <span>Logout</span>
