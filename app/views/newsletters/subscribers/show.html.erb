@@ -79,7 +79,7 @@
       <span class="font-normal text-stone-500">Verified at</span>
       <%= @subscriber.verified_at.strftime("%B %d, %Y") %>
     <% elsif @subscriber.status == 'unverified' %>
-      <span class="font-normal text-stone-500">Subscriberd at</span>
+      <span class="font-normal text-stone-500">Subscribed at</span>
       <%= @subscriber.created_at.strftime("%B %d, %Y") %>
     <% end %>
   </div>
