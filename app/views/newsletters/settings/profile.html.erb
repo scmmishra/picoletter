@@ -11,11 +11,6 @@
       <%= form.label :email, "Email", class: "ml-px text-stone-500 text-sm" %>
       <%= form.text_field :email, required: true, class: "input w-full", autofocus: true %>
     </label>
-
-    <label class="block space-y-1">
-      <%= form.label :bio, "Bio", class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_area :bio, rows: 5, class: "input w-full", autofocus: true %>
-    </label>
   </div>
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
