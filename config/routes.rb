@@ -58,6 +58,7 @@ Rails.application.routes.draw do
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers", module: "newsletters" do
         get ":id", to: "subscribers#show", on: :collection, as: :subscriber
+        patch ":id", to: "subscribers#update", on: :collection, as: :update_subscriber
       end
 
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do

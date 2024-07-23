@@ -5,7 +5,7 @@
     <% end %>
     <%= @subscriber.display_name %>
     <div class="ml-3 inline">
-      <% if @subscriber.status == 'verified' %>
+      <% if @subscriber.verified? %>
         <span
           class="
             inline-flex items-center justify-center h-6 text-[10px] gap-x-1 font-medium px-2
@@ -16,7 +16,7 @@
           <%= lucide_icon("mail-check", class: "size-3") %>
           Verified
         </span>
-      <% elsif @subscriber.status == 'unsubscribed' %>
+      <% elsif @subscriber.unsubscribed? %>
         <span
           class="
             inline-flex items-center justify-center h-6 text-[10px] gap-x-1 font-medium
@@ -27,7 +27,7 @@
           <%= lucide_icon("mail-x", class: "size-3") %>
           Unsubscribed
         </span>
-      <% elsif @subscriber.status == 'unverified' %>
+      <% elsif @subscriber.unverified? %>
         <span
           class="
             inline-flex items-center justify-center h-6 text-[10px] gap-x-1 font-medium
@@ -43,42 +43,59 @@
   </h2>
 </div>
 
-<%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "py-6" do |form| %>
-  <div class="max-w-lg space-y-4">
-    <label class="block space-y-1">
-      <%= form.label :email, class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_field :email,
-                      required: true,
-                      disabled: true,
-                      class: "input w-full bg-stone-200 text-stone-600" %>
-    </label>
-    <label class="block space-y-1">
-      <%= form.label :full_name, "Full name", class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_field :full_name,
-                      required: true,
-                      class: "input w-full",
-                      autofocus: true %>
-    </label>
-    <label class="block space-y-1">
-      <%= form.label :notes, "Editor notes", class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_area :notes,
-                     rows: 5,
-                     required: true,
-                     class: "input w-full",
-                     autofocus: true %>
-    </label>
-  </div>
+<%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "max-w-lg space-y-4" do |form| %>
+  <label class="block space-y-1">
+    <%= form.label :email, class: "ml-px text-stone-500 text-sm" %>
+    <%= form.text_field :email,
+                    required: true,
+                    disabled: true,
+                    class: "input w-full bg-stone-200 text-stone-600" %>
+  </label>
+  <label class="block space-y-1">
+    <%= form.label :full_name, "Full name", class: "ml-px text-stone-500 text-sm" %>
+    <%= form.text_field :full_name,
+                    required: true,
+                    class: "input w-full",
+                    autofocus: true %>
+  </label>
+  <label class="block space-y-1">
+    <%= form.label :notes, "Editor notes", class: "ml-px text-stone-500 text-sm" %>
+    <%= form.text_area :notes, rows: 5, class: "input w-full" %>
+  </label>
+  <%= form.submit "Update Subscriber", class: "btn btn-primary" %>
 <% end %>
 
-<div>
+<hr class="max-w-lg my-8">
+<section class="max-w-lg grid gap-6">
+  <%= render "newsletters/subscribers/partials/action_card", title: "Delete Forever", help_text: "Delete the subscriber permanently, this cannot be undone" do %>
+    <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-danger text-sm" do %>
+      Delete Forever
+    <% end %>
+  <% end %>
+  <% if @subscriber.unverified? %>
+    <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to cofirm their address." do %>
+      <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-primary text-sm" do %>
+        Send Reminder
+      <% end %>
+    <% end %>
+  <% elsif @subscriber.verified? %>
+    <%= render "newsletters/subscribers/partials/action_card", title: "Unsubscribe", help_text: "They won't receive any of your emails. You can resubscribe them without the need to reconfirm." do %>
+      <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-warning text-sm" do %>
+        Unsubscribe
+      <% end %>
+    <% end %>
+  <% end %>
+</section>
+<hr class="max-w-lg my-8">
+<section>
   <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
-    <% if @subscriber.status == 'unsubscribed' %>
+    <% if @subscriber.unsubscribed? %>
       <span class="font-normal text-stone-500">Unsubscribed at</span>
       <%= @subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
-    <% elsif @subscriber.status == 'verified' %>
+    <% elsif @subscriber.verified? %>
       <span class="font-normal text-stone-500">Verified at</span>
       <%= @subscriber.verified_at.strftime("%B %d, %Y") %>
-    <% elsif @subscriber.status == 'unverified' %>
+    <% elsif @subscriber.unverified? %>
       <span class="font-normal text-stone-500">Subscribed at</span>
       <%= @subscriber.created_at.strftime("%B %d, %Y") %>
     <% end %>
@@ -87,4 +104,4 @@
     <span class="font-normal text-stone-500">Created at</span>
     <%= @subscriber.created_at.strftime("%B %d, %Y") %>
   </div>
-</div>
+</section>
