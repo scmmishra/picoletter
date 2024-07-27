@@ -37,5 +37,9 @@ module PicoLetter
     # default host for emails and rendering
     config.action_mailer.default_url_options = { host: config.host }
     config.action_controller.default_url_options = { host: config.host }
+
+    # create Isolated connection pools for reader and writer
+    # ref: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter?tab=readme-ov-file#isolated-connection-pools
+    config.enhanced_sqlite3.isolate_connection_pools = true
   end
 end
