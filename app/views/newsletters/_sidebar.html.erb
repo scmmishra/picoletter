@@ -56,7 +56,7 @@
             <%= lucide_icon("external-link", class: "size-3") %>
           <% end %>
         </li>
-        <li>
+        <li class="hidden">
           <%= link_to archive_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(archive_posts_path(@newsletter.slug))}" do %>
             <span>Archived</span>
             <span class="rounded-md px-2 py-0.5 leading-none bg-stone-200 text-xs">
