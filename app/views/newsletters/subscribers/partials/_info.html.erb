@@ -1,0 +1,16 @@
+<div class="leading-6 text-stone-800 font-medium text-sm font-sans">
+  <% if @subscriber.unsubscribed? %>
+    <span class="font-normal text-stone-500">Unsubscribed at</span>
+    <%= @subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
+  <% elsif @subscriber.verified? %>
+    <span class="font-normal text-stone-500">Verified at</span>
+    <%= @subscriber.verified_at.strftime("%B %d, %Y") %>
+  <% elsif @subscriber.unverified? %>
+    <span class="font-normal text-stone-500">Subscribed at</span>
+    <%= @subscriber.created_at.strftime("%B %d, %Y") %>
+  <% end %>
+</div>
+<div class="leading-6 text-stone-800 font-medium text-sm font-sans">
+  <span class="font-normal text-stone-500">Created at</span>
+  <%= @subscriber.created_at.strftime("%B %d, %Y") %>
+</div>
