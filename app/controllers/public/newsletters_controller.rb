@@ -5,9 +5,11 @@ class Public::NewslettersController < ApplicationController
   before_action :ensure_archive_enabled, only: [ :show_post, :all_posts ]
 
   def show
+    fresh_when(@newsletter)
   end
 
   def show_post
+    fresh_when(@post, public: true)
   end
 
   def all_posts
