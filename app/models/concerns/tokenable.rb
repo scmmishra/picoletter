@@ -27,13 +27,13 @@ module Tokenable
         subscriber
       end
     end
+
+    def secret_key_base
+      AppConfig.get("SECRET_KEY_BASE")
+    end
   end
 
   private
-
-  def secret_key_base
-    AppConfig.get("SECRET_KEY_BASE")
-  end
 
   def generate_jwt(scope)
     payload = {
@@ -47,11 +47,11 @@ module Tokenable
       payload["exp"] = (Time.current + self.class.token_scopes[scope]).to_i
     end
 
-    JWT.encode(payload, secret_key_base, "HS256")
+    JWT.encode(payload, self.class.secret_key_base, "HS256")
   end
 
   def verify_jwt(token, scope)
-    payload = JWT.decode(token, secret_key_base, true, { algorithm: "HS256" }).first
+    payload = JWT.decode(token, self.class.secret_key_base, true, { algorithm: "HS256" }).first
     verified = payload["sub"] == id && payload["newsletter"] == newsletter.id && payload["scope"] == scope.to_s
     raise JWT::VerificationError, "Invalid token" unless verified
     payload
