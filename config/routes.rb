@@ -57,8 +57,11 @@ Rails.application.routes.draw do
       end
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers", module: "newsletters" do
-        get ":id", to: "subscribers#show", on: :collection, as: :subscriber
-        patch ":id", to: "subscribers#update", on: :collection, as: :update_subscriber
+        get ":id", to: "subscribers#show", on: :collection, as: :show
+        patch ":id", to: "subscribers#update", on: :collection, as: :update
+        delete ":id", to: "subscribers#destroy", on: :collection, as: :destroy
+        post ":id/unsubscribe", to: "subscribers#unsubscribe", on: :collection, as: :unsubscribe
+        post ":id/send_reminder", to: "subscribers#send_reminder", on: :collection, as: :send_reminder
       end
 
       resources :posts, only: [ :index, :edit, :show, :update ], path: "", module: "newsletters" do

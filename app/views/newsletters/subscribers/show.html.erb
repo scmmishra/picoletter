@@ -69,19 +69,28 @@
 <hr class="max-w-lg my-8">
 <section class="max-w-lg grid gap-6">
   <%= render "newsletters/subscribers/partials/action_card", title: "Delete Forever", help_text: "Delete the subscriber permanently, this cannot be undone" do %>
-    <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-danger text-sm" do %>
-      Delete Forever
-    <% end %>
+    <%= link_to "Delete Forever",
+    subscriber_path(@newsletter.slug, @subscriber.id),
+    class: "btn w-full btn-danger text-sm",
+    data: {
+      turbo_method: :delete,
+      turbo_confirm:
+        "Are you sure you want to delete this subscriber forever? It cannot be undone.",
+    } %>
   <% end %>
   <% if @subscriber.unverified? %>
     <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to cofirm their address." do %>
-      <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-primary text-sm" do %>
+      <%= link_to send_reminder_subscribers_path(@newsletter.slug), class:"btn w-full btn-primary text-sm", data: { turbo_method: :post } do %>
         Send Reminder
       <% end %>
     <% end %>
   <% elsif @subscriber.verified? %>
     <%= render "newsletters/subscribers/partials/action_card", title: "Unsubscribe", help_text: "They won't receive any of your emails. You can resubscribe them without the need to reconfirm." do %>
-      <%= link_to subscribers_path(@newsletter.slug), class:"btn w-full btn-warning text-sm" do %>
+      <%= link_to unsubscribe_subscribers_path(@newsletter.slug, @subscriber.id), class:"btn w-full btn-warning text-sm", data: {
+        turbo_method: :post,
+        turbo_confirm:
+          "Are you sure you want to unsubscribe #{@subscriber.display_name}?",
+      } do %>
         Unsubscribe
       <% end %>
     <% end %>
