@@ -40,6 +40,10 @@ module PicoLetter
 
     # create Isolated connection pools for reader and writer
     # ref: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter?tab=readme-ov-file#isolated-connection-pools
-    config.enhanced_sqlite3.isolate_connection_pools = true
+    #
+    # NOTE: THIS IS DISABLED FOR NOW
+    # Error: EnhancedSQLite3::Error: development has 2 configurations (EnhancedSQLite3::Error)
+    # See: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter/issues/22
+    # config.enhanced_sqlite3.isolate_connection_pools = true
   end
 end
