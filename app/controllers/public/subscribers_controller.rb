@@ -11,6 +11,13 @@ class Public::SubscribersController < ApplicationController
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   end
 
+  def public_subscribe
+    subscriber = subscribe
+    subscriber.update(created_via: "public")
+
+    redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+  end
+
   def almost_there
     @email = params[:email]
     return unless @email.present?
