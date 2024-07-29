@@ -80,10 +80,6 @@ module Embeddable
     CSS
   end
 
-  def theme
-    # find theme config matching newsletter primary color
-    Newsletter.theme_config.find { |config| config.primary == primary_color }
-  end
 
   def codepen_payload
     payload = {

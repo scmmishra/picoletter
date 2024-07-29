@@ -25,6 +25,14 @@ module Themeable
     end
   end
 
+
+  def theme
+    # find theme config matching newsletter primary color
+    # default primary #09090b
+    primary = primary_color || "#09090b"
+    Newsletter.theme_config.find { |config| config.primary == primary }
+  end
+
   def primary_styles
     primary = "--pl-primary-color: #{theme.primary};"
     hover = "--pl-primary-hover-color: #{theme.primary_hover};"
