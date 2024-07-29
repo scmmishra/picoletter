@@ -29,7 +29,7 @@ module Tokenable
     end
 
     def secret_key_base
-      AppConfig.get("SECRET_KEY_BASE")
+      AppConfig.get!("SECRET_KEY_BASE")
     end
   end
 

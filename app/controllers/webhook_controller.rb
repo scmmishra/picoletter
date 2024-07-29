@@ -4,7 +4,7 @@ class WebhookController < ApplicationController
   def resend
     payload = request.body.read
     headers = request.headers
-    secret = AppConfig.get("RESEND__WEBHOOK_SECRET")
+    secret = AppConfig.get!("RESEND__WEBHOOK_SECRET")
     wh = Svix::Webhook.new(secret)
 
     json = wh.verify(payload, headers)
