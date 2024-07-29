@@ -6,8 +6,10 @@ app:
     - SECRET_KEY_BASE
     - RESEND__API_KEY
     - RESEND__WEBHOOK_SECRET
+    - PICO_HOST
+    - PICO_SUPPORT_EMAIL
   volumes:
-    - "/rails/storage:/data"
+    - "pico-data:/rails/storage"
   port_range:
     start: 8000
     end: 9000
