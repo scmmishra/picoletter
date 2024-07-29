@@ -68,6 +68,7 @@ Rails.application.configure do
   # config.cache_store = :mem_cache_store
 
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :resend
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
