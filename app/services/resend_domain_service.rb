@@ -10,9 +10,12 @@ class ResendDomainService
   end
 
   def verify_domain(domain_id)
-    Resend::Domains.verify(domain_id)
+    # get the domain, if it is already verified, return the domain
+    # else verify the domain and return the domain
+    domain = Resend::Domains.get(domain_id)
+    return domain if domain[:status] == "verified"
 
-    Resend::Domains.get(domain_id)
+    Resend::Domains.verify(domain_id)
   end
 
   def delete_domain(domain_id)
