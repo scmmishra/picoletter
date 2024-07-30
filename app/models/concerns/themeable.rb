@@ -30,7 +30,7 @@ module Themeable
     # find theme config matching newsletter primary color
     # default primary #09090b
     primary = primary_color || "#09090B"
-    Newsletter.theme_config.find { |config| config.primary == primary }
+    Newsletter.theme_config.find { |config| config.primary.upcase == primary.upcase }
   end
 
   def primary_styles
