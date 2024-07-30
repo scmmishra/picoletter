@@ -19,7 +19,7 @@
     <div class="grid gap-2 <%= 'md:grid-cols-3' if @provider.name.nil? %>">
       <% if @provider.name.nil? || @provider.name == "Gmail" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://gmail.com' %>"
+          href="<%= @search_url || 'https://gmail.com' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -47,7 +47,7 @@
       <% end %>
       <% if @provider.name.nil? || @provider.name == "Outlook" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://outlook.office365.com/mail/login.html' %>"
+          href="<%= @search_url || 'https://outlook.office365.com/mail/login.html' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -69,7 +69,7 @@
       <% end %>
       <% if @provider.name.nil? || @provider.name == "Hey" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://app.hey.com/sign_in' %>"
+          href="<%= @search_url || 'https://app.hey.com/sign_in' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -96,7 +96,7 @@
       <% end %>
       <% if @provider.name.nil? || @provider.name == "Yahoo!" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://mail.yahoo.com/' %>"
+          href="<%= @search_url || 'https://mail.yahoo.com/' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -112,7 +112,7 @@
       <% end %>
       <% if @provider.name.nil? || @provider.name == "Apple iCloud" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://www.icloud.com/mail' %>"
+          href="<%= @search_url || 'https://www.icloud.com/mail' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -127,7 +127,7 @@
       <% end %>
       <% if @provider.name.nil? || @provider.name == "ProtonMail" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://account.proton.me/mail' %>"
+          href="<%= @search_url || 'https://account.proton.me/mail' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -165,7 +165,7 @@
       <% end %>
       <% if @provider.name == "Zoho" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://accounts.zoho.in/signin' %>"
+          href="<%= @search_url || 'https://accounts.zoho.in/signin' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
@@ -222,7 +222,7 @@
       <% end %>
       <% if @provider.name == "Fastmail" %>
         <a
-          href="<%= @provider.present? ? @search_url : 'https://accounts.zoho.in/signin' %>"
+          href="<%= @search_url || 'https://accounts.zoho.in/signin' %>"
           target="blank"
           class="
             flex items-center justify-center gap-2 font-sans text-sm bg-white
