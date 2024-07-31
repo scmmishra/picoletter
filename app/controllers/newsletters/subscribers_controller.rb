@@ -37,7 +37,7 @@ class Newsletters::SubscribersController < ApplicationController
   end
 
   def send_reminder
-    @subscriber.send_reminder!
+    @subscriber.send_reminder
     redirect_to subscriber_url(@newsletter.slug, @subscriber.id), notice: "Reminder sent."
   end
 
