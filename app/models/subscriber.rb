@@ -55,7 +55,7 @@ class Subscriber < ApplicationRecord
   end
 
   def send_reminder!
-    SubscriptionMailer.with(subscriber: self).confirmation.deliver_later
+    SubscriptionMailer.with(subscriber: self).confirmation_reminder.deliver_later
   end
 
   def send_confirmation_email
