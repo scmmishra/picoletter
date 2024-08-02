@@ -1,6 +1,7 @@
 class Public::NewslettersController < ApplicationController
   layout "public"
   before_action :set_newsletter
+  before_action :set_newsletter_layout
   before_action :set_post, only: [ :show_post ]
   before_action :ensure_archive_enabled, only: [ :show_post, :all_posts ]
 
@@ -32,5 +33,11 @@ class Public::NewslettersController < ApplicationController
     @newsletter = Newsletter.from_slug(params[:slug])
 
     raise ActiveRecord::RecordNotFound if @newsletter.nil?
+  end
+
+  def set_newsletter_layout
+    # get the description as plain text, if
+    # it is 500 characters or less use vertical, or else horizontal
+    @newsletter_layout = @newsletter.description.length > 500 ? "horizontal" : "vertical"
   end
 end

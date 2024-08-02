@@ -1,11 +1,13 @@
 <main
   class="
-    max-w-4xl pt-20 pb-10 mx-auto md:flex md:flex-col md:justify-between
-    min-h-screen
+    <%= @newsletter_layout == 'horizontal' ? 'max-w-4xl' : 'max-w-lg'  %> pt-20 pb-10 mx-auto md:flex md:flex-col
+    md:justify-between min-h-screen
   "
 >
-  <section class="md:gap-x-8 gap-y-5 gap-6 grid grid-cols-1 md:grid-cols-2">
-    <div class="md:col-span-2">
+  <section
+    class="md:gap-x-8 gap-y-5 gap-6 <%= @newsletter_layout == 'horizontal' ? 'grid grid-cols-1 md:grid-cols-2' : 'grid grid-cols-1'  %>"
+  >
+    <div class="<%= @newsletter_layout == 'horizontal' ? 'md:col-span-2' : ''  %>">
       <h1 class="text-3xl leading-10 text-stone-900 font-bold"><%= @newsletter.title %></h1>
     </div>
     <div class="text-stone-700 prose">
