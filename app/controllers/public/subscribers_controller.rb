@@ -5,6 +5,8 @@ class Public::SubscribersController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
   def embed_subscribe
+    return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
+
     subscriber = subscribe
     subscriber.update(created_via: "embed")
 
