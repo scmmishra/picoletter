@@ -50,6 +50,42 @@
     </div>
     <nav class="text-stone-500 justify-self-end">
       <ul class="grid gap-1">
+        <li data-controller="modal" class="flex px-2 py-1 -ml-2">
+          <button
+            data-action="modal#open"
+            class="flex items-center justify-between gap-2 rounded-md w-full"
+          >
+            <span>Switch Newsletter</span>
+            <%= lucide_icon("arrow-right-left", class: "size-3") %>
+          </button>
+
+          <dialog
+            data-modal-target="modal"
+            class="
+              p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-without-inset min-w-sm
+              w-96 gap-4 space-y-4
+            "
+          >
+            <h2 class="text-xl font-medium">Switch Newsletter</h2>
+            <div class="grid gap-2 -mx-2">
+              <% Current.user.newsletters.each do |newsletter| %>
+                <%= link_to posts_path(newsletter.slug),
+                    class: "rounded-md flex items-center justify-between gap-2 px-2 py-1 rounded-md
+                            #{@newsletter.slug == newsletter.slug ? 'bg-stone-100' : 'hover:bg-stone-100'}" do %>
+                  <span><%= newsletter.title %></span>
+                  <% if @newsletter.slug == newsletter.slug %>
+                    <span class="text-sm text-stone-500">Active</span>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+            <div>
+              <%= link_to new_newsletter_path, class: "btn btn-primary w-full" do %>
+                <span>Create New Newsletter</span>
+              <% end %>
+            </div
+          </dialog>
+        </li>
         <li>
           <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md" do %>
             <span>Public View</span>

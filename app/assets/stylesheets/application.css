@@ -22,3 +22,47 @@
     U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191,
     U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
+
+/* Prevent scrolling while dialog is open */
+body:has(dialog[data-modal-target="modal"][open]) {
+  overflow: hidden;
+}
+
+@keyframes modal-fade-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes modal-fade-out {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}
+
+/* Add animations */
+dialog[data-modal-target="modal"] {
+  opacity: 0;
+  transform: scale(0.95);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+dialog[data-modal-target="modal"][open] {
+  animation: modal-fade-in 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+dialog[data-modal-target="modal"][closing] {
+  animation: modal-fade-out 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
