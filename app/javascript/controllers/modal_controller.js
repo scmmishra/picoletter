@@ -4,11 +4,11 @@ export default class extends Controller {
   static targets = ["modal"];
 
   connect() {
-    document.addEventListener("turbo:before-render", this.close);
+    document.addEventListener("turbo:before-render", this.forceClose());
   }
 
   disconnect() {
-    document.removeEventListener("turbo:before-render", this.close);
+    document.removeEventListener("turbo:before-render", this.forceClose());
   }
 
   open() {
