@@ -11,18 +11,18 @@ class AppConfig
       value = ENV[env_key]
       parse_value(value) unless value.nil?
     end
-  end
 
-  private
+    private
 
-  def parse_value(value)
-    case value.downcase
-    when "true"
-      true
-    when "false"
-      false
-    else
-      value
+    def parse_value(value)
+      case value.downcase
+      when "true"
+        true
+      when "false"
+        false
+      else
+        value
+      end
     end
   end
 end
