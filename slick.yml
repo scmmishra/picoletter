@@ -9,6 +9,8 @@ app:
     - RORVSWILD__API_KEY
     - PICO_HOST
     - PICO_SUPPORT_EMAIL
+    - DISABLE_EMBED_SUBSCRIBE
+    - BETTERSTACK__LOGS_TOKEN
   volumes:
     - "pico-data:/rails/storage"
   port_range:
@@ -22,3 +24,7 @@ caddy:
       reverse_proxy:
         - path: ""
           to: "http://localhost:{port}"
+
+health_check:
+  endpoint: "/healthz"
+  timeout_seconds: 5
