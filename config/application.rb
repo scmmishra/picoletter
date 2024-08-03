@@ -33,8 +33,8 @@ module PicoLetter
     # pico config
     config.host = ENV.fetch("PICO_HOST", "http://localhost:3000")
     config.support_email = ENV.fetch("PICO_SUPPORT_EMAIL", "support@picoletter.com")
-    if AppConfig.get('BETTERSTACK__LOGS_TOKEN'):
-      config.logger = Logtail::Logger.create_default_logger(AppConfig.get('BETTERSTACK__LOGS_TOKEN'))
+    if AppConfig.get("BETTERSTACK__LOGS_TOKEN")
+      config.logger = Logtail::Logger.create_default_logger(AppConfig.get("BETTERSTACK__LOGS_TOKEN"))
     end
 
     # default host for emails and rendering
