@@ -20,6 +20,8 @@ Rails.application.routes.draw do
     get "/dev/playground", to: "playground#show", as: :playground
   end
 
+  get "healthz" => "rails/health#show", as: :rails_health_check
+
   # unsubscribe
 
   scope "/:slug" do
@@ -79,6 +81,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
-  get "up" => "rails/health#show", as: :rails_health_check
 end
