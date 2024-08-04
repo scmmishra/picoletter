@@ -48,5 +48,11 @@ module PicoLetter
     # Error: EnhancedSQLite3::Error: development has 2 configurations (EnhancedSQLite3::Error)
     # See: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter/issues/22
     # config.enhanced_sqlite3.isolate_connection_pools = true
+
+    # Setup ActiveStorage to accept webp images
+    Rails.application.config.active_storage.web_image_content_types = %w[image/png image/jpeg image/gif image/webp]
+
+    # Enable YJIT
+    Rails.application.config.yjit = true
   end
 end
