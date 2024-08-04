@@ -4,6 +4,8 @@ class Public::SubscribersController < ApplicationController
   before_action :set_newsletter
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
+  throttle to: 5, within: 1.minute, only: [ :embed_subscribe ]
+
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
 

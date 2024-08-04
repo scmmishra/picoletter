@@ -10,26 +10,32 @@ default: &default
   retries: 100
   default_transaction_mode: immediate
 
+# We will use separate databases for primary, queue, and cache.
+primary: &primary
+  <<: *default
+  database: storage/<%= Rails.env %>.sqlite3
+
 queue: &queue
   <<: *default
   migrations_paths: db/queue_migrate
   database: storage/<%= Rails.env %>-queue.sqlite3
 
-primary: &primary
+cache: &cache
   <<: *default
-  database: storage/<%= Rails.env %>.sqlite3
+  migrations_paths: db/cache_migrate
+  database: storage/<%= Rails.env %>-cache.sqlite3
 
 development:
   primary: *primary
   queue: *queue
+  cache: *cache
 
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
 test:
   primary: *primary
   queue: *queue
+  cache: *cache
 
 production:
   primary: *primary
   queue: *queue
+  cache: *cache
