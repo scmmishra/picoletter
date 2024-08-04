@@ -10,9 +10,12 @@ class VerifyEmailService
 
   def verify
     return false unless valid_format?
+    return false if disposable?
+
+    return true unless AppConfig.get("EMAIL_STRICT_CHECK", false)
 
     domain = email.split("@").last
-    mx_records = fetch_mx_records(domain)
+    mx_records = mx_servers_for_domain(domain)
 
     return false if mx_records.empty?
 
@@ -25,13 +28,26 @@ class VerifyEmailService
 
   private
 
+  def disposable?
+    email_domains = YAML.load_file(Rails.root.join("config", "disposable_emails.yml"))
+    email_domains.any? { |domain| email.ends_with?(domain) }
+  end
+
   def valid_format?
     email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+  end
+
+  def mx_servers_for_domain(domain)
+    Rails.cache.fetch("mx_servers:#{domain}", expires_in: 7.day) do
+      fetch_mx_records(domain)
+    end
   end
 
   def fetch_mx_records(domain)
     Resolv::DNS.open do |dns|
       dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
+        .sort_by(&:preference)
+        .map { |mx| mx.exchange.to_s }
     end
   end
 
