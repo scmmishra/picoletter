@@ -2,7 +2,7 @@ module RateLimiter
   extend ActiveSupport::Concern
 
   class_methods do
-    def rate_limit(to:, within:, only: nil)
+    def throttle(to:, within:, only: nil)
       before_action(only: only) do
         key = "rate_limit:#{request.remote_ip}:#{controller_name}:#{action_name}"
         count = Rails.cache.increment(key, 1, expires_in: within)
