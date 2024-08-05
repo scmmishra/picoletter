@@ -12,8 +12,15 @@ class VerifyEmailService
     return false unless valid_format?
     return false if disposable?
 
-    return true unless AppConfig.get("EMAIL_STRICT_CHECK", false)
+    true unless AppConfig.get("ENABLE_STRICT_EMAIL_CHECK", false)
 
+    verify_smtp
+  rescue => e
+    Rails.logger.error "Email verification failed: #{e.message}"
+    false
+  end
+
+  def verify_smtp
     domain = email.split("@").last
     mx_records = mx_servers_for_domain(domain)
 
@@ -21,9 +28,6 @@ class VerifyEmailService
 
     smtp_server = mx_records.first.exchange.to_s
     verify_smtp(smtp_server)
-  rescue => e
-    Rails.logger.error "Email verification failed: #{e.message}"
-    false
   end
 
   private
