@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_08_04_074039) do
+ActiveRecord::Schema[7.2].define(version: 2024_08_05_095934) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -240,6 +240,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_08_04_074039) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_superadmin", default: false
+    t.json "limits"
     t.index ["is_superadmin"], name: "index_users_on_is_superadmin"
   end
 
