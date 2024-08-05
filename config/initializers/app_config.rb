@@ -7,9 +7,11 @@ class AppConfig
       parse_value(value)
     end
 
-    def get(env_key)
+    def get(env_key, default_value = nil)
       value = ENV[env_key]
-      parse_value(value) unless value.nil?
+      return default_value if value.nil?
+
+      parse_value(value)
     end
 
     private
