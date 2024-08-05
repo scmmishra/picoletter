@@ -13,6 +13,9 @@ class Public::SubscribersController < ApplicationController
     subscriber.update(created_via: "embed")
 
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+  rescue => e
+    Rails.logger.error(e)
+    head :bad_request
   end
 
   def public_subscribe
@@ -20,6 +23,9 @@ class Public::SubscribersController < ApplicationController
     subscriber.update(created_via: "public")
 
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+  rescue => e
+    Rails.logger.error(e)
+    head :bad_request
   end
 
   def almost_there
@@ -33,6 +39,9 @@ class Public::SubscribersController < ApplicationController
   def subscribe
     name = params[:name]
     email = params[:email]
+
+    verified = VerifyEmailService.new(email).verify
+    raise "Invalid email" unless verified
 
     # check if subscriber with email is already present
     subscriber = @newsletter.subscribers.find_by(email: email)
