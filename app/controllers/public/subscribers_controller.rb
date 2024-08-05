@@ -15,7 +15,7 @@ class Public::SubscribersController < ApplicationController
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   rescue => e
     Rails.logger.error(e)
-    head :bad_request
+    redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
   end
 
   def public_subscribe
@@ -25,7 +25,7 @@ class Public::SubscribersController < ApplicationController
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   rescue => e
     Rails.logger.error(e)
-    head :bad_request
+    redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
   end
 
   def almost_there
