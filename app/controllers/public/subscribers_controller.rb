@@ -41,6 +41,7 @@ class Public::SubscribersController < ApplicationController
     email = params[:email]
 
     verified = VerifyEmailService.new(email).verify
+    Rails.logger.info("Email verification failed for #{email}") unless verified
     raise "Invalid email" unless verified
 
     # check if subscriber with email is already present
