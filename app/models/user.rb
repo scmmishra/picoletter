@@ -18,6 +18,8 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
+  include Limitable
+
   has_secure_password :password, validations: true
 
   has_many :sessions, dependent: :destroy
