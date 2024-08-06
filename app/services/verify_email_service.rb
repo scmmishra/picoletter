@@ -14,7 +14,7 @@ class VerifyEmailService
 
     true
   rescue => e
-    Rails.logger.error "Email verification failed: #{e.message}"
+    Rails.logger.info "[VerifyEmailService] Email verification failed: #{e.message}"
     false
   end
 
@@ -22,9 +22,9 @@ class VerifyEmailService
     domain = email.split("@").last
     mx_records = mx_servers_for_domain(domain)
 
-    return mx_records.present?
+    mx_records.present?
   rescue => e
-    Rails.logger.error "Email verification failed: #{e.message}"
+    Rails.logger.info "[VerifyEmailService] MX Record verification failed: #{e.message}"
     false
   end
 
@@ -34,7 +34,7 @@ class VerifyEmailService
 
     mx_records.any? { |mx| verify_smtp(mx) }
   rescue => e
-    Rails.logger.error "Email verification failed: #{e.message}"
+    Rails.logger.info "[VerifyEmailService] SMTP verification failed: #{e.message}"
     false
   end
 
