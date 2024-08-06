@@ -85,6 +85,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.18.3)
       msgpack (~> 1.2)
+    browser (6.0.0)
     builder (3.3.0)
     byebug (11.1.3)
     capybara (3.40.0)
@@ -446,6 +447,7 @@ DEPENDENCIES
   annotate
   bcrypt (~> 3.1.7)
   bootsnap
+  browser
   byebug (~> 11.1)
   capybara
   debug

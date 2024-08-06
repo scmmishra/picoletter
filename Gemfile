@@ -115,3 +115,6 @@ gem "lucide-rails", "~> 0.4.0"
 gem "logtail-rails", "~> 0.2.7"
 
 gem "solid_cache", "~> 0.7.0"
+
+# this will detect bots
+gem "browser"

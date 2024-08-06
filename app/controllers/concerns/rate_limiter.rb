@@ -2,8 +2,14 @@ module RateLimiter
   extend ActiveSupport::Concern
 
   class_methods do
-    def throttle(to:, within:, only: nil)
+    def throttle(to:, within:, only: nil, block_bots: false)
       before_action(only: only) do
+        if block_bots && bot?
+          Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
+          render plain: "Access denied", status: :forbidden
+          return
+        end
+
         # use remote_ip to rate limit by IP address
         key = "rate_limit:#{request.remote_ip}:#{controller_name}:#{action_name}"
         count = Rails.cache.increment(key, 1, expires_in: within)
@@ -13,5 +19,12 @@ module RateLimiter
         end
       end
     end
+  end
+
+  private
+
+  def bot?
+    browser = Browser.new(request.user_agent)
+    browser.bot?
   end
 end
