@@ -8,10 +8,7 @@ class Public::SubscribersController < ApplicationController
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
-
-    subscriber = subscribe
-    subscriber.update(created_via: "embed")
-
+    CreateSubscriberJob.perform_later(@newsletter.id, params[:email], params[:name], "embed")
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   rescue => e
     Rails.logger.error(e)
@@ -19,8 +16,7 @@ class Public::SubscribersController < ApplicationController
   end
 
   def public_subscribe
-    subscriber = subscribe
-    subscriber.update(created_via: "public")
+    CreateSubscriberJob.perform_later(@newsletter.id, params[:email], params[:name], "public")
 
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   rescue => e
@@ -34,25 +30,6 @@ class Public::SubscribersController < ApplicationController
 
     @provider = EmailInformationService.new(@email)
     @search_url = @provider.search_url(sender: @newsletter.sending_from) if @provider.name.present?
-  end
-
-  def subscribe
-    name = params[:name]
-    email = params[:email]
-
-    verified = VerifyEmailService.new(email).verify
-    Rails.logger.info("Email verification failed for #{email}") unless verified
-    raise "Invalid email" unless verified
-
-    # check if subscriber with email is already present
-    subscriber = @newsletter.subscribers.find_by(email: email)
-    subscriber.update(full_name: name) if subscriber.present? && name.present?
-
-    # if subscriber is not present, create new one
-    subscriber ||= @newsletter.subscribers.create!(email: email, full_name: name)
-
-    subscriber.send_confirmation_email unless subscriber.verified?
-    subscriber
   end
 
   def unsubscribe
