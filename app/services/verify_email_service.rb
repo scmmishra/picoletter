@@ -26,7 +26,7 @@ class VerifyEmailService
 
     return false if mx_records.empty?
 
-    smtp_server = mx_records.first.exchange.to_s
+    smtp_server = mx_records.first.to_s
     verify_smtp(smtp_server)
   end
 
