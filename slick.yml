@@ -9,7 +9,6 @@ app:
     - RORVSWILD__API_KEY
     - PICO_HOST
     - PICO_SUPPORT_EMAIL
-    - ENABLE_STRICT_EMAIL_CHECK
     - DISABLE_EMBED_SUBSCRIBE
     - BETTERSTACK__LOGS_TOKEN
   volumes:
@@ -29,3 +28,5 @@ caddy:
 health_check:
   endpoint: "/healthz"
   timeout_seconds: 5
+  interval_seconds: 10
+  max_retries: 3
