@@ -32,7 +32,7 @@ class VerifyEmailService
     domain = email.split("@").last
     mx_records = mx_servers_for_domain(domain)
 
-    mx_records.any? { |mx| verify_smtp(mx) }
+    mx_records.any? { |mx| verify_smtp_hello(mx) }
   rescue => e
     Rails.logger.info "[VerifyEmailService] SMTP verification failed: #{e.message}"
     false
@@ -64,7 +64,7 @@ class VerifyEmailService
     end
   end
 
-  def verify_smtp(smtp_server)
+  def verify_smtp_hello(smtp_server)
     Net::SMTP.start(smtp_server, 25, "localhost") do |smtp|
       smtp.helo "localhost"
       smtp.mailfrom "verify@example.com"
