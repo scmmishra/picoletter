@@ -20,6 +20,11 @@ class Newsletters::SubscribersController < ApplicationController
   def show
   end
 
+  def import
+    # get file from request
+    # parse file and run import job
+  end
+
   def destroy
     @subscriber.destroy!
     redirect_to subscribers_url(@newsletter.slug), notice: "Subscriber deleted successfully"

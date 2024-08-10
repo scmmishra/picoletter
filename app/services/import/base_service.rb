@@ -7,7 +7,7 @@ class Import::BaseService
     @newsletter = newsletter
   end
 
-  def perform
+  def call
     CSV.foreach(@file.path, headers: true) do |row|
       subscriber_attributes = map_fields(row)
       subscriber = @newsletter.subscribers.find_or_initialize_by(email: subscriber_attributes[:email])
