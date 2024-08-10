@@ -7,9 +7,13 @@
 #  email              :string
 #  full_name          :string
 #  notes              :text
+#  referrer_url       :string
 #  status             :integer          default("unverified")
 #  unsubscribe_reason :string
 #  unsubscribed_at    :datetime
+#  utm_campaign       :string
+#  utm_medium         :string
+#  utm_source         :string
 #  verified_at        :datetime
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
