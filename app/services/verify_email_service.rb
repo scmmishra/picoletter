@@ -41,6 +41,7 @@ class VerifyEmailService
   private
 
   def disposable?
+    # https://github.com/disposable-email-domains/disposable-email-domains
     email_domains = YAML.load_file(Rails.root.join("config", "disposable_emails.yml"))
     email_domains.any? { |domain| email.ends_with?(domain) }
   end
