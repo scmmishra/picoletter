@@ -21,8 +21,7 @@ class Newsletters::SubscribersController < ApplicationController
   end
 
   def import
-    # get file from request
-    # parse file and run import job
+    ImportSubscribersJob.perform_later(params[:file], @newsletter, params[:source])
   end
 
   def destroy

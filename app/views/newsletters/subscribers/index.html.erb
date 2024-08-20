@@ -1,9 +1,6 @@
 <div class="flex items-center justify-between gap-2">
   <h2 class="text-xl font-medium">Subscribers</h2>
-  <div class="hidden space-x-1">
-    <button class="font-sans text-sm btn btn-secondary">Import Subscribers</button>
-    <button class="font-sans text-sm btn btn-secondary">Export to CSV</button>
-  </div>
+  <%= render "newsletters/subscribers/partials/import_subscribers" %>
 </div>
 
 <div class="grid gap-2 mt-5 md:grid-cols-3">

@@ -1,0 +1,120 @@
+<li data-controller="modal import-subscribers" class="flex px-2 py-1 -ml-2">
+  <button data-action="modal#open" class="font-sans text-sm btn btn-primary">Import Subscribers</button>
+
+  <dialog
+    data-modal-target="modal"
+    class="
+      p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-without-inset min-w-sm
+      w-[36rem] gap-4 space-y-2
+    "
+  >
+    <h2 class="text-xl font-medium">Import subscribers</h2>
+    <div class="pb-2">
+      <p class="text-sm text-stone-500">
+        Import subscribers from a CSV file. You can download the template file
+        to get started or you can upload the imported data from the following
+      </p>
+      <%= form_with(url: new_newsletter_path, local: true, class: "mt-4 space-y-4") do |form| %>
+        <p class="text-sm text-stone-500">
+          Select a source to import subscribers from
+        </p>
+        <div class="grid grid-cols-2 gap-2">
+          <% [
+            ['CSV Template', 'csv', true, nil],
+            ['Buttondown', 'buttondown', true, 'https://www.google.com/s2/favicons?domain=buttondown.email&sz=256'],
+            ['Mailchimp', 'mailchimp', false, 'https://www.google.com/s2/favicons?domain=mailchimp.com&sz=256'],
+            ['Substack', 'substack', false, 'https://www.google.com/s2/favicons?domain=substack.com&sz=256'],
+            ['Ghost', 'ghost', false, 'https://www.google.com/s2/favicons?domain=ghost.org&sz=256'],
+            ['ConvertKit', 'convertkit', false, 'https://www.google.com/s2/favicons?domain=convertkit.com&sz=256']
+          ].each do |name, value, enabled, icon_url| %>
+            <div class="relative <%= enabled ? '' : 'opacity-50 cursor-not-allowed' %>">
+              <%= form.radio_button :import_source,
+                                value,
+                                class: "absolute w-full h-full opacity-0 cursor-pointer peer",
+                                data: {
+                                  action: "change->modal#updateImportSource",
+                                },
+                                disabled: !enabled,
+                                checked: value == "csv" %>
+              <label
+                for="import_source_<%= value %>"
+                class="
+                  flex items-center justify-center gap-2 font-sans text-sm bg-white border
+                  border-stone-200 rounded-md py-2 px-4 text-stone-500 hover:bg-stone-50
+                  cursor-pointer transition-colors duration-200 ease-in-out
+                  peer-checked:bg-blue-50 peer-checked:border-blue-300 peer-checked:text-blue-600
+                "
+              >
+                <% if value == "csv" %>
+                  <%= lucide_icon("file-text", class: "size-4") %>
+                <% elsif icon_url %>
+                  <img src="<%= icon_url %>" class="h-4" alt="<%= name %> icon">
+                <% end %>
+                <%= name %>
+                <% if !enabled %>
+                  <span
+                    class="
+                      text-[8px] font-medium uppercase tracking-wide py-px px-2 bg-stone-50 rounded-sm
+                    "
+                  >
+                    Coming Soon
+                  </span>
+                <% end %>
+              </label>
+            </div>
+          <% end %>
+        </div>
+        <p class="text-sm text-stone-500 mt-4">
+          Upload CSV
+        </p>
+        <div
+          data-import-subscribers-target="dropzone"
+          data-action="
+            dragover->import-subscribers#dragover
+            dragenter->import-subscribers#dragenter
+            dragleave->import-subscribers#dragleave
+            drop->import-subscribers#drop
+            click->import-subscribers#click
+          "
+          class="
+            bg-stone-100 border border-stone-200 h-32 rounded-md grid place-content-center
+            gap-2 font-sans text-sm text-stone-500 cursor-pointer
+          "
+        >
+          <div
+            data-import-subscribers-target="dropzoneContent"
+            class="flex flex-col gap-2 items-center justify-center"
+          >
+            <%= lucide_icon("upload", class: "size-4 opacity-80") %>
+            <p>Click to select file, or drop it here</p>
+          </div>
+          <div
+            data-import-subscribers-target="fileInfo"
+            class="
+              hidden flex-col gap-2 text-stone-500 items-center justify-center
+            "
+          >
+            <%= lucide_icon("file-text", class: "size-4 text-stone-400") %>
+            <p data-import-subscribers-target="fileName"></p>
+            <button
+              data-action="import-subscribers#removeFile"
+              class="text-red-500 hover:text-red-700"
+            >
+              Remove file
+            </button>
+          </div>
+          <%= form.file_field :csv_file,
+                          accept: ".csv",
+                          class: "hidden",
+                          data: {
+                            import_subscribers_target: "fileInput",
+                            action: "change->import-subscribers#handleChange",
+                          } %>
+        </div>
+        <div class="mt-4">
+          <%= form.submit "Upload CSV", class: "btn btn-primary w-full" %>
+        </div>
+      <% end %>
+    </div>
+  </dialog>
+</li>
