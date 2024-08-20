@@ -91,11 +91,13 @@
           <div
             data-import-subscribers-target="fileInfo"
             class="
-              hidden flex-col gap-2 text-stone-500 items-center justify-center
+              hidden flex-col gap-2 text-stone-500 items-center text-center
             "
           >
-            <%= lucide_icon("file-text", class: "size-4 text-stone-400") %>
-            <p data-import-subscribers-target="fileName"></p>
+            <span class="flex gap-2 items-center">
+              <%= lucide_icon("file-text", class: "size-4 text-stone-400") %>
+              <p data-import-subscribers-target="fileName"></p>
+            </span>
             <button
               data-action="import-subscribers#removeFile"
               class="text-red-500 hover:text-red-700"

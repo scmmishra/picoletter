@@ -65,6 +65,7 @@ export default class extends Controller {
     this.fileNameTarget.textContent = fileName;
     this.dropzoneContentTarget.classList.add("hidden");
     this.fileInfoTarget.classList.remove("hidden");
+    this.fileInfoTarget.classList.add("flex");
   }
 
   removeFile(event) {
@@ -73,5 +74,6 @@ export default class extends Controller {
     this.fileInputTarget.value = "";
     this.dropzoneContentTarget.classList.remove("hidden");
     this.fileInfoTarget.classList.add("hidden");
+    this.fileInfoTarget.classList.remove("flex");
   }
 }
