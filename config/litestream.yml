@@ -13,6 +13,7 @@ dbs:
   - path: storage/production.sqlite3
     replicas:
       - type: s3
+        endpoint: $LITESTREAM_REPLICA_ENDPOINT
         bucket: $LITESTREAM_REPLICA_BUCKET
         path: storage/production.sqlite3
         access-key-id: $LITESTREAM_ACCESS_KEY_ID
