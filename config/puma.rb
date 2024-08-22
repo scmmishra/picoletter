@@ -53,5 +53,8 @@ plugin :tmp_restart
 # solidqueue plugin
 plugin :solid_queue
 
+# start litestream
+plugin :litestream
+
 # Only use a pidfile when requested
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
