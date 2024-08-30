@@ -53,7 +53,7 @@ class Public::SubscribersController < ApplicationController
     subscriber = Subscriber.decode_confirmation_token(token)
 
     subscriber.verify!
-  rescue JWT::ExpiredSignature, JWT::DecodeError, ActiveRecord::RecordNotFound
+  rescue JWT::ExpiredSignature, JWT::DecodeError, JWT::VerificationError, ActiveRecord::RecordNotFound
     render :invalid_confirmation
   end
 

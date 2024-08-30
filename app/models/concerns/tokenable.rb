@@ -22,6 +22,9 @@ module Tokenable
         scope = payload["scope"]
         newsletter = Newsletter.find_by(id: payload["newsletter"])
         subscriber = newsletter.subscribers.find_by(id: payload["sub"])
+
+        raise JWT::VerificationError, "Invalid token" unless subscriber
+
         subscriber.send("verify_#{scope}_token", token)
 
         subscriber
