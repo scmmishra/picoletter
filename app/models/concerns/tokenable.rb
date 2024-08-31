@@ -21,7 +21,7 @@ module Tokenable
         payload = JWT.decode(token, secret_key_base, true, { algorithm: "HS256" }).first
         scope = payload["scope"]
         newsletter = Newsletter.find_by(id: payload["newsletter"])
-        subscriber = newsletter.subscribers.find_by(id: payload["sub"])
+        subscriber = newsletter.subscribers.find(payload["sub"])
 
         raise JWT::VerificationError, "Invalid token" unless subscriber
 
