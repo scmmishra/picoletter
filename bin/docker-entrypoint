@@ -3,9 +3,6 @@
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   ./bin/rails db:prepare
-
-  ./bin/rails db:prepare:queue
-  ./bin/rails db:prepare:cache
 fi
 
 exec "${@}"
