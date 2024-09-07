@@ -2,7 +2,7 @@
 #
 # Table name: newsletters
 #
-#  id                :integer          not null, primary key
+#  id                :bigint           not null, primary key
 #  description       :text
 #  dns_records       :json
 #  domain            :string
@@ -33,7 +33,7 @@
 #
 # Foreign Keys
 #
-#  user_id  (user_id => users.id)
+#  fk_rails_...  (user_id => users.id)
 #
 class Newsletter < ApplicationRecord
   include Sluggable
