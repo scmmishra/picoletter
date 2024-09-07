@@ -1,6 +1,6 @@
 # PicoLetter
 
-Picoletter is a [ONCE](once.com) style (sort of) newsletter app for independent bloggers and writers. It uses [Resend](htttps://resend.com) APIs to send emails. With their really generous free tier, you could run your newsletter on a $5 VM on DigitalOcean or Hetzner virtually for free.
+Picoletter is a newsletter app for independent bloggers and writers. It uses [Resend](htttps://resend.com) APIs to send emails. With their really generous free tier, you could run your newsletter on a $5 VM on DigitalOcean or Hetzner virtually for free.
 
 ![compose](.github/screenshots/compose.webp)
 
