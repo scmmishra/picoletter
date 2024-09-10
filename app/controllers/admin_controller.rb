@@ -1,6 +1,6 @@
 class AdminController < ApplicationController
   before_action :ensure_authenticated, if: :restricted_env?
-  before_action :resume_session_if_present!, if: :restricted_env?
+  before_action :resume_session_if_present, if: :restricted_env?
   before_action :authenticate!, if: :restricted_env?
 
   private
