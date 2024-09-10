@@ -453,7 +453,7 @@ DEPENDENCIES
   premailer-rails
   puma (>= 5.0)
   rack-mini-profiler
-  rails (~> 7.2.0.beta3)
+  rails (~> 7.2.1)
   redis (>= 4.0.1)
   resend
   resolv
