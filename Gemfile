@@ -84,8 +84,6 @@ gem "tailwindcss-rails", "~> 2.6.0"
 gem "kaminari"
 gem "resend"
 
-gem "activerecord-enhancedsqlite3-adapter", "~> 0.8.0"
-
 # HTML parsing
 gem "nokogiri"
 
@@ -101,13 +99,10 @@ gem "premailer-rails"
 # monitoring
 gem "rorvswild"
 
-gem "litestream", "~> 0.10.1"
-
 # webhooks
 gem "svix"
 
 # production
-gem "thruster"
 gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.4.0"
