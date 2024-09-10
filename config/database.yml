@@ -5,7 +5,7 @@ default: &default
 
 queue: &queue
   <<: *default
-  migrrations: db/queue_migrations
+  migrrations: db/queue_schema
 
 development:
   primary:
