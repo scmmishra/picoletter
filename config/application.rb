@@ -46,14 +46,6 @@ module PicoLetter
     config.action_mailer.default_url_options = { host: config.host }
     config.action_controller.default_url_options = { host: config.host }
 
-    # create Isolated connection pools for reader and writer
-    # ref: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter?tab=readme-ov-file#isolated-connection-pools
-    #
-    # NOTE: THIS IS DISABLED FOR NOW
-    # Error: EnhancedSQLite3::Error: development has 2 configurations (EnhancedSQLite3::Error)
-    # See: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter/issues/22
-    # config.enhanced_sqlite3.isolate_connection_pools = true
-
     # Setup ActiveStorage to accept webp images
     Rails.application.config.active_storage.web_image_content_types = %w[image/png image/jpeg image/gif image/webp]
 
