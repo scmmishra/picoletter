@@ -28,8 +28,8 @@ production:
     <<: *default
     database: picoletter_production
     username: picoletter
-    password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
+    url: <%= ENV['DATABASE_URL'] %>
   queue:
     <<: *queue
     database: picoletter_production_queue
-    password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
+    url: <%= ENV['QUEUE_DATABASE_URL'] %>
