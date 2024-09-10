@@ -3,23 +3,25 @@ default: &default
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+queue: &queue
+  <<: *default
+  migrrations: db/queue_migrations
+
 development:
   primary:
     <<: *default
     database: picoletter_development
   queue:
-    <<: *default
+    <<: *queue
     database: picoletter_development_queue
-    migrrations: db/queue_migrations
 
 test:
   primary:
     <<: *default
     database: picoletter_test
   queue:
-    <<: *default
+    <<: *queue
     database: picoletter_test_queue
-    migrrations: db/queue_migrations
 
 production:
   primary:
@@ -28,7 +30,6 @@ production:
     username: picoletter
     password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
   queue:
-    <<: *default
+    <<: *queue
     database: picoletter_production_queue
     password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
-    migrrations: db/queue_migrations
