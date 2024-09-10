@@ -470,7 +470,7 @@ DEPENDENCIES
   lucide-rails (~> 0.4.0)
   mission_control-jobs
   nokogiri
-  pg (~> 1.1)
+  pg (~> 1.5)
   premailer-rails
   puma (>= 5.0)
   rack-mini-profiler
