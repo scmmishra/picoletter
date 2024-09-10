@@ -18,6 +18,11 @@ module PicoLetter
 
     # jobs
     config.mission_control.jobs.base_controller_class = "AdminController"
+
+    # Use a different cache store in production.
+    config.cache_store = :solid_cache_store
+
+    # Use a real queuing backend for Active Job (and separate queues per environment).
     config.mission_control.jobs.adapters = [ :solid_queue ]
     config.active_job.queue_adapter = :solid_queue
     config.solid_queue.connects_to = { database: { writing: :queue } }
@@ -40,14 +45,6 @@ module PicoLetter
     # default host for emails and rendering
     config.action_mailer.default_url_options = { host: config.host }
     config.action_controller.default_url_options = { host: config.host }
-
-    # create Isolated connection pools for reader and writer
-    # ref: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter?tab=readme-ov-file#isolated-connection-pools
-    #
-    # NOTE: THIS IS DISABLED FOR NOW
-    # Error: EnhancedSQLite3::Error: development has 2 configurations (EnhancedSQLite3::Error)
-    # See: https://github.com/fractaledmind/activerecord-enhancedsqlite3-adapter/issues/22
-    # config.enhanced_sqlite3.isolate_connection_pools = true
 
     # Setup ActiveStorage to accept webp images
     Rails.application.config.active_storage.web_image_content_types = %w[image/png image/jpeg image/gif image/webp]

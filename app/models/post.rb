@@ -2,7 +2,7 @@
 #
 # Table name: posts
 #
-#  id            :integer          not null, primary key
+#  id            :bigint           not null, primary key
 #  content       :text
 #  published_at  :datetime
 #  scheduled_at  :datetime
@@ -21,7 +21,7 @@
 #
 # Foreign Keys
 #
-#  newsletter_id  (newsletter_id => newsletters.id)
+#  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Post < ApplicationRecord
   include Sluggable

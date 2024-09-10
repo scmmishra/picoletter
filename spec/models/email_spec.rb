@@ -2,7 +2,7 @@
 #
 # Table name: emails
 #
-#  id            :integer          not null, primary key
+#  id            :bigint           not null, primary key
 #  bounced_at    :datetime
 #  delivered_at  :datetime
 #  status        :string           default("sent")
@@ -19,8 +19,8 @@
 #
 # Foreign Keys
 #
-#  post_id        (post_id => posts.id)
-#  subscriber_id  (subscriber_id => subscribers.id)
+#  fk_rails_...  (post_id => posts.id)
+#  fk_rails_...  (subscriber_id => subscribers.id)
 #
 require 'rails_helper'
 

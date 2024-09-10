@@ -8,8 +8,8 @@ gem "rails", "~> 7.2.0.beta3"
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
-# Use sqlite3 as the database for Active Record
-gem "sqlite3", "~> 1.4"
+# Use pg as the database for Active Record
+gem "pg", "~> 1.5"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
@@ -84,8 +84,6 @@ gem "tailwindcss-rails", "~> 2.6.0"
 gem "kaminari"
 gem "resend"
 
-gem "activerecord-enhancedsqlite3-adapter", "~> 0.8.0"
-
 # HTML parsing
 gem "nokogiri"
 
@@ -101,13 +99,10 @@ gem "premailer-rails"
 # monitoring
 gem "rorvswild"
 
-gem "litestream", "~> 0.10.1"
-
 # webhooks
 gem "svix"
 
 # production
-gem "thruster"
 gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.4.0"

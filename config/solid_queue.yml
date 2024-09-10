@@ -8,10 +8,12 @@ default: &default
           schedule: every minute
         verify_dns:
           class: VerifyDNSRecordsJob
-          schedule: 0 0 */3 * *
-        periodic_litestream_backup_verfication_job:
-          class: Litestream::VerificationJob
-          schedule: every day at 1am EST
+          schedule: every day
+  workers:
+    - queues: "*"
+      threads: 3
+      processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
+      polling_interval: 0.1
 
 development:
   <<: *default

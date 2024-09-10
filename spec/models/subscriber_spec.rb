@@ -2,7 +2,7 @@
 #
 # Table name: subscribers
 #
-#  id                 :integer          not null, primary key
+#  id                 :bigint           not null, primary key
 #  created_via        :string
 #  email              :string
 #  full_name          :string
@@ -21,7 +21,7 @@
 #
 # Foreign Keys
 #
-#  newsletter_id  (newsletter_id => newsletters.id)
+#  fk_rails_...  (newsletter_id => newsletters.id)
 #
 require 'rails_helper'
 

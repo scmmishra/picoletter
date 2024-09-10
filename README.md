@@ -1,6 +1,6 @@
 # PicoLetter
 
-Picoletter is a [ONCE](once.com) style (sort of) newsletter app for independent bloggers and writers. It uses [Resend](htttps://resend.com) APIs to send emails. With their really generous free tier, you could run your newsletter on a $5 VM on DigitalOcean or Hetzner virtually for free.
+Picoletter is a newsletter app for independent bloggers and writers. It uses [Resend](htttps://resend.com) APIs to send emails. With their really generous free tier, you could run your newsletter on a $5 VM on DigitalOcean or Hetzner virtually for free.
 
 ![compose](.github/screenshots/compose.webp)
 
@@ -36,11 +36,11 @@ This is beta software, you can use it in production if you're feeling like going
 ## Stack
 
 - Ruby on Rails
-- SQLite
+- PostgreSQl
 - SolidQueue
 - Resend
 
-The backend is written in Rails with SQLite as the DB, the idea is to keep dependencies to a minimum, high performance SSDs have made SQLite a viable option in running an app like this. [SolidQueue](https://github.com/rails/solid_queue) is used to run background jobs.
+The backend is written in Rails with PostgreSQL as the DB. [SolidQueue](https://github.com/rails/solid_queue) is used to run background jobs.
 
 We use [Resend](https://resend.com/) for emails, plain old SMTP won't work here, since we need to send emails in bulk. Comparing most providers available, Resend struck the balance perfectly in terms of simplicity and pricing. For most users hosting this on their own, their free tier should suffice. At the moment there's no plans to add support for any other provider
 
