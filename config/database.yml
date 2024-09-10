@@ -4,15 +4,31 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: pico_letter_development
+  primary:
+    <<: *default
+    database: picoletter_development
+  queue:
+    <<: *default
+    database: picoletter_development_queue
+    migrrations: db/queue_migrations
 
 test:
-  <<: *default
-  database: pico_letter_test
+  primary:
+    <<: *default
+    database: picoletter_test
+  queue:
+    <<: *default
+    database: picoletter_test_queue
+    migrrations: db/queue_migrations
 
 production:
-  <<: *default
-  database: pico_letter_production
-  username: pico_letter
-  password: <%= ENV["PICO_LETTER_DATABASE_PASSWORD"] %>
+  primary:
+    <<: *default
+    database: picoletter_production
+    username: picoletter
+    password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
+  queue:
+    <<: *default
+    database: picoletter_production_queue
+    password: <%= ENV["PICOLETTER_DATABASE_PASSWORD"] %>
+    migrrations: db/queue_migrations
