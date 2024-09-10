@@ -18,8 +18,14 @@ module PicoLetter
 
     # jobs
     config.mission_control.jobs.base_controller_class = "AdminController"
+
+    # Use a different cache store in production.
+    config.cache_store = :solid_cache_store
+
+    # Use a real queuing backend for Active Job (and separate queues per environment).
     config.mission_control.jobs.adapters = [ :solid_queue ]
     config.active_job.queue_adapter = :solid_queue
+    config.solid_queue.connects_to = { database: { writing: :queue } }
 
     # Configuration for the application, engines, and railties goes here.
     #
