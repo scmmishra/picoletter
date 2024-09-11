@@ -4,6 +4,8 @@
 #
 #  id            :bigint           not null, primary key
 #  bounced_at    :datetime
+#  clicked_at    :datetime
+#  complained_at :datetime
 #  delivered_at  :datetime
 #  status        :string           default("sent")
 #  created_at    :datetime         not null
