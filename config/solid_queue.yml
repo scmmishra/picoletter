@@ -8,7 +8,7 @@ default: &default
           schedule: every minute
         verify_dns:
           class: VerifyDNSRecordsJob
-          schedule: every week
+          schedule: every day
   workers:
     - queues: "*"
       threads: 3
