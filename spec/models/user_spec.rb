@@ -7,6 +7,7 @@
 #  bio             :text
 #  email           :string           not null
 #  is_superadmin   :boolean          default(FALSE)
+#  limits          :jsonb
 #  name            :string
 #  password_digest :string
 #  created_at      :datetime         not null

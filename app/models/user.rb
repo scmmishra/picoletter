@@ -7,6 +7,7 @@
 #  bio             :text
 #  email           :string           not null
 #  is_superadmin   :boolean          default(FALSE)
+#  limits          :jsonb
 #  name            :string
 #  password_digest :string
 #  created_at      :datetime         not null
@@ -28,14 +29,37 @@ class User < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   before_create :activate_user
+  before_create :set_basic_limits
 
   def super?
     self.is_superadmin
+  end
+
+  def limits
+    if AppConfig.get("ENABLE_BILLING", false)
+      self[:limits] || {
+        subscribers: 1000,
+        emails: 10000
+      }
+    else
+      {
+        subscribers: Float::INFINITY,
+        emails: Float::INFINITY
+      }
+    end
   end
 
   private
 
   def activate_user
     self.active = true if self.active.nil?
+  end
+
+  def set_basic_limits
+    return unless AppConfig.get("ENABLE_BILLING", false)
+    self.limits = {
+      subscribers: 1000,
+      emails: 10000
+    }
   end
 end
