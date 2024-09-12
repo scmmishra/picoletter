@@ -38,6 +38,15 @@ class User < ApplicationRecord
     }
   end
 
+  def set_limits(subscribers, emails)
+    self.limits = {
+      subscribers: subscribers,
+      emails: emails
+    }
+
+    self.save
+  end
+
   def super?
     self.is_superadmin
   end
