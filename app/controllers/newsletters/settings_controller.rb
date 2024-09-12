@@ -26,6 +26,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending; end
+
   def update_sending
     @newsletter.update(sending_params)
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
@@ -39,6 +40,23 @@ class Newsletters::SettingsController < ApplicationController
 
   def embedding; end
   def update_embedding
+  end
+
+  def billing
+    @user = Current.user
+    @subscriber_limits = {
+      used: @user.subscribers.verified.count,
+      total: @user.limits[:subscribers],
+      percentage: @user.subscribers.verified.count / @user.limits[:subscribers].to_f * 100
+    }
+
+    @email_limits = {
+      used: @user.emails.count,
+      total: @user.limits[:emails],
+      percentage: @user.emails.count / @user.limits[:emails].to_f * 100
+    }
+  end
+  def update_billing
   end
 
   private

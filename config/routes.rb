@@ -56,6 +56,8 @@ Rails.application.routes.draw do
 
         get :embedding
         patch :embedding, action: :update_embedding, as: :update_embedding
+
+        get :billing
       end
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers", module: "newsletters" do

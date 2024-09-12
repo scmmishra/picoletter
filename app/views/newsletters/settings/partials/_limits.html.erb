@@ -1,0 +1,21 @@
+<div>
+  <div
+    class="
+      text-stone-700 text-xs font-sans uppercase flex gap-2 items-center
+      justify-between
+    "
+  >
+    <span class="tracking-widest">
+      <%= title %>
+    </span>
+    <span>
+      <%= limits[:used] %>
+      /
+      <%= limits[:total] %>
+    </span>
+  </div>
+  <div class="rounded-md w-full h-2 bg-stone-200 mt-2 overflow-hidden">
+    <div class="bg-green-500 h-2" style="width:<%= limits[:percentage] %>%">
+    </div>
+  </div>
+</div>

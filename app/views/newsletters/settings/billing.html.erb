@@ -1,0 +1,34 @@
+<%= render "newsletters/settings/partials/header" %>
+<section class="grid gap-8">
+  <div class="flex items-start justify-between">
+    <div class="max-w-lg text-stone-600">
+      <p>
+        Our pricing is simple, you pay for the number of subscribers you have.
+        Once you subscribe, we will send you an invoice at the end of the
+        month, the invoice will be based on the number of verified subscribers you have
+        in total at the time of generating the invoice.
+      </p>
+    </div>
+  </div>
+  <div class="max-w-lg grid">
+    <span class="text-stone-600">Your current plan</span>
+    <div class="mt-2 flex items-start justify-between">
+      <div>
+        <span class="text-4xl font-medium">$6</span>
+        <span class="text-xl">/month</span>
+      </div>
+      <div>
+        <%= link_to "Manage Billing", "/", class: "btn btn-primary" %></p>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-lg grid gap-5">
+    <%= render "newsletters/settings/partials/limits",
+    title: "Verified Subscribers",
+    limits: @subscriber_limits %>
+
+    <%= render "newsletters/settings/partials/limits",
+    title: "Sent Emails",
+    limits: @email_limits %>
+  </div>
+</section>

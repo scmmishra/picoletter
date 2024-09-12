@@ -22,6 +22,9 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
+  has_many :subscribers, through: :newsletters
+  has_many :posts, through: :newsletters
+  has_many :emails, through: :posts
 
   validates :email, presence: true, uniqueness: { case_sensitive: false }
   validates :name, presence: true
