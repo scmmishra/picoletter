@@ -15,7 +15,18 @@
     </span>
   </div>
   <div class="rounded-md w-full h-2 bg-stone-200 mt-2 overflow-hidden">
-    <div class="bg-green-500 h-2" style="width:<%= limits[:percentage] %>%">
+    <div
+      class="h-2 <%=
+      if limits[:percentage] < 50
+        'bg-green-500'
+      elsif limits[:percentage] >= 50 && limits[:percentage] <= 90
+        'bg-yellow-500'
+      else
+        'bg-red-500'
+      end
+    %>"
+      style="width:<%= limits[:percentage] %>%"
+    >
     </div>
   </div>
 </div>
