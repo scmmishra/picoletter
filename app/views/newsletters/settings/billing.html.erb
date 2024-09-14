@@ -22,7 +22,7 @@
       </div>
     </div>
   </div>
-  <div class="max-w-lg grid gap-5">
+  <div class="max-w-lg grid gap-5 text-stone-600">
     <%= render "newsletters/settings/partials/limits",
     title: "Verified Subscribers",
     limits: @subscriber_limits %>
@@ -30,5 +30,8 @@
     <%= render "newsletters/settings/partials/limits",
     title: "Emails Sent",
     limits: @email_limits %>
+    <% if @user.newsletters.count > 1 %>
+    <p>P.S. These limits are based on all the newsletters you have created.</p>
+    <% end %>
   </div>
 </section>
