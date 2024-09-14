@@ -11,8 +11,10 @@ class AppConfig
       value = ENV[env_key]
       return default_value if value.nil?
 
-      parse_boolean(value)
-      parse_integer(value)
+      value = parse_boolean(value)
+      value = parse_integer(value)
+
+      return value
     end
 
     private
