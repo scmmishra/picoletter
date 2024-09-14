@@ -11,12 +11,13 @@ class AppConfig
       value = ENV[env_key]
       return default_value if value.nil?
 
-      parse_value(value)
+      parse_boolean(value)
+      parse_integer(value)
     end
 
     private
 
-    def parse_value(value)
+    def parse_boolean(value)
       case value.downcase
       when "true"
         true
@@ -25,6 +26,10 @@ class AppConfig
       else
         value
       end
+    end
+
+    def parse_integer(value)
+      Integer(value) rescue value
     end
   end
 end
