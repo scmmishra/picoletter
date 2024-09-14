@@ -4,6 +4,7 @@
 #
 #  id              :bigint           not null, primary key
 #  active          :boolean
+#  additional_data :jsonb
 #  bio             :text
 #  email           :string           not null
 #  is_superadmin   :boolean          default(FALSE)

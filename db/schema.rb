@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_12_133538) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_14_082345) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -154,6 +154,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_12_133538) do
     t.datetime "updated_at", null: false
     t.boolean "is_superadmin", default: false
     t.jsonb "limits"
+    t.jsonb "additional_data"
     t.index ["is_superadmin"], name: "index_users_on_is_superadmin"
   end
 
