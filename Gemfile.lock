@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/scmmishra/pico-billing.git
-  revision: 989a57eba465fdaf8366b1d8bc30bc59b1f4a90b
+  revision: d3b65f490345448ec69a73db6a30cf953493f3ec
   branch: main
   specs:
     pico-billing (0.2.0)

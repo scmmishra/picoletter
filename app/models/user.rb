@@ -34,6 +34,7 @@ class User < ApplicationRecord
   scope :active, -> { where(active: true) }
   before_create :activate_user
   before_create :set_basic_limits
+  after_create :notify_user_created
 
   def self.default_limits
     {
@@ -66,10 +67,28 @@ class User < ApplicationRecord
     end
   end
 
+  def notify_user_created
+    ActiveSupport::Notifications.instrument("user.created", user: self)
+  rescue => e
+    RorVsWild.record_error(e, user: self)
+  end
+
+  def update_additional_data(new_data = {})
+    additional_data = self.additional_data || {}
+    self.additional_data = additional_data.merge(new_data)
+  end
+
+  def update_additional_data!(new_data = {})
+    self.update_additional_data(new_data)
+    self.save
+  end
+
   private
 
   def activate_user
     self.active = true if self.active.nil?
+  rescue => e
+    RorVsWild.record_error(e, user: self)
   end
 
   def set_basic_limits
