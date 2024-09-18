@@ -11,6 +11,7 @@
 #  limits          :jsonb
 #  name            :string
 #  password_digest :string
+#  verified_at     :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
