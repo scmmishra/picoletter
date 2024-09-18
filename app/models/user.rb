@@ -20,7 +20,12 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
+  include Tokenable
+
   has_secure_password :password, validations: true
+
+  tokenable_on :password_reset, expiry: 1.hour
+  tokenable_on :verification, expiry: 48.hours
 
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy

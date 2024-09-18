@@ -2,12 +2,12 @@ module Tokenable
   extend ActiveSupport::Concern
 
   included do
-    class_attribute :token_scopes, instance_writer: false, default: {}
+    class_attribute :token_expiry, instance_writer: false, default: {}
   end
 
   class_methods do
     def tokenable_on(scope, expiry: nil)
-      self.token_scopes[scope] = expiry
+      self.token_expiry[scope] = expiry
 
       define_method("generate_#{scope}_token") do
         generate_jwt(scope)
@@ -38,16 +38,22 @@ module Tokenable
 
   private
 
-  def generate_jwt(scope)
-    payload = {
-      sub: id,
-      newsletter: newsletter.id,
-      iat: Time.current.to_i,
-      scope: scope
-    }
+  def get_payload(scope)
+    current_model = self.class.name.downcase
+    if current_model == "subscriber"
+      { sub: id, newsletter: newsletter.id, iat: Time.current.to_i, scope: scope }
+    elsif current_model == "user"
+      { user: id, iat: Time.current.to_i, scope: scope }
+    else
+      raise "Unsupported model for token generation"
+    end
+  end
 
-    if self.class.token_scopes[scope]
-      payload["exp"] = (Time.current + self.class.token_scopes[scope]).to_i
+  def generate_jwt(scope)
+    payload = get_payload(scope)
+
+    if self.class.token_expiry[scope]
+      payload["exp"] = (Time.current + self.class.token_expiry[scope]).to_i
     end
 
     JWT.encode(payload, self.class.secret_key_base, "HS256")
