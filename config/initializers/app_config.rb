@@ -4,7 +4,10 @@ class AppConfig
       value = ENV[env_key]
       raise KeyError, "Environment variable '#{env_key}' is not set" if value.nil?
 
-      parse_value(value)
+      value = parse_boolean(value)
+      value = parse_integer(value)
+
+      value
     end
 
     def get(env_key, default_value = nil)
@@ -14,7 +17,7 @@ class AppConfig
       value = parse_boolean(value)
       value = parse_integer(value)
 
-      return value
+      value
     end
 
     private
