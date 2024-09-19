@@ -3,6 +3,7 @@
 # Table name: subscribers
 #
 #  id                 :bigint           not null, primary key
+#  analytics_data     :jsonb
 #  created_via        :string
 #  email              :string
 #  full_name          :string
@@ -18,6 +19,7 @@
 # Indexes
 #
 #  index_subscribers_on_newsletter_id  (newsletter_id)
+#  index_subscribers_on_status         (status)
 #
 # Foreign Keys
 #
