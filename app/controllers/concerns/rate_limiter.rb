@@ -4,6 +4,8 @@ module RateLimiter
   class_methods do
     def throttle(to:, within:, only: nil, block_bots: false)
       before_action(only: only) do
+        Rails.logger.info "[RateLimiter] Rate limiting #{controller_name}##{action_name} for #{request.remote_ip}"
+
         if block_bots && bot?
           Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
           render plain: "Access denied", status: :forbidden
