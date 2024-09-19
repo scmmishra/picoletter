@@ -19,7 +19,6 @@
 # Indexes
 #
 #  index_subscribers_on_newsletter_id  (newsletter_id)
-#  index_subscribers_on_status         (status)
 #
 # Foreign Keys
 #
