@@ -2,15 +2,14 @@ require "net/smtp"
 require "resolv"
 
 class VerifyEmailService
-  attr_reader :email
-
   def initialize(email)
-    @email = email
+    @email = ValidEmail2::Address.new(email)
   end
 
   def verify
-    return false unless valid_format?
-    return false if disposable?
+    return false unless @email.valid?
+    return false if @email.disposable?
+    return false unless @email.valid_mx?
 
     true
   rescue => e
@@ -19,13 +18,7 @@ class VerifyEmailService
   end
 
   def verify_mx
-    domain = email.split("@").last
-    mx_records = mx_servers_for_domain(domain)
-
-    mx_records.present?
-  rescue => e
-    Rails.logger.info "[VerifyEmailService] MX Record verification failed: #{e.message}"
-    false
+    @email.valid_mx?
   end
 
   def verify_smtp
@@ -39,30 +32,6 @@ class VerifyEmailService
   end
 
   private
-
-  def disposable?
-    # https://github.com/disposable-email-domains/disposable-email-domains
-    email_domains = YAML.load_file(Rails.root.join("config", "disposable_emails.yml"))
-    email_domains.any? { |domain| email.ends_with?(domain) }
-  end
-
-  def valid_format?
-    email =~ /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  end
-
-  def mx_servers_for_domain(domain)
-    Rails.cache.fetch("mx_servers:#{domain}", expires_in: 7.day) do
-      fetch_mx_records(domain)
-    end
-  end
-
-  def fetch_mx_records(domain)
-    Resolv::DNS.open do |dns|
-      dns.getresources(domain, Resolv::DNS::Resource::IN::MX)
-        .sort_by(&:preference)
-        .map { |mx| mx.exchange.to_s }
-    end
-  end
 
   def verify_smtp_hello(smtp_server)
     Net::SMTP.start(smtp_server, 25, "localhost") do |smtp|

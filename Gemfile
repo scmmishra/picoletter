@@ -114,3 +114,4 @@ gem "solid_cache", "~> 0.7.0"
 
 # this will detect bots
 gem "browser"
+gem "valid_email2"

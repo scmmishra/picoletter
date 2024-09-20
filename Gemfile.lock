@@ -424,6 +424,9 @@ GEM
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.5.0)
     useragent (0.16.10)
+    valid_email2 (5.3.0)
+      activemodel (>= 3.2)
+      mail (~> 2.5)
     web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
@@ -487,6 +490,7 @@ DEPENDENCIES
   tailwindcss-rails (~> 2.6.0)
   turbo-rails
   tzinfo-data
+  valid_email2
   web-console
 
 RUBY VERSION
