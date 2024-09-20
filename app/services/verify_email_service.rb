@@ -6,6 +6,10 @@ class VerifyEmailService
     @email = ValidEmail2::Address.new(email)
   end
 
+  def valid?
+    verify
+  end
+
   def verify
     return false unless @email.valid?
     return false if @email.disposable?
