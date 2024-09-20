@@ -9,7 +9,7 @@ class CreateSubscriberJob < ApplicationJob
 
     Rails.logger.info("[CreateSubscriberJob] Email verification for #{email}: #{verified}")
 
-    if verified && mx_verified
+    if verified
       subscriber = newsletter.subscribers.find_or_initialize_by(email: email)
       subscriber.full_name = name if name.present?
       subscriber.created_via = created_via
