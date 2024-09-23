@@ -4,7 +4,7 @@ class Public::SubscribersController < ApplicationController
   before_action :set_newsletter
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
-  throttle to: 5, within: 20.minute, only: [ :embed_subscribe, :public_subscribe ], block_bots: true
+  throttle to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ], block_bots: true
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
@@ -72,21 +72,21 @@ class Public::SubscribersController < ApplicationController
     redirect_to almost_there_path(@newsletter.slug, email: params[:email])
   rescue => e
     Rails.logger.error(e)
-    RorVsWild.record_error(exception, context: { email: params[:email], name: params[:name], source: source})
+    RorVsWild.record_error(exception, context: { email: params[:email], name: params[:name], source: source })
     redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
   end
 
   def detect_device_type(browser)
     if browser.device.mobile?
-      'mobile'
+      "mobile"
     elsif browser.device.tablet?
-      'tablet'
+      "tablet"
     elsif browser.device.tv?
-      'tv'
+      "tv"
     elsif browser.device.console?
-      'console'
+      "console"
     else
-      'desktop'
+      "desktop"
     end
   end
 
