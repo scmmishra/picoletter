@@ -113,6 +113,11 @@ GEM
       xpath (~> 3.2)
     childprocess (5.1.0)
       logger (~> 1.5)
+    cloudflare-rails (6.1.0)
+      actionpack (>= 7.1.0, < 8.1.0)
+      activesupport (>= 7.1.0, < 8.1.0)
+      railties (>= 7.1.0, < 8.1.0)
+      zeitwerk (>= 2.5.0)
     concurrent-ruby (1.3.4)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -454,6 +459,7 @@ DEPENDENCIES
   browser
   byebug (~> 11.1)
   capybara
+  cloudflare-rails
   debug
   dotenv-rails
   erb-formatter
