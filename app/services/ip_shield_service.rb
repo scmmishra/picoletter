@@ -12,12 +12,17 @@ class IPShieldService
 
   def legit?
     begin
-      result = check_ip
-      Rails.logger.info "[IPChecker] #{@ip} status: #{result}"
+      result = nil
+      bm = Benchmark.measure do
+        result = check_ip
+      end
+
+      duration_ms = bm.real * 1000
+      Rails.logger.info "[IPShieldService] #{@ip} status: #{result}, duration: #{duration_ms.round(2)}ms, user CPU time: #{(bm.utime * 1000).round(2)}ms, system CPU time: #{(bm.stime * 1000).round(2)}ms"
 
       result == "SAFE"
     rescue StandardError => e
-      Rails.logger.error "[IPChecker] Error checking IP: #{e.message}"
+      Rails.logger.error "[IPShieldService] Error checking IP: #{e.message}"
       RorVsWild.record_error(e, context: { ip: @ip })
       true
     end
