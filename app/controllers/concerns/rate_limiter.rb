@@ -13,13 +13,16 @@ module RateLimiter
         if blocked?
           Rails.logger.info "[RateLimiter] Blocked IP address #{request.remote_ip}"
           render plain: "Access denied", status: :forbidden
+          return
         elsif block_bots && bot?
           Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
           render plain: "Access denied", status: :forbidden
+          return
         end
 
         if count > to
           render plain: "Rate limit exceeded", status: :too_many_requests
+          return
         end
       end
     end
