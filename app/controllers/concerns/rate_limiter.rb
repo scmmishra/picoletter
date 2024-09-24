@@ -7,6 +7,12 @@ module RateLimiter
         Rails.logger.info "[RateLimiter] Rate limiting #{controller_name}##{action_name} for #{request.remote_ip}"
 
         if Rails.env.production?
+          if blocked?
+            Rails.logger.info "[RateLimiter] Blocked IP address #{request.remote_ip}"
+            render plain: "Access denied", status: :forbidden
+            return
+          end
+
           if block_bots && bot?
             Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
             render plain: "Access denied", status: :forbidden
@@ -23,6 +29,10 @@ module RateLimiter
         end
       end
     end
+  end
+
+  def blocked?
+    blocked = AppConfig.get("BLOCKED_IPS", "").split(",").include?(request.remote_ip)
   end
 
   private
