@@ -6,22 +6,20 @@ module RateLimiter
       before_action(only: only) do
         Rails.logger.info "[RateLimiter] Rate limiting #{controller_name}##{action_name} for #{request.remote_ip}"
 
-        if Rails.env.production?
-          if blocked?
-            Rails.logger.info "[RateLimiter] Blocked IP address #{request.remote_ip}"
-            render plain: "Access denied", status: :forbidden
-          elsif block_bots && bot?
-            Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
-            render plain: "Access denied", status: :forbidden
-          end
+        # use remote_ip to rate limit by IP address
+        key = "rate_limit:#{request.remote_ip}:#{controller_name}:#{action_name}"
+        count = Rails.cache.increment(key, 1, expires_in: within)
 
-          # use remote_ip to rate limit by IP address
-          key = "rate_limit:#{request.remote_ip}:#{controller_name}:#{action_name}"
-          count = Rails.cache.increment(key, 1, expires_in: within)
+        if blocked?
+          Rails.logger.info "[RateLimiter] Blocked IP address #{request.remote_ip}"
+          render plain: "Access denied", status: :forbidden
+        elsif block_bots && bot?
+          Rails.logger.info "[RateLimiter] Bot access denied for #{request.remote_ip}"
+          render plain: "Access denied", status: :forbidden
+        end
 
-          if count > to
-            render plain: "Rate limit exceeded", status: :too_many_requests
-          end
+        if count > to
+          render plain: "Rate limit exceeded", status: :too_many_requests
         end
       end
     end
