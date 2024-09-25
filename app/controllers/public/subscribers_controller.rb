@@ -61,12 +61,16 @@ class Public::SubscribersController < ApplicationController
       device_type: detect_device_type(browser),
       referrer_url: request.referer,
       language: browser.accept_language.first&.code,
+      country_code: nil,
       utm_source: params[:utm_source],
       utm_medium: params[:utm_medium],
       utm_campaign: params[:utm_campaign],
       utm_term: params[:utm_term],
       utm_content: params[:utm_content]
     }
+
+    # if request has a cloudflare `CF-IPCountry` header, add it to the analytics data
+    analytics_data[:country_code] = request.headers["CF-IPCountry"] if request.headers["CF-IPCountry"].present?
 
     legit_ip = IPShieldService.legit_ip?(request.remote_ip)
 
