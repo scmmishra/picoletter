@@ -3,6 +3,7 @@
 # Table name: subscribers
 #
 #  id                 :bigint           not null, primary key
+#  analytics_data     :jsonb
 #  created_via        :string
 #  email              :string
 #  full_name          :string

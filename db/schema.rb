@@ -244,6 +244,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_18_160704) do
     t.datetime "unsubscribed_at"
     t.string "unsubscribe_reason"
     t.text "notes"
+    t.jsonb "analytics_data", default: {}
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
     t.index ["status"], name: "index_subscribers_on_status"
   end

@@ -116,5 +116,8 @@ gem "solid_cache", "~> 0.7.0"
 # this will detect bots
 gem "browser"
 
+gem "valid_email2"
+gem "cloudflare-rails"
+
 gem "lemonsqueezy", "~> 1.0"
 gem "pico-billing", git: "https://github.com/scmmishra/pico-billing.git", branch: "main"

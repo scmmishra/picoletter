@@ -46,10 +46,15 @@
 <%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "max-w-lg space-y-4" do |form| %>
   <label class="block space-y-1">
     <%= form.label :email, class: "ml-px text-stone-500 text-sm" %>
-    <%= form.text_field :email,
-                    required: true,
-                    disabled: true,
-                    class: "input w-full bg-stone-200 text-stone-600" %>
+    <div class="relative">
+      <%= form.text_field :email,
+                      required: true,
+                      disabled: true,
+                      class: "input w-full bg-stone-200 text-stone-600" %>
+      <div class="absolute right-2 top-2 font-mono text-xs">
+        <%= button_to_copy_to_clipboard(@subscriber.email) %>
+      </div>
+    </div>
   </label>
   <label class="block space-y-1">
     <%= form.label :full_name, "Full name", class: "ml-px text-stone-500 text-sm" %>

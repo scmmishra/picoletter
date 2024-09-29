@@ -6,6 +6,7 @@
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "SES"
   inflect.acronym "DNS"
+  inflect.acronym "IP"
 end
 
 # These inflection rules are supported but not enabled by default:

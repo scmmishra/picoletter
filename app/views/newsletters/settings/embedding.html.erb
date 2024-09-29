@@ -22,12 +22,9 @@
       <%= button_to_copy_to_clipboard(@newsletter.embded_form(with_name: true)) %>
     </div>
     <div
-      class="
-        px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100
-        text-stone-800 max-h-80
-      "
+      class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
+      id="form_html"
     >
-      <pre><%= render html: @newsletter.embded_form(with_name: true) %></pre>
     </div>
   </div>
   <div class="relative font-mono text-xs">
@@ -35,12 +32,30 @@
       <%= button_to_copy_to_clipboard(@newsletter.embded_form_css) %>
     </div>
     <div
-      class="
-        px-4 py-2 mt-2 space-y-2 overflow-y-scroll rounded-lg bg-stone-100
-        text-stone-800 max-h-80
-      "
+      class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
+      id="css_html"
     >
-      <pre><%= render html: @newsletter.embded_form_css %></pre>
     </div>
   </div>
 </section>
+<script type="module">
+  import { codeToHtml } from 'https://esm.sh/shiki@1.0.0'
+
+  const formCodeEl = document.getElementById('form_html')
+  formCodeEl.innerHTML = await codeToHtml(`<%= raw @newsletter.embded_form(with_name: true) %>`, {
+    lang: 'html',
+    theme: 'github-light'
+  })
+
+  const cssCodeEl = document.getElementById('css_html')
+  cssCodeEl.innerHTML = await codeToHtml(`<%= raw  @newsletter.embded_form_css %>`, {
+    lang: 'css',
+    theme: 'github-light'
+  })
+</script>
+
+<style>
+  .shiki {
+    padding: 0.5rem 0.8rem;
+  }
+</style>
