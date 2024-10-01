@@ -70,9 +70,7 @@
         Created on
       </div>
     </div>
-    <% @subscribers.each do |subscriber| %>
-      <%= render "subscribers/card", subscriber: subscriber %>
-    <% end %>
+    <%= render partial: "subscribers/card", collection: @subscribers, as: :subscriber %>
   </section>
   <div class="flex items-center justify-end mt-4">
     <%= paginate @subscribers, window: 2 %>
