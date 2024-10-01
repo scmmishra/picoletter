@@ -116,3 +116,8 @@ gem "solid_cache", "~> 0.7.0"
 gem "browser"
 gem "valid_email2"
 gem "cloudflare-rails"
+
+# http://www.rubygeocoder.com/
+gem "geocoder"
+# to parse maxmind db
+gem "maxminddb"
