@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_19_143353) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_01_094856) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,6 +143,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_19_143353) do
     t.text "notes"
     t.jsonb "analytics_data", default: {}
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
+    t.index ["status"], name: "index_subscribers_on_status"
   end
 
   create_table "users", force: :cascade do |t|
@@ -154,6 +155,9 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_19_143353) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_superadmin", default: false
+    t.jsonb "limits"
+    t.jsonb "additional_data"
+    t.datetime "verified_at"
     t.index ["is_superadmin"], name: "index_users_on_is_superadmin"
   end
 

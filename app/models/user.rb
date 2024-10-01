@@ -4,11 +4,14 @@
 #
 #  id              :bigint           not null, primary key
 #  active          :boolean
+#  additional_data :jsonb
 #  bio             :text
 #  email           :string           not null
 #  is_superadmin   :boolean          default(FALSE)
+#  limits          :jsonb
 #  name            :string
 #  password_digest :string
+#  verified_at     :datetime
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
 #
