@@ -36,6 +36,14 @@ class ApplicationController < ActionController::Base
 
   def redirect_to_newsletter_home
     has_newsletter = Current.user.newsletters.count > 0
-    redirect_to has_newsletter ? posts_url(Current.user.newsletters.first.slug) : new_newsletter_url
+    last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
+
+    if has_newsletter && last_opened_newsletter.present?
+      redirect_to posts_url(last_opened_newsletter)
+    elsif has_newsletter
+      redirect_to posts_url(Current.user.newsletters.first.slug)
+    else
+      redirect_to new_newsletter_url
+    end
   end
 end
