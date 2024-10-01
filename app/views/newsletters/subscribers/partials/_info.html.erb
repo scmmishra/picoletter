@@ -1,7 +1,7 @@
 <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
   <% if @subscriber.unsubscribed? %>
     <span class="font-normal text-stone-500">Unsubscribed on</span>
-    <%= @subscriber.unsubscribed_at.strftime("%B %d, %Y at %I:%M %p") %>
+    <%= @subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
     <span class="font-normal text-stone-500">at</span>
     <%= @subscriber.unsubscribed_at.strftime("%I:%M %p") %>
   <% elsif @subscriber.verified? %>
