@@ -10,8 +10,6 @@
   </div>
 <% else %>
   <section class="mt-6 divide-y divide-stone-200">
-    <% @posts.each do |post| %>
-      <%= render "posts/card", post: post %>
-    <% end %>
+    <%= render partial: "posts/card", collection: @posts, as: :post %>
   </section>
 <% end %>
