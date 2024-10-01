@@ -10,6 +10,6 @@
   </div>
 <% else %>
   <section class="mt-6 divide-y divide-stone-200/60">
-    <%= render partial: "posts/card", collection: @posts, as: :post %>
+    <%= render partial: "posts/card", collection: @posts, as: :post, cached: true %>
   </section>
 <% end %>
