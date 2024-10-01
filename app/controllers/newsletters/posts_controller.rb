@@ -3,6 +3,7 @@ class Newsletters::PostsController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
+  before_action :set_last_opened, only: [ :index ]
   before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule, :unschedule ]
 
   def index
@@ -66,6 +67,10 @@ class Newsletters::PostsController < ApplicationController
   end
 
   private
+
+  def set_last_opened
+    Rails.cache.write("last_opened_newsletter_#{Current.user.id}", @newsletter.slug)
+  end
 
   def set_newsletter
     @newsletter = Current.user.newsletters.from_slug(params[:slug])
