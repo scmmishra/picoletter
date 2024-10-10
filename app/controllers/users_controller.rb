@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :resume_session_if_present, only: [ :new ]
+  before_action :set_require_invite_code, only: [ :new, :create ]
+  before_action :check_invite_code, only: [ :create ]
 
   def new
     if Current.user.present?
@@ -10,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(user_params.except(:invite_code))
 
     if @user.save
       start_new_session_for @user
@@ -22,8 +24,22 @@ class UsersController < ApplicationController
 
   private
 
+  def check_invite_code
+    return unless @require_invite
+
+    if user_params[:invite_code].blank?
+      redirect_to signup_url, notice: "Please enter an invite code."
+    elsif user_params[:invite_code] != AppConfig.get("INVITE_CODE")
+      redirect_to signup_url, notice: "Invalid invite code"
+    end
+  end
+
+  def set_require_invite_code
+    @require_invite = AppConfig.get("INVITE_CODE").present?
+  end
+
   def user_params
-    params.permit(:email, :password, :name)
+    params.permit(:email, :password, :name, :invite_code)
   end
 
   def error_messages_for(errors)

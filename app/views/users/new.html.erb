@@ -38,6 +38,16 @@
                             placeholder: "··············" %>
       </label>
 
+      <% if @require_invite %>
+      <label class="space-y-1">
+        <%= form.label :invite_code, class: "ml-px text-stone-500" %>
+        <%= form.text_field :invite_code,
+                            required: true,
+                            class: "input w-full",
+                            placeholder: "ZPR1234" %>
+      </label>
+      <% end %>
+
       <div class="mt-1">
         <%= form.submit "Start publishing", class: "btn btn-primary w-full" %>
       </div>
