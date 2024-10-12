@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   post "/webhook/resend", to: "webhook#resend"
 
+  resources :passwords, param: :token
+
   namespace :auth do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"

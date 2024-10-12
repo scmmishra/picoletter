@@ -1,4 +1,6 @@
 class SubscriptionMailer < ApplicationMailer
+  layout "newsletter_mailer"
+
   def confirmation
     @subscriber = params[:subscriber]
     @newsletter = @subscriber.newsletter
