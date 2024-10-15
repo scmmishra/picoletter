@@ -24,7 +24,10 @@
     </label>
     <label class="block space-y-1">
       <%= form.label :timezone, class: "ml-px text-stone-500 text-sm" %>
-      <%= form.time_zone_select :timezone, nil, {}, { class: "input w-full" } %>
+      <%= form.select :timezone,
+                  TZInfo::Timezone.all_identifiers,
+                  {},
+                  { class: "input w-full" } %>
       <div class="font-sans text-xs text-stone-400">Timezone in which scheduled posts will be sent.</div>
     </label>
     <label class="block space-y-1">
