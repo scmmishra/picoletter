@@ -26,6 +26,14 @@
     <%= form.datetime_field :scheduled_at,
                         required: true,
                         class: "mt-1 input w-full font-sans" %>
+
+    <div class="hidden space-y-1">
+      <%= form.text_field :timezone,
+                      class: "input w-full",
+                      data: {
+                        controller: "auto-timezone",
+                      } %>
+    </div>
     <%= form.submit "Schedule for later", class: "btn btn-secondary mt-4" %>
   <% end %>
 <% end %>

@@ -39,7 +39,11 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def schedule
-    @post.schedule(post_params[:scheduled_at])
+    scheduled_at = post_params[:scheduled_at]
+    timezone = post_params[:timezone]
+    utc_schedule = ActiveSupport::TimeZone[timezone].parse(scheduled_at).utc
+
+    @post.schedule(utc_schedule)
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
   end
 
@@ -82,6 +86,6 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :scheduled_at)
+    params.require(:post).permit(:title, :content, :scheduled_at, :timezone)
   end
 end
