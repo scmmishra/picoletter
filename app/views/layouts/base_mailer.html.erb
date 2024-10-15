@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%= yield :head %>
+    <style>
+      body {
+        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
+        font-size: 16px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 20px;
+        -webkit-font-smoothing: antialiased;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+      .container {
+        max-width: 600px;
+        display: block;
+      }
+      p {
+        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
+        font-size: 16px;
+        margin-bottom: 16px;
+      }
+      a {
+        color: '#09090B';
+        text-decoration: underline;
+      }
+      .btn a {
+        background-color: '#09090B';
+        color: '@FFFFFF';
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 8px;
+        display: inline-block;
+        font-weight: bold;
+      }
+      .btn-primary a:hover {
+        background-color: '#27272A';
+        border-color: '#27272A';
+      }
+    </style>
+  </head>
+  <body>
+    <table
+      role="presentation"
+      border="0"
+      cellpadding="0"
+      cellspacing="0"
+      class="body"
+    >
+      <tr>
+        <td class="container">
+          <%= yield %>
+        </td>
+      </tr>
+    </table>
+    <div class="footer">
+      <%= yield :footer %>
+    </div>
+  </body>
+</html>
