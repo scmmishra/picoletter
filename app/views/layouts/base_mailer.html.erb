@@ -6,7 +6,7 @@
     <%= yield :head %>
     <style>
       body {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
         font-size: 16px;
         line-height: 1.4;
         margin: 0;
@@ -20,17 +20,17 @@
         display: block;
       }
       p {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
         font-size: 16px;
         margin-bottom: 16px;
       }
       a {
-        color: <%= @newsletter.primary_color %>;
+        color: '#09090B';
         text-decoration: underline;
       }
       .btn a {
-        background-color: <%= @newsletter.theme.primary %>;
-        color: <%= @newsletter.theme.text_on_primary %>;
+        background-color: '#09090B';
+        color: '@FFFFFF';
         padding: 8px 16px;
         text-decoration: none;
         border-radius: 8px;
@@ -38,8 +38,8 @@
         font-weight: bold;
       }
       .btn-primary a:hover {
-        background-color: <%= @newsletter.theme.primary_hover %>;
-        border-color: <%= @newsletter.theme.primary_hover %>;
+        background-color: '#27272A';
+        border-color: '#27272A';
       }
     </style>
   </head>

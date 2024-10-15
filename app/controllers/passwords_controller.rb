@@ -1,5 +1,6 @@
 class PasswordsController < ApplicationController
   before_action :set_user_by_token, only: %i[ edit update ]
+  throttle to: 5, within: 30.minute, only: [ :create ], block_bots: true
 
   def new
   end
@@ -19,7 +20,7 @@ class PasswordsController < ApplicationController
     if @user.update(params.permit(:password, :password_confirmation))
       redirect_to auth_login_path, notice: "Password has been reset."
     else
-      redirect_to edit_password_url(params[:token]), alert: "Passwords did not match."
+      redirect_to edit_password_url(params[:token]), notice: "Passwords did not match."
     end
   end
 
