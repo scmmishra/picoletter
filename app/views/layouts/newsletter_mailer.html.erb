@@ -8,7 +8,7 @@
     /* -------------------------------------
     GLOBAL RESETS
 ------------------------------------- */
-    
+
     body {
       font-family: <%= @newsletter.font_family %>;
       -webkit-font-smoothing: antialiased;
@@ -17,14 +17,14 @@
       -ms-text-size-adjust: 100%;
       -webkit-text-size-adjust: 100%;
     }
-    
+
     table {
       border-collapse: separate;
       mso-table-lspace: 0pt;
       mso-table-rspace: 0pt;
       width: 100%;
     }
-    
+
     table td {
       font-family: <%= @newsletter.font_family %>;
       font-size: 16px;
@@ -33,18 +33,18 @@
     /* -------------------------------------
     BODY & CONTAINER
 ------------------------------------- */
-    
+
     body {
       background-color: #f4f5f6;
       margin: 0;
       padding: 0;
     }
-    
+
     .body {
       background-color: #f4f5f6;
       width: 100%;
     }
-    
+
     .container {
       margin: 0 auto !important;
       max-width: 600px;
@@ -52,7 +52,7 @@
       padding-top: 24px;
       width: 600px;
     }
-    
+
     .content {
       box-sizing: border-box;
       display: block;
@@ -63,26 +63,26 @@
     /* -------------------------------------
     HEADER, FOOTER, MAIN
 ------------------------------------- */
-    
+
     .main {
       background: #ffffff;
       border: 1px solid #eaebed;
       border-radius: 16px;
       width: 100%;
     }
-    
+
     .wrapper {
       box-sizing: border-box;
       padding: 24px;
     }
-    
+
     .footer {
       clear: both;
       padding-top: 24px;
       text-align: center;
       width: 100%;
     }
-    
+
     .footer td,
     .footer p,
     .footer span,
@@ -94,7 +94,7 @@
     /* -------------------------------------
     TYPOGRAPHY
 ------------------------------------- */
-    
+
     p {
       font-family: <%= @newsletter.font_family %>;
       font-size: 16px;
@@ -102,7 +102,7 @@
       margin: 0;
       margin-bottom: 16px;
     }
-    
+
     a {
       color: <%= @newsletter.primary_color %>;
       text-decoration: underline;
@@ -110,13 +110,13 @@
     /* -------------------------------------
     BUTTONS
 ------------------------------------- */
-    
+
     .btn {
       box-sizing: border-box;
       min-width: 100% !important;
       width: 100%;
     }
-    
+
     .btn > tbody > tr > td {
       padding-bottom: 16px;
     }
@@ -125,17 +125,17 @@
     .btn:last-child > tbody > tr > td {
       padding-bottom: 0px;
     }
-    
+
     .btn table {
       width: 100%;
     }
-    
+
     .btn table td {
       background-color: #ffffff;
       border-radius: 8px;
       text-align: center;
     }
-    
+
     .btn a {
       background-color: #ffffff;
       border: solid 2px #ffffff;
@@ -152,17 +152,17 @@
       text-transform: capitalize;
       width: 100%;
     }
-    
+
     .btn-primary table td {
       background-color: <%= @newsletter.theme.primary %>;
     }
-    
+
     .btn-primary a {
       background-color: <%= @newsletter.theme.primary %>;
       border-color: <%= @newsletter.theme.primary %>;
       color: <%= @newsletter.theme.text_on_primary %>;
     }
-    
+
     @media all {
       .btn-primary table td:hover {
         background-color: <%= @newsletter.theme.primary_hover %> !important;
@@ -172,48 +172,48 @@
         border-color: <%= @newsletter.theme.primary_hover %> !important;
       }
     }
-    
+
     /* -------------------------------------
     OTHER STYLES THAT MIGHT BE USEFUL
 ------------------------------------- */
-    
+
     .last {
       margin-bottom: 0;
     }
-    
+
     .first {
       margin-top: 0;
     }
-    
+
     .align-center {
       text-align: center;
     }
-    
+
     .align-right {
       text-align: right;
     }
-    
+
     .align-left {
       text-align: left;
     }
-    
+
     .text-link {
       color: <%= @newsletter.primary_color %> !important;
       text-decoration: underline !important;
     }
-    
+
     .clear {
       clear: both;
     }
-    
+
     .mt0 {
       margin-top: 0;
     }
-    
+
     .mb0 {
       margin-bottom: 0;
     }
-    
+
     .preheader {
       color: transparent;
       display: none;
@@ -230,16 +230,16 @@
     .powered-by {
       font-size: 12px !important;
     }
-    
+
     .powered-by a {
       font-size: 12px !important;
       text-decoration: none;
     }
-    
+
     /* -------------------------------------
     RESPONSIVE AND MOBILE FRIENDLY STYLES
 ------------------------------------- */
-    
+
     @media only screen and (max-width: 640px) {
       .main p,
       .main td,
@@ -275,7 +275,7 @@
     /* -------------------------------------
     PRESERVE THESE STYLES IN THE HEAD
 ------------------------------------- */
-    
+
     @media all {
       .ExternalClass {
         width: 100%;

@@ -81,4 +81,11 @@
       </div>
     <% end %>
   </div>
+  <div class=" font-sans text-sm text-stone-400 mt-5 text-center px-1 ">
+    Logged in as
+    <%= Current.user.email %>,
+    <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
+      <span>click here to log out.</span>
+    <% end %>
+  </div>
 </div>

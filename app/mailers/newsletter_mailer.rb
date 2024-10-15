@@ -1,4 +1,6 @@
 class NewsletterMailer < ApplicationMailer
+  layout "newsletter_mailer"
+
   def broken_dns_records
     @newsletter = params[:newsletter]
     @user = @newsletter.user
