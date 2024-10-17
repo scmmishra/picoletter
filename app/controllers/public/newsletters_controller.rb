@@ -38,6 +38,8 @@ class Public::NewslettersController < ApplicationController
   def set_newsletter_layout
     # get the description as plain text, if
     # it is 500 characters or less use vertical, or else horizontal
-    @newsletter_layout = @newsletter.description.length > 500 ? "horizontal" : "vertical"
+    return "vertical" unless @newsletter.description.present?
+
+    @newsletter_layout = @newsletter.description&.length > 500 ? "horizontal" : "vertical"
   end
 end
