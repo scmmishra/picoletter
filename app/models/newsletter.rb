@@ -58,6 +58,7 @@ class Newsletter < ApplicationRecord
   attr_accessor :dkim_tokens
 
   def description_html
+    return "" if description.blank?
     Kramdown::Document.new(description).to_html.html_safe
   end
 
