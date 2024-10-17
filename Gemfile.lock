@@ -334,7 +334,7 @@ GEM
       httparty (>= 0.21.0)
     resolv (0.4.0)
     rexml (3.3.7)
-    rorvswild (1.8.0)
+    rorvswild (1.8.1)
     rspec-core (3.13.1)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -493,7 +493,7 @@ DEPENDENCIES
   redis (>= 4.0.1)
   resend
   resolv
-  rorvswild
+  rorvswild (>= 1.8.1)
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
   selenium-webdriver
