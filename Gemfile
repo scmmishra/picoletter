@@ -98,7 +98,7 @@ gem "jwt"
 gem "premailer-rails"
 
 # monitoring
-gem "rorvswild"
+gem "rorvswild", ">= 1.8.1"
 
 # webhooks
 gem "svix"
