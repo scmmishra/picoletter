@@ -6,9 +6,9 @@
       "
     >✅ Post Scheduled</h3>
     <p class="mt-1 text-yellow-900/70">This post will automatically be sent to all your subscribers on
-      <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%B %e, %Y") %></span>
+      <span class="font-medium text-yellow-900"><%= post.scheduled_at_tz.strftime("%B %e, %Y") %></span>
       at
-      <span class="font-medium text-yellow-900"><%= post.scheduled_at.strftime("%H:%M %p") %></span>. You can unschedule this post if you think something is wrong, you will
+      <span class="font-medium text-yellow-900"><%= post.scheduled_at_tz.strftime("%H:%M %p") %> <%= post.scheduled_at_tz.zone %></span>. You can unschedule this post if you think something is wrong, you will
       be notified via email when the post is sent.</p>
     <%= form.submit "Unschedule post", class: "btn btn-warning mt-4" %>
   <% end %>
