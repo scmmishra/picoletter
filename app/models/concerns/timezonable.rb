@@ -1,20 +1,12 @@
 module Timezonable
   extend ActiveSupport::Concern
 
-  def created_at_tz
-    created_at.in_time_zone(newsletter_tz)
-  end
+  TIMEZONE_FIELDS = %i[created_at updated_at published_at scheduled_at].freeze
 
-  def updated_at_tz
-    updated_at.in_time_zone(newsletter_tz)
-  end
-
-  def published_at_tz
-    published_at.in_time_zone(newsletter_tz)
-  end
-
-  def scheduled_at_tz
-    scheduled_at.in_time_zone(newsletter_tz)
+  TIMEZONE_FIELDS.each do |field|
+    define_method("#{field}_tz") do
+      send(field)&.in_time_zone(newsletter_tz)
+    end
   end
 
   private
