@@ -40,7 +40,7 @@ class Newsletters::PostsController < ApplicationController
 
   def schedule
     scheduled_at = post_params[:scheduled_at]
-    timezone = post_params[:timezone]
+    timezone = post_params[:timezone] || @post.newsletter.timezone
     utc_schedule = ActiveSupport::TimeZone[timezone].parse(scheduled_at).utc
 
     @post.schedule(utc_schedule)
