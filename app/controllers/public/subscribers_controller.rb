@@ -82,7 +82,7 @@ class Public::SubscribersController < ApplicationController
     end
   rescue => e
     Rails.logger.error(e)
-    RorVsWild.record_error(exception, context: { email: params[:email], name: params[:name], source: source })
+    RorVsWild.record_error(e, context: { email: params[:email], name: params[:name], source: source })
     redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
   end
 
