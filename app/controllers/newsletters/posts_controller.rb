@@ -45,6 +45,9 @@ class Newsletters::PostsController < ApplicationController
 
     @post.schedule(utc_schedule)
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
+  rescue StandardError => e
+    RorVsWild.record_error(exception, context: { params: post_params, tz: ActiveSupport::TimeZone[post_params[:timezone]], n_tz: @post.newsletter.timezone })
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Something went wrong while publishing the post"
   end
 
   def unschedule
