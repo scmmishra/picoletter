@@ -121,3 +121,6 @@ gem "cloudflare-rails"
 gem "geocoder"
 # to parse maxmind db
 gem "maxminddb"
+
+# SES + SNS for email and webhooks
+gem "aws-sdk-rails", "~> 4"
