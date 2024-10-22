@@ -48,7 +48,7 @@ class Newsletter < ApplicationRecord
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
 
-  enum status: { active: "active", archived: "archived" }
+  enum :status, { active: "active", archived: "archived" }
 
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true

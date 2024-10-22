@@ -40,8 +40,8 @@ class Subscriber < ApplicationRecord
   scope :unsubscribed, -> { where(status: "unsubscribed") }
   scope :subscribed, -> { verified.or(unverified) }
 
-  enum status: { unverified: 0, verified: 1, unsubscribed: 2 }
-  enum unsubscribe_reason: { bounced: "bounced", complained: "complained" }
+  enum :status, { unverified: 0, verified: 1, unsubscribed: 2 }
+  enum :unsubscribe_reason, { bounced: "bounced", complained: "complained" }
   validates :email, presence: true, uniqueness: { case_sensitive: false, scope: :newsletter_id, message: "has already subscribed" }
 
   def verify!
