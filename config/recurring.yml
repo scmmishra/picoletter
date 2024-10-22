@@ -1,0 +1,16 @@
+default: &default
+  send_published_post:
+    class: SendSchedulePostJob
+    schedule: every minute
+  verify_dns:
+    class: VerifyDNSRecordsJob
+    schedule: every day
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default
