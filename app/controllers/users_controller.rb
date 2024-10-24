@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     if Current.user.present?
       redirect_to_newsletter_home
     else
+      @user = User.new
       render :new
     end
   end
