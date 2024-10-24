@@ -8,7 +8,7 @@
       p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
     "
   >
-    <%= form_with model: @user, url: signup_path, local: true, class: "flex flex-col gap-4" do |form| %>
+    <%= form_with url: signup_path, local: true, class: "flex flex-col gap-4" do |form| %>
       <label class="space-y-1">
         <%= form.label :name, class: "ml-px text-stone-500" %>
         <%= form.text_field :name,
