@@ -1,5 +1,8 @@
 class SES::DomainService < SES::BaseService
   def create_identity(domain)
+    # we generate a new key pair for each domain
+    # instead of relying on AWS to generate it
+    # That way we have vendor portability
     private_key, public_key = generate_key_pair
 
     # Email identity creation in Amazon SES enables domain-based authentication
@@ -46,6 +49,23 @@ class SES::DomainService < SES::BaseService
     RorVsWild.record_error(e, context: { domain: domain })
   end
 
+  def get_identity(domain)
+    @client.get_email_identity({
+      email_identity: domain
+    })
+  rescue => e
+    Rails.logger.error(e)
+    RorVsWild.record_error(e, context: { domain: domain })
+    nil
+  end
+
+  def get_tokens(domain)
+    identity = get_identity(domain)
+    return nil if identity.nil?
+
+    identity.dkim_attributes.tokens
+  end
+
   private
 
   def generate_key_pair
@@ -55,8 +75,8 @@ class SES::DomainService < SES::BaseService
     public_key = key.public_key.to_pem
 
     base64_private_key = private_key
-      .gsub("-----BEGIN PRIVATE KEY-----", "")
-      .gsub("-----END PRIVATE KEY-----", "")
+      .gsub("-----BEGIN RSA PRIVATE KEY-----", "")
+      .gsub("-----END RSA PRIVATE KEY-----", "")
       .gsub("\n", "")
 
     base64_public_key = public_key
