@@ -49,28 +49,18 @@ class SES::DomainService < BaseAwsService
     })
 
     public_key
-  rescue => e
-    Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { domain: @domain })
   end
 
   def get_identity
     @ses_client.get_email_identity({
       email_identity: @domain
     })
-  rescue => e
-    Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { domain: @domain })
-    nil
   end
 
   def delete_identity
     @ses_client.delete_email_identity({
       email_identity: @domain
     })
-  rescue => e
-    Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { domain: @domain })
   end
 
   private
