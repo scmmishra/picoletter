@@ -1,4 +1,4 @@
-class SES::DomainService < SES::BaseService
+class SES::DomainService < BaseAwsService
   def initialize(domain)
     super()
     @domain = domain
