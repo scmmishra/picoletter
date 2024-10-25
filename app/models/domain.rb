@@ -11,7 +11,7 @@
 #  public_key    :string
 #  region        :string           default("us-east-1")
 #  spf_details   :string
-#  status        :integer
+#  status        :string           default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  newsletter_id :bigint           not null

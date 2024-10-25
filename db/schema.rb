@@ -55,7 +55,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
   create_table "domains", force: :cascade do |t|
     t.string "name"
     t.bigint "newsletter_id", null: false
-    t.integer "status"
+    t.string "status", default: "pending"
     t.string "region", default: "us-east-1"
     t.string "public_key"
     t.string "dkim_status"
