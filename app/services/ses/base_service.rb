@@ -1,4 +1,4 @@
-class Core::BaseService
+class SES::BaseService
   REGION = "us-east-1".freeze
 
   def initialize

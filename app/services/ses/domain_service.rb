@@ -1,4 +1,4 @@
-class Core::DomainService < Core::BaseService
+class SES::DomainService < SES::BaseService
   def create_identity(domain)
     private_key, public_key = generate_key_pair
 
