@@ -42,6 +42,7 @@ class SES::DomainService < SES::BaseService
 
     public_key
   rescue => e
+    Rails.logger.error(e)
     RorVsWild.record_error(e, context: { domain: domain })
   end
 
