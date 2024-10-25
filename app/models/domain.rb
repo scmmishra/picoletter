@@ -26,5 +26,7 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Domain < ApplicationRecord
-  enum status: [ :not_started, :pending, :success, :failed, :temporary_failure ]
+  belongs_to :newsletter
+
+  enum :status, [ :not_started, :pending, :success, :failed, :temporary_failure ], default: :pending
 end
