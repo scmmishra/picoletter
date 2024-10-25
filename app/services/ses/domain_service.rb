@@ -21,7 +21,7 @@ class SES::DomainService < BaseAwsService
     #
     # This enhances email deliverability by proving domain ownership and
     # message authenticity to receiving email servers.
-    @client.create_email_identity({
+    @ses_client.create_email_identity({
       email_identity: @domain,
       dkim_signing_attributes: {
         domain_signing_selector: "picoletter",
@@ -43,7 +43,7 @@ class SES::DomainService < BaseAwsService
     # In Amazon SES, the custom MAIL FROM domain allows you to control
     # this value, which can improve deliverability and enhance your
     # domain's email reputation.
-    @client.put_email_identity_mail_from_attributes({
+    @ses_client.put_email_identity_mail_from_attributes({
       email_identity: @domain,
       mail_from_domain: "mail.#{@domain}"
     })
@@ -55,7 +55,7 @@ class SES::DomainService < BaseAwsService
   end
 
   def get_identity
-    @client.get_email_identity({
+    @ses_client.get_email_identity({
       email_identity: @domain
     })
   rescue => e
@@ -65,7 +65,7 @@ class SES::DomainService < BaseAwsService
   end
 
   def delete_identity
-    @client.delete_email_identity({
+    @ses_client.delete_email_identity({
       email_identity: @domain
     })
   rescue => e
