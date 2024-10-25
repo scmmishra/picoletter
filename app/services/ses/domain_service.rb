@@ -1,5 +1,10 @@
 class SES::DomainService < SES::BaseService
-  def create_identity(domain)
+  def initialize(domain)
+    super()
+    @domain = domain
+  end
+
+  def create_identity
     # we generate a new key pair for each domain
     # instead of relying on AWS to generate it
     # That way we have vendor portability
@@ -17,7 +22,7 @@ class SES::DomainService < SES::BaseService
     # This enhances email deliverability by proving domain ownership and
     # message authenticity to receiving email servers.
     @client.create_email_identity({
-      email_identity: domain,
+      email_identity: @domain,
       dkim_signing_attributes: {
         domain_signing_selector: "picoletter",
         domain_signing_private_key: private_key
@@ -39,31 +44,33 @@ class SES::DomainService < SES::BaseService
     # this value, which can improve deliverability and enhance your
     # domain's email reputation.
     @client.put_email_identity_mail_from_attributes({
-      email_identity: domain,
-      mail_from_domain: "mail.#{domain}"
+      email_identity: @domain,
+      mail_from_domain: "mail.#{@domain}"
     })
 
     public_key
   rescue => e
     Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { domain: domain })
+    RorVsWild.record_error(e, context: { domain: @domain })
   end
 
-  def get_identity(domain)
+  def get_identity
     @client.get_email_identity({
-      email_identity: domain
+      email_identity: @domain
     })
   rescue => e
     Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { domain: domain })
+    RorVsWild.record_error(e, context: { domain: @domain })
     nil
   end
 
-  def get_tokens(domain)
-    identity = get_identity(domain)
-    return nil if identity.nil?
-
-    identity.dkim_attributes.tokens
+  def delete_identity
+    @client.delete_email_identity({
+      email_identity: @domain
+    })
+  rescue => e
+    Rails.logger.error(e)
+    RorVsWild.record_error(e, context: { domain: @domain })
   end
 
   private
