@@ -28,6 +28,9 @@ class Domain < ApplicationRecord
   belongs_to :newsletter
 
   enum :status, [ :not_started, :pending, :success, :failed, :temporary_failure ], default: :pending
+  enum :dkim_status, [ :not_started, :pending, :success, :failed, :temporary_failure ], default: :pending
+  enum :spf_status, [ :pending, :success, :failed, :temporary_failure ], default: :pending
+
   validates :name, presence: true, uniqueness: true
 
   def register_identity
