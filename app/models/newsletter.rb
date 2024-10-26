@@ -45,6 +45,7 @@ class Newsletter < ApplicationRecord
   sluggable_on :title
 
   belongs_to :user
+  has_one :domain, dependent: :destroy
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
 
