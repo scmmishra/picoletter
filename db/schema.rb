@@ -58,11 +58,10 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
     t.string "status", default: "pending"
     t.string "region", default: "us-east-1"
     t.string "public_key"
-    t.string "dkim_status"
-    t.string "spf_details"
+    t.string "dkim_status", default: "pending"
+    t.string "spf_status", default: "pending"
     t.string "error_message"
     t.boolean "dmarc_added", default: false
-    t.boolean "is_verifying", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_domains_on_name", unique: true

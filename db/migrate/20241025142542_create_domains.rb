@@ -6,11 +6,10 @@ class CreateDomains < ActiveRecord::Migration[8.0]
       t.string :status, default: "pending"
       t.string :region, default: 'us-east-1'
       t.string :public_key
-      t.string :dkim_status
-      t.string :spf_details
+      t.string :dkim_status, default: "pending"
+      t.string :spf_status, default: "pending"
       t.string :error_message
       t.boolean :dmarc_added, default: false
-      t.boolean :is_verifying, default: false
 
       t.timestamps
     end

@@ -3,14 +3,13 @@
 # Table name: domains
 #
 #  id            :bigint           not null, primary key
-#  dkim_status   :string
+#  dkim_status   :string           default("pending")
 #  dmarc_added   :boolean          default(FALSE)
 #  error_message :string
-#  is_verifying  :boolean          default(FALSE)
 #  name          :string
 #  public_key    :string
 #  region        :string           default("us-east-1")
-#  spf_details   :string
+#  spf_status    :string           default("pending")
 #  status        :string           default("pending")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
