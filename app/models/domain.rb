@@ -45,7 +45,7 @@ class Domain < ApplicationRecord
   end
 
   def is_verifying
-    verification_status == "success" && dkim_status == "success" && spf_details == "success"
+    status_success? && dkim_status_success? && spf_status_success?
   end
 
   private
