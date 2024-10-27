@@ -25,18 +25,23 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Domain < ApplicationRecord
-  belongs_to :newsletter
+  # belongs_to :newsletter
 
-  enum :status, [ :not_started, :pending, :success, :failed, :temporary_failure ], default: :pending
-  enum :dkim_status, [ :not_started, :pending, :success, :failed, :temporary_failure ], default: :pending
-  enum :spf_status, [ :pending, :success, :failed, :temporary_failure ], default: :pending
+  enum :status, %w[ not_started pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
+  enum :dkim_status, %w[ not_started pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
+  enum :spf_status, %w[ pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
 
   validates :name, presence: true, uniqueness: true
 
-  def register_identity
+  def register
     public_key = ses_service.create_identity
     update(public_key: public_key, region: ses_service.region)
     sync_attributes
+  end
+
+  def drop_identity
+    ses_service.delete_identity
+    update(public_key: nil, region: nil, dkim_status: nil, spf_status: nil, status: nil)
   end
 
   def is_verifying
