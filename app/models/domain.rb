@@ -48,6 +48,10 @@ class Domain < ApplicationRecord
     status_success? && dkim_status_success? && spf_status_success?
   end
 
+  def verify
+    sync_attributes
+  end
+
   private
 
   def sync_attributes
