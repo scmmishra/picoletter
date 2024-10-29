@@ -25,7 +25,7 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Domain < ApplicationRecord
-  # belongs_to :newsletter
+  belongs_to :newsletter
 
   enum :status, %w[ not_started pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
   enum :dkim_status, %w[ not_started pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
