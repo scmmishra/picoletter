@@ -45,6 +45,7 @@ class Newsletter < ApplicationRecord
   sluggable_on :title
 
   belongs_to :user
+  has_one :ses_domain, class_name: "Domain", foreign_key: "newsletter_id"
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
 
