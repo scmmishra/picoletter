@@ -50,6 +50,7 @@ class Domain < ApplicationRecord
 
   def verify
     sync_attributes
+    is_verifying
   end
 
   private
