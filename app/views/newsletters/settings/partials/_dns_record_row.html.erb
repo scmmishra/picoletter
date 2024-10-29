@@ -2,13 +2,13 @@
   <div class="flex items-center col-span-1 gap-1">
     <%= record["type"] %>
   </div>
-  <div class="flex items-center col-span-2 gap-1">
-    <span><%= record["name"] %></span>
+  <div class="flex items-center col-span-3 gap-1">
+    <span class="max-w-sm truncate"><%= record["name"] %></span>
     <%= button_to_copy_to_clipboard(record['name']) do %>
       <span class="sr-only">Copy URL</span>
     <% end %>
   </div>
-  <div class="flex items-center col-span-4 gap-1 overflow-hidden">
+  <div class="flex items-center col-span-3 gap-1 overflow-hidden">
     <span class="max-w-sm truncate"><%= record["value"] %></span>
     <%= button_to_copy_to_clipboard(record['value']) do %>
       <span class="sr-only">Copy URL</span>
