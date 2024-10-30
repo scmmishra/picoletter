@@ -2,13 +2,13 @@
   <div class="flex items-center col-span-1 gap-1">
     <%= record["type"] %>
   </div>
-  <div class="flex items-center col-span-2 gap-1">
-    <span><%= record["name"] %></span>
+  <div class="flex items-center col-span-3 gap-1">
+    <span class="max-w-sm truncate"><%= record["name"] %></span>
     <%= button_to_copy_to_clipboard(record['name']) do %>
       <span class="sr-only">Copy URL</span>
     <% end %>
   </div>
-  <div class="flex items-center col-span-4 gap-1 overflow-hidden">
+  <div class="flex items-center col-span-3 gap-1 overflow-hidden">
     <span class="max-w-sm truncate"><%= record["value"] %></span>
     <%= button_to_copy_to_clipboard(record['value']) do %>
       <span class="sr-only">Copy URL</span>
@@ -25,10 +25,10 @@
     <div class="flex items-center justify-end col-span-1 gap-1">
       <span
         class="
-          px-2 py-1 text-[10px] uppercase outline outline-1 rounded-md font-medium
-          tracking-wide <%= "outline-stone-200 text-stone-700 bg-stone-50" if record['status'] == "not_started" %>
-          <%= "outline-yellow-400 text-yellow-700 bg-yellow-50" if record['status'] == "pending" %> <%= "outline-green-400 text-green-700 bg-green-50" if record['status'] == "verified" %>
-          <%= "outline-red-400 text-red-700 bg-red-50" if record['status'] == "failure" %>%
+          px-2 py-1 leading-none text-[10px] uppercase rounded-md font-semibold text-white
+          tracking-wider <%= "bg-stone-500" if record['status'] == "not_started" %>
+          <%= "bg-yellow-600" if record['status'] == "pending" %> <%= "bg-green-500" if record['status'] == "success" %>
+          <%= "bg-red-500" if record['status'] == "failure" %>%
         "
       >
         <%= record["status"].titleize %>

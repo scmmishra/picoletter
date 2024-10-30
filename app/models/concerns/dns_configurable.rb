@@ -26,6 +26,7 @@ module DNSConfigurable
     return unless use_custom_domain
 
     Rails.logger.info("Verifying custom domain: #{domain}")
+    return ses_domain.verify if ses_domain.present?
 
     is_verified_on_dns = verify_dns_records
     Rails.logger.info("Domain verification on DNS completed. Verified: #{is_verified_on_dns}")
