@@ -28,7 +28,7 @@
           px-2 py-1 leading-none text-[10px] uppercase rounded-md font-semibold text-white
           tracking-wider <%= "bg-stone-500" if record['status'] == "not_started" %>
           <%= "bg-yellow-600" if record['status'] == "pending" %> <%= "bg-green-500" if record['status'] == "success" %>
-          <%= "bg-red-500" if record['status'] == "failure" %>%
+          <%= "bg-green-500" if record['status'] == "verified" %> <%= "bg-red-500" if record['status'] == "failure" %>
         "
       >
         <%= record["status"].titleize %>
