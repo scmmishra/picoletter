@@ -23,13 +23,20 @@ class SES::EmailService < BaseAwsService
   #     headers: {'List-Unsubscribe' => '<url>'}
   #   )
   def send(params)
-    # Convert header hash to SES format
+    payload = build_email_payload(params)
+
+    @ses_client.send_email(payload)
+  end
+
+  private
+
+  def build_email_payload(params)
     parsed_headers = params.fetch(:headers, {}).map { |key, value| { name: key, value: value } }
 
-    email_payload = {
+    {
       from_email_address: params[:from],
       destination: { to_addresses: params[:to] },
-      reply_to_addresses: params[:reply_to],
+      reply_to_addresses: [ params[:reply_to] ],
       content: {
         simple: {
           subject: { data: params[:subject] },
@@ -42,8 +49,6 @@ class SES::EmailService < BaseAwsService
       },
       configuration_set_name: configuration_set
     }
-
-    @ses_client.send_email(email_payload)
   end
 
   def configuration_set
