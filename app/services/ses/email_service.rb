@@ -39,9 +39,14 @@ class SES::EmailService < BaseAwsService
           },
           headers: parsed_headers
         }
-      }
+      },
+      configuration_set_name: configuration_set
     }
 
     @ses_client.send_email(email_payload)
+  end
+
+  def configuration_set
+    @configuration_set ||= AppConfig.get("AWS_SES_CONFIGURATION_SET")
   end
 end
