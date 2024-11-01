@@ -28,37 +28,6 @@ class SES::EmailService < BaseAwsService
     @ses_client.send_email(payload)
   end
 
-  def bulk_send(params)
-    bulk_entries = params[:recipients].map do |recipient|
-      {
-        destination: { to_addresses: [ recipient[:email] ] },
-        replacement_email_content: {
-          replacement_template: {
-            replacement_template_data: {
-              unsubscribe_link: recipient[:unsubscribe_link]
-            }.to_json
-          }
-        },
-        replacement_headers: params.fetch(:headers, {}).map { |key, value| { name: key, value: value } }
-      }
-    end
-
-    payload = {
-      from_email_address: params[:from],
-      reply_to_addresses: [ params[:reply_to] ],
-      default_content: {
-        template: {
-          template_content: {
-            subject: params[:subject],
-            text: params[:text],
-            html: params[:html]
-          }
-        }
-      },
-      configuration_set_name: configuration_set
-    }
-  end
-
   private
 
   def build_email_payload(params)
