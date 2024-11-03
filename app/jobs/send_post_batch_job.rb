@@ -1,6 +1,6 @@
 class SendPostBatchJob < ApplicationJob
   queue_as :default
-  after_perform: :update_batch_count
+  # after_perform: :update_batch_count
 
   UNSUBSCRIBE_PLACEHOLDER = "{{unsubscribe_link}}"
 
@@ -15,12 +15,12 @@ class SendPostBatchJob < ApplicationJob
 
   private
 
-  def update_batch_count
-    post_id = @post.id
-    remaining_batches = Rails.cache.decrement("post_#{post_id}_batches_remaining")
+  # def update_batch_count
+  #   post_id = @post.id
+  #   remaining_batches = Rails.cache.decrement("post_#{post_id}_batches_remaining")
 
-    @post.publish if remaining_batches <= 0
-  end
+  #   @post.publish if remaining_batches <= 0
+  # end
 
   def send_batch(batch_subscribers)
     Rails.logger.info "[PostMailer] Sending #{@post.title} to #{batch_subscribers.count} subscribers"
