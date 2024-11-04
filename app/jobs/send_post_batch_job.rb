@@ -10,6 +10,7 @@ class SendPostBatchJob < ApplicationJob
     @html_content = get_html_content
     @text_content = get_text_content
     @from_email = @newsletter.full_sending_address
+    @ses_service = SES::EmailService.new
 
     send_batch(batch_subscribers)
   end
@@ -29,18 +30,19 @@ class SendPostBatchJob < ApplicationJob
       token = subscriber.generate_unsubscribe_token
       unsub_url = unsubscribe_url(token, @newsletter.slug)
       html = @html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(unsub_url))
+      text = @text_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsub_url)
 
-      response = SES::EmailService.send(
+      response = @ses_service.send(
           to: [ subscriber.email ],
           from: @from_email,
-          reply_to: @newsletter.reply_to || @newsletter.user.email,
+          reply_to: @newsletter.reply_to.presence || @newsletter.user.email,
           subject: @post.title,
-          html: @html_content,
-          text: @text_content,
+          html: html,
+          text: text,
           headers: {
-            'List-Unsubscribe': "<#{unsub_url}>",
-            'List-Unsubscribe-Post': "List-Unsubscribe=One-Click",
-            'X-Newsletter-id': "picoletter-#{@newsletter.id}-#{@post.id}-#{subscriber.id}"
+            "List-Unsubscribe" => "<#{unsub_url}>",
+            "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
+            "X-Newsletter-id" => "picoletter-#{@newsletter.id}-#{@post.id}-#{subscriber.id}"
           }
         )
 
