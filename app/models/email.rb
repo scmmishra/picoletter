@@ -16,6 +16,7 @@
 #
 # Indexes
 #
+#  index_emails_on_email_id       (email_id) UNIQUE
 #  index_emails_on_post_id        (post_id)
 #  index_emails_on_subscriber_id  (subscriber_id)
 #
