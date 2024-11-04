@@ -71,7 +71,7 @@ class Newsletter < ApplicationRecord
     if use_custom_domain && domain_verified
       sending_address
     else
-      sending_domain = AppConfig.get("APP_SENDING_DOMAIN", "picoletter.com")
+      sending_domain = AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
       # separt mail. address to maintain deliverability of the default domain
       "#{slug}@mail.#{sending_domain}"
     end

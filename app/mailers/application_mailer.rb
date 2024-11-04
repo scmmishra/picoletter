@@ -21,6 +21,6 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def sending_domain
-    AppConfig.get("APP_SENDING_DOMAIN", "picoletter.com")
+    AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
   end
 end
