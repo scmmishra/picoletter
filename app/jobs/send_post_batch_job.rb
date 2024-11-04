@@ -65,7 +65,7 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def unsubscribe_link(url)
-    "<a href=\"#{url}\">unsubscribe</a>"
+    "<a ses:no-track href=\"#{url}\">unsubscribe</a>"
   end
 
   def unsubscribe_url(token, slug)
