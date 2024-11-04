@@ -5,6 +5,7 @@
 # locales as you wish. All of these examples are active by default:
 ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.acronym "SES"
+  inflect.acronym "SNS"
   inflect.acronym "DNS"
   inflect.acronym "IP"
 end
