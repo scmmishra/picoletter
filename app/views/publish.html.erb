@@ -40,6 +40,10 @@
         background-color: <%= @newsletter.theme.primary_hover %>;
         border-color: <%= @newsletter.theme.primary_hover %>;
       }
+      .footer {
+        margin-top: 30px;
+        opacity: 0.8;
+      }
     </style>
   </head>
   <body>
@@ -49,11 +53,13 @@
         <%= @post.content %>
       </div>
       <div class="footer">
-        <%= sanitize @newsletter.footer_html %>
-      </div>
-      <div class="footer">
-        You are receiving this email because you are subscribed to
-        <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        <p>
+          <%= sanitize @newsletter.footer_html %>
+        </p>
+        <p>
+          You are receiving this email because you are subscribed to
+          <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        </p>
       </div>
     </div>
   </body>
