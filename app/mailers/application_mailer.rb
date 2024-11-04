@@ -5,7 +5,7 @@ class ApplicationMailer < ActionMailer::Base
   private
 
   def notify_address
-    "Picoletter Notifications <notify@#{sending_domain}>"
+    "Picoletter Notifications <notifications@#{sending_domain}>"
   end
 
   def accounts_address
