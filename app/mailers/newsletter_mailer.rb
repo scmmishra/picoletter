@@ -6,9 +6,8 @@ class NewsletterMailer < ApplicationMailer
     @user = @newsletter.user
 
     subject = "Broken DNS records for your newsletter"
-    from = "notify@picoletter.com"
     recipient = @newsletter.user.email
 
-    mail(to: recipient, subject: subject, from: from)
+    mail(to: recipient, subject: subject, from: notify_address)
   end
 end
