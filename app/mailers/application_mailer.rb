@@ -13,11 +13,7 @@ class ApplicationMailer < ActionMailer::Base
   end
 
   def support_address
-    "Picoletter Support <accounts@#{sending_domain}>"
-  end
-
-  def no_reply_address
-    "Picoletter <accounts@#{sending_domain}>"
+    "Picoletter Support <support@#{sending_domain}>"
   end
 
   def sending_domain
