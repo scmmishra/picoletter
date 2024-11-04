@@ -2,6 +2,7 @@ class ProcessSNSWebhookJob < ApplicationJob
   queue_as :default
 
   def perform(payload)
+    # https://docs.aws.amazon.com/ses/latest/dg/event-publishing-retrieving-sns-examples.html
     @payload = payload.with_indifferent_access
     @email = Email.find_by!(email_id: payload[:mail][:messageId])
     event_name = payload[:eventType].underscore
