@@ -37,6 +37,15 @@ class ProcessSNSWebhookJob < ApplicationJob
     @email.update(status: "delivered", delivered_at: timestamp)
   end
 
+  def process_click
+    data = @payload[:open]
+    timestamp = data.dig(:timestamp)
+    link = data.dig(:link)
+
+    @email.clicks.create(link: link, timestamp: timestamp)
+    @email.update(opened_at: timestamp) if @email.opened_at.nil?
+  end
+
   def process_open
     data = @payload[:open]
     timestamp = data.dig(:timestamp)

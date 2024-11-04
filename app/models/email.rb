@@ -26,6 +26,7 @@ class Email < ApplicationRecord
   include Statusable
 
   belongs_to :post
+  has_many :clicks, class_name: "EmailClick", dependent: :destroy
   belongs_to :subscriber, optional: true
 
   enum :status, { sent: "sent", delivered: "delivered", complained: "complained", bounced: "bounced" }
