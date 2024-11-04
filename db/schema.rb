@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_04_151958) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_04_155201) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -78,7 +78,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_04_151958) do
     t.datetime "updated_at", null: false
     t.integer "subscriber_id"
     t.datetime "complained_at"
-    t.datetime "clicked_at"
     t.index ["email_id"], name: "index_emails_on_email_id", unique: true
     t.index ["post_id"], name: "index_emails_on_post_id"
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
