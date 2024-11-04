@@ -3,6 +3,6 @@ class PasswordMailer < ApplicationMailer
 
   def reset(user)
     @user = user
-    mail(to: @user.email, subject: "Reset your password.", from: "accounts@picoletter.com")
+    mail(to: @user.email, subject: "Reset your password.", from: "Picoletter <accounts@picoletter.com>")
   end
 end
