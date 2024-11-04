@@ -1,42 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%= yield :head %>
     <style>
-      /* Add your custom styles here */
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        padding: 20px;
+        font-family: <%= @newsletter.font_family %>;
+        font-size: 16px;
+        line-height: 1.4;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
       }
-
       .container {
         max-width: 600px;
-        margin: 0;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: block;
       }
-      h1 {
-        color: #333333;
-        font-size: 24px;
-        margin-bottom: 20px;
+      p, div {
+        font-family: <%= @newsletter.font_family %>;
+        font-size: 16px;
+        margin-bottom: 16px;
       }
-
-      .content {
-        margin-bottom: 30px;
+      a {
+        color: <%= @newsletter.primary_color %>;
+        text-decoration: underline;
       }
-
-      .footer {
-        color: #777777;
-        font-size: 14px;
+      .btn a {
+        background-color: <%= @newsletter.theme.primary %>;
+        color: <%= @newsletter.theme.text_on_primary %>;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 8px;
+        display: inline-block;
+        font-weight: bold;
+      }
+      .btn-primary a:hover {
+        background-color: <%= @newsletter.theme.primary_hover %>;
+        border-color: <%= @newsletter.theme.primary_hover %>;
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1><%= @post.title %></h1>
       <div class="content">
         <%= @post.content %>
       </div>
