@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_04_155201) do
+ActiveRecord::Schema[8.0].define(version: 2024_11_04_155907) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,9 +68,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_04_155201) do
     t.index ["newsletter_id"], name: "index_domains_on_newsletter_id"
   end
 
-  create_table "emails", force: :cascade do |t|
+  create_table "emails", id: :serial, force: :cascade do |t|
     t.integer "post_id", null: false
-    t.string "email_id"
     t.string "status", default: "sent"
     t.datetime "bounced_at"
     t.datetime "delivered_at"
@@ -78,7 +77,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_04_155201) do
     t.datetime "updated_at", null: false
     t.integer "subscriber_id"
     t.datetime "complained_at"
-    t.index ["email_id"], name: "index_emails_on_email_id", unique: true
     t.index ["post_id"], name: "index_emails_on_post_id"
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
   end

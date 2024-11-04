@@ -32,7 +32,7 @@ class SendPostBatchJob < BaseSendJob
       {
         post_id: post.id,
         subscriber_id: subscriber.id,
-        email_id: response.message_id
+        id: response.message_id
       }
     end
 
