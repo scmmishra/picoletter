@@ -14,4 +14,13 @@ class WebhookController < ApplicationController
   rescue
     head :bad_request
   end
+
+  def sns
+    payload = JSON.parse(request.body.read)
+    ProcessSNSWebhookJob.perform_later(payload)
+
+    head :no_content
+  rescue
+    head :bad_request
+  end
 end
