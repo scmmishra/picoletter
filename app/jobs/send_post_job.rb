@@ -1,4 +1,4 @@
-class SendPostJob < ApplicationJob
+class SendPostJob < BaseSendJob
   queue_as :default
   attr_reader :post, :newsletter
 
@@ -18,7 +18,6 @@ class SendPostJob < ApplicationJob
   end
 
   def prepare_post_for_sending
-    cache_rendered_content
     mark_as_processing
   end
 
@@ -28,38 +27,12 @@ class SendPostJob < ApplicationJob
     end
   end
 
-  def cache_rendered_content
-    Rails.cache.write(cache_key("html_content"), rendered_html_content)
-    Rails.cache.write(cache_key("text_content"), rendered_text_content)
-  end
-
   def mark_as_processing
     post.update(status: :processing)
-    Rails.cache.write(cache_key("batches_remaining"), total_batches)
+    Rails.cache.write(cache_key(post.id, "batches_remaining"), total_batches)
   end
 
   def total_batches
     (newsletter.subscribers.verified.count.to_f / BATCH_SIZE).ceil
-  end
-
-  def rendered_html_content
-    ApplicationController.render(
-      template: "publish",
-      assigns: { post: post, newsletter: newsletter },
-      layout: false,
-    )
-  end
-
-  def rendered_text_content
-    ApplicationController.render(
-      template: "publish",
-      assigns: { post: post, newsletter: newsletter },
-      layout: false,
-      formats: [ :text ]
-    )
-  end
-
-  def cache_key(suffix)
-    "post_#{post.id}_#{suffix}"
   end
 end

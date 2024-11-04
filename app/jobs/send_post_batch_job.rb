@@ -1,4 +1,4 @@
-class SendPostBatchJob < ApplicationJob
+class SendPostBatchJob < BaseSendJob
   queue_as :default
   after_perform :update_batch_count
 
@@ -7,8 +7,8 @@ class SendPostBatchJob < ApplicationJob
   def perform(post_id, batch_subscribers)
     @post = Post.find(post_id)
     @newsletter = @post.newsletter
-    @html_content = get_html_content
-    @text_content = get_text_content
+    @html_content = rendered_html_content(@post, @newsletter)
+    @text_content = rendered_text_content(@post, @newsletter)
     @from_email = @newsletter.full_sending_address
     @ses_service = SES::EmailService.new
 
@@ -18,14 +18,11 @@ class SendPostBatchJob < ApplicationJob
   private
 
   def update_batch_count
-    post_id = @post.id
-    remaining_batches = Rails.cache.decrement("post_#{post_id}_batches_remaining")
-
+    remaining_batches = Rails.cache.decrement(cache_key(@post.id, "batches_remaining"))
     @post.publish if remaining_batches <= 0
   end
 
   def send_batch(batch_subscribers)
-    Rails.logger.info "[PostMailer] Sending #{@post.title} to #{batch_subscribers.count} subscribers"
     sends = batch_subscribers.map do |subscriber|
       token = subscriber.generate_unsubscribe_token
       unsub_url = unsubscribe_url(token, @newsletter.slug)
@@ -33,18 +30,18 @@ class SendPostBatchJob < ApplicationJob
       text = @text_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsub_url)
 
       response = @ses_service.send(
-          to: [ subscriber.email ],
-          from: @from_email,
-          reply_to: @newsletter.reply_to.presence || @newsletter.user.email,
-          subject: @post.title,
-          html: html,
-          text: text,
-          headers: {
-            "List-Unsubscribe" => "<#{unsub_url}>",
-            "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
-            "X-Newsletter-id" => "picoletter-#{@newsletter.id}-#{@post.id}-#{subscriber.id}"
-          }
-        )
+        to: [ subscriber.email ],
+        from: @from_email,
+        reply_to: @newsletter.reply_to.presence || @newsletter.user.email,
+        subject: @post.title,
+        html: html,
+        text: text,
+        headers: {
+          "List-Unsubscribe" => "<#{unsub_url}>",
+          "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
+          "X-Newsletter-id" => "picoletter-#{@newsletter.id}-#{@post.id}-#{subscriber.id}"
+        }
+      )
 
       {
         post_id: @post.id,
@@ -54,39 +51,6 @@ class SendPostBatchJob < ApplicationJob
     end
 
     Email.insert_all(sends)
-  end
-
-  def get_html_content
-    Rails.cache.fetch(cache_key("html_content")) do
-      rendered_html_content
-    end
-  end
-
-  def get_text_content
-    Rails.cache.fetch(cache_key("text_content")) do
-      rendered_text_content
-    end
-  end
-
-  def cache_key(suffix)
-    "post_#{@post.id}_#{suffix}"
-  end
-
-  def rendered_html_content
-    ApplicationController.render(
-      template: "publish",
-      assigns: { post: post, newsletter: newsletter },
-      layout: false,
-    )
-  end
-
-  def rendered_text_content
-    ApplicationController.render(
-      template: "publish",
-      assigns: { post: post, newsletter: newsletter },
-      layout: false,
-      formats: [ :text ]
-    )
   end
 
   def unsubscribe_link(url)
