@@ -2,11 +2,10 @@
 #
 # Table name: email_clicks
 #
-#  id         :bigint           not null, primary key
-#  link       :string
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  email_id   :string           not null
+#  id       :bigint           not null, primary key
+#  datetime :datetime
+#  link     :string
+#  email_id :string           not null
 #
 # Indexes
 #
