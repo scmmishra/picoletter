@@ -27,7 +27,7 @@ class SendPostBatchJob < BaseSendJob
 
   def send_batch(batch_subscribers)
     sends = batch_subscribers.map do |subscriber|
-      response = send_email(subscriber, token)
+      response = send_email(subscriber)
 
       {
         post_id: post.id,
