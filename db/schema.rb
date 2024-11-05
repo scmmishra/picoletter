@@ -71,7 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_04_161046) do
   create_table "email_clicks", force: :cascade do |t|
     t.string "link"
     t.string "email_id", null: false
-    t.datetime "datetime", precision: nil
+    t.datetime "timestamp"
     t.index ["email_id"], name: "index_email_clicks_on_email_id"
   end
 
