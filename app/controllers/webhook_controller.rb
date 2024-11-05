@@ -17,7 +17,7 @@ class WebhookController < ApplicationController
 
   def sns
     payload = JSON.parse(request.body.read)
-    ProcessSNSWebhookJob.perform_later(payload)
+    ProcessSNSWebhookJob.perform_now(payload)
 
     head :no_content
   rescue
