@@ -6,6 +6,7 @@
 #  bounced_at    :datetime
 #  complained_at :datetime
 #  delivered_at  :datetime
+#  opened_at     :datetime
 #  status        :string           default("sent")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
