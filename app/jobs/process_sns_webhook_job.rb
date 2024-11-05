@@ -54,8 +54,8 @@ class ProcessSNSWebhookJob < ApplicationJob
     timestamp = data.dig(:timestamp)
     link = data.dig(:link)
 
-    return if @email.clicks.exists?(link: link)
-    @email.clicks.create(link: link, timestamp: timestamp)
+    return if @email.clicks.exists?(link: link, post_id: @email.post_id)
+    @email.clicks.create(link: link, timestamp: timestamp, post_id: @email.post_id)
   end
 
   def process_open
