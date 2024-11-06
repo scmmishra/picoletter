@@ -33,6 +33,10 @@ class Domain < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def verified?
+    status_success? && dkim_status_success? && spf_status_success?
+  end
+
   def register
     public_key = ses_service.create_identity
     update(public_key: public_key, region: ses_service.region)

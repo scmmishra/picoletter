@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   mount MissionControl::Jobs::Engine, at: "/admin/jobs"
 
   post "/webhook/resend", to: "webhook#resend"
+  post "/webhook/sns", to: "webhook#sns"
 
   resources :passwords, param: :token
 

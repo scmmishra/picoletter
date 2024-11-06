@@ -1,37 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%= yield :head %>
     <style>
-      /* Add your custom styles here */
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f5f5f5;
-        padding: 20px;
+        font-family: <%= @newsletter.font_family %>;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
       }
-
       .container {
         max-width: 600px;
-        margin: 0 auto;
-        background-color: #ffffff;
-        padding: 20px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: block;
       }
-      h1 {
-        color: #333333;
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .content {
-        margin-bottom: 30px;
-      }
-
-      .footer {
-        color: #777777;
+      p, div {
+        font-family: <%= @newsletter.font_family %>;
         font-size: 14px;
-        text-align: center;
+        margin-bottom: 14px;
+      }
+      a {
+        color: <%= @newsletter.primary_color %>;
+        text-decoration: underline;
+      }
+      .btn a {
+        background-color: <%= @newsletter.theme.primary %>;
+        color: <%= @newsletter.theme.text_on_primary %>;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 8px;
+        display: inline-block;
+        font-weight: bold;
+      }
+      .btn-primary a:hover {
+        background-color: <%= @newsletter.theme.primary_hover %>;
+        border-color: <%= @newsletter.theme.primary_hover %>;
+      }
+      .footer {
+        margin-top: 30px;
+        opacity: 0.8;
       }
     </style>
   </head>
@@ -42,11 +53,13 @@
         <%= @post.content %>
       </div>
       <div class="footer">
-        <%= sanitize @newsletter.footer_html %>
-      </div>
-      <div class="footer">
-        You are receiving this email because you are subscribed to
-        <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        <p>
+          <%= sanitize @newsletter.footer_html %>
+        </p>
+        <p>
+          You are receiving this email because you are subscribed to
+          <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        </p>
       </div>
     </div>
   </body>

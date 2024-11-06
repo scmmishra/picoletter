@@ -56,6 +56,10 @@ class Subscriber < ApplicationRecord
     update(status: "unsubscribed", unsubscribed_at: Time.current)
   end
 
+  def unsubscrib_with_reason!(reason)
+    update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
+  end
+
   def send_reminder
     SubscriptionMailer.with(subscriber: self).confirmation_reminder.deliver_later
   end

@@ -52,7 +52,7 @@
 <% end %>
 
 <% if @newsletter.use_custom_domain %>
-  <% if @newsletter.domain_verified %>
+  <% if @newsletter.ses_verified? %>
     <div class="max-w-lg mt-8">
       <h3 class="text-lg font-medium text-stone-800">✅ Domain is Verified</h3>
       <p class="mt-1 text-stone-600">Your domain has been verified successfully. You can now send emails

@@ -2,15 +2,14 @@
 #
 # Table name: emails
 #
-#  id            :bigint           not null, primary key
+#  id            :string           not null, primary key
 #  bounced_at    :datetime
-#  clicked_at    :datetime
 #  complained_at :datetime
 #  delivered_at  :datetime
+#  opened_at     :datetime
 #  status        :string           default("sent")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  email_id      :string
 #  post_id       :integer          not null
 #  subscriber_id :integer
 #
@@ -28,6 +27,7 @@ class Email < ApplicationRecord
   include Statusable
 
   belongs_to :post
+  has_many :clicks, class_name: "EmailClick", dependent: :destroy
   belongs_to :subscriber, optional: true
 
   enum :status, { sent: "sent", delivered: "delivered", complained: "complained", bounced: "bounced" }
