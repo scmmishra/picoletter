@@ -40,7 +40,6 @@ class Newsletter < ApplicationRecord
   include Embeddable
   include Statusable
   include Themeable
-  include DNSConfigurable
 
   sluggable_on :title
 
@@ -63,12 +62,16 @@ class Newsletter < ApplicationRecord
     Kramdown::Document.new(description).to_html.html_safe
   end
 
+  def ses_verified?
+    ses_domain&.verified?
+  end
+
   def footer_html
     Kramdown::Document.new(self.email_footer || "").to_html
   end
 
   def sending_from
-    if use_custom_domain && domain_verified
+    if use_custom_domain && ses_verified?
       sending_address
     else
       sending_domain = AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
