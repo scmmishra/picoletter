@@ -53,8 +53,6 @@ class Newsletter < ApplicationRecord
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true
 
-  after_update_commit :setup_custom_domain
-
   attr_accessor :dkim_tokens
 
   def description_html
