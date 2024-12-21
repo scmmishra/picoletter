@@ -43,6 +43,14 @@ class Domain < ApplicationRecord
     sync_attributes
   end
 
+  def register_or_sync
+    if public_key.nil?
+      register
+    else
+      sync_attributes
+    end
+  end
+
   def drop_identity
     ses_service.delete_identity
     update(public_key: nil, region: nil, dkim_status: nil, spf_status: nil, status: nil)
@@ -50,6 +58,13 @@ class Domain < ApplicationRecord
 
   def is_verifying
     status_success? && dkim_status_success? && spf_status_success?
+  end
+
+  def self.is_unique(name, newsletter_id)
+    domain = find_by(name: name)
+    false if domain and domain.verified?
+
+    true
   end
 
   def verify
