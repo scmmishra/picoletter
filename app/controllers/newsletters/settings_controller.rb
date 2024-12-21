@@ -26,9 +26,22 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending; end
+
   def update_sending
+    domain = sending_params[:sending_address].split("@").last
+
+    # special unique check that ensures only verified domains are used
+    if !Domain.is_unique(domain)
+      redirect_to sending_settings_url(slug: @newsletter.slug), alert: "Domain already in use."
+      return
+    end
+
     @newsletter.update(sending_params)
+    domain = Domain.find_or_create_by(name: domain, newsletter_id: @newsletter.id)
+    domain.register_or_sync
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
+  rescue StandardError => e
+    redirect_to sending_settings_url(slug: @newsletter.slug), alert: e.message
   end
 
   def verify_domain
@@ -38,8 +51,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def embedding; end
-  def update_embedding
-  end
+  def update_embedding; end
 
   private
 
@@ -56,7 +68,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending_params
-    params.require(:newsletter).permit(:reply_to, :domain, :sending_address, :use_custom_domain)
+    params.require(:newsletter).permit(:reply_to, :sending_address)
   end
 
   def profile_params
