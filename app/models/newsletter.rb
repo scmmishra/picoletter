@@ -44,7 +44,7 @@ class Newsletter < ApplicationRecord
   sluggable_on :title
 
   belongs_to :user
-  has_one :ses_domain, class_name: "Domain", foreign_key: "newsletter_id"
+  has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
 
@@ -61,7 +61,7 @@ class Newsletter < ApplicationRecord
   end
 
   def ses_verified?
-    ses_domain&.verified?
+    sending_domain&.verified?
   end
 
   def footer_html
