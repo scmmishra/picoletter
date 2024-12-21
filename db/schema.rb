@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_11_05_161700) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_21_083557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -106,7 +106,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_11_05_161700) do
     t.string "primary_color", default: "#09090b"
     t.string "font_preference", default: "sans-serif"
     t.text "email_footer", default: ""
-    t.boolean "use_custom_domain"
     t.string "domain"
     t.string "sending_address"
     t.string "reply_to"
