@@ -60,7 +60,7 @@ class Domain < ApplicationRecord
     status_success? && dkim_status_success? && spf_status_success?
   end
 
-  def self.is_unique(name, newsletter_id)
+  def self.is_unique(name)
     domain = find_by(name: name)
     false if domain and domain.verified?
 
