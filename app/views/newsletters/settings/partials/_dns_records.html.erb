@@ -80,8 +80,5 @@
       "priority" => "",
       "status" => newsletter.ses_domain.spf_status,
     } %>
-  <% else %>
-    <%= render "newsletters/settings/partials/dns_record_row",
-    record: @newsletter.dmarc_record %>
   <% end %>
 </div>
