@@ -12,6 +12,7 @@ class VerifyDNSRecordsJob < ApplicationJob
   end
 
   def newsletters_with_custom_domain
+    # Todo update this to use the domain status
     Newsletter.where(use_custom_domain: true)
   end
 

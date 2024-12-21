@@ -69,7 +69,7 @@ class Newsletter < ApplicationRecord
   end
 
   def sending_from
-    if use_custom_domain && ses_verified?
+    if ses_verified?
       sending_address
     else
       default_sending_domain = AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
