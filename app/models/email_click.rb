@@ -5,7 +5,7 @@
 #  id        :bigint           not null, primary key
 #  link      :string
 #  timestamp :datetime
-#  email_id  :string           not null
+#  email_id  :bigint           not null
 #  post_id   :bigint           not null
 #
 # Indexes

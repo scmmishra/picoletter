@@ -70,7 +70,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_21_083557) do
 
   create_table "email_clicks", force: :cascade do |t|
     t.string "link"
-    t.string "email_id", null: false
+    t.bigint "email_id", null: false
     t.bigint "post_id", null: false
     t.datetime "timestamp"
     t.index ["email_id"], name: "index_email_clicks_on_email_id"
@@ -78,7 +78,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_21_083557) do
   end
 
   create_table "emails", id: :serial, force: :cascade do |t|
-    t.integer "post_id", null: false
+    t.bigint "post_id", null: false
     t.string "status", default: "sent"
     t.datetime "bounced_at"
     t.datetime "delivered_at"

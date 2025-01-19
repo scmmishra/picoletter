@@ -2,7 +2,7 @@
 #
 # Table name: emails
 #
-#  id            :string           not null, primary key
+#  id            :integer          not null, primary key
 #  bounced_at    :datetime
 #  complained_at :datetime
 #  delivered_at  :datetime
@@ -10,7 +10,7 @@
 #  status        :string           default("sent")
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  post_id       :integer          not null
+#  post_id       :bigint           not null
 #  subscriber_id :integer
 #
 # Indexes
