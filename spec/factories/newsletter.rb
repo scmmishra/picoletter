@@ -1,16 +1,16 @@
 FactoryBot.define do
   factory(:newsletter) do
-    description { "Nice description" }
-    domain { "picoletter.com" }
-    domain_id { "uuid-domain-id" }
+    description { Faker::Lorem.sentence }
+    domain { Faker::Internet.domain_name }
+    domain_id { Faker::Internet.uuid }
     domain_verified { true }
-    reply_to { "shivam@picoletter.com" }
-    sending_address { "shivam@picoletter.com" }
-    slug { "tinyjs" }
+    reply_to { Faker::Internet.email }
+    sending_address { Faker::Internet.email }
+    slug { Faker::Internet.slug }
     status { nil }
     template { nil }
     timezone { "UTC" }
-    title { "TinyJS" }
+    title { Faker::Company.name }
     website { nil }
 
     user
