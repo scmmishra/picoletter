@@ -16,14 +16,34 @@ class DomainSetupService
       remove_current_domain if has_existing_domain?
       newsletter.update(sending_address: sending_address, reply_to: reply_to)
       domain = Domain.find_or_create_by(name: domain_to_register, newsletter_id: newsletter.id)
-      domain.register_or_sync()
+      domain.register_or_sync
     end
   end
 
   private
 
+  # Removes the current sending domain configuration for a newsletter
+  # Attempts to delete both the SES identity and local database record
+  # Handles cases where the domain doesn't exist in SES but needs cleanup in DB
+  #
+  # @throws {Aws::SESV2::Errors::NotFoundException} When domain not found in SES
+  # @throws {StandardError} On other errors during removal
+  # @returns {void}
   def remove_current_domain
-    newsletter.sending_domain.drop_identity
+    begin
+      newsletter.sending_domain.drop_identity
+    rescue Aws::SESV2::Errors::NotFoundException => e
+      Rails.logger.error("Domain not found in SES: #{e.message}, deleting from DB anyway")
+    rescue StandardError => e
+      context = {
+        newsletter_id: newsletter.id,
+        existing_domain: newsletter.sending_domain.name,
+        new_domain: domain_to_register
+      }
+      RorVsWild.record_error(e, context: context)
+    end
+
+    newsletter.sending_domain.destroy!
   end
 
   def valid_domain?
@@ -37,7 +57,7 @@ class DomainSetupService
   end
 
   def has_existing_domain?
-    newsletter.sending_domain.present? and newsletter.sending_domain.verified? and newsletter.sending_domain.name != domain_to_register
+    newsletter.sending_domain.present? and newsletter.sending_domain.name != domain_to_register
   end
 
   def domain_already_registered?

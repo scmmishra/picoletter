@@ -53,7 +53,6 @@ class Domain < ApplicationRecord
 
   def drop_identity
     ses_service.delete_identity
-    update(public_key: nil, region: nil, dkim_status: nil, spf_status: nil, status: nil)
   end
 
   def is_verifying
