@@ -68,7 +68,7 @@ class Domain < ApplicationRecord
     .where(
       "(status = ? OR dkim_status = ? OR spf_status = ?)",
       "success", "success", "success"
-    )
+    ).empty?
   end
 
   def verify
