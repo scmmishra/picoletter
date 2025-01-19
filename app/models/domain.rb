@@ -60,11 +60,15 @@ class Domain < ApplicationRecord
     status_success? && dkim_status_success? && spf_status_success?
   end
 
-  def self.is_unique(name)
-    domain = find_by(name: name)
-    false if domain and domain.verified?
-
-    true
+  def self.is_unique(name, newsletter_id)
+    Domain.where(
+      name: name,
+    )
+    .where.not(newsletter_id: newsletter_id)
+    .where(
+      "(status = ? OR dkim_status = ? OR spf_status = ?)",
+      "success", "success", "success"
+    )
   end
 
   def verify
