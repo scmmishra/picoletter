@@ -28,19 +28,10 @@ class Newsletters::SettingsController < ApplicationController
   def sending; end
 
   def update_sending
-    domain = sending_params[:sending_address].split("@").last
-
-    # special unique check that ensures only verified domains are used
-    if !Domain.is_unique(domain)
-      redirect_to sending_settings_url(slug: @newsletter.slug), alert: "Domain already in use."
-      return
-    end
-
-    @newsletter.update(sending_params)
-    domain = Domain.find_or_create_by(name: domain, newsletter_id: @newsletter.id)
-    domain.register_or_sync
+    DomainSetupService.new(@newsletter, sending_params).perform
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
   rescue StandardError => e
+    RorVsWild.record_error(e, context: { params: sending_params, newsletter_id: @newsletter.id })
     redirect_to sending_settings_url(slug: @newsletter.slug), alert: e.message
   end
 
