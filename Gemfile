@@ -83,7 +83,6 @@ end
 
 gem "tailwindcss-rails"
 gem "kaminari"
-gem "resend"
 
 # HTML parsing
 gem "nokogiri"
@@ -99,9 +98,6 @@ gem "premailer-rails"
 
 # monitoring
 gem "rorvswild", ">= 1.8.1"
-
-# webhooks
-gem "svix"
 
 # production
 gem "dotenv-rails"

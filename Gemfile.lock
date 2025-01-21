@@ -185,10 +185,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     htmlentities (4.3.4)
-    httparty (0.22.0)
-      csv
-      mini_mime (>= 1.0.0)
-      multi_xml (>= 0.5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
@@ -268,8 +264,6 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.7.5)
-    multi_xml (0.7.1)
-      bigdecimal (~> 3.1)
     net-imap (0.5.5)
       date
       net-protocol
@@ -356,8 +350,6 @@ GEM
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
-    resend (0.17.2)
-      httparty (>= 0.21.0)
     resolv (0.6.0)
     rexml (3.4.0)
     rorvswild (1.8.1)
@@ -439,7 +431,6 @@ GEM
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     stringio (3.1.2)
-    svix (1.56.0)
     syntax_tree (6.2.0)
       prettier_print (>= 1.2.0)
     tailwindcss-rails (3.3.0)
@@ -516,7 +507,6 @@ DEPENDENCIES
   rack-mini-profiler
   rails (~> 8.0.1)
   redis (>= 4.0.1)
-  resend
   resolv
   rorvswild (>= 1.8.1)
   rspec-rails (~> 6.1.0)
@@ -526,7 +516,6 @@ DEPENDENCIES
   solid_queue
   sprockets-rails
   stimulus-rails
-  svix
   tailwindcss-rails
   turbo-rails
   tzinfo-data

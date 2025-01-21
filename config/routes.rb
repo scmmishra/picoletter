@@ -5,7 +5,6 @@ Rails.application.routes.draw do
 
   # Webhook routes
   scope "/webhook" do
-    post "resend", to: "webhook#resend"
     post "sns", to: "webhook#sns"
   end
 
