@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory(:user) do
     active { true }
-    bio { nil }
-    email { "neo@example.com" }
+    bio { Faker::Lorem.paragraph }
+    email { Faker::Internet.email }
     is_superadmin { true }
-    password { "password" }
-    name { "Neo Anderson" }
+    password { Faker::Internet.password }
+    name { Faker::Name.name }
   end
 end

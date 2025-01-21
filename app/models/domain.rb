@@ -33,19 +33,41 @@ class Domain < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  def verified?
+    status_success? && dkim_status_success? && spf_status_success?
+  end
+
   def register
     public_key = ses_service.create_identity
     update(public_key: public_key, region: ses_service.region)
     sync_attributes
   end
 
+  def register_or_sync
+    if public_key.nil?
+      register
+    else
+      sync_attributes
+    end
+  end
+
   def drop_identity
     ses_service.delete_identity
-    update(public_key: nil, region: nil, dkim_status: nil, spf_status: nil, status: nil)
   end
 
   def is_verifying
     status_success? && dkim_status_success? && spf_status_success?
+  end
+
+  def self.is_unique(name, newsletter_id)
+    Domain.where(
+      name: name,
+    )
+    .where.not(newsletter_id: newsletter_id)
+    .where(
+      "(status = ? OR dkim_status = ? OR spf_status = ?)",
+      "success", "success", "success"
+    ).empty?
   end
 
   def verify

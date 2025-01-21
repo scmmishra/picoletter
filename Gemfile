@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.3.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0.beta1"
+gem "rails", "~> 8.0.1"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -83,7 +83,6 @@ end
 
 gem "tailwindcss-rails"
 gem "kaminari"
-gem "resend"
 
 # HTML parsing
 gem "nokogiri"
@@ -100,25 +99,19 @@ gem "premailer-rails"
 # monitoring
 gem "rorvswild", ">= 1.8.1"
 
-# webhooks
-gem "svix"
-
 # production
 gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.4.0"
-
 gem "logtail-rails", "~> 0.2.7"
-
 gem "solid_cache", "~> 0.7.0"
+
+gem "httparty"
 
 # this will detect bots
 gem "browser"
 gem "valid_email2"
 gem "cloudflare-rails"
 
-# http://www.rubygeocoder.com/
-gem "geocoder"
 # to parse maxmind db
-gem "maxminddb"
 gem "aws-sdk-rails", "~> 3"

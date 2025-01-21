@@ -26,20 +26,23 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending; end
+
   def update_sending
-    @newsletter.update(sending_params)
+    DomainSetupService.new(@newsletter, sending_params).perform
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { params: sending_params, newsletter_id: @newsletter.id })
+    redirect_to sending_settings_url(slug: @newsletter.slug), alert: e.message
   end
 
   def verify_domain
     @newsletter.verify_custom_domain
-    notice = @newsletter.domain_verified ? "Domain successfully verified." : "Waiting for domain verification."
+    notice = @newsletter.ses_verified? ? "Domain successfully verified." : "Waiting for domain verification."
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: notice
   end
 
   def embedding; end
-  def update_embedding
-  end
+  def update_embedding; end
 
   private
 
@@ -56,7 +59,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending_params
-    params.require(:newsletter).permit(:reply_to, :domain, :sending_address, :use_custom_domain)
+    params.require(:newsletter).permit(:reply_to, :sending_address)
   end
 
   def profile_params

@@ -4,7 +4,7 @@ class Public::SubscribersController < ApplicationController
   before_action :set_newsletter
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
-  throttle to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ], block_bots: true
+  rate_limit to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ]
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
@@ -75,7 +75,7 @@ class Public::SubscribersController < ApplicationController
     legit_ip = IPShieldService.legit_ip?(request.remote_ip)
 
     if legit_ip
-      CreateSubscriberJob.perform_later(@newsletter.id, params[:email], params[:name], source, analytics_data)
+      CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], source, analytics_data)
       redirect_to almost_there_path(@newsletter.slug, email: params[:email])
     else
       redirect_to newsletter_path(@newsletter.slug), notice: "Our system detected some issues with your request. Please try again."

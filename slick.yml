@@ -4,8 +4,6 @@ app:
   container_port: 3000
   env:
     - SECRET_KEY_BASE
-    - RESEND__API_KEY
-    - RESEND__WEBHOOK_SECRET
     - RORVSWILD__API_KEY
     - PICO_HOST
     - PICO_SUPPORT_EMAIL

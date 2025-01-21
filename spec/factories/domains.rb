@@ -26,18 +26,14 @@
 #
 FactoryBot.define do
   factory :domain do
-    name { "MyString" }
-    team_id { 1 }
-    status { 1 }
-    region { "MyString" }
-    click_tracking { false }
-    open_tracking { false }
+    name { "test.com" }
+    status { "pending" }
+    region { "us-east-1" }
     public_key { "MyString" }
-    dkim_status { "MyString" }
-    spf_details { "MyString" }
+    dkim_status { "pending" }
+    spf_status { "pending" }
     dmarc_added { false }
     error_message { "MyString" }
-    subdomain { "MyString" }
-    is_verifying { false }
+    association :newsletter
   end
 end

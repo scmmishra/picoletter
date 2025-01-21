@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_21_083557) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -68,9 +68,17 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
     t.index ["newsletter_id"], name: "index_domains_on_newsletter_id"
   end
 
-  create_table "emails", force: :cascade do |t|
-    t.integer "post_id", null: false
-    t.string "email_id"
+  create_table "email_clicks", force: :cascade do |t|
+    t.string "link"
+    t.bigint "email_id", null: false
+    t.bigint "post_id", null: false
+    t.datetime "timestamp"
+    t.index ["email_id"], name: "index_email_clicks_on_email_id"
+    t.index ["post_id"], name: "index_email_clicks_on_post_id"
+  end
+
+  create_table "emails", id: :serial, force: :cascade do |t|
+    t.bigint "post_id", null: false
     t.string "status", default: "sent"
     t.datetime "bounced_at"
     t.datetime "delivered_at"
@@ -78,7 +86,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
     t.datetime "updated_at", null: false
     t.integer "subscriber_id"
     t.datetime "complained_at"
-    t.datetime "clicked_at"
+    t.datetime "opened_at"
     t.index ["post_id"], name: "index_emails_on_post_id"
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
   end
@@ -98,7 +106,6 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
     t.string "primary_color", default: "#09090b"
     t.string "font_preference", default: "sans-serif"
     t.text "email_footer", default: ""
-    t.boolean "use_custom_domain"
     t.string "domain"
     t.string "sending_address"
     t.string "reply_to"
@@ -180,6 +187,8 @@ ActiveRecord::Schema[8.0].define(version: 2024_10_25_142542) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "domains", "newsletters"
+  add_foreign_key "email_clicks", "emails"
+  add_foreign_key "email_clicks", "posts"
   add_foreign_key "emails", "posts"
   add_foreign_key "emails", "subscribers"
   add_foreign_key "newsletters", "users"
