@@ -116,9 +116,7 @@ RSpec.describe DomainSetupService do
       domain_setup.perform
 
       # Verify old domain was removed
-      existing_domain.reload
-      expect(existing_domain.public_key).to be_nil
-      expect(existing_domain.status).to be_nil
+      expect { existing_domain.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
       # Check that the newsletter was updated
       expect(newsletter.reload.reply_to).to eq('test@new.com')
