@@ -103,18 +103,15 @@ gem "rorvswild", ">= 1.8.1"
 gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.4.0"
-
 gem "logtail-rails", "~> 0.2.7"
-
 gem "solid_cache", "~> 0.7.0"
+
+gem "httparty"
 
 # this will detect bots
 gem "browser"
 gem "valid_email2"
 gem "cloudflare-rails"
 
-# http://www.rubygeocoder.com/
-gem "geocoder"
 # to parse maxmind db
-gem "maxminddb"
 gem "aws-sdk-rails", "~> 3"

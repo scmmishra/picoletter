@@ -179,12 +179,13 @@ GEM
     fugit (1.11.1)
       et-orbi (~> 1, >= 1.2.11)
       raabro (~> 1.4)
-    geocoder (1.8.5)
-      base64 (>= 0.1.0)
-      csv (>= 3.0.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
     htmlentities (4.3.4)
+    httparty (0.22.0)
+      csv
+      mini_mime (>= 1.0.0)
+      multi_xml (>= 0.5.2)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     image_processing (1.13.0)
@@ -249,7 +250,6 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    maxminddb (0.1.22)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
@@ -264,6 +264,8 @@ GEM
       stimulus-rails
       turbo-rails
     msgpack (1.7.5)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     net-imap (0.5.5)
       date
       net-protocol
@@ -488,7 +490,7 @@ DEPENDENCIES
   erb-formatter
   factory_bot_rails
   faker
-  geocoder
+  httparty
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
@@ -498,7 +500,6 @@ DEPENDENCIES
   letter_opener
   logtail-rails (~> 0.2.7)
   lucide-rails (~> 0.4.0)
-  maxminddb
   mission_control-jobs
   nokogiri
   pg (~> 1.5)
