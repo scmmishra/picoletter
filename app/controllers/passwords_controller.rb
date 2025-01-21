@@ -1,6 +1,6 @@
 class PasswordsController < ApplicationController
   before_action :set_user_by_token, only: %i[ edit update ]
-  throttle to: 5, within: 30.minute, only: [ :create ], block_bots: true
+  rate_limit to: 5, within: 30.minute, only: :create
 
   def new
   end

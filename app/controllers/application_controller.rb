@@ -1,6 +1,4 @@
 class ApplicationController < ActionController::Base
-  include RateLimiter
-
   def ensure_authenticated
     session = find_session_by_cookie
 
