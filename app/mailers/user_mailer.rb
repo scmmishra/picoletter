@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
 
   def verify(user)
     @user = user
-    @confirmation_url = "https://shivam.dev"
+    @confirmation_url = verify_url(@user.generate_token_for(:verification))
     mail(to: @user.email, subject: "Verify your email.", from: accounts_address)
   end
 end
