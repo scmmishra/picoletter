@@ -33,7 +33,7 @@ class User < ApplicationRecord
   validates :name, presence: true
   validates :bio, length: { maximum: 500 }
 
-  scope :active, -> { where(active: true) }
+  scope :active, -> { where(blocked_at: nil) }
   before_create :activate_user
 
   def super?
@@ -42,6 +42,10 @@ class User < ApplicationRecord
 
   def verify!
     update(verified_at: Time.current)
+  end
+
+  def blocked?
+    blocked_at.present?
   end
 
   private
