@@ -59,6 +59,10 @@ class Newsletter < ApplicationRecord
     Kramdown::Document.new(description).to_html.html_safe
   end
 
+  def verify_custom_domain
+    sending_domain&.verify
+  end
+
   def ses_verified?
     sending_domain&.verified?
   end

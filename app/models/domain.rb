@@ -55,10 +55,6 @@ class Domain < ApplicationRecord
     ses_service.delete_identity
   end
 
-  def is_verifying
-    status_success? && dkim_status_success? && spf_status_success?
-  end
-
   def self.is_unique(name, newsletter_id)
     Domain.where(
       name: name,
@@ -72,7 +68,7 @@ class Domain < ApplicationRecord
 
   def verify
     sync_attributes
-    is_verifying
+    verified?
   end
 
   private
