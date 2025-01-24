@@ -1,0 +1,31 @@
+<p>Hey<%= @user.name.present? ? " #{@user.name}" : "" %>,</p>
+<p>
+  Thank you for signing up! You need to verify your email to start setting up
+  your account, please click on the link below to get started.
+</p>
+
+<table
+  role="presentation"
+  border="0"
+  cellpadding="0"
+  cellspacing="0"
+  class="btn btn-primary"
+>
+  <tbody>
+    <tr>
+      <td align="left">
+        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+            <tr>
+              <td>
+                <a href="<%=@confirmation_url %>" target="_blank">Confirm subscription</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p>If it wasn't you who signed up, you can safely ignore this message.</p>
