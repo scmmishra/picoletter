@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :resume_session_if_present, only: [ :new ]
+  before_action :resume_session_if_present, only: [ :new, :verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
 
@@ -16,9 +16,21 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for @user
+      @user.send_verification_email
       redirect_to_newsletter_home
     else
       redirect_to signup_url, notice: error_messages_for(@user.errors)
+    end
+  end
+
+  def verify
+    @user = User.find_by_token_for(:verification, params[:token])
+
+    if @user
+      start_new_session_for @user
+      redirect_to_newsletter_home
+    else
+      redirect_to login_url, notice: "Invalid verification token"
     end
   end
 
@@ -40,6 +52,10 @@ class UsersController < ApplicationController
 
   def user_params
     params.permit(:email, :password, :name, :invite_code)
+  end
+
+  def verify_params
+    params.permit(:token)
   end
 
   def error_messages_for(errors)

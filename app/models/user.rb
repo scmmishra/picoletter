@@ -54,6 +54,10 @@ class User < ApplicationRecord
     update(blocked_at: Time.current)
   end
 
+  def send_verification_email
+    UserMailer.verify(self).deliver_later
+  end
+
   private
 
   def activate_user
