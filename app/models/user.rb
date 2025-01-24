@@ -40,6 +40,10 @@ class User < ApplicationRecord
     self.is_superadmin
   end
 
+  def verify!
+    update(verified_at: Time.current)
+  end
+
   private
 
   def activate_user
