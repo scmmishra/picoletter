@@ -20,7 +20,10 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
+  include Tokenable
+
   has_secure_password :password, validations: true
+  tokenable_on :verification, expiry: 7.days
 
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
@@ -34,7 +37,6 @@ class User < ApplicationRecord
   validates :bio, length: { maximum: 500 }
 
   scope :active, -> { where(blocked_at: nil) }
-  before_create :activate_user
 
   def super?
     self.is_superadmin
@@ -48,9 +50,13 @@ class User < ApplicationRecord
     blocked_at.present?
   end
 
+  def block!
+    update(blocked_at: Time.current)
+  end
+
   private
 
   def activate_user
-    self.active = true if self.active.nil?
+    self.blocked_at = nil
   end
 end
