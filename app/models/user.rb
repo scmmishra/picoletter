@@ -23,7 +23,7 @@ class User < ApplicationRecord
   include Tokenable
 
   has_secure_password :password, validations: true
-  tokenable_on :verification, expiry: 7.days
+  generates_token_for :verification, expires_in: 7.days
 
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
