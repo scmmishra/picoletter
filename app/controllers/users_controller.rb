@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :resume_session_if_present, only: [ :new, :show_verify, :resend_verification_email ]
-  rate_limit to: 5, within: 30.minute, only: [ :create, :resend_verification_email ]
+  # rate_limit to: 5, within: 30.minute, only: [ :create, :resend_verification_email ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
 
@@ -23,7 +23,13 @@ class UsersController < ApplicationController
     redirect_to signup_url, notice: error_messages_for(@user.errors)
   end
 
-  def show_verify; end
+  def show_verify
+    if Current.user.verified?
+      redirect_to_newsletter_home
+    else
+      render :show_verify
+    end
+  end
 
   def resend_verification_email
     Current.user.send_verification_email
@@ -34,7 +40,8 @@ class UsersController < ApplicationController
 
     if @user
       start_new_session_for @user
-      redirect_to_newsletter_home
+      @user.verify!
+      redirect_to_newsletter_home "Verification successful!"
     else
       redirect_to login_url, notice: "Invalid verification token"
     end
