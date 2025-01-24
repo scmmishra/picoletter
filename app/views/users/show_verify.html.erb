@@ -1,0 +1,26 @@
+<div class="max-w-md py-20 mx-auto">
+  <h1 class="text-3xl text-stone-900">Verify your account</h1>
+  <p class="mt-2 text-xl text-stone-700">
+    Please check your inbox for the verification email and follow the
+    instructions.
+  </p>
+  <p class="mt-2 text-xl text-stone-700">
+    Search for
+    <span class="text-stone-900">accounts@picoletter.com</span>
+    in your inbox.
+  </p>
+  <div class="mt-5 mb-5">
+    <%= form_with url: resend_verification_email_path, class: "flex flex-col gap-4" do |form| %>
+      <div class="mt-1">
+        <%= form.submit "Resend Verification Mail", class: "btn btn-primary w-full" %>
+      </div>
+    <% end %>
+  </div>
+  <div class=" font-sans text-sm text-stone-400 mt-5 text-center px-1 ">
+    Logged in as
+    <%= Current.user.email %>,
+    <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
+      <span>click here to log out.</span>
+    <% end %>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :resume_session_if_present, only: [ :new, :verify ]
+  before_action :resume_session_if_present, only: [ :new, :show_verify, :resend_verification_email ]
+  rate_limit to: 5, within: 30.minute, only: [ :create, :resend_verification_email ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
 
@@ -12,15 +13,20 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params.except(:invite_code))
-
-    if @user.save
+    ActiveRecord::Base.transaction do
+      @user = User.create(user_params.except(:invite_code))
       start_new_session_for @user
       @user.send_verification_email
-      redirect_to_newsletter_home
-    else
-      redirect_to signup_url, notice: error_messages_for(@user.errors)
+      redirect_to show_verify_path
     end
+  rescue ActiveRecord::RecordInvalid
+    redirect_to signup_url, notice: error_messages_for(@user.errors)
+  end
+
+  def show_verify; end
+
+  def resend_verification_email
+    Current.user.send_verification_email
   end
 
   def verify

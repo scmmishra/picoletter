@@ -33,6 +33,8 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_newsletter_home
+    redirect_to show_verify_url unless Current.user.verified?
+
     has_newsletter = Current.user.newsletters.count > 0
     last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
 

@@ -18,7 +18,9 @@ Rails.application.routes.draw do
   # Signup routes
   get "/signup", to: "users#new"
   post "/signup", to: "users#create"
-  post "/verify", to: "users#verify"
+  get "/verify", to: "users#show_verify", as: :show_verify
+  post "/verify", to: "users#resend_verification_email", as: :resend_verification_email
+  get "/verify/:token", to: "users#verify", as: :verify
 
   # Redirect old login
   get "/login", to: redirect("/auth/login")
