@@ -18,6 +18,7 @@ module PicoLetter
 
     # jobs
     config.mission_control.jobs.base_controller_class = "AdminController"
+    config.mission_control.jobs.http_basic_auth_enabled = false
 
     # Use a different cache store in production.
     config.cache_store = :solid_cache_store
