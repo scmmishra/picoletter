@@ -9,7 +9,7 @@
   } %>
 <% end %>
 <% if @subscriber.unverified? %>
-  <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to cofirm their address." do %>
+  <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to confirm their address." do %>
     <%= link_to send_reminder_subscribers_path(@newsletter.slug), class:"btn w-full btn-primary text-sm", data: { turbo_method: :post } do %>
       Send Reminder
     <% end %>
