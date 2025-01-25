@@ -4,20 +4,19 @@ class VerifyDNSRecordsJob < ApplicationJob
   def perform
     Rails.logger.info "[VerifyDNSRecordsJob] Verifying DNS records"
 
-    newsletters_with_custom_domain.each do |newsletter|
-      is_verified = newsletter.verify_custom_domain
-      Rails.logger.info "[VerifyDNSRecordsJob] Domain #{newsletter.domain} is verified: #{is_verified}"
-      notify_dns_records_broken(newsletter) unless is_verified
+    verified_domains.each do |domain|
+      is_verified = domain.verify
+      Rails.logger.info "[VerifyDNSRecordsJob] Domain #{domain.name} is verified: #{is_verified}"
+      notify_dns_records_broken(domain) unless is_verified
     end
   end
 
-  def newsletters_with_custom_domain
-    # Todo update this to use the domain status
-    Newsletter.where(use_custom_domain: true)
+  def verified_domains
+    Domain.where(verified: true)
   end
 
-  def notify_dns_records_broken(newsletter)
-    Rails.logger.info "[VerifyDNSRecordsJob] Notifying broken DNS records for #{newsletter.domain}"
-    NewsletterMailer.with(newsletter: newsletter).broken_dns_records.deliver_now
+  def notify_dns_records_broken(domain)
+    Rails.logger.info "[VerifyDNSRecordsJob] Notifying broken DNS records for #{domain.domain}"
+    NewsletterMailer.with(domain: domain).broken_dns_records.deliver_now
   end
 end

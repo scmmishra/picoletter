@@ -2,11 +2,11 @@ class NewsletterMailer < ApplicationMailer
   layout "newsletter_mailer"
 
   def broken_dns_records
-    @newsletter = params[:newsletter]
-    @user = @newsletter.user
+    @domain = params[:domain]
+    @user = @domain.user
 
-    subject = "Broken DNS records for your newsletter"
-    recipient = @newsletter.user.email
+    subject = "Broken DNS records for your domain #{@domain.name}"
+    recipient = @user.email
 
     mail(to: recipient, subject: subject, from: notify_address)
   end
