@@ -7,7 +7,7 @@ class AdminController < ApplicationController
 
   def authenticate!
     return if Current.user.super?
-    redirect_to auth_login_path, alert: "Please log in to continue."
+    head :unauthorized
   end
 
   def restricted_env?
