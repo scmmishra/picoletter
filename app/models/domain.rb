@@ -33,6 +33,8 @@ class Domain < ApplicationRecord
 
   validates :name, presence: true, uniqueness: true
 
+  scope :verified, -> { where(status: :success, dkim_status: :success, spf_status: :success) }
+
   def verified?
     status_success? && dkim_status_success? && spf_status_success?
   end
