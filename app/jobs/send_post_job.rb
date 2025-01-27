@@ -2,7 +2,7 @@ class SendPostJob < BaseSendJob
   queue_as :default
   attr_reader :post, :newsletter
 
-  BATCH_SIZE = AppConfig.get("SEND_POST_BATCH_SIZE", 50).to_i
+  BATCH_SIZE = AppConfig.get("SEND_POST_BATCH_SIZE", 50)
 
   def perform(post_id)
     setup_post(post_id)

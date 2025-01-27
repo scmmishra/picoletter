@@ -17,14 +17,32 @@ class AppConfig
     private
 
     def parse_value(value)
+      return parse_boolean(value) if boolean?(value)
+      return parse_number(value) if numeric?(value)
+      value
+    end
+
+    def parse_boolean(value)
       case value.downcase
-      when "true"
-        true
-      when "false"
-        false
-      else
+      when "true" then true
+      when "false" then false
+      end
+    end
+
+    def parse_number(value)
+      begin
+        Integer(value)
+      rescue ArgumentError
         value
       end
+    end
+
+    def boolean?(value)
+      value.downcase.match?(/\A(true|false)\z/)
+    end
+
+    def numeric?(value)
+      value.match?(/\A-?\d+\z/)
     end
   end
 end
