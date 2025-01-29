@@ -72,7 +72,7 @@ class Newsletters::PostsController < ApplicationController
 
   def send_test
     @post.send_test_email(Current.user.email)
-    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Test post sent to #{Current.user.email}"
   end
 
   def destroy
