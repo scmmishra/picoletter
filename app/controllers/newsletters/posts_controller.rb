@@ -6,6 +6,8 @@ class Newsletters::PostsController < ApplicationController
   before_action :set_last_opened, only: [ :index ]
   before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule, :unschedule, :send_test ]
 
+  rate_limit to: 10, within: 30.minute, only: :send_test
+
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
   end
