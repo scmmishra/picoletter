@@ -79,6 +79,7 @@ Rails.application.routes.draw do
       resources :posts, only: [ :index, :edit, :show, :update ], path: "" do
         member do
           post :publish
+          post :send_test
           post :schedule
           delete :destroy
           post :unschedule

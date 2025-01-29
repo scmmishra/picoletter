@@ -4,7 +4,7 @@ class Newsletters::PostsController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_last_opened, only: [ :index ]
-  before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule, :unschedule ]
+  before_action :set_post, only: [ :show, :edit, :publish, :destroy, :update, :schedule, :unschedule, :send_test ]
 
   def index
     @posts = @newsletter.posts.published.order(published_at: :desc)
@@ -66,6 +66,11 @@ class Newsletters::PostsController < ApplicationController
   rescue StandardError => e
     Rails.logger.error("Error sending post: #{e.message}")
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: e.message
+  end
+
+  def send_test
+    @post.send_test_email(Current.user.email)
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
   end
 
   def destroy

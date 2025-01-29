@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <%= yield :head %>
+    <style>
+      body {
+        font-family: <%= @newsletter.font_family %>;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        -webkit-font-smoothing: antialiased;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      }
+      .container {
+        max-width: 600px;
+        display: block;
+      }
+      p, div {
+        font-family: <%= @newsletter.font_family %>;
+        font-size: 14px;
+        margin-bottom: 14px;
+      }
+      a {
+        color: <%= @newsletter.primary_color %>;
+        text-decoration: underline;
+      }
+      .btn a {
+        background-color: <%= @newsletter.theme.primary %>;
+        color: <%= @newsletter.theme.text_on_primary %>;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: 8px;
+        display: inline-block;
+        font-weight: bold;
+      }
+      .btn-primary a:hover {
+        background-color: <%= @newsletter.theme.primary_hover %>;
+        border-color: <%= @newsletter.theme.primary_hover %>;
+      }
+      .footer {
+        margin-top: 30px;
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1><%= @post.title %></h1>
+      <div class="content">
+        <%= @post.content %>
+      </div>
+      <div class="footer">
+        <p>
+          <%= sanitize @newsletter.footer_html %>
+        </p>
+        <p>
+          You are receiving this email because you are subscribed to
+          <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
