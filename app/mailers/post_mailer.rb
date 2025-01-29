@@ -5,6 +5,6 @@ class PostMailer < ApplicationMailer
     @post = post
     @newsletter = @post.newsletter
 
-    mail(to: email, subject: "Test Email: #{@newsletter.title}", from: @newsletter.sending_from)
+    mail(to: email, subject: "Test Email: #{@post.title}", from: @newsletter.sending_from)
   end
 end
