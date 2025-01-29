@@ -73,6 +73,10 @@ class Post < ApplicationRecord
     publish
   end
 
+  def send_test_email(email)
+    PostMailer.test_post(email, self).deliver_now
+  end
+
   def published_on_date
     published_at.strftime("%B %d, %Y") if published_at.present?
   end
