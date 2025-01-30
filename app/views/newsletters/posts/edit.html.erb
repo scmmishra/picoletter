@@ -12,7 +12,7 @@
       prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
     "
   >
-    <%= form.rich_text_area :content %>
+    <%= form.rich_text_area :content, data: { controller: "trix" } %>
   </div>
   <div class="flex items-end justify-between max-w-2xl gap-2 mx-auto mt-2">
     <div>
