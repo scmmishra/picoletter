@@ -1,5 +1,3 @@
 <figure class=" attachment attachment--<%= blob.filename.extension %> ">
-  <% if blob.url.present? %>
-    <%= image_tag blob.url, style: "width: 100%" %>
-  <% end %>
+  <%= image_tag blob.url, style: "width: 100%" %>
 </figure>

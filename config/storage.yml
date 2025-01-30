@@ -12,4 +12,7 @@ cloudflare:
   access_key_id: <%= ENV['R2__ACCESS_KEY'] %>
   secret_access_key: <%= ENV['R2__ACCESS_SECRET'] %>
   region: auto
+  public: true
   bucket: <%= ENV['R2__BUCKET_NAME'] %>
+  upload:
+    acl: "public-read"
