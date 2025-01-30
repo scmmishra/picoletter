@@ -26,17 +26,15 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def send_batch(batch_subscribers)
-    sends = batch_subscribers.map do |subscriber|
+    batch_subscribers.each do |subscriber|
       response = send_email(subscriber)
 
-      {
+      Email.create!(
         post_id: post.id,
         subscriber_id: subscriber.id,
         id: response.message_id
-      }
+      )
     end
-
-    Email.insert_all(sends)
   end
 
   def send_email(subscriber)
