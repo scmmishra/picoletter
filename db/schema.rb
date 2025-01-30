@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_26_093211) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,14 +71,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_26_093211) do
 
   create_table "email_clicks", force: :cascade do |t|
     t.string "link"
-    t.bigint "email_id", null: false
+    t.string "email_id", null: false
     t.bigint "post_id", null: false
     t.datetime "timestamp"
     t.index ["email_id"], name: "index_email_clicks_on_email_id"
     t.index ["post_id"], name: "index_email_clicks_on_post_id"
   end
 
-  create_table "emails", id: :serial, force: :cascade do |t|
+  create_table "emails", id: :string, force: :cascade do |t|
     t.bigint "post_id", null: false
     t.string "status", default: "sent"
     t.datetime "bounced_at"
@@ -189,7 +189,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_26_093211) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "domains", "newsletters"
   add_foreign_key "email_clicks", "emails"
-  add_foreign_key "email_clicks", "posts"
   add_foreign_key "emails", "posts"
   add_foreign_key "emails", "subscribers"
   add_foreign_key "newsletters", "users"

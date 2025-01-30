@@ -4,7 +4,7 @@
 #
 #  id        :integer          not null, primary key
 #  link      :string
-#  email_id  :integer          not null
+#  email_id  :string           not null
 #  post_id   :integer          not null
 #  timestamp :datetime
 #
