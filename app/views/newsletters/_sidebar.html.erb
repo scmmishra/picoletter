@@ -55,7 +55,7 @@
     <nav class="text-stone-500 justify-self-end">
       <ul class="grid gap-1">
         <li>
-          <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md" do %>
+          <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 hover:bg-stone-200/50 rounded-md" do %>
             <span>Public View</span>
             <%= lucide_icon("arrow-up-right", class: "size-4") %>
           <% end %>
