@@ -21,6 +21,10 @@
     touch-action: manipulation;
   }
 
+  .btn-sm {
+    @apply px-3 py-1 text-sm;
+  }
+
   .btn-tinted {
     @apply text-[var(--pl-primary-text-color)] bg-[var(--pl-primary-color)] border-[var(--pl-primary-color)] hover:bg-[var(--pl-primary-hover-color)] from-black/20 ring-[var(--pl-primary-hover-color)] active:bg-[var(--pl-primary-hover-color)] active:border-[var(--pl-primary-hover-color)];
   }
