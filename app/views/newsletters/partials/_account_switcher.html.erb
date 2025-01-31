@@ -24,7 +24,7 @@
     <div class="grid gap-1 text-sm">
       <% Current.user.newsletters.each do |newsletter| %>
         <%= link_to posts_path(newsletter.slug),
-                        class: "rounded-md flex items-center justify-between gap-2 px-2 py-1 rounded-md min-w-0 w-full group
+                        class: "rounded-md flex text-stone-700 items-center justify-between gap-2 px-2 py-1 rounded-md min-w-0 w-full group
                                 #{@newsletter.slug == newsletter.slug ? 'bg-stone-100' : 'hover:bg-stone-100'}" do %>
           <div class="truncate">
             <%= newsletter.title %>
