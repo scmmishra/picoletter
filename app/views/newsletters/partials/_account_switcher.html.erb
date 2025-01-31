@@ -1,29 +1,41 @@
-<div class="relative font-sans">
-  <div
+<div data-controller="dropdown" class="relative font-sans">
+  <button
     class="
       bg-white rounded-lg shadow outline outline-1 outline-stone-200 px-2 py-1.5 flex
-      items-center justify-between gap-2 min-w-0
+      items-center justify-between gap-2 min-w-0 w-full
     "
+    data-action="dropdown#toggle click@window->dropdown#hide"
   >
     <div class="font-sans text-sm truncate text-stone-900 flex-grow-0">
       <%= @newsletter.title %>
     </div>
     <%= lucide_icon("chevrons-up-down", class: "size-3 text-stone-500") %>
-  </div>
+  </button>
   <div
+    data-dropdown-target="menu"
     class="
       absolute bg-white rounded-lg shadow mt-2 outline outline-1 outline-stone-200 p-2
-      w-full
+      w-full hidden
     "
   >
+    <div class=" uppercase tracking-wider text-[11px] mb-2 text-stone-500 px-1 ">
+      Switch Newsleter
+    </div>
     <div class="grid gap-1 text-sm">
       <% Current.user.newsletters.each do |newsletter| %>
         <%= link_to posts_path(newsletter.slug),
-                        class: "rounded-md flex items-center justify-between gap-2 px-2 py-1 rounded-md
+                        class: "rounded-md flex items-center justify-between gap-2 px-2 py-1 rounded-md min-w-0 w-full group
                                 #{@newsletter.slug == newsletter.slug ? 'bg-stone-100' : 'hover:bg-stone-100'}" do %>
-          <span><%= newsletter.title %></span>
+          <div class="truncate">
+            <%= newsletter.title %>
+          </div>
           <% if @newsletter.slug == newsletter.slug %>
-            <%= lucide_icon("check", class: "size-4 text-green-500") %>
+            <%= lucide_icon("check", class: "size-4 text-green-500 flex-shrink-0") %>
+          <% else %>
+            <%= lucide_icon(
+              "arrow-up-right",
+              class: "size-4 text-stone-300 hidden group-hover:block flex-shrink-0",
+            ) %>
           <% end %>
         <% end %>
       <% end %>
