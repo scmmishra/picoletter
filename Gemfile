@@ -57,6 +57,7 @@ group :development, :test do
   gem "byebug", "~> 11.1"
   gem "factory_bot_rails"
   gem "faker"
+  gem "hotwire-spark"
 end
 
 group :development do
