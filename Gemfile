@@ -70,7 +70,7 @@ group :development do
   # gem "spring"
 
   gem "rubocop-rails-omakase", require: false
-  gem "annotate"
+  gem "annotaterb"
   gem "letter_opener"
   gem "erb-formatter"
 end
