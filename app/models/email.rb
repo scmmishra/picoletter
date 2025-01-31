@@ -2,7 +2,7 @@
 #
 # Table name: emails
 #
-#  id            :string          not null, primary key
+#  id            :string           not null, primary key
 #  bounced_at    :datetime
 #  complained_at :datetime
 #  delivered_at  :datetime
