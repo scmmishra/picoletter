@@ -29,11 +29,16 @@ class Subscriber < ApplicationRecord
   include Tokenable
   include Statusable
 
+  taggable_array :labels
+
   tokenable_on :unsubscribe
   tokenable_on :confirmation, expiry: 48.hours
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
+
+  before_validation :normalize_labels
+  before_save :filter_invalid_labels
 
   scope :verified, -> { where(status: "verified") }
   scope :unverified, -> { where(status: "unverified") }
@@ -66,5 +71,17 @@ class Subscriber < ApplicationRecord
 
   def send_confirmation_email
     SubscriptionMailer.with(subscriber: self).confirmation.deliver_now
+  end
+
+  private
+
+  def normalize_labels
+    self.labels = labels.compact.uniq.map(&:downcase) if labels.present?
+  end
+
+  def filter_invalid_labels
+    return if labels.blank?
+    valid_labels = newsletter.labels.pluck(:name)
+    self.labels = labels & valid_labels # Keep only valid labels using array intersection
   end
 end

@@ -72,6 +72,9 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
+    acts-as-taggable-array-on (0.7.0)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     annotate (2.6.5)
@@ -476,6 +479,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts-as-taggable-array-on
   annotate
   aws-sdk-rails (~> 3)
   aws-sdk-s3

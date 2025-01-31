@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_31_060532) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -92,6 +92,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
   end
 
+  create_table "labels", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "color", default: "#6B7280", null: false
+    t.bigint "newsletter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["newsletter_id", "name"], name: "index_labels_on_newsletter_id_and_name", unique: true
+    t.index ["newsletter_id"], name: "index_labels_on_newsletter_id"
+  end
+
   create_table "newsletters", force: :cascade do |t|
     t.string "title"
     t.text "description"
@@ -166,6 +177,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
     t.string "unsubscribe_reason"
     t.text "notes"
     t.jsonb "analytics_data", default: {}
+    t.string "labels", default: [], array: true
+    t.index ["labels"], name: "index_subscribers_on_labels", using: :gin
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
     t.index ["status"], name: "index_subscribers_on_status"
   end
@@ -191,6 +204,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
   add_foreign_key "email_clicks", "emails"
   add_foreign_key "emails", "posts"
   add_foreign_key "emails", "subscribers"
+  add_foreign_key "labels", "newsletters"
   add_foreign_key "newsletters", "users"
   add_foreign_key "posts", "newsletters"
   add_foreign_key "sessions", "users"
