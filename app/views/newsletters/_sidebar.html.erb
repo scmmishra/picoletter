@@ -2,11 +2,10 @@
   <section class="flex min-w-0 flex-col justify-between flex-1 space-y-5">
     <div class="space-y-5">
       <%= render "newsletters/partials/account_switcher" %>
-      <h1 class="mt-1 text-xl"><%= @newsletter.title %></h1>
       <nav class="flex-grow text-stone-500">
         <ul class="grid gap-1">
           <li>
-            <%= link_to posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(posts_path(@newsletter.slug))}" do %>
+            <%= link_to posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if current_page?(posts_path(@newsletter.slug))}" do %>
               <span>Posts</span>
               <span
                 class="
@@ -18,7 +17,7 @@
             <% end %>
           </li>
           <li>
-            <%= link_to drafts_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(drafts_posts_path(@newsletter.slug))}" do %>
+            <%= link_to drafts_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if current_page?(drafts_posts_path(@newsletter.slug))}" do %>
               <span>Drafts</span>
               <span
                 class="
@@ -30,7 +29,7 @@
             <% end %>
           </li>
           <li>
-            <%= link_to subscribers_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
+            <%= link_to subscribers_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if current_page?(subscribers_path(@newsletter.slug))}" do %>
               <span>Subscribers</span>
               <span
                 class="
@@ -42,7 +41,7 @@
             <% end %>
           </li>
           <li>
-            <%= link_to settings_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(settings_path(@newsletter.slug))}" do %>
+            <%= link_to settings_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if current_page?(settings_path(@newsletter.slug))}" do %>
               <span>Settings</span>
             <% end %>
           </li>
@@ -51,50 +50,14 @@
     </div>
     <nav class="text-stone-500 justify-self-end">
       <ul class="grid gap-1">
-        <li data-controller="modal" class="flex px-2 py-1 -ml-2">
-          <button
-            data-action="modal#open"
-            class="flex items-center justify-between gap-2 rounded-md w-full"
-          >
-            <span>Switch Newsletter</span>
-            <%= lucide_icon("arrow-right-left", class: "size-3") %>
-          </button>
-
-          <dialog
-            data-modal-target="modal"
-            class="
-              p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-without-inset min-w-sm
-              w-96 gap-4 space-y-4
-            "
-          >
-            <h2 class="text-xl font-medium">Switch Newsletter</h2>
-            <div class="grid gap-2 -mx-2">
-              <% Current.user.newsletters.each do |newsletter| %>
-                <%= link_to posts_path(newsletter.slug),
-                    class: "rounded-md flex items-center justify-between gap-2 px-2 py-1 rounded-md
-                            #{@newsletter.slug == newsletter.slug ? 'bg-stone-100' : 'hover:bg-stone-100'}" do %>
-                  <span><%= newsletter.title %></span>
-                  <% if @newsletter.slug == newsletter.slug %>
-                    <span class="text-sm text-stone-500">Active</span>
-                  <% end %>
-                <% end %>
-              <% end %>
-            </div>
-            <div>
-              <%= link_to new_newsletter_path, class: "btn btn-primary w-full" do %>
-                <span>Create New Newsletter</span>
-              <% end %>
-            </div>
-          </dialog>
-        </li>
         <li>
-          <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md" do %>
+          <%= link_to newsletter_path(slug: @newsletter.slug), target: '_blank', class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md" do %>
             <span>Public View</span>
             <%= lucide_icon("external-link", class: "size-3") %>
           <% end %>
         </li>
         <li class="hidden">
-          <%= link_to archive_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md #{'bg-stone-200/50' if current_page?(archive_posts_path(@newsletter.slug))}" do %>
+          <%= link_to archive_posts_path(@newsletter.slug), class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if current_page?(archive_posts_path(@newsletter.slug))}" do %>
             <span>Archived</span>
             <span class="rounded-md px-2 py-0.5 leading-none bg-stone-200 text-xs">
               <%= @newsletter.posts.archived.count %>
@@ -103,7 +66,7 @@
         </li>
         <%# logout %>
         <li>
-          <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "flex items-center justify-between gap-2 px-2 py-1 -ml-2 rounded-md hover:bg-stone-200/50" do %>
+          <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md hover:bg-stone-200/50" do %>
             <span>Logout</span>
           <% end %>
         </li>
