@@ -7,6 +7,7 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
+#  labels             :string           default([]), is an Array
 #  notes              :text
 #  status             :integer          default("unverified")
 #  unsubscribe_reason :string
@@ -18,6 +19,7 @@
 #
 # Indexes
 #
+#  index_subscribers_on_labels         (labels) USING gin
 #  index_subscribers_on_newsletter_id  (newsletter_id)
 #  index_subscribers_on_status         (status)
 #
