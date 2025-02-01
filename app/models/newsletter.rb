@@ -83,6 +83,6 @@ class Newsletter < ApplicationRecord
   end
 
   def full_sending_address
-    "#{title} <#{sending_from}>"
+    "#{sending_name || title} <#{sending_from}>"
   end
 end
