@@ -20,5 +20,9 @@
 
 FactoryBot.define do
   factory :email_click do
+    email
+    post { email.post }  # Use the same post as the email
+    link { Faker::Internet.url }
+    timestamp { Time.current }
   end
 end

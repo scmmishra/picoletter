@@ -32,7 +32,7 @@ class ProcessSNSWebhookJob < ApplicationJob
     timestamp = data.dig(:timestamp)
     @email.update(status: "bounced", bounced_at: timestamp)
     bounce_count = Email.where(subscriber: @email.subscriber).bounced.count
-    @email.subscriber.unsubscrib_with_reason!("Email bounced") if bounce_count >= 3
+    @email.subscriber.unsubscrib_with_reason!("bounced") if bounce_count >= 3
   end
 
   def process_complaint
@@ -40,7 +40,7 @@ class ProcessSNSWebhookJob < ApplicationJob
     timestamp = data.dig(:timestamp)
 
     @email.update(status: "complained", complained_at: timestamp)
-    @email.subscriber.unsubscrib_with_reason!("Email complained")
+    @email.subscriber.unsubscrib_with_reason!("complained")
   end
 
   def process_delivery
