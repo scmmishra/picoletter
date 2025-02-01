@@ -14,6 +14,7 @@
 #  primary_color   :string           default("#09090b")
 #  reply_to        :string
 #  sending_address :string
+#  sending_name    :string
 #  slug            :string           not null
 #  status          :string
 #  template        :string
