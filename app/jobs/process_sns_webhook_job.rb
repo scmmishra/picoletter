@@ -17,7 +17,7 @@ class ProcessSNSWebhookJob < ApplicationJob
 
     event_name = @message[:eventType].underscore
     if self.respond_to?("process_#{event_name}")
-      Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{email.id}"
+      Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{@email.id}"
       send("process_#{event_name}")
     end
   end
