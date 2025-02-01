@@ -12,7 +12,7 @@
   </head>
 
   <body class="font-serif bg-stone-100">
-    <main class="px-5 mx-auto max-w-7xl">
+    <main class="px-3 mx-auto max-w-[2000px]">
       <% if notice = flash[:notice] || flash[:alert] %>
         <div
           class="flash"
@@ -30,16 +30,16 @@
         </div>
       <% end %>
 
-      <section class="flex flex-wrap gap-4">
+      <section class="flex flex-wrap gap-3">
         <%= render "newsletters/sidebar" %>
         <section
           class="
-            basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-5
+            basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-3
           "
         >
           <section
             class="
-              w-full min-h-full p-5 bg-white border rounded-md shadow-sm border-zinc-100
+              w-full min-h-full py-3 px-5 bg-white border rounded-md shadow-sm border-zinc-100
             "
           >
             <%= yield %>

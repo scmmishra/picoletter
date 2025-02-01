@@ -14,6 +14,7 @@
 #  primary_color   :string           default("#09090b")
 #  reply_to        :string
 #  sending_address :string
+#  sending_name    :string
 #  slug            :string           not null
 #  status          :string
 #  template        :string
@@ -83,6 +84,6 @@ class Newsletter < ApplicationRecord
   end
 
   def full_sending_address
-    "#{title} <#{sending_from}>"
+    "#{sending_name || title} <#{sending_from}>"
   end
 end

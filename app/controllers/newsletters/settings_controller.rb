@@ -59,7 +59,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def sending_params
-    params.require(:newsletter).permit(:reply_to, :sending_address)
+    params.require(:newsletter).permit(:reply_to, :sending_address, :sending_name)
   end
 
   def profile_params

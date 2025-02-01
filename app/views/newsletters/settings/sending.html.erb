@@ -21,15 +21,29 @@
   <div class="max-w-lg space-y-4">
 
     <label class="block space-y-1">
+      <%= form.label :sending_name, "Sending From", class: "ml-px text-stone-500 text-sm" %>
+      <%= form.text_field :sending_name,
+                      placeholder: "Shivam from Picoletter",
+                      rows: 5,
+                      class: "input w-full block" %>
+    </label>
+
+    <label class="block space-y-1">
       <%= form.label :sending_address,
                  "Sending Address",
                  class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_field :sending_address, rows: 5, class: "input w-full block" %>
+      <%= form.text_field :sending_address,
+                      placeholder: "updates@picoletter.com",
+                      rows: 5,
+                      class: "input w-full block" %>
     </label>
 
     <label class="block space-y-1">
       <%= form.label :reply_to, "Reply To", class: "ml-px text-stone-500 text-sm" %>
-      <%= form.text_field :reply_to, rows: 5, class: "input w-full block" %>
+      <%= form.text_field :reply_to,
+                      placeholder: "hey@picoletter.com",
+                      rows: 5,
+                      class: "input w-full block" %>
     </label>
   </div>
   <div class="mt-5">
