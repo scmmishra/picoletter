@@ -66,6 +66,8 @@ Rails.application.routes.draw do
         patch :embedding, action: :update_embedding, as: :update_embedding
       end
 
+      resources :labels, only: [ :index, :show ], path: "labels"
+
       resources :subscribers, only: [ :index, :show ], path: "subscribers" do
         collection do
           get ":id", to: "subscribers#show", as: :show

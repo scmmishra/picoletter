@@ -1,0 +1,2 @@
+module Newsletters::LabelsHelper
+end
