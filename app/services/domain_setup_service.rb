@@ -1,10 +1,11 @@
 class DomainSetupService
-  attr_accessor :newsletter, :reply_to, :sending_address, :domain_to_register
+  attr_accessor :newsletter, :reply_to, :sending_address, :domain_to_register, :sending_name
 
   def initialize(newsletter, sending_params)
     self.newsletter = newsletter
     self.reply_to = sending_params[:reply_to]
     self.sending_address = sending_params[:sending_address]
+    self.sending_name = sending_params[:sending_name]
     self.domain_to_register = sending_params[:sending_address].split("@").last
   end
 
@@ -14,7 +15,7 @@ class DomainSetupService
 
     ActiveRecord::Base.transaction do
       remove_current_domain if has_existing_domain?
-      newsletter.update(sending_address: sending_address, reply_to: reply_to)
+      newsletter.update(sending_address: sending_address, reply_to: reply_to, sending_name: sending_name)
       domain = Domain.find_or_create_by(name: domain_to_register, newsletter_id: newsletter.id)
       domain.register_or_sync
     end

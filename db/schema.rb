@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_01_043045) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -114,6 +114,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_30_122148) do
     t.string "domain_id"
     t.json "dns_records"
     t.boolean "enable_archive", default: true
+    t.string "sending_name"
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
   end
