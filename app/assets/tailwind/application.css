@@ -1,11 +1,11 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
-@import 'actiontext.css' layer(utilities);
+@import "../stylesheets/application.css" layer(utilities);
+@import "../stylesheets/actiontext.css" layer(utilities);
 
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/aspect-ratio';
 @plugin '@tailwindcss/typography';
-@plugin '@tailwindcss/container-queries';
 
 @theme {
   --font-serif: Lora Variable, ui-serif, Georgia, Cambria, Times New Roman,

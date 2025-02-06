@@ -43,7 +43,7 @@
   </h2>
 </div>
 
-<%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "max-w-lg space-y-4" do |form| %>
+<%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "max-w-lg space-y-4 mt-4" do |form| %>
   <label class="block space-y-1">
     <%= form.label :email, class: "ml-px text-stone-500 text-sm" %>
     <div class="relative">

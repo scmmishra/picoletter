@@ -15,7 +15,7 @@
 </div>
 
 <%= form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
-  <div class="max-w-lg space-y-4">
+  <div class="max-w-lg space-y-4 mt-4">
     <div class="space-y-2">
       <%= form.label :primary_color, "Color", class: "ml-px text-stone-500" %>
 
@@ -39,8 +39,7 @@
           for="font-serif"
           class="
             px-4 py-1 font-serif text-lg border-0 rounded-md ring-1 ring-stone-300
-            ring-inset text-stone-500 has-checked:bg-stone-100
-            has-checked:text-stone-900
+            ring-inset text-stone-500 has-checked:bg-stone-100 has-checked:text-stone-900
           "
         >
           <%= form.radio_button :font_preference, "serif", class: "sr-only", id: "font-serif" %>

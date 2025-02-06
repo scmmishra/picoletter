@@ -18,7 +18,7 @@
 </div>
 
 <%= form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8" do |form| %>
-  <div class="max-w-lg space-y-4">
+  <div class="max-w-lg space-y-4 mt-4">
 
     <label class="block space-y-1">
       <%= form.label :sending_name, "Sending From", class: "ml-px text-stone-500 text-sm" %>
