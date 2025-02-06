@@ -84,6 +84,7 @@ group :test do
 end
 
 gem "tailwindcss-rails"
+gem "tailwindcss-ruby", "~> 4.0", ">= 4.0.3"
 gem "kaminari"
 
 # HTML parsing
