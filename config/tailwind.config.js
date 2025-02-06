@@ -1,5 +1,3 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-
 module.exports = {
   content: [
     "./public/*.html",
@@ -11,8 +9,8 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Lora Variable", ...defaultTheme.fontFamily.serif],
-        sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
+        serif: ["Lora Variable", 'ui-serif', 'Georgia', 'Cambria', "Times New Roman", 'Times', 'serif'],
+        sans: ["Inter Variable", 'ui-sans-serif', 'system-ui', 'sans-serif', "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"],
       },
       boxShadow: {
         "with-inset":
