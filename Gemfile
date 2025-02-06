@@ -11,6 +11,9 @@ gem "sprockets-rails"
 # Use pg as the database for Active Record
 gem "pg", "~> 1.5"
 
+# Use PostgreSQL array for labels
+gem "acts-as-taggable-array-on"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
@@ -57,6 +60,7 @@ group :development, :test do
   gem "byebug", "~> 11.1"
   gem "factory_bot_rails"
   gem "faker"
+  gem "simplecov"
 end
 
 group :development do

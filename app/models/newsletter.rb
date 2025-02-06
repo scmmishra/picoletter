@@ -47,6 +47,7 @@ class Newsletter < ApplicationRecord
   has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
+  has_many :labels, dependent: :destroy
 
   enum :status, { active: "active", archived: "archived" }
 

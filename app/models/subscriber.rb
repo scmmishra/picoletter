@@ -7,6 +7,7 @@
 #  created_via        :string
 #  email              :string
 #  full_name          :string
+#  labels             :string           default([]), is an Array
 #  notes              :text
 #  status             :integer          default("unverified")
 #  unsubscribe_reason :string
@@ -18,6 +19,7 @@
 #
 # Indexes
 #
+#  index_subscribers_on_labels         (labels) USING gin
 #  index_subscribers_on_newsletter_id  (newsletter_id)
 #  index_subscribers_on_status         (status)
 #
@@ -29,11 +31,16 @@ class Subscriber < ApplicationRecord
   include Tokenable
   include Statusable
 
+  taggable_array :labels
+
   tokenable_on :unsubscribe
   tokenable_on :confirmation, expiry: 48.hours
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
+
+  before_validation :normalize_labels
+  before_save :filter_invalid_labels
 
   scope :verified, -> { where(status: "verified") }
   scope :unverified, -> { where(status: "unverified") }
@@ -56,7 +63,7 @@ class Subscriber < ApplicationRecord
     update(status: "unsubscribed", unsubscribed_at: Time.current)
   end
 
-  def unsubscrib_with_reason!(reason)
+  def unsubscribe_with_reason!(reason)
     update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
   end
 
@@ -66,5 +73,17 @@ class Subscriber < ApplicationRecord
 
   def send_confirmation_email
     SubscriptionMailer.with(subscriber: self).confirmation.deliver_now
+  end
+
+  private
+
+  def normalize_labels
+    self.labels = labels.compact.uniq.map(&:downcase) if labels.present?
+  end
+
+  def filter_invalid_labels
+    return if labels.blank?
+    valid_labels = newsletter.labels.pluck(:name)
+    self.labels = labels & valid_labels # Keep only valid labels using array intersection
   end
 end

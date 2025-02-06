@@ -1,194 +1,107 @@
-require "kramdown"
-require 'faker'
+puts "Seeding database"
 
-# This is a seed file for development purposes only.
-# It should not be used in production.
+return if Rails.env.production?
 
-if Rails.env.production?
-  return
+unless User.exists?(email: "neo@example.com")
+  puts "-- Creating admin user"
+  User.create!(
+    name: "Neo",
+    email: "neo@example.com",
+    password: "admin@123456",
+    active: true
+  )
 end
-
-scale = ENV['SCALE'] || 1
-seed_perf = ENV['SEED_PERF'] || false
 
 def parse_md_file(content)
   if content.start_with?("---")
     end_index = content.index("---", 3)
-    if end_index
-      yaml_content = content[3...end_index].strip
-      frontmatter = YAML.load(yaml_content)
-
-      body = content[end_index + 3..-1].strip.gsub('---', '')
-      body_html = Kramdown::Document.new(body).to_html
-      return [ frontmatter, body_html ]
-    end
+    frontmatter = YAML.safe_load(content[3...end_index])
+    content = content[(end_index + 3)..]
+    return frontmatter, content
   end
 
-  [ nil, nil ]
+  return {}, content
 end
 
-
-user = User.create!(
-  name: "Neo Anderson",
-  email: "neo@example.com",
-  password: "admin@123456",
-  is_superadmin: true
-)
-
-user.save!
-
-puts "Created user #{user.name}"
-
+puts "-- Creating newsletter"
+user = User.find_by!(email: "neo@example.com")
 newsletter = user.newsletters.create!(
-  title: "TinyJS",
-  description: "Top 3 stories from the JavaScript ecosystem, dispatched weekly.",
+  title: "The Daily Byte",
+  description: "Daily tech insights and programming tips."
 )
 
-puts "Created newsletter #{newsletter.title}"
-
-seed_data_path = Rails.root.join("db", "seed_data", "posts")
+puts "-- Creating posts"
 publish_date = Time.now
 
-Dir.glob(File.join(seed_data_path, "*.md")).each do |file|
-  frontmatter, html_content = parse_md_file(File.read(file))
-  return if frontmatter.nil? || html_content.nil?
-
-  title = frontmatter["title"]
-  is_draft = frontmatter["draft"]
-
-  created_at = publish_date - rand(1..3).days
+Dir.glob("#{Rails.root}/db/posts/*.md").each do |file|
+  content = File.read(file)
+  frontmatter, content = parse_md_file(content)
 
   newsletter.posts.create!(
-    title: title,
-    content: html_content,
-    published_at: is_draft ? nil : publish_date,
-    created_at: created_at,
-    updated_at: created_at,
-    status: is_draft ? :draft : :published,
+    title: frontmatter["title"],
+    content: content,
+    status: :published,
+    published_at: publish_date
   )
 
-  puts "  Created post #{title}"
-
+  puts "   Created post: #{frontmatter["title"]}"
   publish_date -= 1.week
 end
 
-# subscribers = (50 * scale).times.map do
-#   email = Faker::Internet.email
-#   full_name = Faker::Name.name
-#   status = [ :verified, :verified, :verified, :verified, :verified, :verified, :verified, :unverified, :unverified, :unsubscribed ].sample
-#   created_at = Time.now - rand(1..3).months
-#   verified_at = (status == :verified || status == :unsubscribed) ? created_at + rand(1..30).hours : nil
-#   unsubscribed_at = (status == :unsubscribed) ? created_at + rand(1..30).days : nil
-
-#   {
-#     email: email,
-#     full_name: full_name,
-#     status: status,
-#     created_at: created_at,
-#     updated_at: created_at,
-#     verified_at: verified_at,
-#     unsubscribed_at: unsubscribed_at
-#   }
-# end
-
-subscribers = [
-  {
-    email: "shivam@shivam.dev",
-    full_name: "Shivam Mishra",
-    status: :verified,
-    created_at: Time.now - rand(1..3).months,
-    verified_at: Time.now - rand(1..3).months
-  },
-  {
-    email: "neo@example.com",
-    full_name: "Neo",
-    status: :verified,
-    created_at: Time.now - rand(1..3).months,
-    verified_at: Time.now - rand(1..3).months
-  },
-  {
-    email: "the-one@example.com",
-    full_name: "The One",
-    status: :verified,
-    created_at: Time.now - rand(1..3).months,
-    verified_at: Time.now - rand(1..3).months
-  },
-  {
-    email: "morpheus@example.com",
-    full_name: "Morpheus",
-    status: :verified,
-    created_at: Time.now - rand(1..3).months,
-    verified_at: Time.now - rand(1..3).months
-  },
-  {
-    email: "trinity@example.com",
-    full_name: "Trinity",
-    status: :verified,
-    created_at: Time.now - rand(1..3).months,
-    verified_at: Time.now - rand(1..3).months
-  }
+puts "-- Creating labels"
+labels_data = [
+  { name: "early-access", color: "#10B981", description: "Early access subscribers" },
+  { name: "beta-tester", color: "#3B82F6", description: "Beta program participants" },
+  { name: "premium", color: "#8B5CF6", description: "Premium tier subscribers" },
+  { name: "inactive", color: "#EF4444", description: "Inactive subscribers" },
+  { name: "engaged", color: "#F59E0B", description: "Highly engaged subscribers" }
 ]
 
+labels = newsletter.labels.create!(labels_data)
+puts "   Created #{labels.count} labels"
+
+puts "-- Creating subscribers"
+subscribers = []
+
+# Add our test subscriber
+subscribers << {
+  email: "shivam@shivam.dev",
+  full_name: "Shivam Mishra",
+  status: :verified,
+  created_at: 2.days.ago,
+  updated_at: 2.days.ago,
+  verified_at: 2.days.ago,
+  labels: [ "early-access", "premium" ]
+}
+
+# Generate 50 random subscribers
+50.times do
+  status = [ :verified, :verified, :verified, :unverified, :unsubscribed ].sample
+  created_at = rand(1..90).days.ago
+
+  subscriber = {
+    email: Faker::Internet.unique.email,
+    full_name: Faker::Name.name,
+    status: status,
+    created_at: created_at,
+    updated_at: created_at,
+    verified_at: status == :verified ? created_at + rand(1..24).hours : nil,
+    unsubscribed_at: status == :unsubscribed ? created_at + rand(1..30).days : nil,
+    labels: []
+  }
+
+  # Randomly assign labels
+  if status == :verified
+    # 60% chance of having labels for verified subscribers
+    if rand < 0.6
+      num_labels = rand(1..3)
+      subscriber[:labels] = labels_data.map { |l| l[:name] }.sample(num_labels)
+    end
+  end
+
+  subscribers << subscriber
+end
+
+# Create all subscribers
 newsletter.subscribers.create!(subscribers)
-puts "  Created #{subscribers.count} subscribers"
-
-return unless seed_perf
-
-password_digest = User.new(password: "admin@123456").password_digest
-
-ActiveRecord::Base.transaction do
-  users_data = 300.times.map do
-    {
-      name: Faker::Name.name,
-      email: Faker::Internet.unique.email,
-      password_digest: password_digest,
-      active: true,
-      bio: Faker::Lorem.paragraph
-    }
-  end
-
-  users = User.insert_all(users_data)
-end
-
-puts "Created 300 users"
-
-
-User.all.each do |user|
-  next if user.email == 'neo@example.com'
-  ActiveRecord::Base.transaction do
-    number_of_newsletters = rand(1..5)
-    newsletters_data = number_of_newsletters.times.map do
-      title = Faker::Lorem.sentence(word_count: 3)
-
-      {
-        user_id: user['id'],
-        slug: Faker::Internet.slug(words: title),
-        title: title,
-        description: Faker::Lorem.paragraph
-      }
-    end
-
-    newsletters = Newsletter.insert_all(newsletters_data)
-
-    newsletters.each do |newsletter|
-      number_of_posts = rand(50..1000)
-      posts_data = number_of_posts.times.map do
-        title = Faker::Lorem.sentence(word_count: 5)
-
-        {
-          newsletter_id: newsletter['id'],
-          title: title,
-          slug: Faker::Internet.slug(words: title),
-          content: Faker::Lorem.paragraph(sentence_count: 10),
-          status: [ :draft, :published ].sample,
-          published_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
-          created_at: Faker::Time.between(from: 1.year.ago, to: Time.now),
-          updated_at: Faker::Time.between(from: 1.year.ago, to: Time.now)
-        }
-      end
-
-      Post.insert_all(posts_data)
-    end
-    puts "Seeded #{user.email} with #{number_of_newsletters} newsletters"
-  end
-end
+puts "   Created #{subscribers.count} subscribers"

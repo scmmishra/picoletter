@@ -1,0 +1,12 @@
+<section class="flex items-center justify-between gap-2">
+  <h2 class="text-xl font-medium">Labels</h2>
+</section>
+<% if @labels.empty? %>
+  <div class="h-full py-20 mt-6 border border-dashed rounded-md border-stone-300">
+    <p class="text-center text-stone-500">No labels found</p>
+  </div>
+<% else %>
+  <section class="mt-6 divide-y divide-stone-200/60">
+    <%= render partial: "newsletters/labels/card", collection: @labels, as: :label, cached: true %>
+  </section>
+<% end %>

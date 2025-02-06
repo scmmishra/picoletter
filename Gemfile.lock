@@ -72,6 +72,9 @@ GEM
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
       uri (>= 0.13.1)
+    acts-as-taggable-array-on (0.7.0)
+      activerecord (>= 5.2)
+      activesupport (>= 5.2)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     annotaterb (4.13.0)
@@ -155,6 +158,7 @@ GEM
       irb (~> 1.10)
       reline (>= 0.3.8)
     diff-lcs (1.5.1)
+    docile (1.4.1)
     dotenv (3.1.7)
     dotenv-rails (3.1.7)
       dotenv (= 3.1.7)
@@ -423,6 +427,12 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.1)
+    simplecov_json_formatter (0.1.4)
     solid_cache (0.7.0)
       activejob (>= 7)
       activerecord (>= 7)
@@ -487,6 +497,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts-as-taggable-array-on
   annotaterb
   aws-sdk-rails (~> 3)
   aws-sdk-s3
@@ -524,6 +535,7 @@ DEPENDENCIES
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
   selenium-webdriver
+  simplecov
   solid_cache (~> 0.7.0)
   solid_queue
   sprockets-rails
