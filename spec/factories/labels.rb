@@ -21,9 +21,9 @@
 #
 FactoryBot.define do
   factory :label do
-    name { "MyString" }
-    description { "MyText" }
-    color { "MyString" }
-    newsletter { nil }
+    sequence(:name) { |n| "label-#{n}" }
+    description { "A sample label description" }
+    color { "#6B7280" }
+    association :newsletter
   end
 end
