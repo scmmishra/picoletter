@@ -17,7 +17,7 @@ class ProcessSNSWebhookJob < ApplicationJob
 
     event_name = @message[:eventType].underscore
     if self.respond_to?("process_#{event_name}")
-      Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{email.id}"
+      Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{@email.id}"
       send("process_#{event_name}")
     end
   end
@@ -32,7 +32,7 @@ class ProcessSNSWebhookJob < ApplicationJob
     timestamp = data.dig(:timestamp)
     @email.update(status: "bounced", bounced_at: timestamp)
     bounce_count = Email.where(subscriber: @email.subscriber).bounced.count
-    @email.subscriber.unsubscribe_with_reason!("Email bounced") if bounce_count >= 3
+    @email.subscriber.unsubscribe_with_reason!("bounced") if bounce_count >= 3
   end
 
   def process_complaint
@@ -40,7 +40,7 @@ class ProcessSNSWebhookJob < ApplicationJob
     timestamp = data.dig(:timestamp)
 
     @email.update(status: "complained", complained_at: timestamp)
-    @email.subscriber.unsubscribe_with_reason!("Email complained")
+    @email.subscriber.unsubscribe_with_reason!("complained")
   end
 
   def process_delivery

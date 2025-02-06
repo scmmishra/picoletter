@@ -48,4 +48,10 @@
       </section>
     </main>
   </body>
+  <% if Rails.env.production? && AppConfig.get("RORVSWILD__API_KEY").present? %>
+    <script src="https://cdn.rorvswild.com/agent.js"></script>
+    <script type="text/javascript">
+    RorVsWild.start({apiKey: "<%= AppConfig.get("RORVSWILD__API_KEY") %>"})
+    </script>
+  <% end %>
 </html>
