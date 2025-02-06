@@ -1,4 +1,4 @@
-<%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-10 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
+<%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-10 py-4 hover:bg-linear-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
   <div class="col-span-4">
     <h2><%= post.title %></h2>
   </div>

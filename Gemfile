@@ -83,8 +83,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "tailwindcss-rails"
-gem "tailwindcss-ruby", "~> 4.0", ">= 4.0.3"
+gem "tailwindcss-rails", "~> 4.0"
 gem "kaminari"
 
 # HTML parsing

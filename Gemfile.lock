@@ -540,8 +540,7 @@ DEPENDENCIES
   solid_queue
   sprockets-rails
   stimulus-rails
-  tailwindcss-rails
-  tailwindcss-ruby (~> 4.0, >= 4.0.3)
+  tailwindcss-rails (~> 4.0)
   turbo-rails
   tzinfo-data
   valid_email2

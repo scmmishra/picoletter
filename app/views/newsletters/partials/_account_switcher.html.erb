@@ -6,7 +6,7 @@
     "
     data-action="dropdown#toggle click@window->dropdown#hide"
   >
-    <div class="font-sans text-sm truncate text-stone-900 flex-grow-0">
+    <div class="font-sans text-sm truncate text-stone-900 grow-0">
       <%= @newsletter.title %>
     </div>
     <%= lucide_icon("chevrons-up-down", class: "size-3 text-stone-500") %>
@@ -30,11 +30,11 @@
             <%= newsletter.title %>
           </div>
           <% if @newsletter.slug == newsletter.slug %>
-            <%= lucide_icon("check", class: "size-4 text-green-700 flex-shrink-0") %>
+            <%= lucide_icon("check", class: "size-4 text-green-700 shrink-0") %>
           <% else %>
             <%= lucide_icon(
               "arrow-up-right",
-              class: "size-4 text-stone-300 hidden group-hover:block flex-shrink-0",
+              class: "size-4 text-stone-300 hidden group-hover:block shrink-0",
             ) %>
           <% end %>
         <% end %>
