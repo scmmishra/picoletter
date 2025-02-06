@@ -55,3 +55,5 @@ jobs:
 
       - name: Upload coverage artifacts
         run: ./bin/deepsource report --analyzer test-coverage --key ruby --value-file ./coverage/assets/.resultset.json
+        env:
+          DEEPSOURCE_DSN: ${{ secrets.DEEPSOURCE_DSN }}
