@@ -40,3 +40,5 @@
 .byebug_history
 routes.txt
 /config/credentials/production.key
+
+coverage/

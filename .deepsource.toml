@@ -12,3 +12,7 @@ name = "javascript"
 
 [[analyzers]]
 name = "ruby"
+
+[[analyzers]]
+name = "test-coverage"
+enabled = true
