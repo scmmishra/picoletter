@@ -63,7 +63,7 @@ class Subscriber < ApplicationRecord
     update(status: "unsubscribed", unsubscribed_at: Time.current)
   end
 
-  def unsubscrib_with_reason!(reason)
+  def unsubscribe_with_reason!(reason)
     update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
   end
 
