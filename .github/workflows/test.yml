@@ -26,6 +26,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install DeepSource CLI
+        run: curl https://deepsource.io/cli | sh
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -45,6 +48,10 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
+          COVERAGE: "true"
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bin/rails spec
+
+      - name: Upload Coverage resutls to DeepSource
+        run: deepsource report --analyzer test-coverage --key ruby --value-file ./coverage/assets/.resultset.json
