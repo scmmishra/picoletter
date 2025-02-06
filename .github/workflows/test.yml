@@ -54,4 +54,4 @@ jobs:
         run: bin/rails spec
 
       - name: Upload coverage artifacts
-        run: deepsource report --analyzer test-coverage --key ruby --value-file ./coverage/assets/.resultset.json
+        run: ./bin/deepsource report --analyzer test-coverage --key ruby --value-file ./coverage/assets/.resultset.json
