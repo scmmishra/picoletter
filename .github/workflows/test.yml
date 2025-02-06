@@ -53,5 +53,5 @@ jobs:
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bin/rails spec
 
-      - name: Upload Coverage resutls to DeepSource
+      - name: Upload coverage artifacts
         run: deepsource report --analyzer test-coverage --key ruby --value-file ./coverage/assets/.resultset.json
