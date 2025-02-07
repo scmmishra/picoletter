@@ -252,7 +252,7 @@ GEM
     loofah (2.24.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
-    lucide-rails (0.4.0)
+    lucide-rails (0.5.1)
       railties (>= 4.1.0)
     mail (2.8.1)
       mini_mime (>= 0.1.1)
@@ -457,8 +457,8 @@ GEM
     tailwindcss-rails (4.0.0)
       railties (>= 7.0.0)
       tailwindcss-ruby (~> 4.0)
-    tailwindcss-ruby (4.0.3-arm64-darwin)
-    tailwindcss-ruby (4.0.3-x86_64-linux-gnu)
+    tailwindcss-ruby (4.0.4-arm64-darwin)
+    tailwindcss-ruby (4.0.4-x86_64-linux-gnu)
     thor (1.3.2)
     timeout (0.4.3)
     turbo-rails (2.0.11)
@@ -520,7 +520,7 @@ DEPENDENCIES
   kramdown
   letter_opener
   logtail-rails (~> 0.2.7)
-  lucide-rails (~> 0.4.0)
+  lucide-rails
   mission_control-jobs
   nokogiri
   pg (~> 1.5)
