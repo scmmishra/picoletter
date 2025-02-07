@@ -105,7 +105,7 @@ gem "rorvswild", ">= 1.9.0"
 gem "dotenv-rails"
 
 gem "lucide-rails"
-gem "logtail-rails", "~> 0.2.7"
+gem "logtail-rails", "~> 0.2"
 gem "solid_cache", "~> 0.7.0"
 
 gem "httparty"
