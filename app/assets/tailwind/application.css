@@ -166,450 +166,355 @@
   animation: appear-then-fade 3s 300ms both;
 }
 
-@utility trix-button-row {
+.trix-button-row {
   @apply space-x-2;
-
-  trix-toolbar & {
-    @apply flex justify-between overflow-x-auto flex-nowrap;
-  }
 }
 
-@utility trix-button {
+.trix-button {
   @apply px-2 py-2 font-sans text-xs uppercase rounded-md bg-stone-200;
+}
 
-  trix-toolbar & {
-    position: relative;
-    float: left;
-    color: rgba(0, 0, 0, 0.6);
-    font-size: 0.75em;
-    font-weight: 600;
-    white-space: nowrap;
-    padding: 0 0.5em;
-    margin: 0;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid #ddd;
-    border-radius: 0;
-    background: transparent;
-  }
-  trix-toolbar &:not(:first-child) {
-    border-left: 1px solid #ccc;
-  }
-  trix-toolbar &.trix-active {
-    @apply bg-stone-300/50 text-stone-800;
-  }
-  trix-toolbar &:not(:disabled) {
-    cursor: pointer;
-  }
-  trix-toolbar &:disabled {
-    color: rgba(0, 0, 0, 0.125);
-  }
-  @media (max-width: 768px) {
-    trix-toolbar & {
-      letter-spacing: -0.01em;
-      padding: 0 0.3em;
-    }
-  }
+trix-editor {
+  @apply px-2 py-1 border rounded-lg outline-none border-stone-200 min-h-60;
+}
 
-  trix-editor & {
-    position: relative;
-    float: left;
-    color: #666;
-    white-space: nowrap;
-    font-size: 80%;
-    padding: 0 0.8em;
-    margin: 0;
-    outline: none;
-    border: none;
-    border-radius: 0;
-    background: transparent;
-  }
-  trix-editor &:not(:first-child) {
-    border-left: 1px solid #ccc;
-  }
-  trix-editor &.trix-active {
-    background: #cbeefa;
-  }
-  trix-editor &:not(:disabled) {
-    cursor: pointer;
+trix-toolbar * {
+  @apply box-border;
+}
+
+trix-toolbar .trix-button-row {
+  @apply flex justify-between overflow-x-auto flex-nowrap;
+}
+
+trix-toolbar .trix-button-group {
+  @apply flex mb-2 border rounded-md border-stone-200 border-t-stone-300/80 border-b-stone-300;
+}
+
+trix-toolbar .trix-button-group:not(:first-child) {
+  margin-left: 1vw;
+}
+
+@media (max-width: 768px) {
+  trix-toolbar .trix-button-group:not(:first-child) {
+    margin-left: 0;
   }
 }
 
-@utility trix-button-group {
-  trix-toolbar & {
-    @apply flex mb-2 border rounded-md border-stone-200 border-t-stone-300/80 border-b-stone-300;
-  }
-
-  trix-toolbar &:not(:first-child) {
-    margin-left: 1.5vw;
-  }
-
-  @media (max-width: 768px) {
-    trix-toolbar &:not(:first-child) {
-      margin-left: 0;
-    }
-  }
-  trix-toolbar .trix-dialog__link-fields & {
-    flex: 0 0 content;
-    margin: 0;
-  }
-
-  trix-editor & {
-    display: inline-flex;
+trix-toolbar .trix-button-group-spacer {
+  flex-grow: 1;
+}
+@media (max-width: 768px) {
+  trix-toolbar .trix-button-group-spacer {
+    display: none;
   }
 }
 
-@utility trix-button-group-spacer {
-  trix-toolbar & {
-    flex-grow: 1;
-  }
-  @media (max-width: 768px) {
-    trix-toolbar & {
-      display: none;
-    }
+trix-toolbar .trix-button {
+  position: relative;
+  float: left;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.75em;
+  font-weight: 600;
+  white-space: nowrap;
+  padding: 0 0.5em;
+  margin: 0;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  border-radius: 0;
+  background: transparent;
+}
+trix-toolbar .trix-button:not(:first-child) {
+  border-left: 1px solid #ccc;
+}
+trix-toolbar .trix-button.trix-active {
+  @apply bg-stone-300/50 text-stone-800;
+}
+trix-toolbar .trix-button:not(:disabled) {
+  cursor: pointer;
+}
+trix-toolbar .trix-button:disabled {
+  color: rgba(0, 0, 0, 0.125);
+}
+@media (max-width: 768px) {
+  trix-toolbar .trix-button {
+    letter-spacing: -0.01em;
+    padding: 0 0.3em;
   }
 }
 
-@utility trix-active {
-  trix-toolbar &.trix-button {
-    @apply bg-stone-300/50 text-stone-800;
-  }
-  trix-toolbar &.trix-button--icon::before {
-    opacity: 1;
-  }
-  trix-editor &.trix-button {
-    background: #cbeefa;
+trix-toolbar .trix-button--icon {
+  font-size: inherit;
+  width: 2.6em;
+  height: 1.6em;
+  max-width: calc(0.8em + 4vw);
+  text-indent: -9999px;
+}
+@media (max-width: 768px) {
+  trix-toolbar .trix-button--icon {
+    height: 2em;
+    max-width: calc(0.8em + 3.5vw);
   }
 }
-
-@utility trix-button--icon {
-  trix-toolbar & {
-    font-size: inherit;
-    width: 2.6em;
-    height: 1.6em;
-    max-width: calc(0.8em + 4vw);
-    text-indent: -9999px;
-  }
-  @media (max-width: 768px) {
-    trix-toolbar & {
-      height: 2em;
-      max-width: calc(0.8em + 3.5vw);
-    }
-  }
-  trix-toolbar &::before {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.6;
-    content: '';
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-  }
-  @media (max-width: 768px) {
-    trix-toolbar &::before {
-      right: 6%;
-      left: 6%;
-    }
-  }
-  trix-toolbar &.trix-active::before {
-    opacity: 1;
-  }
-  trix-toolbar &:disabled::before {
-    opacity: 0.125;
+trix-toolbar .trix-button--icon::before {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.6;
+  content: "";
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+@media (max-width: 768px) {
+  trix-toolbar .trix-button--icon::before {
+    right: 6%;
+    left: 6%;
   }
 }
-
-@utility trix-dialogs {
-  trix-toolbar & {
-    position: relative;
-  }
+trix-toolbar .trix-button--icon.trix-active::before {
+  opacity: 1;
+}
+trix-toolbar .trix-button--icon:disabled::before {
+  opacity: 0.125;
 }
 
-@utility trix-dialog {
-  trix-toolbar & {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    font-size: 0.75em;
-    padding: 15px 10px;
-    background: #fff;
-    box-shadow: 0 0.3em 1em #ccc;
-    border-top: 2px solid #888;
-    border-radius: 5px;
-    z-index: 5;
-  }
+trix-toolbar .trix-dialogs {
+  position: relative;
 }
 
-@utility trix-input--dialog {
-  trix-toolbar & {
-    font-size: inherit;
-    font-weight: normal;
-    padding: 0.5em 0.8em;
-    margin: 0 10px 0 0;
-    border-radius: 3px;
-    border: 1px solid #bbb;
-    background-color: #fff;
-    box-shadow: none;
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
-  trix-toolbar &.validate:invalid {
-    box-shadow: #f00 0px 0px 1.5px 1px;
-  }
+trix-toolbar .trix-dialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  font-size: 0.75em;
+  padding: 15px 10px;
+  background: #fff;
+  box-shadow: 0 0.3em 1em #ccc;
+  border-top: 2px solid #888;
+  border-radius: 5px;
+  z-index: 5;
 }
 
-@utility validate {
-  trix-toolbar &.trix-input--dialog:invalid {
-    box-shadow: #f00 0px 0px 1.5px 1px;
-  }
+trix-toolbar .trix-input--dialog {
+  font-size: inherit;
+  font-weight: normal;
+  padding: 0.5em 0.8em;
+  margin: 0 10px 0 0;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  background-color: #fff;
+  box-shadow: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+trix-toolbar .trix-input--dialog.validate:invalid {
+  box-shadow: #f00 0px 0px 1.5px 1px;
 }
 
-@utility trix-button--dialog {
-  trix-toolbar & {
-    font-size: inherit;
-    padding: 0.5em;
-    border-bottom: none;
-  }
+trix-toolbar .trix-button--dialog {
+  font-size: inherit;
+  padding: 0.5em;
+  border-bottom: none;
 }
 
-@utility trix-dialog--link {
-  trix-toolbar & {
-    max-width: 600px;
-  }
+trix-toolbar .trix-dialog--link {
+  max-width: 600px;
 }
 
-@utility trix-dialog__link-fields {
-  trix-toolbar & {
-    display: flex;
-    align-items: baseline;
-  }
-  trix-toolbar & .trix-input {
-    flex: 1;
-  }
-  trix-toolbar & .trix-button-group {
-    flex: 0 0 content;
-    margin: 0;
-  }
+trix-toolbar .trix-dialog__link-fields {
+  display: flex;
+  align-items: baseline;
+}
+trix-toolbar .trix-dialog__link-fields .trix-input {
+  flex: 1;
+}
+trix-toolbar .trix-dialog__link-fields .trix-button-group {
+  flex: 0 0 content;
+  margin: 0;
 }
 
-@utility trix-input {
-  trix-toolbar .trix-dialog__link-fields & {
-    flex: 1;
-  }
+trix-editor [data-trix-mutable]:not(.attachment__caption-editor) {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
-@utility attachment__caption-editor {
-  trix-editor &:focus[data-trix-mutable]::-moz-selection {
-    background: highlight;
-  }
-
-  trix-editor &:focus[data-trix-mutable]::selection {
-    background: highlight;
-  }
-
-  trix-editor & {
-    display: inline-block;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    font-size: inherit;
-    font-family: inherit;
-    line-height: inherit;
-    color: inherit;
-    text-align: center;
-    vertical-align: top;
-    border: none;
-    outline: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-  }
+trix-editor [data-trix-mutable]::-moz-selection,
+trix-editor [data-trix-cursor-target]::-moz-selection,
+trix-editor [data-trix-mutable] ::-moz-selection {
+  background: none;
 }
 
-@utility attachment {
-  trix-editor &[data-trix-mutable].attachment--file {
-    box-shadow: 0 0 0 2px highlight;
-    border-color: transparent;
-  }
-
-  trix-editor &[data-trix-mutable] img {
-    box-shadow: 0 0 0 2px highlight;
-  }
-
-  trix-editor & {
-    position: relative;
-  }
-  trix-editor &:hover {
-    cursor: default;
-  }
+trix-editor [data-trix-mutable]::selection,
+trix-editor [data-trix-cursor-target]::selection,
+trix-editor [data-trix-mutable] ::selection {
+  background: none;
 }
 
-@utility attachment--file {
-  trix-editor &[data-trix-mutable].attachment {
-    box-shadow: 0 0 0 2px highlight;
-    border-color: transparent;
-  }
+trix-editor
+  .attachment__caption-editor:focus[data-trix-mutable]::-moz-selection {
+  background: highlight;
 }
 
-@utility attachment--preview {
-  trix-editor & .attachment__caption:hover {
-    cursor: text;
-  }
+trix-editor .attachment__caption-editor:focus[data-trix-mutable]::selection {
+  background: highlight;
 }
 
-@utility attachment__caption {
-  trix-editor .attachment--preview &:hover {
-    cursor: text;
-  }
+trix-editor [data-trix-mutable].attachment.attachment--file {
+  box-shadow: 0 0 0 2px highlight;
+  border-color: transparent;
 }
 
-@utility attachment__progress {
-  trix-editor & {
-    position: absolute;
-    z-index: 1;
-    height: 20px;
-    top: calc(50% - 10px);
-    left: 5%;
-    width: 90%;
-    opacity: 0.9;
-    transition: opacity 200ms ease-in;
-  }
-  trix-editor &[value='100'] {
-    opacity: 0;
-  }
+trix-editor [data-trix-mutable].attachment img {
+  box-shadow: 0 0 0 2px highlight;
 }
 
-@utility attachment__toolbar {
-  trix-editor & {
-    position: absolute;
-    z-index: 1;
-    top: -0.9em;
-    left: 0;
-    width: 100%;
-    text-align: center;
-  }
+trix-editor .attachment {
+  position: relative;
+}
+trix-editor .attachment:hover {
+  cursor: default;
 }
 
-@utility trix-button--remove {
-  trix-editor & {
-    text-indent: -9999px;
-    display: inline-block;
-    padding: 0;
-    outline: none;
-    width: 1.8em;
-    height: 1.8em;
-    line-height: 1.8em;
-    border-radius: 50%;
-    background-color: #fff;
-    border: 2px solid highlight;
-    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.25);
-  }
-  trix-editor &::before {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.7;
-    content: '';
-    background-image: url('data:image/svg+xml,%3Csvg%20height%3D%2224%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M19%206.41%2017.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z%22%2F%3E%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 90%;
-  }
-  trix-editor &:hover {
-    border-color: #333;
-  }
-  trix-editor &:hover::before {
-    opacity: 1;
-  }
+trix-editor .attachment--preview .attachment__caption:hover {
+  cursor: text;
 }
 
-@utility attachment__metadata-container {
-  trix-editor & {
-    position: relative;
-  }
+trix-editor .attachment__progress {
+  position: absolute;
+  z-index: 1;
+  height: 20px;
+  top: calc(50% - 10px);
+  left: 5%;
+  width: 90%;
+  opacity: 0.9;
+  transition: opacity 200ms ease-in;
+}
+trix-editor .attachment__progress[value="100"] {
+  opacity: 0;
 }
 
-@utility attachment__metadata {
-  trix-editor & {
-    position: absolute;
-    left: 50%;
-    top: 2em;
-    transform: translate(-50%, 0);
-    max-width: 90%;
-    padding: 0.1em 0.6em;
-    font-size: 0.8em;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.7);
-    border-radius: 3px;
-  }
-  trix-editor & .attachment__name {
-    display: inline-block;
-    max-width: 100%;
-    vertical-align: bottom;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  trix-editor & .attachment__size {
-    margin-left: 0.2em;
-    white-space: nowrap;
-  }
+trix-editor .attachment__caption-editor {
+  display: inline-block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  color: inherit;
+  text-align: center;
+  vertical-align: top;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
-@utility attachment__name {
-  trix-editor .attachment__metadata & {
-    display: inline-block;
-    max-width: 100%;
-    vertical-align: bottom;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+trix-editor .attachment__toolbar {
+  position: absolute;
+  z-index: 1;
+  top: -0.9em;
+  left: 0;
+  width: 100%;
+  text-align: center;
 }
 
-@utility attachment__size {
-  trix-editor .attachment__metadata & {
-    margin-left: 0.2em;
-    white-space: nowrap;
-  }
+trix-editor .trix-button-group {
+  display: inline-flex;
 }
 
-@layer components {
+trix-editor .trix-button {
+  position: relative;
+  float: left;
+  color: #666;
+  white-space: nowrap;
+  font-size: 80%;
+  padding: 0 0.8em;
+  margin: 0;
+  outline: none;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+}
+trix-editor .trix-button:not(:first-child) {
+  border-left: 1px solid #ccc;
+}
+trix-editor .trix-button.trix-active {
+  background: #cbeefa;
+}
+trix-editor .trix-button:not(:disabled) {
+  cursor: pointer;
+}
 
-  trix-editor {
-    @apply px-2 py-1 border rounded-lg outline-hidden border-stone-200 min-h-60;
-  }
+trix-editor .trix-button--remove {
+  text-indent: -9999px;
+  display: inline-block;
+  padding: 0;
+  outline: none;
+  width: 1.8em;
+  height: 1.8em;
+  line-height: 1.8em;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 2px solid highlight;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.25);
+}
+trix-editor .trix-button--remove::before {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.7;
+  content: "";
+  background-image: url("data:image/svg+xml,%3Csvg%20height%3D%2224%22%20width%3D%2224%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M19%206.41%2017.59%205%2012%2010.59%206.41%205%205%206.41%2010.59%2012%205%2017.59%206.41%2019%2012%2013.41%2017.59%2019%2019%2017.59%2013.41%2012z%22%2F%3E%3Cpath%20d%3D%22M0%200h24v24H0z%22%20fill%3D%22none%22%2F%3E%3C%2Fsvg%3E");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 90%;
+}
+trix-editor .trix-button--remove:hover {
+  border-color: #333;
+}
+trix-editor .trix-button--remove:hover::before {
+  opacity: 1;
+}
 
-  trix-toolbar * {
-    @apply box-border;
-  }
+trix-editor .attachment__metadata-container {
+  position: relative;
+}
 
-  trix-editor [data-trix-mutable]:not(.attachment__caption-editor) {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-  }
-
-  trix-editor [data-trix-mutable]::-moz-selection,
-  trix-editor [data-trix-cursor-target]::-moz-selection,
-  trix-editor [data-trix-mutable] ::-moz-selection {
-    background: none;
-  }
-
-  trix-editor [data-trix-mutable]::selection,
-  trix-editor [data-trix-cursor-target]::selection,
-  trix-editor [data-trix-mutable] ::selection {
-    background: none;
-  }
+trix-editor .attachment__metadata {
+  position: absolute;
+  left: 50%;
+  top: 2em;
+  transform: translate(-50%, 0);
+  max-width: 90%;
+  padding: 0.1em 0.6em;
+  font-size: 0.8em;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 3px;
+}
+trix-editor .attachment__metadata .attachment__name {
+  display: inline-block;
+  max-width: 100%;
+  vertical-align: bottom;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+trix-editor .attachment__metadata .attachment__size {
+  margin-left: 0.2em;
+  white-space: nowrap;
 }
 
 trix-toolbar .trix-button--icon-attach::before {
