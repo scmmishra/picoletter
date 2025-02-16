@@ -14,6 +14,7 @@ class VerifyEmailService
     return false unless @email.valid?
     return false if @email.disposable?
     return false unless @email.valid_mx?
+    return false if @email.deny_listed?
 
     true
   rescue => e
