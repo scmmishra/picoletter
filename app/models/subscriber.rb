@@ -71,7 +71,7 @@ class Subscriber < ApplicationRecord
   end
 
   def send_confirmation_email
-    SubscriptionMailer.with(subscriber: self).confirmation.deliver_now
+    SubscriptionMailer.with(subscriber: self).confirmation.deliver_later
   end
 
   private
