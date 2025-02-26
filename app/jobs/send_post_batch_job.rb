@@ -38,7 +38,7 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def send_email(subscriber)
-    token = subscriber.generate_unsubscribe_token
+    token = subscriber.generate_token_for(:unsubscribe)
     unsub_url = unsubscribe_url(token, newsletter.slug)
     unsub_email = "mailto:#{newsletter.user.email}?subject=Unsubscribe"
     html = html_content.gsub(UNSUBSCRIBE_PLACEHOLDER, unsubscribe_link(unsub_url))
