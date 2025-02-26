@@ -28,13 +28,12 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Subscriber < ApplicationRecord
-  include Tokenable
   include Statusable
 
   taggable_array :labels
 
-  tokenable_on :unsubscribe
-  tokenable_on :confirmation, expiry: 48.hours
+  generates_token_for :unsubscribe
+  generates_token_for :confirmation, expires_in: 48.hours
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
