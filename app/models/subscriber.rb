@@ -77,7 +77,7 @@ class Subscriber < ApplicationRecord
   private
 
   def normalize_labels
-    self.labels = labels.compact.uniq.map(&:downcase) if labels.present?
+    self.labels = labels.compact.map(&:downcase).uniq if labels.present?
   end
 
   def filter_invalid_labels
