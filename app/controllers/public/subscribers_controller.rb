@@ -25,7 +25,7 @@ class Public::SubscribersController < ApplicationController
 
   def unsubscribe
     token = params[:token]
-    subscriber = Subscriber.find_by_token_for(:unsubscribe, token)
+    subscriber = Subscriber.find_by_token_for!(:unsubscribe, token)
     subscriber.unsubscribe!
     # Log the unsubscribe activity
     Rails.logger.info("Subscriber #{subscriber.id} unsubscribed from newsletter #{@newsletter.id}")
@@ -41,7 +41,7 @@ class Public::SubscribersController < ApplicationController
 
   def confirm_subscriber
     token = params[:token]
-    subscriber = Subscriber.find_by_token_for(:confirmation, token)
+    subscriber = Subscriber.find_by_token_for!(:confirmation, token)
 
     subscriber.verify!
   rescue ActiveSupport::MessageVerifier::InvalidSignature
