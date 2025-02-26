@@ -7,12 +7,12 @@
   >
     <%= lucide_icon("clock", class: "w-6 h-6") %>
   </div>
-  <h1 class="text-3xl leading-10 text-stone-900">Verfication pending</h1>
+  <h1 class="text-3xl leading-10 text-stone-900">Verification pending</h1>
   <p class="mt-2 text-xl text-stone-600">Thank you for signing up for
     <span class="font-medium text-stone-900"><%= @newsletter.title %></span>. We've sent a confirmation email to
     <span class="<%= "font-medium text-stone-900" if @email.present? %>"><%= @email.present? ? @email : "the address you provided" %></span>.</p>
   <p class="mt-2 text-xl text-stone-600">Check your inbox for a confirmation email and click the verification link.
-    Then you're all set to recieve the latest editions!</p>
+    Then you're all set to receive the latest editions!</p>
 
   <% if @email.present? %>
     <div class="mt-5 space-y-3">
