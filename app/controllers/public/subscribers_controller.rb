@@ -36,7 +36,7 @@ class Public::SubscribersController < ApplicationController
       render :unsubscribed
     end
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    render :invalid_unsubscribe
+    render :invalid_unsubscribe, status: :unprocessable_entity
   end
 
   def confirm_subscriber
@@ -45,7 +45,7 @@ class Public::SubscribersController < ApplicationController
 
     subscriber.verify!
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    render :invalid_confirmation
+    render :invalid_confirmation, status: :unprocessable_entity
   end
 
   private
