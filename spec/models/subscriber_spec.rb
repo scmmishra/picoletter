@@ -172,4 +172,18 @@ RSpec.describe Subscriber, type: :model do
       expect(found).to eq(subscriber)
     end
   end
+
+  describe 'email sending' do
+    it 'sends confirmation email' do
+      expect {
+        subscriber.send_confirmation_email
+      }.to have_enqueued_mail(SubscriptionMailer, :confirmation)
+    end
+
+    it 'sends reminder email' do
+      expect {
+        subscriber.send_reminder
+      }.to have_enqueued_mail(SubscriptionMailer, :confirmation_reminder)
+    end
+  end
 end
