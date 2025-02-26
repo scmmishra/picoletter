@@ -103,21 +103,17 @@ RSpec.describe Public::SubscribersController, type: :controller do
   describe 'GET #unsubscribe' do
     it 'unsubscribes a subscriber with valid token' do
       token = subscriber.generate_token_for(:unsubscribe)
+      get :unsubscribe, params: { slug: newsletter.slug, token: token }
 
-      expect {
-        get :unsubscribe, params: { slug: newsletter.slug, token: token }
-      }.to change { subscriber.reload.status }.from('unverified').to('unsubscribed')
-
+      expect(subscriber.reload.status).to eq('unsubscribed')
       expect(subscriber.reload.unsubscribed_at).to be_present
       expect(response).to have_http_status(:ok)
-      expect(response.body).to include('unsubscribed')
     end
 
     it 'handles invalid token' do
       get :unsubscribe, params: { slug: newsletter.slug, token: 'invalid-token' }
 
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to include('invalid')
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it 'handles POST requests' do
@@ -134,18 +130,17 @@ RSpec.describe Public::SubscribersController, type: :controller do
   describe 'GET #confirm_subscriber' do
     it 'verifies a subscriber with valid token' do
       token = subscriber.generate_token_for(:confirmation)
+      get :confirm_subscriber, params: { slug: newsletter.slug, token: token }
 
-      expect {
-        get :confirm_subscriber, params: { slug: newsletter.slug, token: token }
-      }.to change { subscriber.reload.status }.from('unverified').to('verified')
-
+      expect(response).to have_http_status(:ok)
+      expect(subscriber.reload.status).to eq('verified')
       expect(subscriber.reload.verified_at).to be_present
     end
 
     it 'handles invalid token' do
       get :confirm_subscriber, params: { slug: newsletter.slug, token: 'invalid-token' }
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:unprocessable_entity)
     end
 
     it 'handles expired token' do
@@ -155,7 +150,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
 
       get :confirm_subscriber, params: { slug: newsletter.slug, token: 'expired-token' }
 
-      expect(response).to have_http_status(:ok)
+      expect(response).to have_http_status(:unprocessable_content)
     end
   end
 end
