@@ -60,6 +60,7 @@ group :development, :test do
   gem "byebug", "~> 11.1"
   gem "factory_bot_rails"
   gem "faker"
+  gem "shoulda-matchers"
   gem "simplecov"
 end
 
