@@ -21,7 +21,7 @@ class SubscriptionMailer < ApplicationMailer
 
   def confirmation_url(subscriber)
     slug = subscriber.newsletter.slug
-    token = subscriber.generate_confirmation_token
+    token = subscriber.generate_token_for(:confirmation)
 
     Rails.application.routes.url_helpers.confirm_url(slug: slug, token: token)
   end

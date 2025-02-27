@@ -28,13 +28,12 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Subscriber < ApplicationRecord
-  include Tokenable
   include Statusable
 
   taggable_array :labels
 
-  tokenable_on :unsubscribe
-  tokenable_on :confirmation, expiry: 48.hours
+  generates_token_for :unsubscribe
+  generates_token_for :confirmation, expires_in: 48.hours
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
@@ -72,13 +71,13 @@ class Subscriber < ApplicationRecord
   end
 
   def send_confirmation_email
-    SubscriptionMailer.with(subscriber: self).confirmation.deliver_now
+    SubscriptionMailer.with(subscriber: self).confirmation.deliver_later
   end
 
   private
 
   def normalize_labels
-    self.labels = labels.compact.uniq.map(&:downcase) if labels.present?
+    self.labels = labels.compact.map(&:downcase).uniq if labels.present?
   end
 
   def filter_invalid_labels
