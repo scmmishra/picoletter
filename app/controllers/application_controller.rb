@@ -34,12 +34,7 @@ class ApplicationController < ActionController::Base
   end
 
   def verify_user
-    key = "verification_email_#{Current.user.id}"
-    if !Rails.cache.fetch(key)
-      Current.user.send_verification_email
-      Rails.cache.write(key, expires_in: 6.hours)
-    end
-
+    Current.user.send_verification_email_once
     redirect_to verify_path, notice: "Please verify your email to continue."
   end
 

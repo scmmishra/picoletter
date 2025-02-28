@@ -12,6 +12,12 @@ class UsersController < ApplicationController
   end
 
   def show_verify
+    return redirect_to_newsletter_home if Current.user.verified?
+
+    @provider = EmailInformationService.new(Current.user.email)
+    sending_domain = AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
+    @search_url = @provider.search_url(sender: "accounts@#{sending_domain}") if @provider.name.present?
+
     render :verify
   end
 
@@ -20,9 +26,9 @@ class UsersController < ApplicationController
 
     if @user.save
       start_new_session_for @user
-      return redirect_to_newsletter_home if @user.verifyied
+      return redirect_to_newsletter_home if @user.verified?
 
-      @user.send_verification_email
+      @user.send_verification_email_once
       redirect_to
     else
       redirect_to signup_url, notice: error_messages_for(@user.errors)

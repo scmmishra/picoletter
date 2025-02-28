@@ -54,6 +54,15 @@ class User < ApplicationRecord
     UserMailer.with(user: self).verify_email.deliver_later
   end
 
+  def send_verification_email_once
+    key = "verification_email_#{Current.user.id}"
+
+    if !Rails.cache.fetch(key)
+      self.send_verification_email
+      Rails.cache.write(key, expires_in: 6.hours)
+    end
+  end
+
   private
 
   def activate_user
