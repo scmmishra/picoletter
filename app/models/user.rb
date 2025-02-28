@@ -51,7 +51,7 @@ class User < ApplicationRecord
   end
 
   def send_verification_email
-    UserMailer.with(user: self).verification_email.deliver_later
+    UserMailer.with(user: self).verify_email.deliver_later
   end
 
   private
