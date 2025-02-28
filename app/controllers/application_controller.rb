@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
 
     if session
       Current.user = session.user
-      redirect_to verify_path, notice: "Please verify your email to continue." unless Current.user.verified?
+      verify_user unless Current.user.verified?
     else
       redirect_to auth_login_path, alert: "Please log in to continue."
     end
@@ -33,8 +33,18 @@ class ApplicationController < ActionController::Base
     cookies.signed.permanent[:session_token] = { value: session.token, httponly: true, same_site: :lax }
   end
 
+  def verify_user
+    key = "verification_email_#{Current.user.id}"
+    if !Rails.cache.fetch(key)
+      Current.user.send_verification_email
+      Rails.cache.write(key, expires_in: 6.hours)
+    end
+
+    redirect_to verify_path, notice: "Please verify your email to continue."
+  end
+
   def redirect_to_newsletter_home
-    return redirect_to verify_path unless Current.user.verified?
+    return verify_user unless Current.user.verified?
 
     has_newsletter = Current.user.newsletters.count > 0
     last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
