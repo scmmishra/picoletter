@@ -1,0 +1,16 @@
+<div class="relative max-w-md py-20 mx-auto">
+  <div
+    class="
+      inline-flex items-center justify-center w-10 h-10 mb-4 text-yellow-500
+      bg-yellow-100 rounded-lg shadow shadow-yellow-700/20 sm:-left-14 sm:absolute
+    "
+  >
+    <%= lucide_icon("clock", class: "w-6 h-6") %>
+  </div>
+  <h1 class="text-3xl leading-10 text-stone-900">Please verify your email</h1>
+  <p class="mt-2 text-xl text-stone-600">Thank you for signing up to Picoletter. We've sent a confirmation email to
+    <span class="font-medium text-stone-900"><%= Current.user.email %></span>
+  </p>
+
+  <p class="mt-2 text-xl text-stone-600">Check your inbox for a confirmation email and click the verification link.</p>
+</div>

@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
 
     if session
       Current.user = session.user
+      redirect_to verify_path, notice: "Please verify your email to continue." unless Current.user.verified?
     else
       redirect_to auth_login_path, alert: "Please log in to continue."
     end
@@ -33,6 +34,8 @@ class ApplicationController < ActionController::Base
   end
 
   def redirect_to_newsletter_home
+    return redirect_to verify_path unless Current.user.verified?
+
     has_newsletter = Current.user.newsletters.count > 0
     last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
 

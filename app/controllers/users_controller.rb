@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :resume_session_if_present, only: [ :new ]
+  before_action :resume_session_if_present, only: [ :new, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
 
@@ -11,12 +11,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def show_verify
+    render :verify
+  end
+
   def create
     @user = User.new(user_params.except(:invite_code))
 
     if @user.save
       start_new_session_for @user
-      redirect_to_newsletter_home
+      return redirect_to_newsletter_home if @user.verifyied
+
+      @user.send_verification_email
+      redirect_to
     else
       redirect_to signup_url, notice: error_messages_for(@user.errors)
     end

@@ -50,6 +50,10 @@ class User < ApplicationRecord
     self.verified_at.present?
   end
 
+  def send_verification_email
+    UserMailer.with(user: self).verification_email.deliver_later
+  end
+
   private
 
   def activate_user
