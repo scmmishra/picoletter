@@ -34,8 +34,8 @@ class UsersController < ApplicationController
     token = params[:token]
     user = User.find_by_token_for!(:verification, token)
     user.verify!
-    start_new_session_for user unless Current.user.present?
-    redirect_to_newsletter_home("Email verification successful.")
+    start_new_session_for user
+    redirect_to_newsletter_home notice: "Email verification successful."
   rescue => error
     if Current.user.present?
       redirect_to verify_path, notice: "Invalid verification token."
