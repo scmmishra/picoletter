@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
 
     if session
       Current.user = session.user
-      verify_user unless Current.user.verified?
     else
       redirect_to auth_login_path, alert: "Please log in to continue."
     end
