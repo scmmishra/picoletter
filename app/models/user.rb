@@ -47,6 +47,9 @@ class User < ApplicationRecord
   end
 
   def verified?
+    verification_enabled = AppConfig.get("VERIFY_SIGNUPS", true)
+    return true unless verification_enabled
+
     self.verified_at.present?
   end
 
