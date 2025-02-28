@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
   before_action :resume_session_if_present, only: [ :new, :show_verify ]
+  before_action :ensure_authenticated, only: [ :resend_verification_email, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
+
+  rate_limit to: 5, within: 15.minutes, only: :resend_verification_email
+  rate_limit to: 5, within: 60.minutes, only: :create
 
   def new
     if Current.user.present?
@@ -9,6 +13,11 @@ class UsersController < ApplicationController
     else
       render :new
     end
+  end
+
+  def resend_verification_email
+    Current.user.send_verification_email
+    redirect_to verify_path, notice: "Verification email resent."
   end
 
   def show_verify

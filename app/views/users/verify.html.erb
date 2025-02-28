@@ -254,11 +254,21 @@
     </div>
   </div>
   <hr class="my-5"/>
-  <div class="font-sans text-sm text-stone-400 mt-5 text-left">
-    You are logged in as
-    <%= Current.user.email %>,
-    <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
-      <span>click here to log out.</span>
-    <% end %>
+  <div class="space-y-2">
+    <p class="font-sans text-sm text-stone-400 mt-5 text-left">
+      If you haven't receieved your verification email yet,
+      <%= link_to "click here to resend",
+      resend_verification_email_path,
+      class: "hover:underline",
+      data: {
+        turbo_method: :post,
+      } %>
+    </p>
+    <div class="font-sans text-sm text-stone-400 mt-5 text-left">
+      You are logged in as
+      <%= Current.user.email %>,
+      <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
+        <span>click here to log out.</span>
+      <% end %>
+    </div>
   </div>
-</div>
