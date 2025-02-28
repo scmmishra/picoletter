@@ -1,5 +1,4 @@
 class Auth::SessionsController < ApplicationController
-  before_action :ensure_authenticated, only: [ :destroy ]
   before_action :resume_session_if_present, only: [ :new ]
 
   def new
