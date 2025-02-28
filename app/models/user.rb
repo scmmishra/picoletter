@@ -22,6 +22,8 @@
 class User < ApplicationRecord
   has_secure_password :password, validations: true
 
+  generates_token_for :verification, expires_in: 48.hours
+
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
 
