@@ -30,6 +30,20 @@ class UsersController < ApplicationController
     render :verify
   end
 
+  def confirm_verification
+    token = params[:token]
+    user = User.find_by_token_for!(:verification, token)
+    user.verify!
+    start_new_session_for user unless Current.user.present?
+    redirect_to_newsletter_home("Email verification successful.")
+  rescue => error
+    if Current.user.present?
+      redirect_to verify_path, notice: "Invalid verification token."
+    else
+      redirect_to auth_login_path, notice: "Invalid verification token."
+    end
+  end
+
   def create
     @user = User.new(user_params.except(:invite_code))
 
