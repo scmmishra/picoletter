@@ -44,11 +44,11 @@ class ApplicationController < ActionController::Base
     last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
 
     if has_newsletter && last_opened_newsletter.present?
-      redirect_to posts_url(last_opened_newsletter), notice: notice
+      redirect_to posts_path(last_opened_newsletter), notice: notice
     elsif has_newsletter
-      redirect_to posts_url(Current.user.newsletters.first.slug), notice: notice
+      redirect_to posts_path(Current.user.newsletters.first.slug), notice: notice
     else
-      redirect_to new_newsletter_url, notice: notice
+      redirect_to new_newsletter_path, notice: notice
     end
   end
 end

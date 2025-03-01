@@ -52,9 +52,9 @@ class UsersController < ApplicationController
       return redirect_to_newsletter_home if @user.verified?
 
       @user.send_verification_email_once
-      redirect_to
+      redirect_to verify_path
     else
-      redirect_to signup_url, notice: error_messages_for(@user.errors)
+      redirect_to signup_path, notice: error_messages_for(@user.errors)
     end
   end
 
@@ -64,9 +64,9 @@ class UsersController < ApplicationController
     return unless @require_invite
 
     if user_params[:invite_code].blank?
-      redirect_to signup_url, notice: "Please enter an invite code."
+      redirect_to signup_path, notice: "Please enter an invite code."
     elsif user_params[:invite_code] != AppConfig.get("INVITE_CODE")
-      redirect_to signup_url, notice: "Invalid invite code"
+      redirect_to signup_path, notice: "Invalid invite code"
     end
   end
 
