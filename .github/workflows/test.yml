@@ -25,6 +25,8 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install DeepSource CLI
         run: curl https://deepsource.io/cli | sh
