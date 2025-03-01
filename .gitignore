@@ -42,3 +42,4 @@ routes.txt
 /config/credentials/production.key
 
 coverage/
+spec/examples.txt

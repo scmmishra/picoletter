@@ -22,14 +22,15 @@
 class User < ApplicationRecord
   has_secure_password :password, validations: true
 
+  generates_token_for :verification, expires_in: 48.hours
+
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
 
   has_many :subscribers, through: :newsletters
   has_many :posts, through: :newsletters
   has_many :emails, through: :posts
-
-  validates :email, presence: true, uniqueness: { case_sensitive: false }
+  validates :email, presence: true, uniqueness: { case_sensitive: false }, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :name, presence: true
   validates :bio, length: { maximum: 500 }
 
@@ -38,6 +39,30 @@ class User < ApplicationRecord
 
   def super?
     self.is_superadmin
+  end
+
+  def verify!
+    self.update(verified_at: Time.now)
+  end
+
+  def verified?
+    verification_enabled = AppConfig.get("VERIFY_SIGNUPS", true)
+    return true unless verification_enabled
+
+    self.verified_at.present?
+  end
+
+  def send_verification_email
+    UserMailer.with(user: self).verify_email.deliver_later
+  end
+
+  def send_verification_email_once
+    key = "verification_email_#{self.id}"
+
+    if !Rails.cache.fetch(key)
+      self.send_verification_email
+      Rails.cache.write(key, expires_in: 6.hours)
+    end
   end
 
   private

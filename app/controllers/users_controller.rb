@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
-  before_action :resume_session_if_present, only: [ :new ]
+  before_action :resume_session_if_present, only: [ :new, :show_verify ]
+  before_action :ensure_authenticated, only: [ :resend_verification_email, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
+
+  rate_limit to: 5, within: 15.minutes, only: :resend_verification_email
+  rate_limit to: 5, within: 60.minutes, only: :create
 
   def new
     if Current.user.present?
@@ -11,14 +15,46 @@ class UsersController < ApplicationController
     end
   end
 
+  def resend_verification_email
+    Current.user.send_verification_email
+    redirect_to verify_path, notice: "Verification email resent."
+  end
+
+  def show_verify
+    return redirect_to_newsletter_home if Current.user.verified?
+
+    @provider = EmailInformationService.new(Current.user.email)
+    sending_domain = AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
+    @search_url = @provider.search_url(sender: "accounts@#{sending_domain}") if @provider.name.present?
+
+    render :verify
+  end
+
+  def confirm_verification
+    token = params[:token]
+    user = User.find_by_token_for!(:verification, token)
+    user.verify!
+    start_new_session_for user
+    redirect_to_newsletter_home notice: "Email verification successful."
+  rescue => error
+    if Current.user.present?
+      redirect_to verify_path, notice: "Invalid verification token."
+    else
+      redirect_to auth_login_path, notice: "Invalid verification token."
+    end
+  end
+
   def create
     @user = User.new(user_params.except(:invite_code))
 
     if @user.save
       start_new_session_for @user
-      redirect_to_newsletter_home
+      return redirect_to_newsletter_home if @user.verified?
+
+      @user.send_verification_email_once
+      redirect_to verify_path
     else
-      redirect_to signup_url, notice: error_messages_for(@user.errors)
+      redirect_to signup_path, notice: error_messages_for(@user.errors)
     end
   end
 
@@ -28,9 +64,9 @@ class UsersController < ApplicationController
     return unless @require_invite
 
     if user_params[:invite_code].blank?
-      redirect_to signup_url, notice: "Please enter an invite code."
+      redirect_to signup_path, notice: "Please enter an invite code."
     elsif user_params[:invite_code] != AppConfig.get("INVITE_CODE")
-      redirect_to signup_url, notice: "Invalid invite code"
+      redirect_to signup_path, notice: "Invalid invite code"
     end
   end
 

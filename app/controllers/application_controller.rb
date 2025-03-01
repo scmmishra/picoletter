@@ -32,16 +32,23 @@ class ApplicationController < ActionController::Base
     cookies.signed.permanent[:session_token] = { value: session.token, httponly: true, same_site: :lax }
   end
 
-  def redirect_to_newsletter_home
+  def verify_user
+    Current.user.send_verification_email_once
+    redirect_to verify_path, notice: "Please verify your email to continue."
+  end
+
+  def redirect_to_newsletter_home(notice: nil)
+    return verify_user unless Current.user.verified?
+
     has_newsletter = Current.user.newsletters.count > 0
     last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
 
     if has_newsletter && last_opened_newsletter.present?
-      redirect_to posts_url(last_opened_newsletter)
+      redirect_to posts_path(last_opened_newsletter), notice: notice
     elsif has_newsletter
-      redirect_to posts_url(Current.user.newsletters.first.slug)
+      redirect_to posts_path(Current.user.newsletters.first.slug), notice: notice
     else
-      redirect_to new_newsletter_url
+      redirect_to new_newsletter_path, notice: notice
     end
   end
 end
