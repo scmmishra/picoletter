@@ -58,7 +58,7 @@ class User < ApplicationRecord
   end
 
   def send_verification_email_once
-    key = "verification_email_#{Current.user.id}"
+    key = "verification_email_#{self.id}"
 
     if !Rails.cache.fetch(key)
       self.send_verification_email
