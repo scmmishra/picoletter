@@ -369,7 +369,7 @@ GEM
       io-console (~> 0.5)
     resolv (0.6.0)
     rexml (3.4.0)
-    rorvswild (1.9.0)
+    rorvswild (1.9.1)
     rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.3)
@@ -533,7 +533,7 @@ DEPENDENCIES
   rails (~> 8.0.1)
   redis (>= 4.0.1)
   resolv
-  rorvswild (>= 1.9.0)
+  rorvswild (>= 1.9.1)
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
   selenium-webdriver

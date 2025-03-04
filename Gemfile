@@ -100,7 +100,7 @@ gem "jwt"
 gem "premailer-rails"
 
 # monitoring
-gem "rorvswild", ">= 1.9.0"
+gem "rorvswild", ">= 1.9.1"
 
 # production
 gem "dotenv-rails"
