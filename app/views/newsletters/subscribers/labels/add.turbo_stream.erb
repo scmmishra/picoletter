@@ -25,7 +25,7 @@
   <%# Update the dropdown to show the label as added with remove option %>
   <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
     <template>
-      <%= render "newsletters/subscribers/partials/label_dropdown_item", label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: true %>
+      <%= render formats: [:html], partial: "newsletters/subscribers/partials/label_dropdown_item", locals: { label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: true } %>
     </template>
   </turbo-stream>
 <% end %>

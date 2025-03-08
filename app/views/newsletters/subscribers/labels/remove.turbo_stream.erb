@@ -6,7 +6,13 @@
   <%# Update the dropdown to show the label as available with add option %>
   <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
     <template>
-      <%= render "newsletters/subscribers/partials/label_dropdown_item", label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: false %>
+      <%= render formats: [:html], partial: "newsletters/subscribers/partials/label_dropdown_item",
+      locals: {
+        label: @label,
+        subscriber: @subscriber,
+        newsletter: @newsletter,
+        already_added: false
+      } %>
     </template>
   </turbo-stream>
 <% end %>
