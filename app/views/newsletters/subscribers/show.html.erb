@@ -70,8 +70,25 @@
   </label>
   <%= form.submit "Update Subscriber", class: "btn btn-primary" %>
 <% end %>
-
-<hr class="max-w-lg my-8">
+<div
+  class="
+    flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm
+  "
+>
+  <h3>Tags</h3>
+  <hr class="flex-grow">
+</div>
+<section class="max-w-lg grid gap-2">
+  <%= render "newsletters/subscribers/partials/labels" %>
+</section>
+<div
+  class="
+    flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm
+  "
+>
+  <h3>Actions</h3>
+  <hr class="flex-grow">
+</div>
 <section class="max-w-lg grid gap-6">
   <%= render "newsletters/subscribers/partials/actions" %>
 </section>
