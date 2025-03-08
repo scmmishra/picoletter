@@ -1,31 +1,32 @@
-<div class="flex gap-2 flex-wrap" data-controller="labels">
-  <input
-    id="labelinput"
-    class="hidden"
-    value="<%= @subscriber.labels.join(", ") %>"
-    data-labels-target="input"
-  >
-  <div data-labels-target="tagList">
-    <% @subscriber.labels.each do |label| %>
-      <span
-        class="
-          tag inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
-          bg-stone-100 text-stone-700 gap-2 font-sans border border-stone-100
-        "
-        data-label-name="<%= label.name %>"
-      >
-        <div class="size-3.5 rounded" style="background-color: <%= label.color %>"></div>
-        <span><%= label.name %></span>
-        <button
-          type="button"
-          class="ml-1 text-stone-400 hover:text-stone-700"
-          data-action="click->labels#removeTag"
+<div id="subscriber-labels-list" class="flex gap-2 flex-wrap" data-controller="labels">
+  <% subscriber ||= @subscriber %>
+  <% newsletter ||= @newsletter %>
+
+  <div id="labels-tag-list" class="flex flex-wrap gap-2" data-labels-target="tagList">
+    <% subscriber.labels.each do |label_name| %>
+      <% label = newsletter.labels.find_by(name: label_name) %>
+      <% if label %>
+        <span
+          id="label-item-<%= label.name %>"
+          class="
+            tag inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
+            bg-stone-100 text-stone-700 gap-2 font-sans border border-stone-100
+          "
+          data-label-name="<%= label.name %>"
         >
-          <%= lucide_icon("x", class: "size-3") %>
-        </button>
-      </span>
+          <div class="size-3.5 rounded" style="background-color: <%= label.color %>"></div>
+          <span><%= label.name %></span>
+          <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name), 
+                method: :delete,
+                class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
+                form: { data: { turbo: true } } do %>
+            <%= lucide_icon("x", class: "size-3") %>
+          <% end %>
+        </span>
+      <% end %>
     <% end %>
   </div>
+
   <div class="inline-flex relative">
     <button
       class="
@@ -38,32 +39,38 @@
       <%= lucide_icon("plus", class: "size-3 text-stone-500") %>
       Add Label
     </button>
-    <div class="absolute top-8 w-64 mt-2 hidden" data-labels-target="dropdown">
+    <div class="absolute top-8 w-64 mt-2 hidden z-10" data-labels-target="dropdown">
       <div
         class="
           py-1 px-1 bg-white shadow-lg rounded-lg outline outline-1 outline-stone-200
           w-full min-h-12 gap-1
         "
       >
-        <% @newsletter.labels.each do |label| %>
-          <span
-            class="
-              dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
-              rounded-md text-stone-700 gap-2 justify-between cursor-pointer
-            "
-            data-action="click->labels#toggleLabel"
-            data-label-name="<%= label.name %>"
-          >
-            <span class="flex gap-2 items-center">
-              <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
-              <%= label.name %>
-            </span>
-            <div
-              class="check-icon <%= @subscriber.labels.include?(label) ? '' : 'hidden' %>"
-            >
-              <%= lucide_icon("check", class: "size-3 text-stone-500") %>
-            </div>
-          </span>
+        <% newsletter.labels.each do |label| %>
+          <% already_added = subscriber.labels.include?(label.name) %>
+          <div id="label-dropdown-<%= label.name %>">
+            <%= form_with url: add_label_subscribers_path(newsletter.slug, subscriber.id), 
+                  method: :post, 
+                  data: { turbo: true } do %>
+              <%= hidden_field_tag :label_name, label.name %>
+              <button
+                type="<%= already_added ? 'button' : 'submit' %>"
+                class="
+                  w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
+                  rounded-md text-stone-700 gap-2 justify-between cursor-pointer
+                "
+                <%= already_added ? 'disabled' : '' %>
+              >
+                <span class="flex gap-2 items-center">
+                  <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
+                  <%= label.name %>
+                </span>
+                <div class="check-icon <%= already_added ? '' : 'hidden' %>">
+                  <%= lucide_icon("check", class: "size-3 text-stone-500") %>
+                </div>
+              </button>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </div>

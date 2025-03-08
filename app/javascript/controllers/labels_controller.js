@@ -1,13 +1,11 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["input", "dropdown", "addButton", "tagList"];
+  static targets = ["dropdown", "addButton", "tagList"];
 
   connect() {
-    this.selectedLabels = this.inputTarget.value
-      ? this.inputTarget.value.split(", ")
-      : [];
     this.dropdownVisible = false;
+    this.closeDropdownOnClickOutside = this.closeDropdownOnClickOutside.bind(this);
     document.addEventListener("click", this.closeDropdownOnClickOutside);
   }
 
@@ -26,11 +24,12 @@ export default class extends Controller {
     }
   }
 
-  removeTag(event) {
-    console.log(event);
-  }
-
-  toggleLabel(event) {
-    console.log(event);
+  closeDropdownOnClickOutside(event) {
+    if (this.dropdownVisible && 
+        !this.addButtonTarget.contains(event.target) && 
+        !this.dropdownTarget.contains(event.target)) {
+      this.dropdownTarget.classList.add("hidden");
+      this.dropdownVisible = false;
+    }
   }
 }

@@ -1,0 +1,46 @@
+<%# This stream directly adds a label to the tag list %>
+<% if @label %>
+  <turbo-stream action="append" target="labels-tag-list">
+    <template>
+      <span
+        id="label-item-<%= @label.name %>"
+        class="
+          tag inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
+          bg-stone-100 text-stone-700 gap-2 font-sans border border-stone-100
+        "
+        data-label-name="<%= @label.name %>"
+      >
+        <div class="size-3.5 rounded" style="background-color: <%= @label.color %>"></div>
+        <span><%= @label.name %></span>
+        <%= button_to remove_label_subscribers_path(@newsletter.slug, @subscriber.id, @label.name), 
+              method: :delete,
+              class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
+              form: { data: { turbo: true } } do %>
+          <%= lucide_icon("x", class: "size-3") %>
+        <% end %>
+      </span>
+    </template>
+  </turbo-stream>
+
+  <%# Update the dropdown to show the label as added %>
+  <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
+    <template>
+      <button
+        type="button"
+        class="
+          w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
+          rounded-md text-stone-700 gap-2 justify-between cursor-pointer
+        "
+        disabled
+      >
+        <span class="flex gap-2 items-center">
+          <span class="size-3.5 rounded" style="background-color: <%= @label.color %>"></span>
+          <%= @label.name %>
+        </span>
+        <div class="check-icon">
+          <%= lucide_icon("check", class: "size-3 text-stone-500") %>
+        </div>
+      </button>
+    </template>
+  </turbo-stream>
+<% end %>
