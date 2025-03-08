@@ -22,25 +22,10 @@
     </template>
   </turbo-stream>
 
-  <%# Update the dropdown to show the label as added %>
+  <%# Update the dropdown to show the label as added with remove option %>
   <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
     <template>
-      <button
-        type="button"
-        class="
-          w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
-          rounded-md text-stone-700 gap-2 justify-between cursor-pointer
-        "
-        disabled
-      >
-        <span class="flex gap-2 items-center">
-          <span class="size-3.5 rounded" style="background-color: <%= @label.color %>"></span>
-          <%= @label.name %>
-        </span>
-        <div class="check-icon">
-          <%= lucide_icon("check", class: "size-3 text-stone-500") %>
-        </div>
-      </button>
+      <%= render "newsletters/subscribers/partials/label_dropdown_item", label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: true %>
     </template>
   </turbo-stream>
 <% end %>

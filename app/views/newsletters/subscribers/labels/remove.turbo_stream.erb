@@ -3,29 +3,10 @@
   <turbo-stream action="remove" target="label-item-<%= @label.name %>">
   </turbo-stream>
 
-  <%# Update the dropdown to show the label as available %>
+  <%# Update the dropdown to show the label as available with add option %>
   <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
     <template>
-      <%= form_with url: add_label_subscribers_path(@newsletter.slug, @subscriber.id), 
-            method: :post, 
-            data: { turbo: true } do %>
-        <%= hidden_field_tag :label_name, @label.name %>
-        <button
-          type="submit"
-          class="
-            w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
-            rounded-md text-stone-700 gap-2 justify-between cursor-pointer
-          "
-        >
-          <span class="flex gap-2 items-center">
-            <span class="size-3.5 rounded" style="background-color: <%= @label.color %>"></span>
-            <%= @label.name %>
-          </span>
-          <div class="check-icon hidden">
-            <%= lucide_icon("check", class: "size-3 text-stone-500") %>
-          </div>
-        </button>
-      <% end %>
+      <%= render "newsletters/subscribers/partials/label_dropdown_item", label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: false %>
     </template>
   </turbo-stream>
 <% end %>
