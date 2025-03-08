@@ -1,8 +1,8 @@
-<div id="subscriber-labels-list" class="flex gap-2 flex-wrap" data-controller="labels">
+<div id="subscriber-labels-list" class="flex gap-2 flex-wrap">
   <% subscriber ||= @subscriber %>
   <% newsletter ||= @newsletter %>
 
-  <div id="labels-tag-list" class="flex flex-wrap gap-2" data-labels-target="tagList">
+  <div id="labels-tag-list" class="flex flex-wrap gap-2">
     <% subscriber.labels.each do |label_name| %>
       <% label = newsletter.labels.find_by(name: label_name) %>
       <% if label %>
@@ -16,7 +16,7 @@
         >
           <div class="size-3.5 rounded" style="background-color: <%= label.color %>"></div>
           <span><%= label.name %></span>
-          <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name), 
+          <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name),
                 method: :delete,
                 class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
                 form: { data: { turbo: true } } do %>
@@ -27,19 +27,18 @@
     <% end %>
   </div>
 
-  <div class="inline-flex relative">
+  <div class="inline-flex relative" data-controller="dropdown">
     <button
       class="
         inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
         text-stone-700 gap-2 font-sans border border-dashed border-stone-300
       "
-      data-labels-target="addButton"
-      data-action="click->labels#toggleDropdown"
+      data-action="dropdown#toggle click@window->dropdown#hide"
     >
       <%= lucide_icon("plus", class: "size-3 text-stone-500") %>
       Add Label
     </button>
-    <div class="absolute top-8 w-64 mt-2 hidden z-10" data-labels-target="dropdown">
+    <div class="absolute top-8 w-64 mt-2 hidden z-10" data-dropdown-target="menu">
       <div
         class="
           py-1 px-1 bg-white shadow-lg rounded-lg outline outline-1 outline-stone-200
@@ -49,15 +48,15 @@
         <% newsletter.labels.each do |label| %>
           <% already_added = subscriber.labels.include?(label.name) %>
           <div id="label-dropdown-<%= label.name %>">
-            <%= form_with url: add_label_subscribers_path(newsletter.slug, subscriber.id), 
-                  method: :post, 
+            <%= form_with url: add_label_subscribers_path(newsletter.slug, subscriber.id),
+                  method: :post,
                   data: { turbo: true } do %>
               <%= hidden_field_tag :label_name, label.name %>
               <button
                 type="<%= already_added ? 'button' : 'submit' %>"
                 class="
-                  w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm
-                  rounded-md text-stone-700 gap-2 justify-between cursor-pointer
+                  w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans
+                  text-sm rounded-md text-stone-700 gap-2 justify-between cursor-pointer
                 "
                 <%= already_added ? 'disabled' : '' %>
               >
