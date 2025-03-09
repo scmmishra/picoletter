@@ -5,7 +5,11 @@ export default class extends Controller {
 
   initialize() {
     this.onTitleInput = () => {
-      this.slugTarget.value = this.slugify(this.titleTarget.value);
+      if (this.slugTarget && this.slugTarget.tagName === "INPUT") {
+        this.slugTarget.value = this.slugify(this.titleTarget.value);
+      } else {
+        this.slugTarget.innerHTML = this.slugify(this.titleTarget.value);
+      }
     };
   }
   connect() {
