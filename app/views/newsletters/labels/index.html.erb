@@ -6,7 +6,28 @@
     <p class="text-center text-stone-500">No labels found</p>
   </div>
 <% else %>
-  <section class="mt-6 divide-y divide-stone-200/60">
+  <section class="mt-6">
+    <div
+      class="
+        grid grid-cols-5 py-4 font-sans text-xs font-medium tracking-widest uppercase
+        text-stone-500
+      "
+    >
+      <div class="col-span-1">
+        Name
+      </div>
+      <div class="col-span-2">
+        Description
+      </div>
+      <div class="col-span-1">
+        Subscribers
+      </div>
+      <div class="col-span-1 text-right">
+        Actions
+      </div>
+    </div>
+  </section>
+  <section>
     <%= render partial: "newsletters/labels/row",
     collection: @labels,
     as: :label,

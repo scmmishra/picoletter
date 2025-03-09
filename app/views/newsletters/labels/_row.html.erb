@@ -1,14 +1,19 @@
-<div class="gap-2 py-4 group grid grid-cols-5 max-w-4xl">
+<div
+  class="
+    gap-2 py-4 grid grid-cols-5 hover:bg-gradient-to-r from-slate-50/10 via-stone-50
+    to-slate-50/10 group
+  "
+>
   <div class="flex items-center gap-2 col-span-1">
     <div class="w-4 h-4 rounded" style="background-color: <%= label.color %>"></div>
     <h3 class="font-medium"><%= label.name %></h3>
   </div>
-  <div class="col-span-2 font-sans">
+  <div class="col-span-2 font-sans flex items-center">
     <% if label.description.present? %>
       <p class="mt-0.5 text-sm text-stone-500"><%= label.description %></p>
     <% end %>
   </div>
-  <div class="col-span-1 font-sans">
+  <div class="col-span-1 font-sans flex items-center">
     <% if label.description.present? %>
       <p class="mt-0.5 text-sm text-stone-500">
         <% subscriber_count = @newsletter.subscribers.with_all_labels(label.name).count %>
@@ -16,5 +21,23 @@
         <%= "Subscriber".pluralize(subscriber_count) %>
       </p>
     <% end %>
+  </div>
+  <div class="col-span-1 font-sans items-center flex justify-end gap-2">
+    <button
+      class="
+        btn btn-sm btn-tinted btn-secondary group-hover:opacity-100 opacity-40
+        transition-all duration-300 grayscale group-hover:grayscale-0 py-1.5
+      "
+    >
+      <%= lucide_icon("edit-2", class: "size-3 text-stone-800") %>
+    </button>
+    <button
+      class="
+        btn btn-sm btn-tinted btn-danger group-hover:opacity-100 opacity-20
+        transition-all duration-300 grayscale group-hover:grayscale-0 py-1.5
+      "
+    >
+      <%= lucide_icon("trash-2", class: "size-3 text-white") %>
+    </button>
   </div>
 </div>
