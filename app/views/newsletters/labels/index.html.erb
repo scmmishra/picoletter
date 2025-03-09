@@ -1,12 +1,61 @@
 <section class="flex items-center justify-between gap-2">
   <h2 class="text-xl font-medium">Labels</h2>
+  <div class="space-x-1" data-controller="modal">
+    <button class="font-sans text-sm btn btn-primary" data-action="modal#open">Create Label</button>
+    <div>
+      <dialog
+        data-modal-target="modal"
+        class="
+          p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-with-inset min-w-sm
+          w-96 gap-4 space-y-4
+        "
+      >
+        <h2 class="text-xl font-medium">Create a new label</h2>
+        <%= form_with model: Label.new, url: labels_path, class: "flex flex-col gap-4" do |form| %>
+          <label data-controller="auto-slug">
+            <%= form.label :name, "Name", class: "block text-sm font-medium text-stone-700" %>
+            <%= form.text_field :name,
+                            data: {
+                              "auto-slug-target": "title",
+                            },
+                            class:
+                              "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+            <p class="font-sans text-xs mt-1 text-stone-500">Will be saved as:
+              <span class="text-stone-600" data-auto-slug-target="slug"></span></p>
+          </label>
+
+          <label>
+            <%= form.label :description,
+                       "Description",
+                       data: {
+                         "auto-slug-target": "slug",
+                       },
+                       class: "block text-sm font-medium text-stone-700" %>
+            <%= form.text_area :description,
+                           max_length: 180,
+                           class:
+                             "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </label>
+
+          <label>
+            <%= form.label :color, "Color", class: "block text-sm font-medium text-stone-700" %>
+            <%= form.color_field :color,
+                             class:
+                               "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </label>
+
+          <%= form.submit "Create Label", class: "mt-4 font-sans text-sm btn btn-primary" %>
+        <% end %>
+      </dialog>
+    </div>
+  </div>
 </section>
 <% if @labels.empty? %>
   <div class="h-full py-20 mt-6 border border-dashed rounded-md border-stone-300">
     <p class="text-center text-stone-500">No labels found</p>
   </div>
 <% else %>
-  <section class="mt-6">
+  <section class="mt-6 px-1">
     <div
       class="
         grid grid-cols-5 py-4 font-sans text-xs font-medium tracking-widest uppercase
@@ -27,7 +76,7 @@
       </div>
     </div>
   </section>
-  <section>
+  <section class="px-1">
     <%= render partial: "newsletters/labels/row",
     collection: @labels,
     as: :label,
