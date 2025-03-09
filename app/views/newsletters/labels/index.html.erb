@@ -37,11 +37,22 @@
                              "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
           </label>
 
-          <label>
+          <label data-controller="color-picker">
             <%= form.label :color, "Color", class: "block text-sm font-medium text-stone-700" %>
-            <%= form.color_field :color,
-                             class:
-                               "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+            <div
+              class="
+                border border-stone-300 px-1 py-1 rounded-md flex items-center gap-2
+              "
+            >
+              <%= form.color_field :color,
+                               data: {
+                                 "color-picker-target": "colorPicker",
+                               },
+                               class:
+                                 "bg-transparent size-6 rounded-sm overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch-wrapper]:border-0" %>
+              <span data-color-picker-target="hex">
+              </span>
+            </div>
           </label>
 
           <%= form.submit "Create Label", class: "mt-4 font-sans text-sm btn btn-primary" %>
