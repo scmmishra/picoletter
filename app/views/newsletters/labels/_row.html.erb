@@ -16,7 +16,7 @@
   <div class="col-span-1 font-sans flex items-center">
     <% if label.description.present? %>
       <p class="mt-0.5 text-sm text-stone-500">
-        <% subscriber_count = @newsletter.subscribers.with_all_labels(label.name).count %>
+        <% subscriber_count = @newsletter.subscribers.with_any_labels(label.name).count %>
         <%= subscriber_count %>
         <%= "Subscriber".pluralize(subscriber_count) %>
       </p>
