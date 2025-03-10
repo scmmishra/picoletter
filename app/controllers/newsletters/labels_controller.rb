@@ -17,6 +17,12 @@ class Newsletters::LabelsController < ApplicationController
     end
   end
 
+  def destroy
+    @label = @newsletter.labels.find(params[:id])
+    @label.destroy
+    redirect_to labels_path(slug: @newsletter.slug), notice: "Label deleted successfully."
+  end
+
   private
 
   def label_params

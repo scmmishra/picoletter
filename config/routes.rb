@@ -69,7 +69,7 @@ Rails.application.routes.draw do
         patch :embedding, action: :update_embedding, as: :update_embedding
       end
 
-      resources :labels, only: [ :index, :show, :create ], path: "labels"
+      resources :labels, only: [ :index, :create, :destroy ], path: "labels"
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers" do
         collection do
