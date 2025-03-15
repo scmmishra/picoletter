@@ -1,8 +1,9 @@
 class CreateSubscriberJob < ApplicationJob
   queue_as :default
 
-  def perform(newsletter_id, email, name, created_via, analytics_data = {})
+  def perform(newsletter_id, email, name, labels, created_via, analytics_data = {})
     newsletter = Newsletter.find(newsletter_id)
+    split_labels = labels&.split(",") || []
 
     # Verify email and MX record
     verified = VerifyEmailService.new(email).verify
@@ -12,6 +13,7 @@ class CreateSubscriberJob < ApplicationJob
     if verified
       subscriber = newsletter.subscribers.find_or_initialize_by(email: email)
       subscriber.full_name = name if name.present?
+      subscriber.labels = split_labels
       subscriber.created_via = created_via
       subscriber.analytics_data = analytics_data
       subscriber.save!
