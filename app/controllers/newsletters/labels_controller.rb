@@ -13,7 +13,7 @@ class Newsletters::LabelsController < ApplicationController
     if @label.update(label_params)
       redirect_to labels_path(slug: @newsletter.slug), notice: "Label updated successfully."
     else
-      render :index
+      redirect_to labels_path(slug: @newsletter.slug), notice: "Label update failed."
     end
   end
 
@@ -22,7 +22,7 @@ class Newsletters::LabelsController < ApplicationController
     if @label.save
       redirect_to labels_path(slug: @newsletter.slug), notice: "Label created successfully."
     else
-      render :new
+      redirect_to labels_path(slug: @newsletter.slug), notice: "Label creation failed."
     end
   end
 
