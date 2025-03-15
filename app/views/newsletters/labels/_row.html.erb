@@ -23,14 +23,33 @@
     <% end %>
   </div>
   <div class="col-span-1 font-sans items-center flex justify-end gap-2">
-    <button
-      class="
-        btn btn-sm btn-tinted btn-secondary group-hover:opacity-100 opacity-40
-        transition-all duration-300 grayscale group-hover:grayscale-0 py-1.5
-      "
+    <div
+      class="space-x-1"
+      data-controller="modal"
+      data-action="click->modal#backdropClose"
     >
-      <%= lucide_icon("edit-2", class: "size-3 text-stone-800") %>
-    </button>
+      <button
+        class="
+          btn btn-sm btn-tinted btn-secondary group-hover:opacity-100 opacity-40
+          transition-all duration-300 grayscale group-hover:grayscale-0 py-1.5
+        "
+        data-action="modal#open"
+      >
+        <%= lucide_icon("edit-2", class: "size-3 text-stone-800") %>
+      </button>
+      <div>
+        <dialog
+          data-modal-target="modal"
+          class="
+            p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-with-inset min-w-sm
+            w-96 gap-4 space-y-4
+          "
+        >
+          <h2 class="text-xl font-medium">Update label</h2>
+          <%= render partial: "newsletters/labels/label_form", locals: { label: label } %>
+        </dialog>
+      </div>
+    </div>
     <%= button_to label_path(@newsletter.slug, label.id),
           method: :delete,
           class: "btn btn-sm btn-tinted btn-danger group-hover:opacity-100 opacity-20 transition-all duration-300 grayscale group-hover:grayscale-0 py-1.5",
