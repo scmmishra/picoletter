@@ -8,6 +8,15 @@ class Newsletters::LabelsController < ApplicationController
     @labels = @newsletter.labels
   end
 
+  def update
+    @label = @newsletter.labels.find(params[:id])
+    if @label.update(label_params)
+      redirect_to labels_path(slug: @newsletter.slug), notice: "Label updated successfully."
+    else
+      render :index
+    end
+  end
+
   def create
     @label = @newsletter.labels.new(label_params)
     if @label.save
