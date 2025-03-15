@@ -10,8 +10,7 @@ export default class extends Controller {
   connect() {
     if (this.autoRandomValue) {
       // Set random color on connect
-      const randomColor =
-        "#" + Math.floor(Math.random() * 16777215).toString(16);
+      const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`;
       this.colorPickerTarget.value = randomColor;
     }
 
