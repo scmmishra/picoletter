@@ -1,13 +1,19 @@
-// app/javascript/controllers/color_picker_controller.js
+// To use autoRandom in HTML: data-color-picker-auto-random-value="true|false"
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
   static targets = ["colorPicker", "hex"];
+  static values = {
+    autoRandom: { type: Boolean, default: true },
+  };
 
   connect() {
-    // Set random color on connect
-    const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    this.colorPickerTarget.value = randomColor;
+    if (this.autoRandomValue) {
+      // Set random color on connect
+      const randomColor =
+        "#" + Math.floor(Math.random() * 16777215).toString(16);
+      this.colorPickerTarget.value = randomColor;
+    }
 
     // Initialize the hex display with the current color value
     this.updateHexDisplay();
