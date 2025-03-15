@@ -44,3 +44,5 @@ routes.txt
 coverage/
 spec/examples.txt
 .DS_Store
+
+CLAUDE.md
