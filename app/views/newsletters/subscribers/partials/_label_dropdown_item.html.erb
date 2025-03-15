@@ -1,0 +1,45 @@
+<%# This partial renders a single label item in the dropdown
+  Parameters:
+  - label: The label object
+  - subscriber: The subscriber object
+  - newsletter: The newsletter object
+  - already_added: Boolean flag to determine display state
+%>
+
+<div id="label-dropdown-<%= label.name %>">
+  <% if already_added %>
+    <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name),
+          method: :delete,
+          class: "w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm rounded-md text-stone-700 gap-2 justify-between cursor-pointer",
+          form: { data: { turbo: true } } do %>
+      <span class="flex gap-2 items-center">
+        <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
+        <%= label.name %>
+      </span>
+      <div class="check-icon">
+        <%= lucide_icon("check", class: "size-3 text-stone-500") %>
+      </div>
+    <% end %>
+  <% else %>
+    <%= form_with url: add_label_subscribers_path(newsletter.slug, subscriber.id),
+          method: :post,
+          data: { turbo: true } do %>
+      <%= hidden_field_tag :label_name, label.name %>
+      <button
+        type="submit"
+        class="
+          w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans
+          text-sm rounded-md text-stone-700 gap-2 justify-between cursor-pointer
+        "
+      >
+        <span class="flex gap-2 items-center">
+          <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
+          <%= label.name %>
+        </span>
+        <div class="check-icon hidden">
+          <%= lucide_icon("check", class: "size-3 text-stone-500") %>
+        </div>
+      </button>
+    <% end %>
+  <% end %>
+</div>

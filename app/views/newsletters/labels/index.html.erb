@@ -1,12 +1,55 @@
 <section class="flex items-center justify-between gap-2">
   <h2 class="text-xl font-medium">Labels</h2>
+  <div
+    class="space-x-1"
+    data-controller="modal"
+    data-action="click->modal#backdropClose"
+  >
+    <button class="font-sans text-sm btn btn-primary" data-action="modal#open">Create Label</button>
+    <div>
+      <dialog
+        data-modal-target="modal"
+        class="
+          p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-with-inset min-w-sm
+          w-96 gap-4 space-y-4
+        "
+      >
+        <h2 class="text-xl font-medium">Create a new label</h2>
+        <%= render partial: "newsletters/labels/label_form", locals: { label: Label.new } %>
+      </dialog>
+    </div>
+  </div>
 </section>
 <% if @labels.empty? %>
   <div class="h-full py-20 mt-6 border border-dashed rounded-md border-stone-300">
     <p class="text-center text-stone-500">No labels found</p>
   </div>
 <% else %>
-  <section class="mt-6 divide-y divide-stone-200/60">
-    <%= render partial: "newsletters/labels/card", collection: @labels, as: :label, cached: true %>
+  <section class="mt-6 px-1">
+    <div
+      class="
+        grid grid-cols-5 py-4 font-sans text-xs font-medium tracking-widest uppercase
+        text-stone-500
+      "
+    >
+      <div class="col-span-1">
+        Name
+      </div>
+      <div class="col-span-2">
+        Description
+      </div>
+      <div class="col-span-1">
+        Subscribers
+      </div>
+      <div class="col-span-1 text-right">
+        Actions
+      </div>
+    </div>
+  </section>
+  <section class="px-1">
+    <%= render partial: "newsletters/labels/row",
+    collection: @labels,
+    as: :label,
+    cached: true %>
   </section>
 <% end %>

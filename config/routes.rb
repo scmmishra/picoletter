@@ -69,7 +69,7 @@ Rails.application.routes.draw do
         patch :embedding, action: :update_embedding, as: :update_embedding
       end
 
-      resources :labels, only: [ :index, :show ], path: "labels"
+      resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers" do
         collection do
@@ -78,6 +78,8 @@ Rails.application.routes.draw do
           delete ":id", to: "subscribers#destroy", as: :destroy
           post ":id/unsubscribe", to: "subscribers#unsubscribe", as: :unsubscribe
           post ":id/send_reminder", to: "subscribers#send_reminder", as: :send_reminder
+          post ":id/labels/add", to: "subscribers/labels#add", as: :add_label
+          delete ":id/labels/:label_name", to: "subscribers/labels#remove", as: :remove_label
         end
       end
 

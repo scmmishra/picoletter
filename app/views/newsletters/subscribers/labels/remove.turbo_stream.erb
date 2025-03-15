@@ -1,0 +1,18 @@
+<%# This stream removes a label item from the tag list %>
+<% if @label %>
+  <turbo-stream action="remove" target="label-item-<%= @label.name %>">
+  </turbo-stream>
+
+  <%# Update the dropdown to show the label as available with add option %>
+  <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
+    <template>
+      <%= render formats: [:html], partial: "newsletters/subscribers/partials/label_dropdown_item",
+      locals: {
+        label: @label,
+        subscriber: @subscriber,
+        newsletter: @newsletter,
+        already_added: false
+      } %>
+    </template>
+  </turbo-stream>
+<% end %>

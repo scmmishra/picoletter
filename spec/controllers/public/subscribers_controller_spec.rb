@@ -15,9 +15,23 @@ RSpec.describe Public::SubscribersController, type: :controller do
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
       end
 
-      it 'creates a subscriber and redirects to almost there page' do
+      it 'creates a subscriber with labels and redirects to almost there page' do
         expect(CreateSubscriberJob).to receive(:perform_now)
-          .with(newsletter.id, 'test@example.com', 'Test User', 'embed', anything)
+          .with(newsletter.id, 'test@example.com', 'Test User', [ 'label1', 'label2' ], 'embed', anything)
+
+        post :embed_subscribe, params: {
+          slug: newsletter.slug,
+          email: 'test@example.com',
+          name: 'Test User',
+          labels: [ 'label1', 'label2' ]
+        }
+
+        expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+      end
+
+      it 'creates a subscriber without labels' do
+        expect(CreateSubscriberJob).to receive(:perform_now)
+          .with(newsletter.id, 'test@example.com', 'Test User', nil, 'embed', anything)
 
         post :embed_subscribe, params: {
           slug: newsletter.slug,
@@ -46,15 +60,42 @@ RSpec.describe Public::SubscribersController, type: :controller do
       allow(IPShieldService).to receive(:legit_ip?).and_return(true)
     end
 
-    it 'creates a subscriber and redirects to almost there page' do
+    it 'creates a subscriber with labels and redirects to almost there page' do
       expect(CreateSubscriberJob).to receive(:perform_now)
-        .with(newsletter.id, 'test@example.com', 'Test User', 'public', anything)
+        .with(newsletter.id, 'test@example.com', 'Test User', [ 'label1', 'label2' ], 'public', anything)
+
+      post :public_subscribe, params: {
+        slug: newsletter.slug,
+        email: 'test@example.com',
+        name: 'Test User',
+        labels: [ 'label1', 'label2' ]
+      }
+
+      expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+    end
+
+    it 'creates a subscriber with UTM parameters' do
+      utm_params = {
+        utm_source: 'twitter',
+        utm_medium: 'social',
+        utm_campaign: 'summer_2023',
+        utm_term: 'newsletter',
+        utm_content: 'button_1'
+      }
+
+      expect(CreateSubscriberJob).to receive(:perform_now) do |_, _, _, _, _, analytics_data|
+        expect(analytics_data[:utm_source]).to eq('twitter')
+        expect(analytics_data[:utm_medium]).to eq('social')
+        expect(analytics_data[:utm_campaign]).to eq('summer_2023')
+        expect(analytics_data[:utm_term]).to eq('newsletter')
+        expect(analytics_data[:utm_content]).to eq('button_1')
+      end
 
       post :public_subscribe, params: {
         slug: newsletter.slug,
         email: 'test@example.com',
         name: 'Test User'
-      }
+      }.merge(utm_params)
 
       expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
     end

@@ -75,7 +75,7 @@ class Public::SubscribersController < ApplicationController
     legit_ip = IPShieldService.legit_ip?(request.remote_ip)
 
     if legit_ip
-      CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], source, analytics_data)
+      CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], params[:labels], source, analytics_data)
       redirect_to almost_there_path(@newsletter.slug, email: params[:email])
     else
       redirect_to newsletter_path(@newsletter.slug), notice: "Our system detected some issues with your request. Please try again."

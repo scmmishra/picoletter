@@ -24,6 +24,10 @@
           label: "Subscribers",
           count: @newsletter.subscribers.verified.count %>
           <%= render "newsletters/partials/sidebar_link",
+          url: labels_path(@newsletter.slug),
+          is_active: current_page?(labels_path(@newsletter.slug)),
+          label: "Labels" %>
+          <%= render "newsletters/partials/sidebar_link",
           url: settings_path(@newsletter.slug),
           is_active: current_page?(settings_path(@newsletter.slug)),
           label: "Settings" %>

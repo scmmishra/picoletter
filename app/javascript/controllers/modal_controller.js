@@ -29,4 +29,10 @@ export default class extends Controller {
   forceClose() {
     this.modalTarget.close();
   }
+
+  backdropClose(event) {
+    if (event.target === this.modalTarget) {
+      this.close();
+    }
+  }
 }
