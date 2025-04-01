@@ -6,7 +6,7 @@ module Limitable
   end
 
   def limits_enabled?
-    AppConfig.get("ENABLE_BILLING", true)
+    AppConfig.get("ENABLE_BILLING", false)
   end
 
   def subscriber_limit
