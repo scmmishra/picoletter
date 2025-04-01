@@ -20,7 +20,7 @@ module Limitable
   end
 
   def total_subscribers_count
-    self.subscribers.count
+    self.subscribers.verified.count
   end
 
   def approaching_subscriber_limit?
