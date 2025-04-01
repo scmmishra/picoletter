@@ -66,9 +66,9 @@ class Post < ApplicationRecord
     scheduled_at.present?
   end
 
-  def publish_and_send(ingore_checks = false)
+  def publish_and_send(ignore_checks = false)
     return unless status == "draft"
-    PostValidationService.new(self).perform unless ingore_checks
+    PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
   end
