@@ -1,9 +1,32 @@
 <%= render "newsletters/settings/partials/header" %>
 
 <main class="space-y-8 max-w-xl">
-  <section>
-    <h2 class="text-xl font-semibold text-stone-800 mb-4">Overview</h2>
-  </section>
+  <% if Current.user.subscription.present? %>
+    <section>
+      <h2 class="text-xl font-semibold text-stone-800 mb-4">Overview</h2>
+      <div class="shadow-without-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
+        <div class="px-5 mb-6">
+          <%= render "newsletters/subscribers/partials/action_card", title: "Manage Plan", help_text: "Upgrade, or cancel your subscription" do %>
+            <%= link_to "Go to billing",
+            billing_settings_path(@newsletter.slug),
+            class: "btn w-full btn-primary text-sm" %>
+          <% end %>
+        </div>
+        <div class="grid grid-cols-4 divide-x divide-stone-200">
+          <div class="px-5">
+            <p class="text-stone-600 text-sm mb-2">Amount</p>
+            <span class="text-xl font-sans font-medium text-stone-900"><%= number_to_currency(Current.user.subscription[:amount] / 100) %></span>
+          </div>
+          <div class="col-span-2 px-5">
+            <p class="text-stone-600 text-sm mb-2">Renews on</p>
+            <span class="text-xl font-sans font-medium text-stone-900">
+              <%= Date.parse(Current.user.subscription[:current_period_end]).strftime("%B %d, %Y") %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  <% end %>
   <section>
     <h2 class="text-xl font-semibold text-stone-800 mb-4">Usage</h2>
 

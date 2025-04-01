@@ -21,7 +21,7 @@
 #
 class User < ApplicationRecord
   include Limitable
-  
+
   has_secure_password :password, validations: true
 
   generates_token_for :verification, expires_in: 48.hours
@@ -65,6 +65,10 @@ class User < ApplicationRecord
       self.send_verification_email
       Rails.cache.write(key, expires_in: 6.hours)
     end
+  end
+
+  def subscription
+    self.additional_data["subscription"].with_indifferent_access
   end
 
   private
