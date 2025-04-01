@@ -68,9 +68,14 @@ class Post < ApplicationRecord
 
   def publish_and_send(ignore_checks = false)
     return unless status == "draft"
+    return unless can_send?
     PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
+  end
+
+  def can_send?
+    newsletter.user.can_send_emails?(newsletter.subscribers.verified.count)
   end
 
   def send_test_email(email)
