@@ -38,11 +38,13 @@ class ConnectedService < ApplicationRecord
 
         # If we still don't have a user, create one
         if user.nil?
+          password = SecureRandom.hex(24)
+          
           user = User.new(
             email: auth_hash["info"]["email"],
             name: auth_hash["info"]["name"] || auth_hash["info"]["email"].split("@").first,
-            password: SecureRandom.hex(24),
-            password_confirmation: SecureRandom.hex(24)
+            password: password,
+            password_confirmation: password
           )
           user.save!
         end
