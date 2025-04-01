@@ -20,6 +20,8 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
+  include Limitable
+  
   has_secure_password :password, validations: true
 
   generates_token_for :verification, expires_in: 48.hours
