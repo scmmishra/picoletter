@@ -44,6 +44,8 @@ class Newsletters::SettingsController < ApplicationController
   def embedding; end
   def update_embedding; end
 
+  def billing; end
+
   private
 
   def set_newsletter
