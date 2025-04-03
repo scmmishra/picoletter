@@ -20,9 +20,9 @@ X-API-Key: your_api_key
 
 The API key should be set in your environment variables as `ADMIN_API_KEY`.
 
-### HMAC Signature (for POST, PUT, PATCH requests)
+### HMAC Signature
 
-For any request that modifies data, you must include an HMAC signature:
+For all API requests, you must include an HMAC signature:
 
 1. Generate a timestamp (Unix timestamp in seconds)
 2. Create a signature using HMAC-SHA256 with the format: `timestamp:request_body`
@@ -37,36 +37,50 @@ The HMAC secret should be set in your environment variables as `ADMIN_API_HMAC_S
 
 ## Endpoints
 
-### List Users
+PicoLetter provides two simple API endpoints for managing users:
+
+### Update User Limits
 
 ```
-GET /api/admin/users
+POST /api/admin/users/update_limits
 ```
 
-Returns a list of all users with basic information.
+Updates a user's limits and additional data.
 
-### Get User Details
+#### Request Parameters
 
-```
-GET /api/admin/users/:id
-```
-
-Returns detailed information about a specific user, including their limits and additional data.
-
-### Update User
-
-```
-PATCH /api/admin/users/:id
-```
-
-Update a user's status, limits, or additional data.
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| email | string | **Required**. The email of the user to update |
+| limits | object | Optional. Contains subscriber_limit and monthly_email_limit |
+| additional_data | object | Optional. Any additional data to store with the user |
 
 #### Request Body Example
 
 ```json
 {
+  "email": "user@example.com",
+  "limits": {
+    "subscriber_limit": 5000,
+    "monthly_email_limit": 50000
+  },
+  "additional_data": {
+    "subscription": {
+      "plan": "premium",
+      "expires_at": "2025-12-31"
+    }
+  }
+}
+```
+
+#### Response Example
+
+```json
+{
+  "success": true,
   "user": {
-    "active": true,
+    "id": 123,
+    "email": "user@example.com",
     "limits": {
       "subscriber_limit": 5000,
       "monthly_email_limit": 50000
@@ -77,6 +91,43 @@ Update a user's status, limits, or additional data.
         "expires_at": "2025-12-31"
       }
     }
+  }
+}
+```
+
+### Toggle User Active Status
+
+```
+POST /api/admin/users/toggle_active
+```
+
+Enables or disables a user account.
+
+#### Request Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| email | string | **Required**. The email of the user to update |
+| active | boolean | **Required**. Whether the account should be active (true) or disabled (false) |
+
+#### Request Body Example
+
+```json
+{
+  "email": "user@example.com",
+  "active": false
+}
+```
+
+#### Response Example
+
+```json
+{
+  "success": true,
+  "user": {
+    "id": 123,
+    "email": "user@example.com",
+    "active": false
   }
 }
 ```
@@ -96,27 +147,26 @@ API_KEY = "your_api_key"
 HMAC_SECRET = "your_hmac_secret"
 BASE_URL = "https://yourdomain.com/api/admin"
 
-# Get all users
-def get_users():
-    headers = {"X-API-Key": API_KEY}
-    response = requests.get(f"{BASE_URL}/users", headers=headers)
-    return response.json()
-
 # Update user limits
-def update_user(user_id, new_limits, active=True):
+def update_user_limits(email, subscriber_limit=None, monthly_email_limit=None, additional_data=None):
     headers = {"X-API-Key": API_KEY}
-
+    
     # Prepare request data
-    data = {
-        "user": {
-            "active": active,
-            "limits": new_limits
-        }
-    }
-
+    data = {"email": email}
+    
+    if subscriber_limit or monthly_email_limit:
+        data["limits"] = {}
+        if subscriber_limit:
+            data["limits"]["subscriber_limit"] = subscriber_limit
+        if monthly_email_limit:
+            data["limits"]["monthly_email_limit"] = monthly_email_limit
+    
+    if additional_data:
+        data["additional_data"] = additional_data
+    
     # Convert to JSON
     json_data = json.dumps(data)
-
+    
     # Generate timestamp and signature
     timestamp = str(int(time.time()))
     signature_data = f"{timestamp}:{json_data}"
@@ -125,35 +175,79 @@ def update_user(user_id, new_limits, active=True):
         signature_data.encode(),
         hashlib.sha256
     ).hexdigest()
-
+    
     # Add HMAC headers
     headers["X-HMAC-Timestamp"] = timestamp
     headers["X-HMAC-Signature"] = signature
     headers["Content-Type"] = "application/json"
-
+    
     # Make request
-    response = requests.patch(
-        f"{BASE_URL}/users/{user_id}",
+    response = requests.post(
+        f"{BASE_URL}/users/update_limits",
         data=json_data,
         headers=headers
     )
+    
+    return response.json()
 
+# Toggle user active status
+def toggle_user_active(email, active=True):
+    headers = {"X-API-Key": API_KEY}
+    
+    # Prepare request data
+    data = {
+        "email": email,
+        "active": active
+    }
+    
+    # Convert to JSON
+    json_data = json.dumps(data)
+    
+    # Generate timestamp and signature
+    timestamp = str(int(time.time()))
+    signature_data = f"{timestamp}:{json_data}"
+    signature = hmac.new(
+        HMAC_SECRET.encode(),
+        signature_data.encode(),
+        hashlib.sha256
+    ).hexdigest()
+    
+    # Add HMAC headers
+    headers["X-HMAC-Timestamp"] = timestamp
+    headers["X-HMAC-Signature"] = signature
+    headers["Content-Type"] = "application/json"
+    
+    # Make request
+    response = requests.post(
+        f"{BASE_URL}/users/toggle_active",
+        data=json_data,
+        headers=headers
+    )
+    
     return response.json()
 ```
 
 ### cURL Example
 
 ```bash
-# Get all users
-curl -X GET "https://yourdomain.com/api/admin/users" \
-  -H "X-API-Key: your_api_key"
-
-# Update a user
+# Update user limits
 TIMESTAMP=$(date +%s)
-PAYLOAD='{"user":{"active":true,"limits":{"subscriber_limit":5000}}}'
+PAYLOAD='{"email":"user@example.com","limits":{"subscriber_limit":5000}}'
 SIGNATURE=$(echo -n "${TIMESTAMP}:${PAYLOAD}" | openssl dgst -sha256 -hmac "your_hmac_secret" | cut -d ' ' -f 2)
 
-curl -X PATCH "https://yourdomain.com/api/admin/users/1" \
+curl -X POST "https://yourdomain.com/api/admin/users/update_limits" \
+  -H "X-API-Key: your_api_key" \
+  -H "X-HMAC-Timestamp: ${TIMESTAMP}" \
+  -H "X-HMAC-Signature: ${SIGNATURE}" \
+  -H "Content-Type: application/json" \
+  -d "${PAYLOAD}"
+
+# Toggle user active status
+TIMESTAMP=$(date +%s)
+PAYLOAD='{"email":"user@example.com","active":false}'
+SIGNATURE=$(echo -n "${TIMESTAMP}:${PAYLOAD}" | openssl dgst -sha256 -hmac "your_hmac_secret" | cut -d ' ' -f 2)
+
+curl -X POST "https://yourdomain.com/api/admin/users/toggle_active" \
   -H "X-API-Key: your_api_key" \
   -H "X-HMAC-Timestamp: ${TIMESTAMP}" \
   -H "X-HMAC-Signature: ${SIGNATURE}" \
