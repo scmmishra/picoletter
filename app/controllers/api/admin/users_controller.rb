@@ -1,45 +1,51 @@
-class Api::Admin::UsersController < Api::BaseController
-  before_action :set_user, only: [:show, :update]
+class Api::Admin::UsersController < Api::Admin::BaseController
+  before_action :set_user
 
-  def index
-    @users = User.all
-    render json: @users.as_json(only: [:id, :email, :name, :active, :created_at, :updated_at], 
-                                methods: [:subscriber_limit, :monthly_email_limit])
-  end
-
-  def show
-    render json: @user.as_json(only: [:id, :email, :name, :active, :created_at, :updated_at], 
-                               methods: [:subscriber_limit, :monthly_email_limit],
-                               include: {
-                                 additional_data: {},
-                                 limits: {}
-                               })
-  end
-
-  def update
-    if @user.update(user_params)
-      render json: @user.as_json(only: [:id, :email, :name, :active, :created_at, :updated_at], 
-                                 methods: [:subscriber_limit, :monthly_email_limit],
-                                 include: {
-                                   additional_data: {},
-                                   limits: {}
-                                 })
+  def update_limits
+    if @user.update(limits_params)
+      render json: {
+        success: true,
+        user: {
+          id: @user.id,
+          email: @user.email,
+          limits: @user.limits,
+          additional_data: @user.additional_data
+        }
+      }
     else
-      render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+    end
+  end
+
+  def toggle_active
+    active = params[:active].to_s.downcase == 'true'
+    
+    if @user.update(active: active)
+      render json: {
+        success: true,
+        user: {
+          id: @user.id,
+          email: @user.email,
+          active: @user.active
+        }
+      }
+    else
+      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
     end
   end
 
   private
 
   def set_user
-    @user = User.find(params[:id])
-  rescue ActiveRecord::RecordNotFound
-    render json: { error: 'User not found' }, status: :not_found
+    @user = User.find_by(email: params[:email])
+    
+    unless @user
+      render json: { success: false, error: 'User not found' }, status: :not_found
+    end
   end
 
-  def user_params
-    params.require(:user).permit(
-      :active,
+  def limits_params
+    params.permit(
       additional_data: {},
       limits: [:subscriber_limit, :monthly_email_limit]
     )

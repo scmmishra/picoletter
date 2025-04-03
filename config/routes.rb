@@ -107,7 +107,8 @@ Rails.application.routes.draw do
   if AppConfig.get("ENABLE_BILLING", false)
     namespace :api do
       namespace :admin do
-        resources :users, only: [:index, :show, :update]
+        post 'users/update_limits', to: 'users#update_limits'
+        post 'users/toggle_active', to: 'users#toggle_active'
       end
     end
   end
