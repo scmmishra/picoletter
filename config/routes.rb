@@ -102,4 +102,13 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  # Admin API routes
+  if AppConfig.get("ENABLE_BILLING", false)
+    namespace :api do
+      namespace :admin do
+        resources :users, only: [:index, :show, :update]
+      end
+    end
+  end
 end
