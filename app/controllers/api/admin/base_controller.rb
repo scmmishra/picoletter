@@ -7,7 +7,7 @@ class Api::Admin::BaseController < Api::BaseController
 
   def ensure_billing_enabled
     unless AppConfig.get("ENABLE_BILLING", false)
-      render json: { error: 'API access is not enabled' }, status: :forbidden
+      return render json: { error: 'API access is not enabled' }, status: :forbidden
     end
   end
 
@@ -16,7 +16,7 @@ class Api::Admin::BaseController < Api::BaseController
     expected_api_key = ENV['ADMIN_API_KEY']
     
     unless api_key.present? && ActiveSupport::SecurityUtils.secure_compare(api_key, expected_api_key)
-      render json: { error: 'Unauthorized' }, status: :unauthorized
+      return render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end
 
@@ -29,15 +29,15 @@ class Api::Admin::BaseController < Api::BaseController
     
     # Verify timestamp is recent (within 5 minutes)
     unless timestamp.present? && Time.zone.at(timestamp.to_i) > 5.minutes.ago
-      render json: { error: 'Request expired' }, status: :unauthorized
-      return
+      return render json: { error: 'Request expired' }, status: :unauthorized
     end
 
     # Verify signature
     unless signature.present? && valid_signature?(request.raw_post, signature, timestamp)
-      render json: { error: 'Invalid signature' }, status: :unauthorized
-      return
+      return render json: { error: 'Invalid signature' }, status: :unauthorized
     end
+    
+    true
   end
 
   def valid_signature?(payload, signature, timestamp)

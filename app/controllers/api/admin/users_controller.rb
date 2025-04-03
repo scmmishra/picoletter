@@ -40,14 +40,27 @@ class Api::Admin::UsersController < Api::Admin::BaseController
     @user = User.find_by(email: params[:email])
     
     unless @user
-      render json: { success: false, error: 'User not found' }, status: :not_found
+      return render json: { success: false, error: 'User not found' }, status: :not_found
     end
   end
 
   def limits_params
-    params.permit(
-      additional_data: {},
-      limits: [:subscriber_limit, :monthly_email_limit]
+    permitted_params = params.permit(
+      limits: [:subscriber_limit, :monthly_email_limit],
+      additional_data: {}
     )
+    
+    # Convert string keys to symbols if needed
+    if params[:limits].is_a?(Hash)
+      permitted_params[:limits] ||= {}
+      permitted_params[:limits][:subscriber_limit] = params[:limits][:subscriber_limit].to_i if params[:limits][:subscriber_limit].present?
+      permitted_params[:limits][:monthly_email_limit] = params[:limits][:monthly_email_limit].to_i if params[:limits][:monthly_email_limit].present?
+    end
+    
+    if params[:additional_data].is_a?(Hash)
+      permitted_params[:additional_data] = params[:additional_data]
+    end
+    
+    permitted_params
   end
 end
