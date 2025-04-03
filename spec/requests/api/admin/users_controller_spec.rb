@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Api::Admin::UsersController, type: :request do
-  let(:user) { create(:user, email: 'test@example.com', active: true) }
+  let!(:user) { create(:user, email: 'test@example.com', active: true) }
   let(:api_key) { 'test_api_key' }
   let(:hmac_secret) { 'test_hmac_secret' }
   let(:timestamp) { Time.current.to_i.to_s }
@@ -18,7 +18,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       'subscriber_limit' => 1000,
       'monthly_email_limit' => 10000
     })
-    
+
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('ADMIN_API_KEY').and_return(api_key)
     allow(ENV).to receive(:[]).with('ADMIN_API_HMAC_SECRET').and_return(hmac_secret)
@@ -30,7 +30,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     let(:endpoint) { '/api/admin/users/update_limits' }
     let(:params) do
       {
-        email: user.email,
+        user_id: user.id,
         limits: {
           subscriber_limit: 5000,
           monthly_email_limit: 50000
@@ -130,7 +130,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     context 'with non-existent user' do
       let(:nonexistent_params) do
         {
-          email: 'nonexistent@example.com',
+          user_id: 999999,
           limits: {
             subscriber_limit: 5000,
             monthly_email_limit: 50000
@@ -159,7 +159,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     let(:endpoint) { '/api/admin/users/toggle_active' }
     let(:params) do
       {
-        email: user.email,
+        user_id: user.id,
         active: false
       }
     end
@@ -189,7 +189,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       let(:inactive_user) { create(:user, email: 'inactive@example.com', active: false) }
       let(:reactivate_params) do
         {
-          email: inactive_user.email,
+          user_id: inactive_user.id,
           active: true
         }
       end
@@ -217,7 +217,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     context 'with non-existent user' do
       let(:nonexistent_params) do
         {
-          email: 'nonexistent@example.com',
+          user_id: 999999,
           active: false
         }
       end
