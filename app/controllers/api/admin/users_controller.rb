@@ -37,7 +37,7 @@ class Api::Admin::UsersController < Api::Admin::BaseController
   private
 
   def set_user
-    @user = User.find_by(id: params[:user_id])
+    @user = User.find_by(id: params[:id])
 
     unless @user
       render json: { success: false, error: "User not found" }, status: :not_found

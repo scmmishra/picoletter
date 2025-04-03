@@ -14,7 +14,7 @@ class Api::Admin::BaseController < Api::BaseController
     api_key = request.headers["X-API-Key"]
     expected_api_key = AppConfig.get("ADMIN_API_KEY")
 
-    unless api_key.present? && ActiveSupport::SecurityUtils.secure_compare(api_key, expected_api_key)
+    unless api_key.present? && api_key === expected_api_key
       render json: { error: "Unauthorized" }, status: :unauthorized
     end
   end
