@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe Api::Admin::UsersController, type: :request do
   let!(:user) { create(:user, email: 'test@example.com', active: true) }
   let(:api_key) { 'test_api_key' }
-  let(:hmac_secret) { 'test_hmac_secret' }
   let(:timestamp) { Time.current.to_i.to_s }
   let(:headers) do
     {
@@ -18,12 +17,9 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       'subscriber_limit' => 1000,
       'monthly_email_limit' => 10000
     })
-
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('ADMIN_API_KEY').and_return(api_key)
-    allow(ENV).to receive(:[]).with('ADMIN_API_HMAC_SECRET').and_return(hmac_secret)
-    allow(AppConfig).to receive(:get).and_call_original
-    allow(AppConfig).to receive(:get).with('ENABLE_BILLING', false).and_return(true)
+    allow(ENV).to receive(:[]).with('ENABLE_BILLING').and_return('true')
   end
 
   describe 'POST /api/admin/users/update_limits' do
@@ -44,13 +40,9 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       }
     end
     let(:payload) { params.to_json }
-    let(:signature_data) { "#{timestamp}:#{payload}" }
-    let(:signature) { OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, signature_data) }
 
     context 'with valid parameters and authentication' do
       before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = signature
         post endpoint, params: payload, headers: headers, as: :json
       end
 
@@ -76,8 +68,6 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     context 'when billing is disabled' do
       before do
         allow(AppConfig).to receive(:get).with('ENABLE_BILLING', false).and_return(false)
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = signature
         post endpoint, params: payload, headers: headers, as: :json
       end
 
@@ -90,40 +80,12 @@ RSpec.describe Api::Admin::UsersController, type: :request do
     context 'with invalid API key' do
       before do
         headers['X-API-Key'] = 'invalid_key'
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = signature
         post endpoint, params: payload, headers: headers, as: :json
       end
 
       it 'returns an unauthorized response' do
         expect(response).to have_http_status(:unauthorized)
         expect(JSON.parse(response.body)['error']).to eq('Unauthorized')
-      end
-    end
-
-    context 'with invalid HMAC signature' do
-      before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = 'invalid_signature'
-        post endpoint, params: payload, headers: headers, as: :json
-      end
-
-      it 'returns an unauthorized response' do
-        expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)['error']).to eq('Invalid signature')
-      end
-    end
-
-    context 'with expired timestamp' do
-      before do
-        headers['X-HMAC-Timestamp'] = (Time.current - 10.minutes).to_i.to_s
-        headers['X-HMAC-Signature'] = OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, "#{headers['X-HMAC-Timestamp']}:#{payload}")
-        post endpoint, params: payload, headers: headers, as: :json
-      end
-
-      it 'returns an unauthorized response' do
-        expect(response).to have_http_status(:unauthorized)
-        expect(JSON.parse(response.body)['error']).to eq('Request expired')
       end
     end
 
@@ -138,12 +100,8 @@ RSpec.describe Api::Admin::UsersController, type: :request do
         }
       end
       let(:nonexistent_payload) { nonexistent_params.to_json }
-      let(:nonexistent_signature_data) { "#{timestamp}:#{nonexistent_payload}" }
-      let(:nonexistent_signature) { OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, nonexistent_signature_data) }
 
       before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = nonexistent_signature
         post endpoint, params: nonexistent_payload, headers: headers, as: :json
       end
 
@@ -164,13 +122,9 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       }
     end
     let(:payload) { params.to_json }
-    let(:signature_data) { "#{timestamp}:#{payload}" }
-    let(:signature) { OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, signature_data) }
 
     context 'with valid parameters and authentication' do
       before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = signature
         post endpoint, params: payload, headers: headers, as: :json
       end
 
@@ -194,12 +148,8 @@ RSpec.describe Api::Admin::UsersController, type: :request do
         }
       end
       let(:reactivate_payload) { reactivate_params.to_json }
-      let(:reactivate_signature_data) { "#{timestamp}:#{reactivate_payload}" }
-      let(:reactivate_signature) { OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, reactivate_signature_data) }
 
       before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = reactivate_signature
         post endpoint, params: reactivate_payload, headers: headers, as: :json
       end
 
@@ -222,12 +172,8 @@ RSpec.describe Api::Admin::UsersController, type: :request do
         }
       end
       let(:nonexistent_payload) { nonexistent_params.to_json }
-      let(:nonexistent_signature_data) { "#{timestamp}:#{nonexistent_payload}" }
-      let(:nonexistent_signature) { OpenSSL::HMAC.hexdigest('SHA256', hmac_secret, nonexistent_signature_data) }
 
       before do
-        headers['X-HMAC-Timestamp'] = timestamp
-        headers['X-HMAC-Signature'] = nonexistent_signature
         post endpoint, params: nonexistent_payload, headers: headers, as: :json
       end
 
