@@ -68,7 +68,7 @@ class User < ApplicationRecord
   end
 
   def subscription
-    self.additional_data["subscription"].with_indifferent_access
+    self.additional_data["subscription"]&.with_indifferent_access
   end
 
   private

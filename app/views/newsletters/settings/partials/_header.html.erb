@@ -51,7 +51,7 @@
         end
       ) %>
     <% if AppConfig.get("ENABLE_BILLING", false) %>
-      <%= link_to "Billing",
+      <%= link_to "Usage & Billing",
       billing_settings_path(slug: @newsletter.slug),
       class:
         (
