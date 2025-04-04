@@ -4,6 +4,10 @@ RSpec.describe UsersController, type: :controller do
   let(:user) { create(:user, verified_at: Time.now) }
   let(:valid_params) { { email: "test@example.com", password: "password123", name: "Test User" } }
 
+  before do
+    allow(AppConfig).to receive(:get).and_call_original
+  end
+
   describe "GET #new" do
     context "when user is not logged in" do
       it "returns http success" do
