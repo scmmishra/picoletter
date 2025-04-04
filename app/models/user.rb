@@ -68,7 +68,8 @@ class User < ApplicationRecord
   end
 
   def subscription
-    self.additional_data["subscription"]&.with_indifferent_access
+    return {} if self.additional_data.nil?
+    self.additional_data["subscription"]&.with_indifferent_access || {}
   end
 
   private
