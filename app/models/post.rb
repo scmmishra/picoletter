@@ -69,7 +69,7 @@ class Post < ApplicationRecord
   def publish_and_send(ignore_checks = false)
     return unless status == "draft"
 
-    raise Excpetions::LimitExceedError unless can_send?
+    raise Exceptions::LimitExceedError unless can_send?
 
     PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)

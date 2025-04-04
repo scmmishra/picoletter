@@ -61,7 +61,7 @@ class Newsletters::PostsController < ApplicationController
     no_verify = params[:no_verify] == "true"
     @post.publish_and_send(no_verify)
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
-  rescue Excpetions::LimitExceedError => e
+  rescue Exceptions::LimitExceedError => e
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Sending this will exceed sending limits. Please upgrade to continue"
   rescue Exceptions::InvalidLinkError => e
     Rails.logger.error("Error sending post: #{e.message}")
