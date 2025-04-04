@@ -75,5 +75,7 @@ class User < ApplicationRecord
 
   def activate_user
     self.active = true if self.active.nil?
+    self.additional_data ||= {}
+    self.limits ||= {}
   end
 end
