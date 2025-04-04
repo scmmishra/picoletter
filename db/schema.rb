@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_01_043045) do
+ActiveRecord::Schema[8.0].define(version: 2025_04_04_135002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -193,8 +193,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_01_043045) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_superadmin", default: false
-    t.jsonb "limits"
-    t.jsonb "additional_data"
+    t.jsonb "limits", default: {}
+    t.jsonb "additional_data", default: {}
     t.datetime "verified_at"
     t.index ["is_superadmin"], name: "index_users_on_is_superadmin"
   end

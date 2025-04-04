@@ -24,6 +24,10 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
 
+  before do
+    allow(AppConfig).to receive(:get).and_call_original
+  end
+
   describe 'verification methods' do
     describe '#verify!' do
       it 'updates verified_at timestamp' do
@@ -90,6 +94,85 @@ RSpec.describe User, type: :model do
           user.send_verification_email_once
         }.not_to have_enqueued_mail(UserMailer, :verify_email)
       end
+    end
+  end
+
+  describe 'validations' do
+    it { should validate_presence_of(:email) }
+    it { should validate_presence_of(:name) }
+    it { should validate_length_of(:bio).is_at_most(500) }
+
+    it 'validates email uniqueness case-insensitively' do
+      existing = create(:user, email: 'test@example.com')
+      new_user = build(:user, email: 'TEST@example.com')
+
+      expect(new_user).not_to be_valid
+      expect(new_user.errors[:email]).to include('has already been taken')
+    end
+
+    it 'validates email format' do
+      user.email = 'invalid-email'
+      expect(user).not_to be_valid
+      expect(user.errors[:email]).to include('is invalid')
+    end
+  end
+
+  describe 'associations' do
+    it { should have_many(:sessions).dependent(:destroy) }
+    it { should have_many(:newsletters).dependent(:destroy) }
+    it { should have_many(:subscribers).through(:newsletters) }
+    it { should have_many(:posts).through(:newsletters) }
+    it { should have_many(:emails).through(:posts) }
+  end
+
+  describe 'scopes' do
+    it 'returns only active users' do
+      active_user = create(:user, active: true)
+      inactive_user = create(:user, active: false)
+
+      expect(User.active).to include(active_user)
+      expect(User.active).not_to include(inactive_user)
+    end
+  end
+
+  describe 'callbacks' do
+    it 'activates user on create' do
+      user = build(:user, active: nil)
+      user.save
+      expect(user.active).to be true
+    end
+
+    it 'initializes additional_data on create' do
+      user = build(:user, additional_data: nil)
+      user.save
+      expect(user.additional_data).to eq({})
+    end
+
+    it 'initializes limits on create with default values' do
+      user = build(:user, limits: nil)
+      user.save
+      expect(user.limits).to eq({
+        "subscriber_limit" => 1000,
+        "monthly_email_limit" => 10000
+      })
+    end
+  end
+
+  describe '#subscription' do
+    it 'returns empty hash when additional_data is nil' do
+      user.additional_data = nil
+      expect(user.subscription).to eq({})
+    end
+
+    it 'returns subscription data with indifferent access' do
+      user.additional_data = { 'subscription' => { 'plan' => 'pro' } }
+      expect(user.subscription[:plan]).to eq('pro')
+      expect(user.subscription['plan']).to eq('pro')
+    end
+
+    it 'returns empty hash when subscription data is not present' do
+      user.additional_data = { 'other_data' => 'value' }
+      expect(user.subscription).to eq({})
     end
   end
 

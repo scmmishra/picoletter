@@ -35,6 +35,7 @@
       </nav>
     </div>
     <nav class="text-stone-500 justify-self-end -mx-1.5">
+      <%= render "newsletters/partials/limits_banner" %>
       <ul class="grid gap-1">
         <%= render "newsletters/partials/sidebar_link",
         url: newsletter_path(slug: @newsletter.slug),

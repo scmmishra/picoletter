@@ -51,6 +51,7 @@ jobs:
         env:
           RAILS_ENV: test
           COVERAGE: "true"
+          ENABLE_BILLING: "true"
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bin/rails spec

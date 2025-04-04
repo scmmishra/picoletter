@@ -66,11 +66,18 @@ class Post < ApplicationRecord
     scheduled_at.present?
   end
 
-  def publish_and_send(ingore_checks = false)
+  def publish_and_send(ignore_checks = false)
     return unless status == "draft"
-    PostValidationService.new(self).perform unless ingore_checks
+
+    raise Exceptions::LimitExceedError unless can_send?
+
+    PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
+  end
+
+  def can_send?
+    newsletter.user.can_send_emails?(newsletter.subscribers.verified.count)
   end
 
   def send_test_email(email)

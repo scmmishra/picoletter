@@ -66,7 +66,11 @@ Rails.application.routes.draw do
         patch :sending, action: :update_sending, as: :update_sending
         post :verify_domain, action: :verify_domain, as: :verify_domain
         get :embedding
+
         patch :embedding, action: :update_embedding, as: :update_embedding
+        if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
+          get :billing
+        end
       end
 
       resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"
@@ -95,6 +99,16 @@ Rails.application.routes.draw do
           get :archive
           get :drafts
         end
+      end
+    end
+  end
+
+  # Admin API routes
+  if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
+    namespace :api do
+      namespace :admin do
+        post "users/update_limits", to: "users#update_limits"
+        post "users/toggle_active", to: "users#toggle_active"
       end
     end
   end
