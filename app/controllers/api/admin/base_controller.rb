@@ -6,16 +6,16 @@ class Api::Admin::BaseController < Api::BaseController
 
   def ensure_billing_enabled
     unless AppConfig.get("ENABLE_BILLING", false)
-      render json: { error: "API access is not enabled" }, status: :forbidden
+      return render json: { error: 'API access is not enabled' }, status: :forbidden
     end
   end
 
   def authenticate_api_key
-    api_key = request.headers["X-API-Key"]
-    expected_api_key = AppConfig.get("ADMIN_API_KEY")
-
-    unless api_key.present? && api_key === expected_api_key
-      render json: { error: "Unauthorized" }, status: :unauthorized
+    api_key = request.headers['X-Api-Key']
+    expected_api_key = ENV['ADMIN_API_KEY']
+    
+    unless api_key.present? && ActiveSupport::SecurityUtils.secure_compare(api_key, expected_api_key)
+      return render json: { error: 'Unauthorized' }, status: :unauthorized
     end
   end
 end

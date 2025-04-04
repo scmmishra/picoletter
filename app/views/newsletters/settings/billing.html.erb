@@ -4,7 +4,7 @@
   <% if Current.user.subscription.present? %>
     <section>
       <h2 class="text-xl font-semibold text-stone-800 mb-4">Overview</h2>
-      <div class="shadow-without-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
+      <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
         <div class="px-5 mb-6">
           <%= render "newsletters/subscribers/partials/action_card", title: "Manage Plan", help_text: "Upgrade, or cancel your subscription" do %>
             <%= link_to "Go to billing",
