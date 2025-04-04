@@ -84,6 +84,8 @@ module Limitable
   private
 
   def set_default_limits
+    return unless limits_enabled?
+
     self.limits = {
       subscriber_limit: AppConfig.get("DEFAULT_SUBSCRIBER_LIMIT", 1000),
       monthly_email_limit: AppConfig.get("DEFAULT_MONTHLY_EMAIL_LIMIT", 10000)
