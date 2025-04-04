@@ -68,7 +68,7 @@ Rails.application.routes.draw do
         get :embedding
 
         patch :embedding, action: :update_embedding, as: :update_embedding
-        if AppConfig.get("ENABLE_BILLING", false)
+        if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
           get :billing
         end
       end
@@ -104,11 +104,11 @@ Rails.application.routes.draw do
   end
 
   # Admin API routes
-  if AppConfig.get("ENABLE_BILLING", false)
+  if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
     namespace :api do
       namespace :admin do
-        post 'users/update_limits', to: 'users#update_limits'
-        post 'users/toggle_active', to: 'users#toggle_active'
+        post "users/update_limits", to: "users#update_limits"
+        post "users/toggle_active", to: "users#toggle_active"
       end
     end
   end
