@@ -37,18 +37,25 @@ class Auth::Omniauth::CallbacksController < ApplicationController
     end
 
     # Try to find an existing service or create it with a user
-    service = ConnectedService.find_or_create_from_auth_hash(@auth_hash)
+    begin
+      service = ConnectedService.find_or_create_from_auth_hash(@auth_hash)
+      
+      # Start a new session for the user
+      start_new_session_for service.user
 
-    # Start a new session for the user
-    start_new_session_for service.user
-
-    # Redirect to the appropriate page
-    if service.user.verified?
-      redirect_to_newsletter_home
-    else
-      # If this is a new user, ensure verification happens before proceeding
-      service.user.verify! # Auto-verify users who sign in via OAuth
-      redirect_to_newsletter_home(notice: "Your account has been created and verified.")
+      # Redirect to the appropriate page
+      if service.user.verified?
+        redirect_to_newsletter_home
+      else
+        # If this is a new user, ensure verification happens before proceeding
+        service.user.verify! # Auto-verify users who sign in via OAuth
+        redirect_to_newsletter_home(notice: "Your account has been created and verified.")
+      end
+    rescue Exceptions::InviteCodeRequiredError => e
+      flash[:alert] = "New account creation requires an invite code. Please sign up using the registration form."
+      redirect_to auth_login_path
+    rescue StandardError => e
+      raise e
     end
   end
 end

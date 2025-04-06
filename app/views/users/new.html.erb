@@ -53,7 +53,9 @@
       </div>
     <% end %>
 
-    <%= render partial: "shared/social_buttons", locals: { label: "Or sign up with" } %>
+    <% unless @require_invite %>
+      <%= render partial: "shared/social_buttons", locals: { label: "Or sign up with" } %>
+    <% end %>
 </div>
 <div class="mt-3 space-y-2 text-stone-700">
   <div>
