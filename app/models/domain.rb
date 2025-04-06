@@ -26,6 +26,8 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Domain < ApplicationRecord
+  include DNSRecordable
+
   belongs_to :newsletter
 
   enum :status, %w[ not_started pending success failed temporary_failure ].index_by(&:itself), default: :pending, prefix: true
@@ -38,6 +40,16 @@ class Domain < ApplicationRecord
 
   def verified?
     status_success? && dkim_status_success? && spf_status_success?
+  end
+
+  def domain_connect_supported?
+    @domain_connect_service ||= DomainConnectService.new(name)
+    @domain_connect_service.supported?
+  end
+
+  def domain_connect_url
+    @domain_connect_service ||= DomainConnectService.new(name)
+    @domain_connect_service.generate_configuration_url
   end
 
   def register

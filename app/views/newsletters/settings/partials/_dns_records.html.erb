@@ -23,41 +23,12 @@
     <div class="col-span-1 text-right">Status</div>
   </div>
   <% if newsletter.sending_domain %>
-    <%= render "newsletters/settings/partials/dns_record_row",
-    record: {
-      "type" => "MX",
-      "name" => "mail.#{newsletter.sending_domain.name}",
-      "value" => "feedback-smtp.#{newsletter.sending_domain.region}.amazonses.com",
-      "ttl" => "Auto",
-      "priority" => 10,
-      "status" => newsletter.sending_domain.spf_status,
-    } %>
-
-    <%= render "newsletters/settings/partials/dns_record_row",
-    record: {
-      "type" => "TXT",
-      "name" => "picoletter._domainkey.#{newsletter.sending_domain.name}",
-      "value" => "p=#{newsletter.sending_domain.public_key}",
-      "ttl" => "Auto",
-      "priority" => "",
-      "status" => newsletter.sending_domain.dkim_status,
-    } %>
-
-    <%= render "newsletters/settings/partials/dns_record_row",
-    record: {
-      "type" => "TXT",
-      "name" => "mail.#{newsletter.sending_domain.name}",
-      "value" => "v=spf1 include:amazonses.com ~all",
-      "ttl" => "Auto",
-      "priority" => "",
-      "status" => newsletter.sending_domain.spf_status,
-    } %>
-  <% else %>
-    <% newsletter.dns_records&.each do |record| %>
+    <% newsletter.sending_domain.required_dns_records.each do |record| %>
       <%= render "newsletters/settings/partials/dns_record_row", record: record %>
     <% end %>
   <% end %>
 </div>
+
 <h3
   class="
     font-medium tracking-widest uppercase text-stone-500 font-mono text-xs mt-4
@@ -71,14 +42,8 @@
   "
 >
   <% if newsletter.sending_domain %>
-    <%= render "newsletters/settings/partials/dns_record_row",
-    record: {
-      "type" => "TXT",
-      "name" => "_dmarc.#{newsletter.sending_domain.name}",
-      "value" => "v=DMARC1; p=none;",
-      "ttl" => "Auto",
-      "priority" => "",
-      "status" => newsletter.sending_domain.spf_status,
-    } %>
+    <% newsletter.sending_domain.optional_dns_records.each do |record| %>
+      <%= render "newsletters/settings/partials/dns_record_row", record: record %>
+    <% end %>
   <% end %>
 </div>
