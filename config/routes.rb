@@ -13,10 +13,7 @@ Rails.application.routes.draw do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
-
-    # Connected services routes
-    resources :connected_services, only: [ :index, :destroy ]
-
+    
     # OmniAuth routes
     namespace :omniauth do
       get "failure", to: "callbacks#failure"
@@ -73,6 +70,7 @@ Rails.application.routes.draw do
       resource :settings, only: [ :show, :update ], path: "settings" do
         get :profile
         patch :profile, action: :update_profile, as: :update_profile
+        delete "connected_services/:id", action: :destroy_connected_service, as: :destroy_connected_service
         get :design
         patch :design, action: :update_design, as: :update_design
         get :sending
