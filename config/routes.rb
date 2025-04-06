@@ -13,7 +13,19 @@ Rails.application.routes.draw do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
+
+    # Connected services routes
+    resources :connected_services, only: [ :index, :destroy ]
+
+    # OmniAuth routes
+    namespace :omniauth do
+      get "failure", to: "callbacks#failure"
+    end
   end
+
+  # OmniAuth callback routes
+  match "auth/:provider/callback", to: "auth/omniauth/callbacks#:provider", via: [ :get, :post ]
+  get "auth/failure", to: "auth/omniauth/callbacks#failure"
 
   # Signup routes
   get "/signup", to: "users#new"
