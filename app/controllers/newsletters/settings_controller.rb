@@ -49,12 +49,6 @@ class Newsletters::SettingsController < ApplicationController
   def destroy_connected_service
     service = Current.user.connected_services.find(params[:id])
 
-    # Prevent deletion of the last authentication method if no password is set
-    if Current.user.connected_services.count == 1 && Current.user.password_digest.blank?
-      redirect_to profile_settings_path(slug: @newsletter.slug), notice: "You cannot remove your last login method. Please set a password first."
-      return
-    end
-
     if service.destroy
       redirect_to profile_settings_path(slug: @newsletter.slug), notice: "Successfully disconnected #{service.provider == 'google_oauth2' ? 'Google' : service.provider.titleize}."
     else
