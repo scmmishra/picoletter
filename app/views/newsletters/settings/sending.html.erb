@@ -63,12 +63,22 @@
   <% else %>
     <%= form_with model: @newsletter, url: verify_domain_settings_path(slug: @newsletter.slug), method: :post, class: "mt-8" do |form| %>
       <div class="max-w-lg">
-        <h3 class="text-lg font-medium text-stone-800">Domain Verificaiton Pending</h3>
+        <h3 class="text-lg font-medium text-stone-800">Domain Verification Pending</h3>
         <p class="mt-1 text-stone-600">Add the following DNS records to your DNS settings, to verify your
           domain. Verification ensures your emails are delivered properly and
           does not end up in spam. Please note that it can can take a couple of
           hours for the DNS records to start reflecting.</p>
       </div>
+
+      <% if @newsletter.sending_domain&.domain_connect_supported? %>
+        <div class="mt-4">
+          <%= link_to "Configure with DomainConnect", @newsletter.sending_domain.domain_connect_url, 
+              class: "btn btn-primary",
+              target: "_blank",
+              data: { turbo: false } %>
+          <span class="ml-2 text-sm text-stone-500">or configure manually</span>
+        </div>
+      <% end %>
 
       <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
       <p class="mt-1 ml-1 font-sans text-xs text-stone-400">In case you're facing any trouble, you can drop us an email, and we
