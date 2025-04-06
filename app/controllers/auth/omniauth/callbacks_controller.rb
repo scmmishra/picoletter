@@ -1,5 +1,6 @@
 class Auth::Omniauth::CallbacksController < ApplicationController
   skip_before_action :verify_authenticity_token, only: [ :github, :google_oauth2 ] # Skip for omniauth callbacks
+  before_action :resume_session_if_present
   before_action :set_auth_hash, only: [ :github, :google_oauth2 ]
 
   def github
@@ -39,7 +40,7 @@ class Auth::Omniauth::CallbacksController < ApplicationController
     # Try to find an existing service or create it with a user
     begin
       service = ConnectedService.find_or_create_from_auth_hash(@auth_hash)
-      
+
       # Start a new session for the user
       start_new_session_for service.user
 
