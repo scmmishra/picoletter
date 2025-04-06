@@ -28,6 +28,7 @@ class User < ApplicationRecord
 
   has_many :sessions, dependent: :destroy
   has_many :newsletters, dependent: :destroy
+  has_many :connected_services, dependent: :destroy
 
   has_many :subscribers, through: :newsletters
   has_many :posts, through: :newsletters

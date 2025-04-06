@@ -46,6 +46,16 @@ class Newsletters::SettingsController < ApplicationController
 
   def billing; end
 
+  def destroy_connected_service
+    service = Current.user.connected_services.find(params[:id])
+
+    if service.destroy
+      redirect_to profile_settings_path(slug: @newsletter.slug), notice: "Successfully disconnected #{service.provider == 'google_oauth2' ? 'Google' : service.provider.titleize}."
+    else
+      redirect_to profile_settings_path(slug: @newsletter.slug), notice: "Could not disconnect #{service.provider == 'google_oauth2' ? 'Google' : service.provider.titleize}."
+    end
+  end
+
   private
 
   def set_newsletter

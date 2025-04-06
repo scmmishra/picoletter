@@ -34,6 +34,8 @@
         <%= form.submit "Log in", class: "btn btn-primary w-full" %>
       </div>
     <% end %>
+
+    <%= render partial: "shared/social_buttons", locals: { label: "Or sign in with" } %>
   </div>
   <div class="mt-3 space-y-2">
     <p><%= link_to "Forgot your password?",
