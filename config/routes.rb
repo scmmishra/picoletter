@@ -24,7 +24,8 @@ Rails.application.routes.draw do
   end
 
   # OmniAuth callback routes
-  match "auth/:provider/callback", to: "auth/omniauth/callbacks#:provider", via: [ :get, :post ]
+  match "auth/github/callback", to: "auth/omniauth/callbacks#github", via: [ :get, :post ]
+  match "auth/google_oauth2/callback", to: "auth/omniauth/callbacks#google_oauth2", via: [ :get, :post ]
   get "auth/failure", to: "auth/omniauth/callbacks#failure"
 
   # Signup routes
