@@ -36,6 +36,11 @@ class ConnectedService < ApplicationRecord
       if user.nil? && auth_hash["info"]&.key?("email")
         user = User.find_by(email: auth_hash["info"]["email"])
 
+        # If we still don't have a user and invite code is required, raise error
+        if user.nil? && AppConfig.get("INVITE_CODE").present?
+          raise Exceptions::InviteCodeRequiredError, "Invite code required for new account creation"
+        end
+
         # If we still don't have a user, create one
         if user.nil?
           password = SecureRandom.hex(24)
