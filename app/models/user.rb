@@ -68,12 +68,22 @@ class User < ApplicationRecord
     end
   end
 
+  def subscribed?
+    return true unless billing_enabled?
+
+    subscription[:status] === "active"
+  end
+
   def subscription
     return {} if self.additional_data.nil?
     self.additional_data["subscription"]&.with_indifferent_access || {}
   end
 
   private
+
+  def billing_enabled?
+    AppConfig.get("ENABLE_BILLING", false)
+  end
 
   def activate_user
     self.active = true if self.active.nil?
