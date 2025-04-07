@@ -6,12 +6,12 @@ module Limitable
   end
 
   def subscriber_limit
-    return Float::INFINITY unless billing_enabled?
+    return Float::INFINITY unless AppConfig.billing_enabled?
     self.limits&.dig("subscriber_limit") || AppConfig.get("DEFAULT_SUBSCRIBER_LIMIT", 100)
   end
 
   def monthly_email_limit
-    return Float::INFINITY unless billing_enabled?
+    return Float::INFINITY unless AppConfig.billing_enabled?
     self.limits&.dig("monthly_email_limit") || AppConfig.get("DEFAULT_MONTHLY_EMAIL_LIMIT", 1000)
   end
 
@@ -20,14 +20,14 @@ module Limitable
   end
 
   def approaching_subscriber_limit?
-    return false unless billing_enabled?
+    return false unless AppConfig.billing_enabled?
     total = total_subscribers_count
     limit = subscriber_limit
     total >= (limit * 0.8) && total < limit
   end
 
   def reached_subscriber_limit?
-    return false unless billing_enabled?
+    return false unless AppConfig.billing_enabled?
     total_subscribers_count >= subscriber_limit
   end
 
@@ -38,17 +38,17 @@ module Limitable
   end
 
   def emails_remaining_this_month
-    return Float::INFINITY unless billing_enabled?
+    return Float::INFINITY unless AppConfig.billing_enabled?
     [ monthly_email_limit - emails_sent_this_month, 0 ].max
   end
 
   def can_send_emails?(count = 1)
-    return true unless billing_enabled?
+    return true unless AppConfig.billing_enabled?
     emails_sent_this_month + count <= monthly_email_limit * 1.2
   end
 
   def subscriber_limit_status
-    return { status: :unlimited } unless billing_enabled?
+    return { status: :unlimited } unless AppConfig.billing_enabled?
 
     total = total_subscribers_count
     limit = subscriber_limit
@@ -63,7 +63,7 @@ module Limitable
   end
 
   def email_limit_status
-    return { status: :unlimited } unless billing_enabled?
+    return { status: :unlimited } unless AppConfig.billing_enabled?
 
     sent = emails_sent_this_month
     limit = monthly_email_limit
@@ -80,7 +80,7 @@ module Limitable
   private
 
   def set_default_limits
-    return unless billing_enabled?
+    return unless AppConfig.billing_enabled?
 
     self.limits = {
       subscriber_limit: AppConfig.get("DEFAULT_SUBSCRIBER_LIMIT", 1000),

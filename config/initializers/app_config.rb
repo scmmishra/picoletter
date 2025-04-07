@@ -1,4 +1,8 @@
 class AppConfig
+  def self.billing_enabled?
+    AppConfig.get("ENABLE_BILLING", false)
+  end
+
   class << self
     def get!(env_key)
       value = ENV[env_key]
