@@ -63,6 +63,8 @@ class Newsletters::PostsController < ApplicationController
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
   rescue Exceptions::LimitExceedError => e
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Sending this will exceed sending limits. Please upgrade to continue"
+  rescue Exceptions::SubscriptionError => e
+    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "You need an active subscription to send this post."
   rescue Exceptions::InvalidLinkError => e
     Rails.logger.error("Error sending post: #{e.message}")
     flash[:has_link_error] = true

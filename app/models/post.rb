@@ -69,6 +69,7 @@ class Post < ApplicationRecord
   def publish_and_send(ignore_checks = false)
     return unless status == "draft"
 
+    raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::LimitExceedError unless can_send?
 
     PostValidationService.new(self).perform unless ignore_checks

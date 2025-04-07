@@ -40,7 +40,7 @@
       the total number of subscribers across all of those newsletters.
     </p>
 
-    <% if Current.user.limits_enabled? %>
+    <% if AppConfig.billing_enabled? %>
       <div class="space-y-6 mt-6">
         <!-- Subscriber Usage -->
         <div>
@@ -180,7 +180,7 @@
   <section>
     <h2 class="text-xl font-semibold text-stone-800 mb-4">Need help?</h2>
 
-    <% if Current.user.limits_enabled? %>
+    <% if AppConfig.billing_enabled? %>
       <p class="text-stone-600">
         Contact support at
         <a href="mailto:billing@picoletter.com" class="text-blue-600 hover:underline">billing@picoletter.com</a>
