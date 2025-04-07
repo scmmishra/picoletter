@@ -79,11 +79,11 @@ class User < ApplicationRecord
     self.additional_data["subscription"]&.with_indifferent_access || {}
   end
 
-  private
-
   def billing_enabled?
     AppConfig.get("ENABLE_BILLING", false)
   end
+
+  private
 
   def activate_user
     self.active = true if self.active.nil?
