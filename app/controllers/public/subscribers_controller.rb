@@ -102,5 +102,6 @@ class Public::SubscribersController < ApplicationController
 
   def set_newsletter
     @newsletter = Newsletter.from_slug(params[:slug])
+    head :not_found unless @newsletter
   end
 end
