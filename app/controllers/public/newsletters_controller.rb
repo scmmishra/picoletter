@@ -26,13 +26,13 @@ class Public::NewslettersController < ApplicationController
   def set_post
     @post = @newsletter.posts.published.from_slug(params[:post_slug])
 
-    raise ActiveRecord::RecordNotFound if @post.nil?
+    head :not_found unless @post
   end
 
   def set_newsletter
     @newsletter = Newsletter.from_slug(params[:slug])
 
-    raise ActiveRecord::RecordNotFound if @newsletter.nil?
+    head :not_found unless @newsletter
   end
 
   def set_newsletter_layout
