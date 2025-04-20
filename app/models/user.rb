@@ -20,7 +20,7 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
-  include Limitable
+  include Billable
 
   has_secure_password :password, validations: true
 
