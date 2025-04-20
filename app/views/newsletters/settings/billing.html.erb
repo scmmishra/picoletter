@@ -30,11 +30,23 @@
         </div>
       </div>
     </section>
+  <% else %>
+    <section>
+      <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
+        <div class="px-5">
+          <%= render "newsletters/subscribers/partials/action_card",
+          title: "Get Started",
+          help_text:
+            "Subscribe to start sending emails. There's just one plan that starts at $5/month. You can cancel at any time." %>
+          <%= link_to "Subscribe",
+          billing_settings_path(@newsletter.slug),
+          class: "btn mt-5 w-full btn-primary text-sm" %>
+        </div>
+      </div>
+    </section>
   <% end %>
   <section class="mt-5">
-    <% if Current.user.subscription.present? %>
-      <h2 class="text-xl font-semibold text-stone-800 mb-2">Usage</h2>
-    <% end %>
+    <h2 class="text-xl font-semibold text-stone-800 mb-2">Usage</h2>
     <p class="max-w-lg text-stone-600">
       Your plan allows for unlimited newsletters, and the pricing is based on
       the total number of emails you send across all of those newsletters.
@@ -42,16 +54,6 @@
 
     <% if AppConfig.billing_enabled? %>
       <div class="space-y-6 mt-6">
-        <div class="grid grid-cols-3">
-          <div>
-            <div class="font-medium font-sans text-stone-600">Total Subscribers</div>
-            <span class="text-4xl mt-2 text-stone-700"><%= Current.user.total_subscribers_count %>
-          </div>
-          <div>
-            <div class="font-medium font-sans text-stone-600">Emails</div>
-            <span class="text-4xl mt-2 text-stone-700"><%= Current.user.emails_sent_this_month %>
-          </div>
-        </div>
         <div class="mt-8">
           <div class="overflow-hidden border border-stone-200 rounded-lg">
             <table class="min-w-full divide-y divide-stone-200">
