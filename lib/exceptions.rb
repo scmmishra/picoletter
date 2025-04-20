@@ -3,4 +3,5 @@ module Exceptions
   class LimitExceedError < StandardError; end
   class SubscriptionError < StandardError; end
   class InviteCodeRequiredError < StandardError; end
+  class UserNotActiveError < StandardError; end
 end
