@@ -23,25 +23,29 @@ module Billable
   end
 
   def billing_manage_url
-    # the API expiry is 30 minutes, we keep a margin of 5 minutes to prevent any bad links
-    Rails.cache.fetch("billing_manage_url_#{self.id}", expires_in: 25.minutes) do
-      response = HTTParty.get("#{billing_endpoint}/manage/#{self.id}",
-        headers: headers
-      )
+    response = HTTParty.get("#{billing_endpoint}/manage/#{self.id}",
+      headers: headers
+    )
 
-      response["customerPortalUrl"]
-    end
+    response["customerPortalUrl"]
   end
 
   def billing_checkout_url
-    # the API expiry is 30 minutes, we keep a margin of 5 minutes to prevent any bad links
-    Rails.cache.fetch("billing_checkout_url_#{self.id}", expires_in: 25.minutes) do
-      response = HTTParty.get("#{billing_endpoint}/checkout/#{self.id}",
-        headers: headers
-      )
+    response = HTTParty.get("#{billing_endpoint}/checkout/#{self.id}",
+      headers: headers
+    )
 
-      response["url"]
-    end
+    response["url"]
+  end
+
+  def update_meter(count)
+    HTTParty.post("#{billing_endpoint}/injest",
+      headers: headers,
+      body: {
+        id: self.id,
+        count: count
+      }.to_json
+    )
   end
 
   private

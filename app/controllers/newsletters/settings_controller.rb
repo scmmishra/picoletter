@@ -43,8 +43,11 @@ class Newsletters::SettingsController < ApplicationController
 
   def embedding; end
   def update_embedding; end
-
-  def billing; end
+  
+  # This method is kept for backward compatibility only and redirects to the dedicated BillingController
+  def billing
+    redirect_to settings_billing_path(slug: @newsletter.slug)
+  end
 
   def destroy_connected_service
     service = Current.user.connected_services.find(params[:id])

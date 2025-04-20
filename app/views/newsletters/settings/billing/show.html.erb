@@ -7,9 +7,11 @@
       <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
         <div class="px-5 mb-6">
           <%= render "newsletters/subscribers/partials/action_card", title: "Manage Plan", help_text: "Upgrade, or cancel your subscription" do %>
-            <%= link_to "Go to billing",
-            billing_settings_path(@newsletter.slug),
-            class: "btn w-full btn-primary text-sm" %>
+            <%= link_to "Manage subscription",
+            settings_billing_manage_path(@newsletter.slug),
+            class: "btn w-full btn-primary text-sm",
+            target: "_blank",
+            rel: "noopener" %>
           <% end %>
         </div>
         <div class="grid grid-cols-4 divide-x divide-stone-200">
@@ -39,8 +41,10 @@
           help_text:
             "Subscribe to start sending emails. There's just one plan that starts at $5/month. You can cancel at any time." %>
           <%= link_to "Subscribe",
-          billing_settings_path(@newsletter.slug),
-          class: "btn mt-5 w-full btn-primary text-sm" %>
+          settings_billing_checkout_path(@newsletter.slug),
+          class: "btn mt-5 w-full btn-primary text-sm",
+          target: "_blank",
+          rel: "noopener" %>
         </div>
       </div>
     </section>
