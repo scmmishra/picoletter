@@ -31,7 +31,7 @@
       </div>
     </section>
   <% end %>
-  <section class="mt-8">
+  <section class="mt-5">
     <% if Current.user.subscription.present? %>
       <h2 class="text-xl font-semibold text-stone-800 mb-2">Usage</h2>
     <% end %>
@@ -42,96 +42,16 @@
 
     <% if AppConfig.billing_enabled? %>
       <div class="space-y-6 mt-6">
-        <!-- Subscriber Usage -->
-        <div>
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium text-stone-700">Total Subscribers</h3>
-            <span class="text-sm text-stone-600"><%= Current.user.total_subscribers_count %>
-              of
-              <%= Current.user.subscriber_limit %></span>
+        <div class="grid grid-cols-3">
+          <div>
+            <div class="font-medium font-sans text-stone-600">Total Subscribers</div>
+            <span class="text-4xl mt-2 text-stone-700"><%= Current.user.total_subscribers_count %>
           </div>
-
-          <% subscriber_status = Current.user.subscriber_limit_status %>
-          <div class="w-full bg-stone-100 rounded-full h-2">
-            <div
-              class="h-2 rounded-full <%=
-              case subscriber_status[:status]
-              when :exceeded
-                'bg-red-500'
-              when :approaching
-                'bg-amber-500'
-              else
-                'bg-emerald-500'
-              end
-            %>"
-              style="width: <%= [subscriber_status[:percentage], 100].min %>%"
-            ></div>
-          </div>
-
-          <div class="mt-2 text-sm font-sans">
-            <% case subscriber_status[:status] %>
-            <% when :exceeded %>
-              <p class="text-red-600">You've reached your subscriber limit. Contact support to
-                increase your limit.</p>
-            <% when :approaching %>
-              <p class="text-amber-600">You're approaching your subscriber limit (<%= subscriber_status[:percentage] %>%).</p>
-            <% else %>
-              <p class="text-stone-500">You're using
-                <%= subscriber_status[:percentage] %>% of your subscriber limit.</p>
-            <% end %>
+          <div>
+            <div class="font-medium font-sans text-stone-600">Emails</div>
+            <span class="text-4xl mt-2 text-stone-700"><%= Current.user.emails_sent_this_month %>
           </div>
         </div>
-        <!-- Email Usage -->
-        <div>
-          <div class="flex justify-between items-center mb-2">
-            <h3 class="font-medium text-stone-700">Monthly Email Sending</h3>
-            <span class="text-sm text-stone-600"><%= Current.user.emails_sent_this_month %>
-              of
-              <%= Current.user.monthly_email_limit %></span>
-          </div>
-
-          <% email_status = Current.user.email_limit_status %>
-          <div class="w-full bg-stone-100 rounded-full h-2">
-            <div
-              class="h-2 rounded-full <%=
-              case email_status[:status]
-              when :exceeded
-                'bg-red-500'
-              when :approaching
-                'bg-amber-500'
-              else
-                'bg-emerald-500'
-              end
-            %>"
-              style="width: <%= [email_status[:percentage], 100].min %>%"
-            ></div>
-          </div>
-
-          <div
-            class="
-              flex flex-wrap font-sans text-sm justify-between items-baseline mt-2
-            "
-          >
-            <div>
-              <% case email_status[:status] %>
-              <% when :exceeded %>
-                <p class="text-red-600">You've reached your monthly email limit. Contact support to
-                  increase your limit.</p>
-              <% when :approaching %>
-                <p class="text-amber-600">You're approaching your monthly email limit (<%= email_status[:percentage] %>%).</p>
-              <% else %>
-                <p class="text-stone-500">You're using
-                  <%= email_status[:percentage] %>% of your monthly email limit.</p>
-              <% end %>
-            </div>
-
-            <p class="text-stone-500">
-              Resets on
-              <%= Time.current.end_of_month.strftime("%B %d, %Y") %>.
-            </p>
-          </div>
-        </div>
-        <!-- Newsletter Breakdown -->
         <div class="mt-8">
           <div class="overflow-hidden border border-stone-200 rounded-lg">
             <table class="min-w-full divide-y divide-stone-200">
