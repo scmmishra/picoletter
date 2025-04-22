@@ -1,0 +1,10 @@
+<% if !Current.user.subscribed? %>
+  <ul class="bg-white shadow-with-inset p-3 rounded-lg mb-3">
+    <h4 class="font-medium mb-2 text-stone-900">Subscribe to start sending emails.</h4>
+    <p class="mt-1">Plan starts at $5, you pay only for the emails you send.</p>
+    <p class="mt-1">Cancel any time.</p>
+    <%= link_to "Open billing",
+    settings_billing_path(slug: @newsletter.slug),
+    class: "btn btn-sm w-full btn-primary mt-4" %>
+  </ul>
+<% end %>
