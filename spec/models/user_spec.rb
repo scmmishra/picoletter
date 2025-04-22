@@ -147,15 +147,6 @@ RSpec.describe User, type: :model do
       user.save
       expect(user.additional_data).to eq({})
     end
-
-    it 'initializes limits on create with default values' do
-      user = build(:user, limits: nil)
-      user.save
-      expect(user.limits).to eq({
-        "subscriber_limit" => 1000,
-        "monthly_email_limit" => 10000
-      })
-    end
   end
 
   describe '#subscription' do

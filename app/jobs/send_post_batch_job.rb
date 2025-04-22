@@ -22,7 +22,10 @@ class SendPostBatchJob < BaseSendJob
 
   def update_batch_count
     remaining_batches = Rails.cache.decrement(cache_key(post.id, "batches_remaining"))
-    post.publish if remaining_batches <= 0
+    if remaining_batches <= 0
+      @newsletter.user.update_meter(Post.emails.count) if AppConfig.billing_enabled?
+      post.publish
+    end
   end
 
   def send_batch(batch_subscribers)
@@ -38,6 +41,8 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def send_email(subscriber)
+    return { message_id: SecureRandom.uuid } if Rails.env.development?
+
     token = subscriber.generate_token_for(:unsubscribe)
     unsub_url = unsubscribe_url(token, newsletter.slug)
     unsub_email = "mailto:#{newsletter.user.email}?subject=Unsubscribe"

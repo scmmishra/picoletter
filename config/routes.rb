@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     get "login", to: "sessions#new"
     post "login", to: "sessions#create"
     delete "logout", to: "sessions#destroy"
-    
+
     # OmniAuth routes
     namespace :omniauth do
       get "failure", to: "callbacks#failure"
@@ -77,10 +77,16 @@ Rails.application.routes.draw do
         patch :sending, action: :update_sending, as: :update_sending
         post :verify_domain, action: :verify_domain, as: :verify_domain
         get :embedding
-
         patch :embedding, action: :update_embedding, as: :update_embedding
+      end
+
+      # Nested settings controllers
+      namespace :settings, path: "settings" do
         if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
-          get :billing
+          # Route maintains the same URL pattern (/app/:slug/settings/billing) but maps to the new controller
+          get "billing", to: "billing#show", as: :billing
+          get "billing/checkout", to: "billing#checkout", as: :billing_checkout
+          get "billing/manage", to: "billing#manage", as: :billing_manage
         end
       end
 

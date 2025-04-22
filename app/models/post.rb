@@ -70,7 +70,7 @@ class Post < ApplicationRecord
     return unless status == "draft"
 
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
-    raise Exceptions::LimitExceedError unless can_send?
+    raise Exceptions::UserNotActiveError unless can_send?
 
     PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)
@@ -78,7 +78,7 @@ class Post < ApplicationRecord
   end
 
   def can_send?
-    newsletter.user.can_send_emails?(newsletter.subscribers.verified.count)
+    newsletter.user.active?
   end
 
   def send_test_email(email)

@@ -20,7 +20,7 @@
 #  index_users_on_is_superadmin  (is_superadmin)
 #
 class User < ApplicationRecord
-  include Limitable
+  include Billable
 
   has_secure_password :password, validations: true
 
@@ -39,6 +39,7 @@ class User < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   before_create :activate_user
+  after_create_commit :perform_after_create
 
   def super?
     self.is_superadmin
@@ -68,18 +69,14 @@ class User < ApplicationRecord
     end
   end
 
-  def subscribed?
-    return true unless AppConfig.billing_enabled?
-
-    subscription[:status] === "active"
-  end
-
-  def subscription
-    return {} if self.additional_data.nil?
-    self.additional_data["subscription"]&.with_indifferent_access || {}
-  end
-
   private
+
+  def perform_after_create
+    response = self.init_customer if AppConfig.billing_enabled?
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { user: self.id, response: response })
+    Rails.logger.error("Error creating customer for user #{self.id} with #{e.message}")
+  end
 
   def activate_user
     self.active = true if self.active.nil?
