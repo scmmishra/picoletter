@@ -41,6 +41,8 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def send_email(subscriber)
+    return { message_id: SecureRandom.uuid } if Rails.env.development?
+
     token = subscriber.generate_token_for(:unsubscribe)
     unsub_url = unsubscribe_url(token, newsletter.slug)
     unsub_email = "mailto:#{newsletter.user.email}?subject=Unsubscribe"
