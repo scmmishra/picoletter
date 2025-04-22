@@ -7,7 +7,7 @@
       <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
         <div class="px-5 mb-6">
           <%= render "newsletters/subscribers/partials/action_card", title: "Manage Plan", help_text: "Upgrade, or cancel your subscription" do %>
-            <%= link_to "Manage subscription",
+            <%= link_to "Manage",
             settings_billing_manage_path(@newsletter.slug),
             class: "btn w-full btn-primary text-sm",
             target: "_blank",
