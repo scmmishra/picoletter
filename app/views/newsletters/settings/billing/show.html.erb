@@ -34,18 +34,20 @@
     </section>
   <% else %>
     <section>
-      <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
-        <div class="px-5">
-          <%= render "newsletters/subscribers/partials/action_card",
-          title: "Get Started",
-          help_text:
-            "Our simple, subscriber-unlimited plan starts at $5 and uses pay-as-you-go pricing at $0.0005 per email." %>
-          <%= link_to "Subscribe",
-          settings_billing_checkout_path(@newsletter.slug),
-          class: "btn mt-5 w-full btn-primary text-sm",
-          target: "_blank",
-          rel: "noopener" %>
-        </div>
+      <div
+        class="
+          shadow-with-inset bg-stone-50 font-sans px-4 pb-4 pt-3 rounded-lg mb-5
+        "
+      >
+        <%= render "newsletters/subscribers/partials/action_card",
+        title: "Get Started",
+        help_text:
+          "Our simple, subscriber-unlimited plan starts at $5 and uses pay-as-you-go pricing at $0.0005 per email." %>
+        <%= link_to "Subscribe",
+        settings_billing_checkout_path(@newsletter.slug),
+        class: "btn mt-5 w-full btn-primary text-sm",
+        target: "_blank",
+        rel: "noopener" %>
       </div>
     </section>
   <% end %>
