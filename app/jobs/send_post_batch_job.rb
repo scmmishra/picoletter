@@ -23,7 +23,7 @@ class SendPostBatchJob < BaseSendJob
   def update_batch_count
     remaining_batches = Rails.cache.decrement(cache_key(post.id, "batches_remaining"))
     if remaining_batches <= 0
-      @newsletter.user.update_meter(Post.emails.count) if AppConfig.billing_enabled?
+      @newsletter.user.update_meter(post.emails.count) if AppConfig.billing_enabled?
       post.publish
     end
   end
