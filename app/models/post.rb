@@ -78,7 +78,7 @@ class Post < ApplicationRecord
   end
 
   def can_send?
-    user.active?
+    newsletter.user.active?
   end
 
   def send_test_email(email)
