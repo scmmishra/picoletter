@@ -39,6 +39,7 @@ class User < ApplicationRecord
 
   scope :active, -> { where(active: true) }
   before_create :activate_user
+  after_create_commit :perform_after_create
 
   def super?
     self.is_superadmin
@@ -69,6 +70,13 @@ class User < ApplicationRecord
   end
 
   private
+
+  def perform_after_create
+    response = self.init_customer if AppConfig.billing_enabled?
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { user: self.id, response: response })
+    Rails.logger.error("Error creating customer for user #{self.id} with #{e.message}")
+  end
 
   def activate_user
     self.active = true if self.active.nil?
