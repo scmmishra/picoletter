@@ -48,6 +48,17 @@ module Billable
     )
   end
 
+  def subscribed?
+    return true unless AppConfig.billing_enabled?
+
+    subscription[:status] === "active"
+  end
+
+  def subscription
+    return {} if self.additional_data.nil?
+    self.additional_data["subscription"]&.with_indifferent_access || {}
+  end
+
   private
 
   def billing_endpoint
