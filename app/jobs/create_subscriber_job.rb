@@ -3,7 +3,7 @@ class CreateSubscriberJob < ApplicationJob
 
   def perform(newsletter_id, email, name, labels, created_via, analytics_data = {})
     newsletter = Newsletter.find(newsletter_id)
-    split_labels = labels&.split(",").map(&:strip) || []
+    split_labels = labels&.split(",")&.map(&:strip) || []
 
     # Verify email and MX record
     verified = VerifyEmailService.new(email).verify
