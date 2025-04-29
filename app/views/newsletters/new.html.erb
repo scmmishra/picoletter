@@ -28,7 +28,7 @@
   >
     <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
       <div class="space-y-1">
-        <%= form.label :title, class: "ml-px text-stone-500" %>
+        <%= form.label :title, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_field :title,
                         required: true,
                         class: "input w-full",
@@ -40,7 +40,7 @@
       </div>
 
       <div class="space-y-1">
-        <%= form.label :slug, class: "ml-px text-stone-500" %>
+        <%= form.label :slug, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_field :slug,
                         required: true,
                         class: "input w-full",
@@ -53,7 +53,7 @@
       </div>
 
       <div class="space-y-1">
-        <%= form.label :description, class: "ml-px text-stone-500" %>
+        <%= form.label :description, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_area :description,
                        class: "input w-full block",
                        rows: 5,
@@ -68,7 +68,7 @@
       </div>
 
       <div class="hidden space-y-1">
-        <%= form.label :timezone, class: "ml-px text-stone-500" %>
+        <%= form.label :timezone, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_field :timezone,
                         class: "input w-full",
                         data: {

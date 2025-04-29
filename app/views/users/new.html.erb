@@ -10,7 +10,7 @@
   >
     <%= form_with url: signup_path, local: true, class: "flex flex-col gap-4" do |form| %>
       <label class="space-y-1">
-        <%= form.label :name, class: "ml-px text-stone-500" %>
+        <%= form.label :name, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_field :name,
                         required: true,
                         class: "input w-full",
@@ -20,7 +20,7 @@
       </label>
 
       <label class="space-y-1">
-        <%= form.label :email, class: "ml-px text-stone-500" %>
+        <%= form.label :email, class: "ml-px text-stone-500 font-sans" %>
         <%= form.email_field :email,
                          required: true,
                          class: "input w-full",
@@ -29,7 +29,7 @@
       </label>
 
       <label class="space-y-1">
-        <%= form.label :password, class: "ml-px text-stone-500" %>
+        <%= form.label :password, class: "ml-px text-stone-500 font-sans" %>
         <%= form.password_field :password,
                             required: true,
                             minlength: 10,
@@ -40,7 +40,7 @@
 
       <% if @require_invite %>
       <label class="space-y-1">
-        <%= form.label :invite_code, class: "ml-px text-stone-500" %>
+        <%= form.label :invite_code, class: "ml-px text-stone-500 font-sans" %>
         <%= form.text_field :invite_code,
                             required: true,
                             class: "input w-full",

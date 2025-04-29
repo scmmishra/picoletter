@@ -17,7 +17,9 @@
 <%= form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
   <div class="max-w-lg space-y-4">
     <div class="space-y-2">
-      <%= form.label :primary_color, "Color", class: "ml-px text-stone-500" %>
+      <%= form.label :primary_color,
+                 "Color",
+                 class: "ml-px text-stone-500 text-sm font-sans" %>
 
       <div class="flex flex-wrap gap-1.5">
         <% Newsletter.theme_config.each do |theme| %>
@@ -33,7 +35,9 @@
     </div>
 
     <div class="space-y-2">
-      <%= form.label :font_preference, "Font", class: "ml-px text-stone-500" %>
+      <%= form.label :font_preference,
+                 "Font",
+                 class: "ml-px text-stone-500 text-sm font-sans" %>
       <div class="flex flex-wrap gap-1.5">
         <label
           for="font-serif"
@@ -76,13 +80,17 @@
     </div>
 
     <label class="block space-y-1">
-      <%= form.label :email_css, "Email CSS", class: "ml-px text-stone-500 text-sm" %>
+      <%= form.label :email_css,
+                 "Email CSS",
+                 class: "ml-px text-stone-500 text-sm font-sans" %>
       <%= form.text_area :email_css, rows: 8, class: "input w-full font-mono block" %>
       <div class="font-sans text-xs text-stone-400">Use this to modify the styles of your email.</div>
     </label>
 
     <label class="block space-y-1">
-      <%= form.label :email_footer, "Footer", class: "ml-px text-stone-500 text-sm" %>
+      <%= form.label :email_footer,
+                 "Footer",
+                 class: "ml-px text-stone-500 text-sm font-sans" %>
       <%= form.text_area :email_footer, rows: 5, class: "input w-full block font-mono" %>
       <div class="font-sans text-xs text-stone-400">This footer will automatically be added at the end of every email.
         Supports
