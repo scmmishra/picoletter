@@ -45,7 +45,7 @@
 
 <%= form_with model: @subscriber, url: subscriber_path(@newsletter.slug, @subscriber.id), method: :patch, class: "max-w-lg space-y-4" do |form| %>
   <label class="block space-y-1">
-    <%= form.label :email, class: "ml-px text-stone-500 text-sm" %>
+    <%= form.label :email, class: "ml-px text-stone-500 text-sm font-sans" %>
     <div class="relative">
       <%= form.text_field :email,
                       required: true,
@@ -57,7 +57,9 @@
     </div>
   </label>
   <label class="block space-y-1">
-    <%= form.label :full_name, "Full name", class: "ml-px text-stone-500 text-sm" %>
+    <%= form.label :full_name,
+               "Full name",
+               class: "ml-px text-stone-500 text-sm font-sans" %>
     <%= form.text_field :full_name,
                     autocomplete: false,
                     required: true,
@@ -65,7 +67,9 @@
                     autofocus: true %>
   </label>
   <label class="block space-y-1">
-    <%= form.label :notes, "Editor notes", class: "ml-px text-stone-500 text-sm" %>
+    <%= form.label :notes,
+               "Editor notes",
+               class: "ml-px text-stone-500 text-sm font-sans" %>
     <%= form.text_area :notes, rows: 5, class: "input w-full" %>
   </label>
   <%= form.submit "Update Subscriber", class: "btn btn-primary" %>

@@ -17,7 +17,7 @@
   >
     <%= form_with url: password_path(params[:token]), class: "flex flex-col gap-4", method: :put do |form| %>
       <label class="space-y-1">
-        <%= form.label :password, class: "ml-px text-stone-500" %>
+        <%= form.label :password, class: "ml-px text-stone-500 font-sans" %>
         <%= form.password_field :password,
                             class: "input w-full",
                             required: true,
@@ -26,7 +26,7 @@
                             maxlength: 72 %><br>
       </label>
       <label class="space-y-1">
-        <%= form.label :confirm_password, class: "ml-px text-stone-500" %>
+        <%= form.label :confirm_password, class: "ml-px text-stone-500 font-sans" %>
         <%= form.password_field :password_confirmation,
                             class: "input w-full",
                             required: true,
