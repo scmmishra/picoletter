@@ -1,3 +1,10 @@
+GIT
+  remote: https://github.com/BaseSecrete/active_hashcash.git
+  revision: d7a38553320568735240b3ceb4e62ec8bd9a6cee
+  specs:
+    active_hashcash (0.3.2)
+      rails (>= 5.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -541,6 +548,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  active_hashcash!
   acts-as-taggable-array-on
   annotaterb
   aws-sdk-rails (~> 3)

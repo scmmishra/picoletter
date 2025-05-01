@@ -12,6 +12,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
     context 'when embed subscribe is enabled' do
       before do
         allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(false)
+        allow(AppConfig).to receive(:get).with("ENABLE_BILLING", false).and_return(false)
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
       end
 

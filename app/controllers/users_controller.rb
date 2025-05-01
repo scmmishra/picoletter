@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  include ActiveHashcash
+
+  before_action :check_hashcash, only: :create unless Rails.env.test?
   before_action :resume_session_if_present, only: [ :new, :show_verify ]
   before_action :ensure_authenticated, only: [ :resend_verification_email, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
