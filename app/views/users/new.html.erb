@@ -48,6 +48,8 @@
       </label>
       <% end %>
 
+      <%= hashcash_hidden_field_tag %>
+
       <div class="mt-1">
         <%= form.submit "Start publishing", class: "btn btn-primary w-full" %>
       </div>
@@ -63,3 +65,7 @@
     <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %>
   </div>
 </div>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
+<% end %>

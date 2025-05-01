@@ -1,4 +1,7 @@
 class PasswordsController < ApplicationController
+  include ActiveHashcash
+
+  before_action :check_hashcash, only: :create unless Rails.env.test?
   before_action :set_user_by_token, only: %i[ edit update ]
   rate_limit to: 5, within: 30.minute, only: :create
 

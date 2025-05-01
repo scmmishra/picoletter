@@ -1,4 +1,7 @@
 class Auth::SessionsController < ApplicationController
+  include ActiveHashcash
+
+  before_action :check_hashcash, only: :create unless Rails.env.test?
   before_action :resume_session_if_present, only: [ :new ]
 
   def new
