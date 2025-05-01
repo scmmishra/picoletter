@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   default_url_options host: Rails.application.config.host
 
   mount MissionControl::Jobs::Engine, at: "/admin/jobs"
+  mount ActiveHashcash::Engine, at: "/admin/hashcash"
 
   # Webhook routes
   scope "/webhook" do
