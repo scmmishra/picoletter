@@ -1,7 +1,9 @@
 class Public::SubscribersController < ApplicationController
+  include ActiveHashcash
   layout "application"
 
   before_action :set_newsletter
+  before_action :check_hashcash, only: :public_subscribe
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
   rate_limit to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ]

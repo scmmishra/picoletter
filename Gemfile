@@ -124,3 +124,6 @@ gem "cloudflare-rails"
 
 # to parse maxmind db
 gem "aws-sdk-rails", "~> 3"
+
+# Bot prevention
+gem "active_hashcash"
