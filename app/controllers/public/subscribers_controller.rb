@@ -3,7 +3,7 @@ class Public::SubscribersController < ApplicationController
   layout "application"
 
   before_action :set_newsletter
-  before_action :check_hashcash, only: :public_subscribe
+  before_action :ensure_check_hashcash, only: :public_subscribe
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
   rate_limit to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ]
@@ -105,5 +105,9 @@ class Public::SubscribersController < ApplicationController
   def set_newsletter
     @newsletter = Newsletter.from_slug(params[:slug])
     head :not_found unless @newsletter
+  end
+
+  def ensure_check_hashcash
+    check_hashcash if Rails.env.production?
   end
 end
