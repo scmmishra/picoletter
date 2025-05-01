@@ -11,7 +11,7 @@
                        autocomplete: "email",
                        placeholder: "you@example.com",
                        value: params[:email] %>
-    </label>
+    </div>
 
     <div class="space-y-1">
       <%= form.label :full_name, class: "ml-px text-stone-500 font-sans" %>
@@ -22,12 +22,12 @@
                       placeholder: "Jake Ashby" %>
     </div>
 
+    <%= hashcash_hidden_field_tag %>
+
     <div>
       <%= form.submit "Subscribe",
                   class: "btn btn-tinted w-full",
                   style: @newsletter.primary_styles %>
     </div>
-
-    <%= hashcash_hidden_field_tag %>
   <% end %>
 </div>
