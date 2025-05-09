@@ -11,8 +11,9 @@ RSpec.describe Public::SubscribersController, type: :controller do
   describe 'POST #embed_subscribe' do
     context 'when embed subscribe is enabled' do
       before do
-        allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(false)
+        allow(AppConfig).to receive(:get).with(any_args).and_return(false)
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
+        newsletter.update(after_subscription_redirect_url: nil)
       end
 
       it 'creates a subscriber with labels and redirects to almost there page' do
@@ -45,12 +46,33 @@ RSpec.describe Public::SubscribersController, type: :controller do
 
     context 'when embed subscribe is disabled' do
       before do
-        allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(true)
+        allow(AppConfig).to receive(:get).with(any_args).and_return(true)
       end
 
       it 'returns forbidden' do
         post :embed_subscribe, params: { slug: newsletter.slug, email: 'test@example.com' }
         expect(response.status).to eq(403)
+      end
+    end
+
+    context 'when custom redirect URL is set' do
+      before do
+        allow(AppConfig).to receive(:get).with(any_args).and_return(false)
+        allow(IPShieldService).to receive(:legit_ip?).and_return(true)
+        newsletter.update(after_subscription_redirect_url: 'https://example.com/thank-you')
+      end
+
+      it 'redirects to custom URL after successful subscription' do
+        expect(CreateSubscriberJob).to receive(:perform_now)
+          .with(newsletter.id, 'test@example.com', 'Test User', nil, 'embed', anything)
+
+        post :embed_subscribe, params: {
+          slug: newsletter.slug,
+          email: 'test@example.com',
+          name: 'Test User'
+        }
+
+        expect(response).to redirect_to('https://example.com/thank-you')
       end
     end
   end
@@ -192,6 +214,20 @@ RSpec.describe Public::SubscribersController, type: :controller do
       get :confirm_subscriber, params: { slug: newsletter.slug, token: 'expired-token' }
 
       expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    context 'when custom confirmation redirect URL is set' do
+      before do
+        newsletter.update(after_confirmation_redirect_url: 'https://example.com/welcome')
+      end
+
+      it 'redirects to custom URL after successful confirmation' do
+        token = subscriber.generate_token_for(:confirmation)
+        get :confirm_subscriber, params: { slug: newsletter.slug, token: token }
+
+        expect(response).to redirect_to('https://example.com/welcome')
+        expect(subscriber.reload.status).to eq('verified')
+      end
     end
   end
 end

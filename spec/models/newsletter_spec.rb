@@ -15,6 +15,7 @@
 #  reply_to        :string
 #  sending_address :string
 #  sending_name    :string
+#  settings        :jsonb            not null
 #  slug            :string           not null
 #  status          :string
 #  template        :string
@@ -28,8 +29,9 @@
 #
 # Indexes
 #
-#  index_newsletters_on_slug     (slug)
-#  index_newsletters_on_user_id  (user_id)
+#  index_newsletters_on_settings  (settings) USING gin
+#  index_newsletters_on_slug      (slug)
+#  index_newsletters_on_user_id   (user_id)
 #
 # Foreign Keys
 #

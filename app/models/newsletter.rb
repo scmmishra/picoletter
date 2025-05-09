@@ -15,6 +15,7 @@
 #  reply_to        :string
 #  sending_address :string
 #  sending_name    :string
+#  settings        :jsonb            not null
 #  slug            :string           not null
 #  status          :string
 #  template        :string
@@ -28,8 +29,9 @@
 #
 # Indexes
 #
-#  index_newsletters_on_slug     (slug)
-#  index_newsletters_on_user_id  (user_id)
+#  index_newsletters_on_settings  (settings) USING gin
+#  index_newsletters_on_slug      (slug)
+#  index_newsletters_on_user_id   (user_id)
 #
 # Foreign Keys
 #
@@ -41,7 +43,14 @@ class Newsletter < ApplicationRecord
   include Statusable
   include Themeable
 
+  VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
+
+  store_accessor :settings, :after_confirmation_redirect_url, :after_subscription_redirect_url
+
   sluggable_on :title
+
+  validates :after_confirmation_redirect_url, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
+  validates :after_subscription_redirect_url, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
 
   belongs_to :user
   has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
@@ -88,4 +97,6 @@ class Newsletter < ApplicationRecord
   def full_sending_address
     "#{sending_name || title} <#{sending_from}>"
   end
+
+
 end
