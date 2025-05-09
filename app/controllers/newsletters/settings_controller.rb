@@ -42,8 +42,15 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def embedding; end
-  def update_embedding; end
   
+  def update_embedding
+    if @newsletter.update(embedding_params)
+      redirect_to embedding_settings_url(slug: @newsletter.slug), notice: "Redirect settings updated successfully."
+    else
+      redirect_to embedding_settings_url(slug: @newsletter.slug), alert: "Failed to update redirect settings."
+    end
+  end
+
   # This method is kept for backward compatibility only and redirects to the dedicated BillingController
   def billing
     redirect_to settings_billing_path(slug: @newsletter.slug)
@@ -79,5 +86,9 @@ class Newsletters::SettingsController < ApplicationController
 
   def profile_params
     params.require(:user).permit(:bio, :email, :name)
+  end
+
+  def embedding_params
+    params.require(:newsletter).permit(:redirect_after_subscribe, :redirect_after_confirm)
   end
 end
