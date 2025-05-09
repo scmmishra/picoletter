@@ -102,7 +102,7 @@ RSpec.describe ProcessSNSWebhookJob, type: :job do
           Message: {
             eventType: 'Click',
             mail: { messageId: email.id },
-            click: { 
+            click: {
               timestamp: timestamp,
               link: link
             }
@@ -123,7 +123,7 @@ RSpec.describe ProcessSNSWebhookJob, type: :job do
 
       it 'does not create duplicate click records' do
         create(:email_click, email_id: email.id, link: link, post_id: email.post_id)
-        
+
         expect {
           described_class.perform_now(payload)
         }.not_to change(EmailClick, :count)

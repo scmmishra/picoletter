@@ -16,7 +16,7 @@ RSpec.describe Api::Admin::UsersController, type: :request do
       'subscriber_limit' => 1000,
       'monthly_email_limit' => 10000
     })
-    
+
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:[]).with('ADMIN_API_KEY').and_return(api_key)
     allow(AppConfig).to receive(:get).and_call_original

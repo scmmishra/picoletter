@@ -6,7 +6,6 @@ FactoryBot.define do
     domain_verified { true }
     reply_to { Faker::Internet.email }
     sending_address { Faker::Internet.email }
-    slug { Faker::Internet.slug }
     status { nil }
     template { nil }
     timezone { "UTC" }

@@ -42,12 +42,12 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def embedding; end
-  
+
   def update_embedding
     if @newsletter.update(embedding_params)
-      redirect_to embedding_settings_url(slug: @newsletter.slug), notice: "Redirect settings updated successfully."
+      redirect_to embedding_settings_path(slug: @newsletter.slug), notice: "Redirect settings updated successfully."
     else
-      redirect_to embedding_settings_url(slug: @newsletter.slug), alert: "Failed to update redirect settings."
+      redirect_to embedding_settings_path(slug: @newsletter.slug), alert: "Failed to update redirect settings."
     end
   end
 
