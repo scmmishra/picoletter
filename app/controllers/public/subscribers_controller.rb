@@ -8,7 +8,7 @@ class Public::SubscribersController < ApplicationController
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
-    success_url = @newsletter.after_subscription_redirect_url
+    success_url = @newsletter.redirect_after_subscribe
     create_subscriber("embed", success_url)
   end
 
@@ -45,7 +45,7 @@ class Public::SubscribersController < ApplicationController
     subscriber = Subscriber.find_by_token_for!(:confirmation, token)
 
     subscriber.verify!
-    redirect_url = @newsletter.after_confirmation_redirect_url
+    redirect_url = @newsletter.redirect_after_confirm
     if redirect_url.present?
       redirect_to redirect_url, allow_other_host: true
     end

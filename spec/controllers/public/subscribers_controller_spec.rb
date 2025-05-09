@@ -13,7 +13,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
       before do
         allow(AppConfig).to receive(:get).with(any_args).and_return(false)
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
-        newsletter.update(after_subscription_redirect_url: nil)
+        newsletter.update(redirect_after_subscribe: nil)
       end
 
       it 'creates a subscriber with labels and redirects to almost there page' do
@@ -59,7 +59,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
       before do
         allow(AppConfig).to receive(:get).with(any_args).and_return(false)
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
-        newsletter.update(after_subscription_redirect_url: 'https://example.com/thank-you')
+        newsletter.update(redirect_after_subscribe: 'https://example.com/thank-you')
       end
 
       it 'redirects to custom URL after successful subscription' do
@@ -218,7 +218,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
 
     context 'when custom confirmation redirect URL is set' do
       before do
-        newsletter.update(after_confirmation_redirect_url: 'https://example.com/welcome')
+        newsletter.update(redirect_after_confirm: 'https://example.com/welcome')
       end
 
       it 'redirects to custom URL after successful confirmation' do

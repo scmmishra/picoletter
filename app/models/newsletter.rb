@@ -45,12 +45,12 @@ class Newsletter < ApplicationRecord
 
   VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
 
-  store_accessor :settings, :after_confirmation_redirect_url, :after_subscription_redirect_url
+  store_accessor :settings, :redirect_after_confirm, :redirect_after_subscribe
 
   sluggable_on :title
 
-  validates :after_confirmation_redirect_url, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
-  validates :after_subscription_redirect_url, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
+  validates :redirect_after_confirm, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
+  validates :redirect_after_subscribe, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
 
   belongs_to :user
   has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
