@@ -7,7 +7,7 @@ class CreateConnectedServices < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    
-    add_index :connected_services, [:provider, :uid], unique: true
+
+    add_index :connected_services, [ :provider, :uid ], unique: true
   end
 end

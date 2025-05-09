@@ -11,11 +11,12 @@ class Public::SubscribersController < ApplicationController
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
-    create_subscriber("embed")
+    success_url = @newsletter.redirect_after_subscribe
+    create_subscriber("embed", success_url)
   end
 
   def public_subscribe
-    create_subscriber("public")
+    create_subscriber("public", nil)
   end
 
   def almost_there
@@ -47,13 +48,17 @@ class Public::SubscribersController < ApplicationController
     subscriber = Subscriber.find_by_token_for!(:confirmation, token)
 
     subscriber.verify!
+    redirect_url = @newsletter.redirect_after_confirm
+    if redirect_url.present?
+      redirect_to redirect_url, allow_other_host: true
+    end
   rescue ActiveSupport::MessageVerifier::InvalidSignature
     render :invalid_confirmation, status: :unprocessable_entity
   end
 
   private
 
-  def create_subscriber(source)
+  def create_subscriber(source, success_url = nil)
     browser = Browser.new(request.user_agent)
 
     analytics_data = {
@@ -79,7 +84,11 @@ class Public::SubscribersController < ApplicationController
 
     if legit_ip
       CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], params[:labels], source, analytics_data)
-      redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+      if success_url.present?
+        redirect_to success_url, allow_other_host: true
+      else
+        redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+      end
     else
       redirect_to newsletter_path(@newsletter.slug), notice: "Our system detected some issues with your request. Please try again."
     end

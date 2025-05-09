@@ -80,7 +80,7 @@ RSpec.describe ConnectedService, type: :model do
       context 'when user is provided' do
         it 'creates a new service with the given user' do
           service = described_class.find_or_create_from_auth_hash(auth_hash, user)
-          
+
           expect(service).to be_persisted
           expect(service.provider).to eq(auth_hash['provider'])
           expect(service.uid).to eq(auth_hash['uid'])
@@ -94,7 +94,7 @@ RSpec.describe ConnectedService, type: :model do
 
           it 'creates a new service with the existing user' do
             service = described_class.find_or_create_from_auth_hash(auth_hash)
-            
+
             expect(service).to be_persisted
             expect(service.provider).to eq(auth_hash['provider'])
             expect(service.uid).to eq(auth_hash['uid'])
@@ -106,7 +106,7 @@ RSpec.describe ConnectedService, type: :model do
           it 'creates a new user and service' do
             expect {
               service = described_class.find_or_create_from_auth_hash(auth_hash)
-              
+
               expect(service).to be_persisted
               expect(service.provider).to eq(auth_hash['provider'])
               expect(service.uid).to eq(auth_hash['uid'])

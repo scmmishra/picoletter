@@ -4,4 +4,3 @@ class SetDefaultStatusInEmail < ActiveRecord::Migration[7.1]
     change_column_default :emails, :status, "sent"
   end
 end
-

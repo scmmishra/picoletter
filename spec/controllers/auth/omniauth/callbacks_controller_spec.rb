@@ -7,7 +7,7 @@ RSpec.describe Auth::Omniauth::CallbacksController, type: :controller do
     @auth_hash_github = OmniAuth::AuthHash.new({
       provider: 'github',
       uid: '12345',
-      info: { 
+      info: {
         email: 'new_github_user@example.com',
         name: 'GitHub User'
       },
@@ -16,7 +16,7 @@ RSpec.describe Auth::Omniauth::CallbacksController, type: :controller do
     @auth_hash_google = OmniAuth::AuthHash.new({
       provider: 'google_oauth2',
       uid: '67890',
-      info: { 
+      info: {
         email: 'new_google_user@example.com',
         name: 'Google User'
       },
