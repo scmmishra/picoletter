@@ -1,5 +1,31 @@
 <%= render "newsletters/settings/partials/header" %>
 <section>
+  <div class="mb-10 border-b pb-8">
+    <h3 class="font-medium text-lg text-stone-700 mb-3">Redirect Settings</h3>
+    <%= form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch, class: "max-w-lg space-y-4" do |form| %>
+      <label class="block space-y-1">
+        <%= form.label :redirect_after_subscribe,
+                   "After Subscribe URL",
+                   class: "ml-px text-stone-500 text-sm font-sans" %>
+        <%= form.url_field :redirect_after_subscribe,
+                       class: "input w-full",
+                       placeholder: "https://example.com/thank-you" %>
+        <div class="font-sans text-xs text-stone-400">URL to redirect users to after they fill out the subscription form.</div>
+      </label>
+      <label class="block space-y-1">
+        <%= form.label :redirect_after_confirm,
+                   "After Confirm URL",
+                   class: "ml-px text-stone-500 text-sm font-sans" %>
+        <%= form.url_field :redirect_after_confirm,
+                       class: "input w-full",
+                       placeholder: "https://example.com/welcome" %>
+        <div class="font-sans text-xs text-stone-400">URL to redirect users to after they confirm their email address.</div>
+      </label>
+      <div>
+        <%= form.submit "Update Redirect Settings", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
   <div class="flex items-start justify-between my-5">
     <div class="max-w-lg text-stone-600">
       <p>Below is an example of customizable HTML code for an email subscription
@@ -17,26 +43,28 @@
       </form>
     </div>
   </div>
-  <div class="relative font-mono text-xs">
-    <div class="absolute right-2 top-2">
-      <%= button_to_copy_to_clipboard(@newsletter.embded_form(with_name: true)) %>
+  <section class="grid grid-cols-2 gap-4">
+    <div class="relative font-mono text-xs">
+      <div class="absolute right-2 pt-2 top-2">
+        <%= button_to_copy_to_clipboard(@newsletter.embded_form(with_name: true)) %>
+      </div>
+      <div
+        class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
+        id="form_html"
+      >
+      </div>
     </div>
-    <div
-      class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
-      id="form_html"
-    >
+    <div class="relative font-mono text-xs">
+      <div class="absolute right-2 pt-2 top-2">
+        <%= button_to_copy_to_clipboard(@newsletter.embded_form_css) %>
+      </div>
+      <div
+        class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
+        id="css_html"
+      >
+      </div>
     </div>
-  </div>
-  <div class="relative font-mono text-xs">
-    <div class="absolute top-2 right-2">
-      <%= button_to_copy_to_clipboard(@newsletter.embded_form_css) %>
-    </div>
-    <div
-      class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
-      id="css_html"
-    >
-    </div>
-  </div>
+  </section>
 </section>
 <script type="module">
   import { codeToHtml } from 'https://esm.sh/shiki@1.0.0'
@@ -57,5 +85,6 @@
 <style>
   .shiki {
     padding: 0.5rem 0.8rem;
+    overflow: scroll;
   }
 </style>
