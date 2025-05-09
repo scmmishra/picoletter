@@ -50,6 +50,8 @@
 <% end %>
 
 <div class="max-w-2xl mx-auto mt-8 space-y-5">
-  <%= render "posts/scheduled", post: @post %>
+  <% if AppConfig.get('ENABLE_SCHEDULING', true) %>
+    <%= render "posts/scheduled", post: @post %>
+  <% end %>
   <%= render "posts/delete", post: @post %>
 </div>
