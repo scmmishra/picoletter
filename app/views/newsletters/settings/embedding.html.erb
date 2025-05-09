@@ -2,9 +2,9 @@
 <section>
   <div class="mb-10 border-b pb-8">
     <div class="max-w-lg text-stone-600 mb-6">
-      <h3 class="font-medium text-stone-700 mb-2">Redirect Settings</h3>
-      <p class="text-sm">Configure where users should be redirected after subscribing or
-        confirming their email address.</p>
+      <h3 class="font-medium text-lg text-stone-800 mb-2">Redirect Settings</h3>
+      <p class="text-sm">Optionally configure where users should be redirected after subscribing
+        or confirming their email address.</p>
     </div>
     <%= form_with model: @newsletter, url: embedding_settings_path(slug: @newsletter.slug), method: :patch, class: "max-w-lg space-y-4" do |form| %>
       <label class="block space-y-1">
