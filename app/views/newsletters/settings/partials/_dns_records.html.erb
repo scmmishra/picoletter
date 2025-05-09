@@ -75,7 +75,7 @@
     record: {
       "type" => "TXT",
       "name" => "_dmarc.#{newsletter.sending_domain.name}",
-      "value" => "v=DMARC1; p=none;",
+      "value" => "v=DMARC1; p=reject;",
       "ttl" => "Auto",
       "priority" => "",
       "status" => newsletter.sending_domain.spf_status,
