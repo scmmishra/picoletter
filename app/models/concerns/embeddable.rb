@@ -1,7 +1,7 @@
 module Embeddable
   extend ActiveSupport::Concern
 
-  def embded_form(with_name: false)
+  def embed_form(with_name: false)
     <<~HTML
     <form
       action="#{embed_url}"
@@ -23,7 +23,7 @@ module Embeddable
     HTML
   end
 
-  def embded_form_css(with_name: false)
+  def embed_form_css(with_name: false)
     <<~CSS
     :root {
       --accent: #{primary_color};
@@ -85,8 +85,8 @@ module Embeddable
     payload = {
       "title" => "#{self.title} - Picoletter Embed Form",
       "private" => true,
-      "html" => self.embded_form(with_name: true),
-      "css" => self.embded_form_css
+      "html" => self.embed_form(with_name: true),
+      "css" => self.embed_form_css
     }
 
     ERB::Util.json_escape(payload.to_json)
