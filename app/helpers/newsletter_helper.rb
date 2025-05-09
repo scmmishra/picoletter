@@ -1,6 +1,6 @@
 module NewsletterHelper
   def newsletter_datetime(datetime, newsletter)
-    return unless datetime
+    return { date: "", time: "" } unless datetime
 
     in_zone = datetime.in_time_zone(newsletter.timezone)
     {
