@@ -26,7 +26,7 @@
                          placeholder: "Enter your email address",
                          value: params[:email] %><br>
       </label>
-
+      <%= hashcash_hidden_field_tag %>
       <div class="mt-1">
         <%= form.submit "Email reset instructions", class: "btn btn-primary w-full" %>
       </div>
@@ -34,3 +34,7 @@
   </div>
 
 </div>
+
+<% content_for :head do %>
+  <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
+<% end %>

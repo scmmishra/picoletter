@@ -1,4 +1,6 @@
 class Public::NewslettersController < ApplicationController
+  include ActiveHashcash
+
   layout "public"
   before_action :set_newsletter
   before_action :set_newsletter_layout

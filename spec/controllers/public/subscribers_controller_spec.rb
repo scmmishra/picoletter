@@ -11,7 +11,8 @@ RSpec.describe Public::SubscribersController, type: :controller do
   describe 'POST #embed_subscribe' do
     context 'when embed subscribe is enabled' do
       before do
-        allow(AppConfig).to receive(:get).with(any_args).and_return(false)
+        allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(false)
+        allow(AppConfig).to receive(:get).with("ENABLE_BILLING", false).and_return(false)
         allow(IPShieldService).to receive(:legit_ip?).and_return(true)
         newsletter.update(redirect_after_subscribe: nil)
       end
