@@ -22,47 +22,39 @@
       <h3 class="text-base font-medium text-stone-900 mb-4">Sending Statistics</h3>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-2">
+        <% stats = @post.stats %>
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= @post.emails.count %></div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:total] %></div>
           <div class="text-sm font-sans text-stone-600">Total Sent</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= @post.emails.delivered.count %></div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:delivered] %></div>
           <div class="text-sm font-sans text-stone-600">Delivered</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= @post.emails.where.not(opened_at: nil).count %></div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:opened] %></div>
           <div class="text-sm font-sans text-stone-600">Opened</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= @post.emails.bounced.count %></div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:bounced] %></div>
           <div class="text-sm font-sans text-stone-600">Bounced</div>
         </div>
 
-        <% total = @post.emails.count.to_f
-        delivered = @post.emails.delivered.count.to_f
-        opened = @post.emails.where.not(opened_at: nil).count.to_f
-        bounced = @post.emails.bounced.count.to_f
-
-        delivery_rate = total.zero? ? 0 : (delivered / total * 100).round(1)
-        bounce_rate = total.zero? ? 0 : (bounced / total * 100).round(1)
-        open_rate = delivered.zero? ? 0 : (opened / delivered * 100).round(1) %>
-
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= delivery_rate %>%</div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:delivery_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Delivery Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= bounce_rate %>%</div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:bounce_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Bounce Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900"><%= open_rate %>%</div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:open_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Open Rate</div>
         </div>
       </div>
