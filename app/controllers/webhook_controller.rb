@@ -3,10 +3,14 @@ class WebhookController < ApplicationController
 
   def sns
     payload = JSON.parse(request.body.read)
-    ProcessSNSWebhookJob.perform_now(payload)
+    ProcessSNSWebhookJob.perform_later(payload)
 
     head :no_content
-  rescue
+  rescue JSON::ParserError => e
+    RorVsWild.record_error(e)
+    head :bad_request
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { body: payload })
     head :bad_request
   end
 end
