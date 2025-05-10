@@ -9,30 +9,6 @@
   >
     <div class="<%= @newsletter_layout == 'horizontal' ? 'md:col-span-2' : ''  %>">
       <h1 class="text-3xl leading-10 text-stone-900 font-bold"><%= @newsletter.title %></h1>
-      
-      <% total_posts = @newsletter.posts.published.count %>
-      <% total_emails = @newsletter.emails.count %>
-      <% delivered = @newsletter.emails.delivered.count %>
-      <% opened = @newsletter.emails.where.not(opened_at: nil).count %>
-      
-      <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="bg-stone-50 p-4 rounded-lg">
-          <div class="text-2xl font-semibold"><%= total_posts %></div>
-          <div class="text-sm text-stone-600">Posts</div>
-        </div>
-        <div class="bg-stone-50 p-4 rounded-lg">
-          <div class="text-2xl font-semibold"><%= total_emails %></div>
-          <div class="text-sm text-stone-600">Emails Sent</div>
-        </div>
-        <div class="bg-stone-50 p-4 rounded-lg">
-          <div class="text-2xl font-semibold"><%= number_to_percentage(delivered.to_f / total_emails * 100, precision: 1) if total_emails > 0 %></div>
-          <div class="text-sm text-stone-600">Delivery Rate</div>
-        </div>
-        <div class="bg-stone-50 p-4 rounded-lg">
-          <div class="text-2xl font-semibold"><%= number_to_percentage(opened.to_f / delivered * 100, precision: 1) if delivered > 0 %></div>
-          <div class="text-sm text-stone-600">Open Rate</div>
-        </div>
-      </div>
     </div>
     <div class="text-stone-700 prose">
       <%= sanitize @newsletter.description_html %>
