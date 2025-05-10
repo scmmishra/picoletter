@@ -88,4 +88,21 @@ class Post < ApplicationRecord
   def published_on_date
     published_at.strftime("%B %d, %Y") if published_at.present?
   end
+
+  def stats
+    total = emails.count.to_f
+    delivered = emails.delivered.count.to_f
+    opened = emails.where.not(opened_at: nil).count.to_f
+    bounced = emails.bounced.count.to_f
+
+    {
+      total: total.to_i,
+      delivered: delivered.to_i,
+      opened: opened.to_i,
+      bounced: bounced.to_i,
+      delivery_rate: total.zero? ? 0 : (delivered / total * 100).round(1),
+      bounce_rate: total.zero? ? 0 : (bounced / total * 100).round(1),
+      open_rate: delivered.zero? ? 0 : (opened / delivered * 100).round(1)
+    }
+  end
 end
