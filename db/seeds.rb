@@ -2,14 +2,22 @@ puts "Seeding database"
 
 return if Rails.env.production?
 
-unless User.exists?(email: "neo@example.com")
-  puts "-- Creating admin user"
-  User.create!(
-    name: "Neo",
+# Create users
+puts "-- Creating users"
+users = [
+  {
+    name: "Neo Anderson",
     email: "neo@example.com",
     password: "admin@123456",
     active: true
-  )
+  }
+]
+
+users.each do |user_data|
+  unless User.exists?(email: user_data[:email])
+    User.create!(user_data)
+    puts "   Created user: #{user_data[:name]}"
+  end
 end
 
 def parse_md_file(content)
@@ -23,85 +31,142 @@ def parse_md_file(content)
   return {}, content
 end
 
-puts "-- Creating newsletter"
-user = User.find_by!(email: "neo@example.com")
-newsletter = user.newsletters.create!(
-  title: "The Daily Byte",
-  description: "Daily tech insights and programming tips."
-)
-
-puts "-- Creating posts"
-publish_date = Time.now
-
-Dir.glob("#{Rails.root}/db/posts/*.md").each do |file|
-  content = File.read(file)
-  frontmatter, content = parse_md_file(content)
-
-  newsletter.posts.create!(
-    title: frontmatter["title"],
-    content: content,
-    status: :published,
-    published_at: publish_date
+# Create newsletters for each user
+puts "\n-- Creating newsletters"
+User.find_each do |user|
+  # Tech Newsletter
+  tech_newsletter = user.newsletters.create!(
+    title: "#{user.name}'s Tech Insider",
+    description: "Deep dives into technology, programming, and software architecture."
   )
+  puts "   Created newsletter: #{tech_newsletter.title}"
 
-  puts "   Created post: #{frontmatter["title"]}"
-  publish_date -= 1.week
+  # Personal Newsletter
+  personal_newsletter = user.newsletters.create!(
+    title: "#{user.name}'s Journal",
+    description: "Personal thoughts, book reviews, and life updates."
+  )
+  puts "   Created newsletter: #{personal_newsletter.title}"
 end
 
-puts "-- Creating labels"
-labels_data = [
-  { name: "early-access", color: "#10B981", description: "Early access subscribers" },
-  { name: "beta-tester", color: "#3B82F6", description: "Beta program participants" },
-  { name: "premium", color: "#8B5CF6", description: "Premium tier subscribers" },
-  { name: "inactive", color: "#EF4444", description: "Inactive subscribers" },
-  { name: "engaged", color: "#F59E0B", description: "Highly engaged subscribers" }
-]
+# Create rich label structure for each newsletter
+puts "\n-- Creating labels"
+Newsletter.find_each do |newsletter|
+  labels_data = [
+    { name: "early-access", color: "#10B981", description: "Early access subscribers" },
+    { name: "beta-tester", color: "#3B82F6", description: "Beta program participants" },
+    { name: "premium", color: "#8B5CF6", description: "Premium tier subscribers" },
+    { name: "inactive", color: "#EF4444", description: "Inactive subscribers" },
+    { name: "engaged", color: "#F59E0B", description: "Highly engaged subscribers" },
+    { name: "developer", color: "#059669", description: "Software developers" },
+    { name: "designer", color: "#EC4899", description: "UI/UX designers" },
+    { name: "manager", color: "#6366F1", description: "Tech managers & leaders" },
+    { name: "student", color: "#14B8A6", description: "Students and learners" },
+    { name: "vip", color: "#F59E0B", description: "VIP subscribers" }
+  ]
 
-labels = newsletter.labels.create!(labels_data)
-puts "   Created #{labels.count} labels"
+  labels = newsletter.labels.create!(labels_data)
+  puts "   Created #{labels.count} labels for #{newsletter.title}"
+end
 
-puts "-- Creating subscribers"
-subscribers = []
-
-# Add our test subscriber
-subscribers << {
-  email: "shivam@shivam.dev",
-  full_name: "Shivam Mishra",
-  status: :verified,
-  created_at: 2.days.ago,
-  updated_at: 2.days.ago,
-  verified_at: 2.days.ago,
-  labels: [ "early-access", "premium" ]
-}
-
-# Generate 50 random subscribers
-50.times do
-  status = [ :verified, :verified, :verified, :unverified, :unsubscribed ].sample
-  created_at = rand(1..90).days.ago
-
-  subscriber = {
-    email: Faker::Internet.unique.email,
-    full_name: Faker::Name.name,
-    status: status,
-    created_at: created_at,
-    updated_at: created_at,
-    verified_at: status == :verified ? created_at + rand(1..24).hours : nil,
-    unsubscribed_at: status == :unsubscribed ? created_at + rand(1..30).days : nil,
-    labels: []
-  }
-
-  # Randomly assign labels
-  if status == :verified
-    # 60% chance of having labels for verified subscribers
-    if rand < 0.6
-      num_labels = rand(1..3)
-      subscriber[:labels] = labels_data.map { |l| l[:name] }.sample(num_labels)
+# Create posts for each newsletter
+puts "\n-- Creating posts"
+Newsletter.find_each do |newsletter|
+  # Create posts with different statuses
+  10.times do |i|
+    title = if newsletter.title.include?("Tech")
+      Faker::Hacker.say_something_smart
+    else
+      Faker::Book.title
     end
+
+    status = case i % 5
+    when 0 then :draft
+    when 1, 2 then :published
+    when 3 then :archived
+    when 4 then :processing
+    end
+
+    published_at = status == :published ? rand(1..90).days.ago : nil
+
+    post = newsletter.posts.create!(
+      title: title,
+      content: Faker::Markdown.sandwich(sentences: 8),
+      status: status,
+      published_at: published_at
+    )
+    puts "   Created post: #{post.title} (#{status})"
+  end
+end
+
+# Create subscribers for each newsletter
+puts "\n-- Creating subscribers"
+Newsletter.find_each do |newsletter|
+  valid_labels = newsletter.labels.pluck(:name)
+
+  # Create a mix of subscribers
+  100.times do
+    status = case rand(10)
+    when 0..6 then :verified      # 70% verified
+    when 7..8 then :unverified    # 20% unverified
+    when 9 then :unsubscribed     # 10% unsubscribed
+    end
+
+    created_at = rand(1..180).days.ago
+    verified_at = status == :verified ? created_at + rand(1..24).hours : nil
+    unsubscribed_at = status == :unsubscribed ? created_at + rand(1..90).days : nil
+
+    # Assign random labels (more likely for verified subscribers)
+    subscriber_labels = if status == :verified && rand < 0.8
+      valid_labels.sample(rand(1..4))
+    else
+      []
+    end
+
+    subscriber = newsletter.subscribers.create!(
+      email: Faker::Internet.unique.email,
+      full_name: Faker::Name.name,
+      status: status,
+      created_at: created_at,
+      updated_at: created_at,
+      verified_at: verified_at,
+      unsubscribed_at: unsubscribed_at,
+      labels: subscriber_labels,
+      created_via: [ "web", "api", "import" ].sample,
+      notes: rand < 0.3 ? Faker::Lorem.sentence : nil
+    )
   end
 
-  subscribers << subscriber
+  puts "   Created 100 subscribers for #{newsletter.title}"
+end
+# Create emails and engagement data
+puts "\n-- Creating email engagement data"
+Post.published.find_each do |post|
+  # Get verified subscribers for this newsletter
+  subscribers = post.newsletter.subscribers.verified
+
+  subscribers.find_each do |subscriber|
+    # Create email with random status and timing
+    created_at = post.published_at + rand(1..12).hours
+
+    status = case rand(100)
+    when 0..84 then :delivered  # 85% delivered
+    when 85..94 then :sent      # 10% just sent
+    when 95..97 then :bounced   # 3% bounced
+    else :complained            # 2% complained
+    end
+
+    email = post.emails.create!(
+      id: SecureRandom.uuid,
+      subscriber: subscriber,
+      status: status,
+      created_at: created_at,
+      updated_at: created_at,
+      opened_at: (status == :delivered && rand < 0.3) ? created_at + rand(1..24).hours : nil
+    )
+  end
+
+  puts "   Created engagement data for post: #{post.title}"
 end
 
-# Create all subscribers
-newsletter.subscribers.create!(subscribers)
-puts "   Created #{subscribers.count} subscribers"
+puts "\nSeeding completed!"
