@@ -1,18 +1,14 @@
 namespace :subscribers do
   desc "Verify subscriber emails for a newsletter and unsubscribe invalid ones"
   task verify_emails: :environment do
-    newsletter_id = ENV["NEWSLETTER_ID"] || ARGV[1]
-    dry_run = ENV["DRY_RUN"].present? || ARGV.include?("--dry-run")
+    newsletter_id = ENV["NEWSLETTER_ID"]
+    dry_run = ENV["DRY_RUN"].present?
 
     if newsletter_id.blank?
       puts "Please provide a newsletter ID"
       puts "Usage: rake subscribers:verify_emails NEWSLETTER_ID=1 [DRY_RUN=1]"
-      puts "   or: rake 'subscribers:verify_emails[1]' [--dry-run]"
       exit 1
     end
-
-    # Remove the arguments from ARGV to avoid rake complaining about wrong number of arguments
-    ARGV.each { |a| task a.to_sym do ; end }
 
     newsletter = Newsletter.find_by(id: newsletter_id)
     unless newsletter
