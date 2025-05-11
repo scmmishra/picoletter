@@ -1,12 +1,12 @@
 namespace :subscribers do
   desc "Verify subscriber emails for a newsletter and unsubscribe invalid ones"
-  task verify_emails: :environment do
+  task clean: :environment do
     newsletter_id = ENV["NEWSLETTER_ID"]
     dry_run = ENV["DRY_RUN"].present?
 
     if newsletter_id.blank?
       puts "Please provide a newsletter ID"
-      puts "Usage: rake subscribers:verify_emails NEWSLETTER_ID=1 [DRY_RUN=1]"
+      puts "Usage: rake subscribers:clean NEWSLETTER_ID=1 [DRY_RUN=1]"
       exit 1
     end
 
