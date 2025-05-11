@@ -21,7 +21,7 @@ namespace :subscribers do
     end
 
     invalid_count = 0
-    total_count = newsletter.subscribers.count
+    total_count = newsletter.subscribers.subscribed.count
 
     puts "Starting email verification for #{total_count} subscribers in newsletter '#{newsletter.title}'"
     puts "DRY RUN MODE - No subscribers will be unsubscribed" if dry_run
