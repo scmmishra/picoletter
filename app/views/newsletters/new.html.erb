@@ -26,54 +26,34 @@
       p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
     "
   >
-    <%= form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
-      <div class="space-y-1">
-        <%= form.label :title, class: "ml-px text-stone-500 font-sans" %>
-        <%= form.text_field :title,
-                        required: true,
-                        class: "input w-full",
-                        data: {
-                          "auto-slug-target": "title",
-                        },
-                        autofocus: true,
-                        placeholder: "Name of the newsletter" %>
-      </div>
+    <%= labeled_form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
+      <%= form.text_field :title,
+                      required: true,
+                      data: {
+                        "auto-slug-target": "title",
+                      },
+                      autofocus: true,
+                      placeholder: "Name of the newsletter" %>
 
-      <div class="space-y-1">
-        <%= form.label :slug, class: "ml-px text-stone-500 font-sans" %>
-        <%= form.text_field :slug,
-                        required: true,
-                        class: "input w-full",
-                        data: {
-                          "auto-slug-target": "slug",
-                        },
-                        placeholder: "your-title-here" %>
-        <div class="font-sans text-xs text-stone-400">Used on the public archive link.
-          <span class="font-medium text-stone-700">You cannot change this later.</span></div>
-      </div>
+      <%= form.text_field :slug,
+                      required: true,
+                      data: {
+                        "auto-slug-target": "slug",
+                      },
+                      placeholder: "your-title-here",
+                      hint:
+                        'Used on the public archive link. <span class="font-medium text-stone-700">You cannot change this later.</span>' %>
 
-      <div class="space-y-1">
-        <%= form.label :description, class: "ml-px text-stone-500 font-sans" %>
-        <%= form.text_area :description,
-                       class: "input w-full block",
-                       rows: 5,
-                       placeholder:
-                         "What is the newsletter about, write what you want your users to know" %>
-        <div class="font-sans text-xs text-stone-400">Supports
-          <a
-            class="underline hover:text-stone-500"
-            target="blank"
-            href="https://www.markdownguide.org/basic-syntax/"
-          >markdown</a></div>
-      </div>
+      <%= form.text_area :description,
+                     rows: 5,
+                     block: true,
+                     placeholder:
+                       "What is the newsletter about, write what you want your users to know",
+                     hint:
+                       'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
 
-      <div class="hidden space-y-1">
-        <%= form.label :timezone, class: "ml-px text-stone-500 font-sans" %>
-        <%= form.text_field :timezone,
-                        class: "input w-full",
-                        data: {
-                          controller: "auto-timezone",
-                        } %>
+      <div class="hidden">
+        <%= form.text_field :timezone, data: { controller: "auto-timezone" } %>
       </div>
 
       <div class="mt-1">
