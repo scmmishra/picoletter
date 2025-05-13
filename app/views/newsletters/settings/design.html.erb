@@ -17,7 +17,9 @@
 <%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
   <div class="max-w-lg space-y-4">
     <div class="space-y-2">
-      <%= form.label :primary_color, "Color", class: "ml-px text-stone-500 text-sm font-sans" %>
+      <%= form.label :primary_color,
+                 "Color",
+                 class: "ml-px text-stone-500 text-sm font-sans" %>
 
       <div class="flex flex-wrap gap-1.5">
         <% Newsletter.theme_config.each do |theme| %>
@@ -81,13 +83,16 @@
                    rows: 8,
                    block: true,
                    class: "font-mono",
+                   label: "Email CSS",
                    hint: "Use this to modify the styles of your email." %>
 
     <%= form.text_area :email_footer,
                    rows: 5,
                    block: true,
                    class: "font-mono",
-                   hint: 'This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
+                   label: "Footer",
+                   hint:
+                     'This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
   </div>
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
