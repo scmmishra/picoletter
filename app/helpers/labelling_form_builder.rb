@@ -7,6 +7,12 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
+  def url_field(attribute, options = {})
+    labelled_field(attribute, options) do
+      super(attribute, default_field_options(options))
+    end
+  end
+
   def text_area(attribute, options = {})
     labelled_field(attribute, options) do
       super(attribute, default_field_options(options))
@@ -25,12 +31,18 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
+  def select(attribute, choices, options = {}, html_options = {})
+    labelled_field(attribute, options) do
+      super(attribute, choices, options, default_field_options(html_options))
+    end
+  end
+
   private
 
   def default_field_options(options)
     field_options = { class: "input w-full" }
     field_options[:class] = "#{field_options[:class]} block" if options[:block]
-    options.except(:hint).merge(field_options)
+    (options || {}).except(:hint).merge(field_options)
   end
 
   def labelled_field(attribute, options, &block)
