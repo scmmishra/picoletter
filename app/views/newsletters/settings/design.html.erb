@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<%= form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
+<%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
   <div class="max-w-lg space-y-4">
     <div class="space-y-2">
       <%= form.label :primary_color,
@@ -79,27 +79,20 @@
       </div>
     </div>
 
-    <label class="block space-y-1">
-      <%= form.label :email_css,
-                 "Email CSS",
-                 class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_area :email_css, rows: 8, class: "input w-full font-mono block" %>
-      <div class="font-sans text-xs text-stone-400">Use this to modify the styles of your email.</div>
-    </label>
+    <%= form.text_area :email_css,
+                   rows: 8,
+                   block: true,
+                   class: "font-mono",
+                   label: "Email CSS",
+                   hint: "Use this to modify the styles of your email." %>
 
-    <label class="block space-y-1">
-      <%= form.label :email_footer,
-                 "Footer",
-                 class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_area :email_footer, rows: 5, class: "input w-full block font-mono" %>
-      <div class="font-sans text-xs text-stone-400">This footer will automatically be added at the end of every email.
-        Supports
-        <a
-          class="underline hover:text-stone-500"
-          target="blank"
-          href="https://www.markdownguide.org/basic-syntax/"
-        >markdown</a></div>
-    </label>
+    <%= form.text_area :email_footer,
+                   rows: 5,
+                   block: true,
+                   class: "font-mono",
+                   label: "Footer",
+                   hint:
+                     'This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
   </div>
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>

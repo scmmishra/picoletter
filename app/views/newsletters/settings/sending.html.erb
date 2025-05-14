@@ -17,34 +17,19 @@
   </div>
 </div>
 
-<%= form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8" do |form| %>
+<%= labeled_form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8" do |form| %>
   <div class="max-w-lg space-y-4">
+    <%= form.text_field :sending_name,
+                    placeholder: "Shivam from Picoletter",
+                    label: "Sending From" %>
 
-    <label class="block space-y-1">
-      <%= form.label :sending_name, "Sending From", class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_field :sending_name,
-                      placeholder: "Shivam from Picoletter",
-                      rows: 5,
-                      class: "input w-full block" %>
-    </label>
+    <%= form.text_field :sending_address,
+                    placeholder: "updates@picoletter.com",
+                    label: "Sending Address" %>
 
-    <label class="block space-y-1">
-      <%= form.label :sending_address,
-                 "Sending Address",
-                 class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_field :sending_address,
-                      placeholder: "updates@picoletter.com",
-                      rows: 5,
-                      class: "input w-full block" %>
-    </label>
-
-    <label class="block space-y-1">
-      <%= form.label :reply_to, "Reply To", class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_field :reply_to,
-                      placeholder: "hey@picoletter.com",
-                      rows: 5,
-                      class: "input w-full block" %>
-    </label>
+    <%= form.text_field :reply_to,
+                    placeholder: "hey@picoletter.com",
+                    label: "Reply To" %>
   </div>
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
@@ -61,7 +46,7 @@
     </div>
     <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
   <% else %>
-    <%= form_with model: @newsletter, url: verify_domain_settings_path(slug: @newsletter.slug), method: :post, class: "mt-8" do |form| %>
+    <%= labeled_form_with model: @newsletter, url: verify_domain_settings_path(slug: @newsletter.slug), method: :post, class: "mt-8" do |form| %>
       <div class="max-w-lg">
         <h3 class="text-lg font-medium text-stone-800">Domain Verificaiton Pending</h3>
         <p class="mt-1 text-stone-600">Add the following DNS records to your DNS settings, to verify your

@@ -13,17 +13,16 @@
     <h3 class="text-lg font-medium text-stone-900">Profile Information</h3>
     <p class="mt-1 text-sm text-stone-500">Update your account profile information.</p>
 
-    <%= form_with model: Current.user, url: update_profile_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+    <%= labeled_form_with model: Current.user, url: update_profile_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
       <div class="mt-6 space-y-4">
-        <label class="block space-y-1">
-          <%= form.label :name, "Name", class: "ml-px text-stone-500 text-sm font-sans" %>
-          <%= form.text_field :name, required: true, class: "input w-full", autofocus: true %>
-        </label>
+        <%= form.text_field :name,
+                        required: true,
+                        autofocus: true %>
 
-        <label class="block space-y-1">
-          <%= form.label :email, "Email", class: "ml-px text-stone-500 text-sm font-sans" %>
-          <%= form.text_field :email, required: true, class: "input w-full" %>
-        </label>
+        <%= form.text_field :email,
+                        required: true,
+                        disabled: true,
+                        hint: "To change your email address, please contact support." %>
       </div>
       <div class="mt-5">
         <%= form.submit "Update Profile", class: "btn btn-primary" %>

@@ -1,41 +1,27 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<%= form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+<%= labeled_form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch do |form| %>
   <div class="max-w-lg space-y-4">
-    <label class="block space-y-1">
-      <%= form.label :title, "Title", class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
-      <div class="font-mono text-xs text-stone-400">picoletter.com/<%= @newsletter.slug %></div>
-    </label>
-    <label class="block space-y-1">
-      <%= form.label :description, class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.text_area :description,
-                     required: true,
-                     class: "input w-full block",
-                     rows: 5,
-                     placeholder:
-                       "What is the newsletter about, write what you want your users to know" %>
-      <div class="font-sans text-xs text-stone-400">Supports
-        <a
-          class="underline hover:text-stone-500"
-          target="blank"
-          href="https://www.markdownguide.org/basic-syntax/"
-        >markdown</a>.</div>
-    </label>
-    <label class="block space-y-1">
-      <%= form.label :timezone, class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.select :timezone,
-                  TZInfo::Timezone.all_identifiers,
-                  {},
-                  { class: "input w-full" } %>
-      <div class="font-sans text-xs text-stone-400">Timezone in which scheduled posts will be sent.</div>
-    </label>
-    <label class="block space-y-1">
-      <%= form.label :website, class: "ml-px text-stone-500 text-sm font-sans" %>
-      <%= form.url_field :website, class: "input w-full" %>
-      <div class="font-sans text-xs text-stone-400">Website that will be linked on the archive page, in case you post these
-        elsewhere.</div>
-    </label>
+    <%= form.text_field :title,
+                    required: true,
+                    autofocus: true,
+                    hint: "picoletter.com/#{@newsletter.slug}" %>
+
+    <%= form.text_area :description,
+                   required: true,
+                   block: true,
+                   rows: 5,
+                   placeholder: "What is the newsletter about, write what you want your users to know",
+                   hint: 'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.' %>
+
+    <%= form.select :timezone,
+                TZInfo::Timezone.all_identifiers,
+                {},
+                hint: "Timezone in which scheduled posts will be sent." %>
+
+    <%= form.url_field :website,
+                   hint: "Website that will be linked on the archive page, in case you post these elsewhere." %>
+
     <label class="flex items-center gap-1">
       <%= form.check_box :enable_archive %>
       <%= form.label :enable_archive,
