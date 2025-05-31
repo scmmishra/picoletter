@@ -4,6 +4,19 @@
     mt-8
   "
 >
+  <% if @subscriber.unsubscribed? && @subscriber.unsubscribe_reason %>
+    <div class="leading-6 font-normal text-stone-500 text-sm font-sans mb-2">
+      This member was unsubscribed because
+      <% case @subscriber.unsubscribe_reason %>
+      <% when 'bounced' %>
+        <span class="font-medium text-stone-800">their email bounced twice.</span>
+      <% when 'complained' %>
+        <span class="font-medium text-stone-800">they complained and were automatically marked.</span>
+      <% when 'spam' %>
+        <span class="font-medium text-stone-800">the system detected their email as spam.</span>
+      <% end %>
+    </div>
+  <% end %>
   <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
     <% if @subscriber.unsubscribed? %>
       <% datetime = newsletter_datetime(@subscriber.unsubscribed_at, @newsletter) %>
@@ -11,13 +24,17 @@
       <%= datetime[:date] %>
       <span class="font-normal text-stone-500">at</span>
       <%= datetime[:time] %>
-    <% elsif @subscriber.verified? %>
+    <% end %>
+  </div>
+  <% if @subscriber.verified? %>
+    <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
       <% datetime = newsletter_datetime(@subscriber.verified_at, @newsletter) %>
       <span class="font-normal text-stone-500">Verified on</span>
       <%= datetime[:date] %>
       <span class="font-normal text-stone-500">at</span>
       <%= datetime[:time] %>
-    <% end %>
+    </div>
+  <% end %>
   </div>
   <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
     <% datetime = newsletter_datetime(@subscriber.created_at, @newsletter) %>
