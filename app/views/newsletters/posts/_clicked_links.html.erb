@@ -1,0 +1,55 @@
+<% if post.email_clicks.any? %>
+  <div class="mt-6 mb-1" data-controller="collapsible">
+    <h4 class="text-sm font-sans text-stone-600 mb-3">Top Clicked Links</h4>
+    <div class="space-y-2 py-2 px-3 bg-white rounded border">
+      <div class="flex justify-between items-center font-sans">
+        <div class="text-xs text-stone-500 font-medium">
+          Link
+        </div>
+        <div class="text-xs text-stone-500 font-medium">
+          Count
+        </div>
+      </div>
+      <% sorted_links = post.email_clicks.group(:link).count.sort_by(&:last).reverse %>
+      <% sorted_links.first(5).each do |link, count| %>
+        <div class="flex justify-between items-center font-sans">
+          <div class="flex-1 min-w-0">
+            <div class="text-sm text-stone-900 truncate" title="<%= link %>">
+              <%= link %>
+            </div>
+          </div>
+          <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
+            <%= count %>
+          </div>
+        </div>
+      <% end %>
+      <% if sorted_links.length > 5 %>
+        <div data-collapsible-target="content" class="space-y-2">
+          <% sorted_links[5..-1].each do |link, count| %>
+            <div class="flex justify-between items-center font-sans">
+              <div class="flex-1 min-w-0">
+                <div class="text-sm text-stone-900 truncate" title="<%= link %>">
+                  <%= link %>
+                </div>
+              </div>
+              <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
+                <%= count %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+        <div class="pt-2 border-t border-stone-100">
+          <button
+            data-action="click->collapsible#toggle"
+            data-collapsible-target="button"
+            class="text-xs text-stone-600 font-sans hover:text-stone-500"
+          >
+            Show
+            <%= sorted_links.length - 5 %>
+            more links
+          </button>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -34,6 +34,7 @@ class Post < ApplicationRecord
   belongs_to :newsletter
 
   has_many :emails, dependent: :destroy_async
+  has_many :email_clicks, dependent: :destroy_async
   enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 
   scope :published, -> { where(status: "published") }
@@ -94,15 +95,21 @@ class Post < ApplicationRecord
     delivered = emails.delivered.count.to_f
     opened = emails.where.not(opened_at: nil).count.to_f
     bounced = emails.bounced.count.to_f
+    total_clicks = email_clicks.count.to_f
+    unique_clickers = email_clicks.joins(:email).distinct.count("emails.subscriber_id").to_f
 
     {
       total: total.to_i,
       delivered: delivered.to_i,
       opened: opened.to_i,
       bounced: bounced.to_i,
+      total_clicks: total_clicks.to_i,
+      unique_clickers: unique_clickers.to_i,
       delivery_rate: total.zero? ? 0 : (delivered / total * 100).round(1),
       bounce_rate: total.zero? ? 0 : (bounced / total * 100).round(1),
-      open_rate: delivered.zero? ? 0 : (opened / delivered * 100).round(1)
+      open_rate: delivered.zero? ? 0 : (opened / delivered * 100).round(1),
+      click_through_rate: delivered.zero? ? 0 : (unique_clickers / delivered * 100).round(1),
+      click_to_open_rate: opened.zero? ? 0 : (unique_clickers / opened * 100).round(1)
     }
   end
 end

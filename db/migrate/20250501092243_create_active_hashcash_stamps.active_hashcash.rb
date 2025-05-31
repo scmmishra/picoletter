@@ -20,7 +20,7 @@ class CreateActiveHashcashStamps < ActiveRecord::Migration[5.2]
 
       t.timestamps
     end
-    add_index :active_hashcash_stamps, [:ip_address, :created_at], where: "ip_address IS NOT NULL"
-    add_index :active_hashcash_stamps, [:counter, :rand, :date, :resource, :bits, :version, :ext], name: "index_active_hashcash_stamps_unique", unique: true
+    add_index :active_hashcash_stamps, [ :ip_address, :created_at ], where: "ip_address IS NOT NULL"
+    add_index :active_hashcash_stamps, [ :counter, :rand, :date, :resource, :bits, :version, :ext ], name: "index_active_hashcash_stamps_unique", unique: true
   end
 end

@@ -169,4 +169,39 @@ Post.published.find_each do |post|
   puts "   Created engagement data for post: #{post.title}"
 end
 
+# Create email clicks for opened emails
+puts "\n-- Creating email click data"
+Email.where.not(opened_at: nil).find_each do |email|
+  # Generate 0-3 clicks per opened email (some emails have no clicks, some have multiple)
+  click_count = rand(4)
+
+  next if click_count == 0
+
+  # Sample links that might appear in newsletters
+  possible_links = [
+    "https://example.com/article/#{rand(1000)}",
+    "https://github.com/user/repo",
+    "https://docs.example.com/guide",
+    "https://blog.example.com/post/#{rand(100)}",
+    "https://twitter.com/user/status/#{rand(1000000)}",
+    "https://youtube.com/watch?v=#{SecureRandom.hex(5)}",
+    "https://product.example.com/feature",
+    "https://newsletter.example.com/archive"
+  ]
+
+  click_count.times do
+    # Clicks happen after email is opened
+    click_time = email.opened_at + rand(1..48).hours
+
+    EmailClick.create!(
+      email_id: email.id,
+      post_id: email.post_id,
+      link: possible_links.sample,
+      timestamp: click_time
+    )
+  end
+end
+
+puts "   Created click data for opened emails"
+
 puts "\nSeeding completed!"
