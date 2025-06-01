@@ -25,8 +25,17 @@ class Newsletters::PostsController < ApplicationController
   def edit; end
 
   def update
-    @post.update(post_params)
-    redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully updated."
+    if @post.update(post_params)
+      respond_to do |format|
+        format.html { redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully updated." }
+        format.json { render json: { content: @post.content.to_s, title: @post.title } }
+      end
+    else
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: { errors: @post.errors }, status: :unprocessable_entity }
+      end
+    end
   end
 
   def new
