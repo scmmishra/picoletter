@@ -1,18 +1,40 @@
-<%= form_with model: @post, url: post_path(slug: @newsletter.slug, id: @post.id), method: :patch do |form| %>
+<%= form_with model: @post, url: post_path(slug: @newsletter.slug, id: @post.id), method: :patch,
+    data: {
+      controller: "autosave",
+      autosave_url_value: post_path(slug: @newsletter.slug, id: @post.id),
+      autosave_target: "form"
+    } do |form| %>
   <%= form.hidden_field :newsletter_id, value: @newsletter.id %>
   <div class="max-w-2xl mx-auto">
     <label class="space-y-1">
       <%= form.label :title, "Subject", class: "ml-px text-stone-500 font-sans" %>
-      <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
+      <%= form.text_field :title,
+                      required: true,
+                      class: "input w-full",
+                      autofocus: true,
+                      data: {
+                        autosave_target: "title",
+                      } %>
     </label>
   </div>
   <div
     class="
-      max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl
+      max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl relative
       prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
     "
   >
-    <%= form.rich_text_area :content %>
+    <%= form.rich_text_area :content, data: { autosave_target: "editor" } %>
+    <div
+      id="auto-save-spinner"
+      class="absolute animate-spin"
+      style="bottom: 5px; right: 5px; display: none;"
+      data-autosave-target="spinner"
+    >
+      <%= lucide_icon(
+        "loader-circle",
+        class: "size-4 transform animate-spin text-stone-400",
+      ) %>
+    </div>
   </div>
   <div class="flex items-end justify-between max-w-2xl gap-2 mx-auto mt-2">
     <div>
@@ -22,7 +44,7 @@
     <div class="flex items-center gap-2">
       <%= link_to "Send Test Email",
       send_test_post_path(slug: @newsletter.slug, id: @post.id, no_verify: true),
-      class: "btn btn-secodary",
+      class: "btn btn-secondary",
       data: {
         turbo_method: :post,
       } %>
