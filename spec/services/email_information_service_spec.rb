@@ -28,7 +28,7 @@ RSpec.describe EmailInformationService do
 
       it "sets the provider information" do
         expect(service.name).to eq("Gmail")
-        expect(service.url).to eq("https://gmail.com")
+        expect(service.url).to eq("https://mail.google.com/")
       end
     end
 
@@ -45,8 +45,8 @@ RSpec.describe EmailInformationService do
       let(:service) { described_class.new("user@yahoo.co.uk") }
 
       it "finds the correct provider" do
-        expect(service.name).to eq("Yahoo")
-        expect(service.url).to eq("https://yahoo.com")
+        expect(service.name).to eq("Yahoo!")
+        expect(service.url).to eq("https://mail.yahoo.com/")
       end
     end
 
@@ -55,7 +55,7 @@ RSpec.describe EmailInformationService do
 
       it "handles case insensitivity" do
         expect(service.name).to eq("Gmail")
-        expect(service.url).to eq("https://gmail.com")
+        expect(service.url).to eq("https://mail.google.com/")
       end
     end
 
@@ -72,19 +72,23 @@ RSpec.describe EmailInformationService do
   describe "#providers" do
     let(:service) { described_class.new("user@gmail.com") }
 
-    it "loads providers from JSON file" do
-      expect(service.providers).to eq(providers_data)
+    it "loads providers from YAML file" do
+      allow(File).to receive(:read).and_call_original
+      providers = service.providers
+      expect(providers).to be_an(Array)
+      expect(providers).not_to be_empty
+      expect(providers.first).to have_key("name")
     end
   end
 
-  describe "actual providers.json validation" do
+  describe "actual providers.yml validation" do
     let(:service) { described_class.new("test@example.com") }
     let(:actual_providers) do
       allow(File).to receive(:read).and_call_original
       service.providers
     end
 
-    it "contains valid JSON data" do
+    it "contains valid YAML data" do
       expect { actual_providers }.not_to raise_error
       expect(actual_providers).to be_an(Array)
       expect(actual_providers).not_to be_empty
@@ -157,7 +161,7 @@ RSpec.describe EmailInformationService do
       
       expect(url).to include("sender%40example.com")
       expect(url).to include("user%40gmail.com")
-      expect(url).to include((current_time.to_i - 3600).to_s)
+      expect(url).to include("newer_than%3A1h")
     end
 
     context "when sender is nil" do

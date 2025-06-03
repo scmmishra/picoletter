@@ -15,9 +15,7 @@ class EmailInformationService
   end
 
   def providers
-    JSON.parse(
-      File.read(File.join(__dir__, "/data/providers.json")),
-    )
+    YAML.load_file(File.join(__dir__, "/data/providers.yml"))
   end
 
   def search_url(sender: nil)
