@@ -10,7 +10,7 @@ class EmailInformationService
 
     @name = @provider["name"]
     @url = @provider["url"]
-    @email = @email
+    @email = email
     @search = @provider["search"]
   end
 
