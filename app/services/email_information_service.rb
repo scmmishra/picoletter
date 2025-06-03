@@ -10,14 +10,12 @@ class EmailInformationService
 
     @name = @provider["name"]
     @url = @provider["url"]
-    @email = @email
+    @email = email
     @search = @provider["search"]
   end
 
   def providers
-    JSON.parse(
-      File.read(File.join(__dir__, "/data/providers.json")),
-    )
+    YAML.load_file(Rails.root.join("config", "email_providers.yml"))
   end
 
   def search_url(sender: nil)
