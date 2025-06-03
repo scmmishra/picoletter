@@ -1,6 +1,7 @@
 - name: Gmail
   url: https://mail.google.com/
   search: https://mail.google.com/mail/u/%{email}/#search/from%3A%{sender}+in%3Aanywhere+newer_than%3A1h
+  mx_regex: (google|gmail)
   hosts:
     - gmail.com
     - googlemail.com
@@ -8,6 +9,7 @@
 - name: Yahoo!
   url: https://mail.yahoo.com/
   search: https://mail.yahoo.com/d/search/keyword=from%253A%{sender}
+  mx_regex: (yahoo|mta)
   hosts:
     - yahoo.com
     - yahoo.es
@@ -29,6 +31,7 @@
 - name: Fastmail
   url: https://www.fastmail.com/mail/
   search: https://app.fastmail.com/mail/search:from%3A%{sender}+date%3Atoday/
+  mx_regex: (fastmail|messagingengine)
   hosts:
     - 123mail.org
     - 150mail.com
@@ -151,9 +154,9 @@
 - name: ProtonMail
   url: https://mail.proton.me/
   search: https://mail.proton.me/u/0/all-mail#from=%{sender}&begin=%{timestamp}
+  mx_regex: (protonmail|proton)
   hosts:
     - protonmail.com
-    - passmail.com
     - protonmail.ch
     - pm.me
     - proton.me
@@ -161,6 +164,7 @@
 - name: Apple iCloud
   url: https://www.icloud.com/mail/
   search: https://www.icloud.com/mail/
+  mx_regex: (icloud|apple)
   hosts:
     - icloud.com
     - me.com
@@ -169,6 +173,7 @@
 - name: Mail.ru
   url: https://mail.ru/
   search: https://mail.ru/
+  mx_regex: (mail\.ru|mxs\.mail\.ru)
   hosts:
     - mail.ru
     - bk.ru
@@ -178,12 +183,14 @@
 - name: AOL
   url: https://aol.com/
   search: https://aol.com/
+  mx_regex: (aol|yahoodns)
   hosts:
     - aol.com
 
 - name: Zoho
   url: https://mail.zoho.com/
   search: https://mail.zoho.com/
+  mx_regex: (zoho)
   hosts:
     - zohomail.com
     - zoho.com
@@ -191,18 +198,21 @@
 - name: BOL
   url: https://email.bol.uol.com.br/
   search: https://email.bol.uol.com.br/
+  mx_regex: (bol|uol)
   hosts:
     - bol.com.br
 
 - name: UOL
   url: https://email.uol.com.br/
   search: https://email.uol.com.br/
+  mx_regex: (uol)
   hosts:
     - uol.com.br
 
 - name: Outlook
   url: https://outlook.live.com/mail/
   search: https://outlook.live.com/mail/?login_hint=%{email}
+  mx_regex: (outlook|hotmail|protection\.outlook)
   hosts:
     - outlook.com
     - hotmail.com
@@ -210,18 +220,21 @@
 - name: Hey
   url: https://app.hey.com/
   search: https://app.hey.com/
+  mx_regex: (hey)
   hosts:
     - hey.com
 
 - name: Yandex
   url: https://mail.yandex.com/
   search: https://mail.yandex.com/
+  mx_regex: (yandex)
   hosts:
     - yandex.com
 
 - name: Tuta
   url: https://app.tuta.com/
   search: https://app.tuta.com/search/mail?query=%{sender}&end=%{timestamp}
+  mx_regex: (tutanota|tuta)
   hosts:
     - tutanota.com
     - tutanota.de
@@ -233,6 +246,7 @@
 - name: GMX
   url: https://navigator-bs.gmx.com/mail
   search: https://navigator-bs.gmx.com/mail
+  mx_regex: (gmx)
   hosts:
     - gmx.com
     - gmx.us

@@ -6,13 +6,13 @@ RSpec.describe EmailInformationService do
       {
         "name" => "Gmail",
         "url" => "https://gmail.com",
-        "hosts" => ["gmail.com"],
+        "hosts" => [ "gmail.com" ],
         "search" => "https://mail.google.com/mail/u/0/#search/%{sender}+%{email}+after:%{timestamp}"
       },
       {
         "name" => "Yahoo",
         "url" => "https://yahoo.com",
-        "hosts" => ["yahoo.com", "yahoo.co.uk"],
+        "hosts" => [ "yahoo.com", "yahoo.co.uk" ],
         "search" => "https://mail.yahoo.com/search?query=%{sender}+%{email}"
       }
     ]
@@ -104,13 +104,13 @@ RSpec.describe EmailInformationService do
 
         expect(provider["name"]).to be_a(String), "Provider '#{provider["name"]}' name should be string"
         expect(provider["name"]).not_to be_empty, "Provider at index #{index} name should not be empty"
-        
+
         expect(provider["url"]).to be_a(String), "Provider '#{provider["name"]}' url should be string"
         expect(provider["url"]).to match(/\Ahttps?:\/\//), "Provider '#{provider["name"]}' url should be valid HTTP(S) URL"
-        
+
         expect(provider["hosts"]).to be_an(Array), "Provider '#{provider["name"]}' hosts should be array"
         expect(provider["hosts"]).not_to be_empty, "Provider '#{provider["name"]}' hosts should not be empty"
-        
+
         provider["hosts"].each do |host|
           expect(host).to be_a(String), "Host '#{host}' in provider '#{provider["name"]}' should be string"
           expect(host).not_to be_empty, "Host in provider '#{provider["name"]}' should not be empty"
@@ -158,7 +158,7 @@ RSpec.describe EmailInformationService do
 
     it "generates search URL with proper URL encoding" do
       url = service.search_url(sender: sender)
-      
+
       expect(url).to include("sender%40example.com")
       expect(url).to include("user%40gmail.com")
       expect(url).to include("newer_than%3A1h")
@@ -167,7 +167,7 @@ RSpec.describe EmailInformationService do
     context "when sender is nil" do
       it "handles nil sender gracefully" do
         url = service.search_url(sender: nil)
-        
+
         expect(url).to include("")
         expect(url).to include("user%40gmail.com")
       end
@@ -175,10 +175,10 @@ RSpec.describe EmailInformationService do
 
     context "with special characters in email" do
       let(:service) { described_class.new("user+test@gmail.com") }
-      
+
       it "properly encodes special characters" do
         url = service.search_url(sender: "sender+test@example.com")
-        
+
         expect(url).to include("sender%2Btest%40example.com")
         expect(url).to include("user%2Btest%40gmail.com")
       end
