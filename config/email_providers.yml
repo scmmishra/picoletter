@@ -153,6 +153,7 @@
   search: https://mail.proton.me/u/0/all-mail#from=%{sender}&begin=%{timestamp}
   hosts:
     - protonmail.com
+    - passmail.com
     - protonmail.ch
     - pm.me
     - proton.me

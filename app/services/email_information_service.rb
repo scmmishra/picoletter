@@ -15,7 +15,7 @@ class EmailInformationService
   end
 
   def providers
-    YAML.load_file(File.join(__dir__, "/data/providers.yml"))
+    YAML.load_file(Rails.root.join("config", "email_providers.yml"))
   end
 
   def search_url(sender: nil)
