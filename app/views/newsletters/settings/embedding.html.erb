@@ -41,14 +41,19 @@
     </div>
   </div>
   <section class="grid grid-cols-2 gap-4">
-    <div class="relative font-mono text-xs">
-      <div class="absolute right-2 pt-2 top-2">
-        <%= button_to_copy_to_clipboard(@newsletter.embed_form(with_name: true)) %>
+    <div>
+      <div class="relative font-mono text-xs">
+        <div class="absolute right-2 pt-2 top-2">
+          <%= button_to_copy_to_clipboard(@newsletter.embed_form(with_name: true)) %>
+        </div>
+        <div
+          class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
+          id="form_html"
+        >
+        </div>
       </div>
-      <div
-        class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
-        id="form_html"
-      >
+      <div class="mt-2 py-3">
+        <%= render "newsletters/settings/partials/label_instructions" %>
       </div>
     </div>
     <div class="relative font-mono text-xs">

@@ -1,0 +1,49 @@
+<div class="text-sm text-stone-600">
+  <h4 class="font-medium text-stone-800 text-base mb-2">Adding Labels to Subscribers</h4>
+  <p class="font-sans mb-4">
+    You can automatically assign labels to subscribers when they sign up
+    through your embedded form by adding a
+    <code class="bg-stone-100 px-1 rounded text-xs">labels</code>
+    parameter.
+  </p>
+
+  <div class="space-y-3">
+    <div>
+      <h5 class="font-medium text-stone-800 mb-1">Single Label</h5>
+      <p class="font-sans mb-2">Add a hidden input field with the label name:</p>
+      <div class="relative">
+        <div class="absolute font-mono right-2 mt-1.5">
+          <%= button_to_copy_to_clipboard(
+            '<input type="hidden" name="labels" value="newsletter-signup">',
+          ) {} %>
+        </div>
+        <code class="block bg-stone-100 p-2 rounded text-xs">
+          &lt;input type="hidden" name="labels" value="newsletter-signup"&gt;
+        </code>
+      </div>
+    </div>
+
+    <div>
+      <h5 class="font-medium text-stone-800 mb-1">Multiple Labels</h5>
+      <p class="font-sans mb-2">Separate multiple labels with commas:</p>
+      <div class="relative">
+        <div class="absolute font-mono right-2 mt-1.5">
+          <%= button_to_copy_to_clipboard(
+            '<input type="hidden" name="labels" value="newsletter,website,lead">',
+          ) {} %>
+        </div>
+        <code class="block bg-stone-100 p-2 rounded text-xs">
+          &lt;input type="hidden" name="labels"
+          value="newsletter,website,lead"&gt;
+        </code>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="mt-4 font-sans rounded">
+    <strong>Note:</strong>
+    <span>Labels must exist in your newsletter before they can be assigned.
+      Non-existent labels will be ignored.</span>
+  </div>
+</div>
