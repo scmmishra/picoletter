@@ -50,6 +50,7 @@
           class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
           id="form_html"
         >
+          <pre class="px-3 py-2 text-xs fallback-code overflow-hidden"><%= @newsletter.embed_form(with_name: true) %></pre>
         </div>
       </div>
       <div class="mt-2 py-3">
@@ -64,24 +65,33 @@
         class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100"
         id="css_html"
       >
+        <pre class="p-2 text-xs fallback-code overflow-hidden"><%= @newsletter.embed_form_css %></pre>
       </div>
     </div>
   </section>
 </section>
 <script type="module">
-  import { codeToHtml } from 'https://esm.sh/shiki@1.0.0'
+  try {
+    const { codeToHtml } = await import('https://esm.sh/shiki@3.5.0')
 
-  const formCodeEl = document.getElementById('form_html')
-  formCodeEl.innerHTML = await codeToHtml(`<%= raw @newsletter.embed_form(with_name: true) %>`, {
-    lang: 'html',
-    theme: 'github-light'
-  })
+    const formCodeEl = document.getElementById('form_html')
+    const cssCodeEl = document.getElementById('css_html')
 
-  const cssCodeEl = document.getElementById('css_html')
-  cssCodeEl.innerHTML = await codeToHtml(`<%= raw  @newsletter.embed_form_css %>`, {
-    lang: 'css',
-    theme: 'github-light'
-  })
+    // Replace fallback content with syntax highlighted version
+    formCodeEl.innerHTML = await codeToHtml(`<%= raw @newsletter.embed_form(with_name: true) %>`, {
+      lang: 'html',
+      theme: 'github-light'
+    })
+
+    cssCodeEl.innerHTML = await codeToHtml(`<%= raw  @newsletter.embed_form_css %>`, {
+      lang: 'css',
+      theme: 'github-light'
+    })
+  } catch (error) {
+    console.error(error)
+    console.log('Shiki failed to load, using fallback rendering')
+    // Fallback content is already in place, no action needed
+  }
 </script>
 
 <style>
