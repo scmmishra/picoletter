@@ -1,0 +1,18 @@
+🚨 STUCK POSTS ALERT
+
+We've detected <%= @stuck_count %> post(s) that appear to be stuck in processing state:
+
+<% @stuck_posts.includes(:newsletter).each do |post| %>
+- Post ID: <%= post.id %>
+  Title: <%= post.title %>
+  Newsletter: <%= post.newsletter.title %>
+  Stuck Since: <%= time_ago_in_words(post.updated_at) %> ago
+
+<% end %>
+
+Recommended Actions:
+1. Check the job queue for any failed SendPostJob instances
+2. Review application logs for errors around the stuck times  
+3. If needed, manually reset post status to "draft" and retry
+
+This alert was generated automatically by MonitorStuckPostsJob.
