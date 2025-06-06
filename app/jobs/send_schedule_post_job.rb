@@ -12,7 +12,7 @@ class SendSchedulePostJob < ApplicationJob
 
       Rails.logger.info "[SendScheduledPost] Sending post #{post.title} to subscribers"
       begin
-        post.publish_and_send
+        post.publish_and_send(true)
         # Note: publish_and_send already sets status to "published" - no duplicate update needed
       rescue StandardError => e
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
