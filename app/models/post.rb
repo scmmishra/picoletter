@@ -82,6 +82,16 @@ class Post < ApplicationRecord
     newsletter.user.active?
   end
 
+  def self.claim_for_processing(post_id)
+    find(post_id).with_lock do |post|
+      return nil unless post.draft?
+      post.update!(status: "processing")
+      post
+    end
+  rescue ActiveRecord::RecordNotFound
+    nil
+  end
+
   def send_test_email(email)
     PostMailer.test_post(email, self).deliver_now
   end

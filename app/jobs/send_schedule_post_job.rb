@@ -6,12 +6,14 @@ class SendSchedulePostJob < ApplicationJob
   def perform
     Rails.logger.info "[SendScheduledPost] Sending published post to subscribers"
 
-    posts_to_send.all.each do |post|
+    posts_to_send.pluck(:id).each do |post_id|
+      post = Post.claim_for_processing(post_id)
+      next unless post
+
       Rails.logger.info "[SendScheduledPost] Sending post #{post.title} to subscribers"
       begin
-        post.update(status: "processing")
         post.publish_and_send
-        post.update(status: "published")
+        # Note: publish_and_send already sets status to "published" - no duplicate update needed
       rescue StandardError => e
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")
@@ -21,6 +23,8 @@ class SendSchedulePostJob < ApplicationJob
   end
 
   def posts_to_send
-    Post.drafts.where(scheduled_at: (Time.now - 2.minutes)..(Time.now + 2.minutes))
+    # Only get posts scheduled for this exact minute to prevent overlap
+    time = Time.current.beginning_of_minute
+    Post.drafts.where(scheduled_at: time..(time + 59.seconds))
   end
 end
