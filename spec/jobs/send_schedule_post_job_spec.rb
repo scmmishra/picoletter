@@ -4,6 +4,11 @@ RSpec.describe SendSchedulePostJob, type: :job do
   let(:user) { create(:user) }
   let(:newsletter) { create(:newsletter, user: user) }
 
+  before do
+    # Mock AppConfig.billing_enabled? to return false so subscribed? always returns true
+    allow(AppConfig).to receive(:billing_enabled?).and_return(false)
+  end
+
   describe "#perform" do
     it "processes scheduled posts successfully" do
       post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: Time.current)
