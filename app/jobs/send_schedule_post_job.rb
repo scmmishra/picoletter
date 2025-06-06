@@ -12,8 +12,9 @@ class SendSchedulePostJob < ApplicationJob
 
       Rails.logger.info "[SendScheduledPost] Sending post #{post.title} to subscribers"
       begin
-        post.publish_and_send(true)
-        # Note: publish_and_send already sets status to "published" - no duplicate update needed
+        # Post is already claimed and validated - just queue for sending
+        SendPostJob.perform_later(post.id)
+        # Note: Status will be set to "published" by SendPostBatchJob when all batches complete
       rescue StandardError => e
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")

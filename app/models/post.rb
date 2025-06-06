@@ -86,6 +86,11 @@ class Post < ApplicationRecord
     post = find(post_id)
     post.with_lock do
       return nil unless post.draft?
+
+      # Only claim if the post can actually be sent
+      return nil unless post.newsletter.user.subscribed?
+      return nil unless post.can_send?
+
       post.update!(status: "processing")
       post
     end

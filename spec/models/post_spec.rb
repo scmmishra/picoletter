@@ -120,5 +120,25 @@ RSpec.describe Post, type: :model do
       processing_posts = Post.where(status: "processing")
       expect(processing_posts.count).to eq(5)
     end
+
+    it "returns nil when user is not subscribed" do
+      # Enable billing and set inactive subscription
+      allow(AppConfig).to receive(:billing_enabled?).and_return(true)
+      user.update!(additional_data: { subscription: { status: "inactive" } })
+
+      claimed_post = Post.claim_for_processing(post.id)
+
+      expect(claimed_post).to be_nil
+      expect(post.reload.status).to eq("draft")
+    end
+
+    it "returns nil when user is not active" do
+      user.update!(active: false)
+
+      claimed_post = Post.claim_for_processing(post.id)
+
+      expect(claimed_post).to be_nil
+      expect(post.reload.status).to eq("draft")
+    end
   end
 end
