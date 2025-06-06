@@ -18,23 +18,61 @@ This is beta software, you can use it in production if you're feeling like going
 
 ## Features
 
-- Run multiple newsletter from the same app
+- Run multiple newsletters from the same app
 - Subscription, confirmation & unsubscription flow
 - Schedule newsletter for sending
-- Custom sending domains
-- Handle bounces and complains to ensure good reputation
+- Custom sending domains with DNS verification
+- Handle bounces and complaints to ensure good reputation
 - Embeddable forms for subscription
 - Public archive
 - Subscriber reminders
+- Subscriber labeling and categorization
+- Email analytics tracking (opens, clicks)
 
 ### Pending features
 
 - [ ] Subscriber import & export
-- [ ] Subscriber labels and cohorts
 
 ## Stack
 
 - Ruby on Rails
-- PostgreSQl
-- SolidQueue
-- AWS SES
+- PostgreSQL
+- SolidQueue (background jobs)
+- AWS SES (email delivery)
+- Tailwind CSS (styling)
+- Hotwire/Turbo (dynamic interactions)
+
+## Getting Started
+
+### Prerequisites
+- Ruby 3.1+
+- PostgreSQL
+- AWS SES account
+
+### Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   bundle install
+   ```
+3. Set up the database:
+   ```bash
+   bundle exec rails db:setup
+   ```
+4. Start the server:
+   ```bash
+   overmind start Procfile.dev
+   ```
+
+### Testing
+
+Run the test suite:
+```bash
+bundle exec rspec
+```
+
+Run linting:
+```bash
+bundle exec rubocop
+```
