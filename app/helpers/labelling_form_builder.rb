@@ -57,6 +57,7 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
   def default_options(options)
     field_options = { class: "input w-full" }
     field_options[:class] += " block" if options[:block]
-    options.except(:hint, :label).merge(field_options)
+    field_options[:class] += " #{options[:class]}" if options[:class]
+    options.except(:hint, :label, :class).merge(field_options)
   end
 end
