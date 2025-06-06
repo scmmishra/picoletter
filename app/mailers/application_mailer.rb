@@ -16,6 +16,10 @@ class ApplicationMailer < ActionMailer::Base
     "Picoletter Support <support@#{sending_domain}>"
   end
 
+  def alerts_address
+    "Picoletter Alerts <alerts@#{sending_domain}>"
+  end
+
   def sending_domain
     AppConfig.get("PICO_SENDING_DOMAIN", "picoletter.com")
   end
