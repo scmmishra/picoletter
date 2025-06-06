@@ -30,6 +30,11 @@ RSpec.describe Post, type: :model do
   let(:newsletter) { create(:newsletter, user: user) }
   let(:post) { create(:post, newsletter: newsletter, status: "draft") }
 
+  before do
+    # Mock AppConfig.billing_enabled? to return false so subscribed? always returns true
+    allow(AppConfig).to receive(:billing_enabled?).and_return(false)
+  end
+
   describe ".claim_for_processing" do
     it "claims a draft post and sets status to processing" do
       claimed_post = Post.claim_for_processing(post.id)
