@@ -88,10 +88,10 @@ Newsletter.find_each do |newsletter|
     end
 
     published_at = status == :published ? rand(1..90).days.ago : nil
-
+    content_md = Faker::Markdown.sandwich(sentences: 8)
     post = newsletter.posts.create!(
       title: title,
-      content: Faker::Markdown.sandwich(sentences: 8),
+      content: Kramdown::Document.new(content_md).to_html,
       status: status,
       published_at: published_at
     )
