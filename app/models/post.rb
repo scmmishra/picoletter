@@ -83,7 +83,8 @@ class Post < ApplicationRecord
   end
 
   def self.claim_for_processing(post_id)
-    find(post_id).with_lock do |post|
+    post = find(post_id)
+    post.with_lock do
       return nil unless post.draft?
       post.update!(status: "processing")
       post
