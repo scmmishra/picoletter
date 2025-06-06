@@ -23,8 +23,8 @@ class SendSchedulePostJob < ApplicationJob
   end
 
   def posts_to_send
-    # Only get posts scheduled for this exact minute to prevent overlap
-    time = Time.current.beginning_of_minute
-    Post.drafts.where(scheduled_at: time..(time + 59.seconds))
+    # 1 minute before and after current time to handle job timing variations
+    # Atomic claiming prevents duplicates across multiple job runs
+    Post.drafts.where(scheduled_at: 1.minute.ago..1.minute.from_now)
   end
 end
