@@ -16,6 +16,7 @@ class SendSchedulePostJob < ApplicationJob
         SendPostJob.perform_later(post.id)
         # Note: Status will be set to "published" by SendPostBatchJob when all batches complete
       rescue StandardError => e
+        RorVsWild.record_error(e, context: { post: post_id })
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")
         raise e

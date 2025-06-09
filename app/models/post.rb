@@ -96,6 +96,9 @@ class Post < ApplicationRecord
     end
   rescue ActiveRecord::RecordNotFound
     nil
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { post: post_id })
+    nil
   end
 
   def send_test_email(email)
