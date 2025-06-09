@@ -16,7 +16,7 @@ class MonitorStuckPostsJob < ApplicationJob
   def find_stuck_posts
     # Posts stuck in processing for more than 10 minutes
     Post.where(
-      status: "processing",
+      status: :processing,
       updated_at: ..10.minutes.ago
     )
   end
