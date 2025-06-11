@@ -153,6 +153,8 @@ RSpec.describe SendSchedulePostJob, type: :job do
 
         # Mock SendPostJob to raise an error
         allow(SendPostJob).to receive(:perform_later).and_raise(StandardError, "Processing failed")
+
+        SendSchedulePostJob.new.perform
         # Post status should be reverted to draft
         expect(post.reload.status).to eq("draft")
       end
@@ -165,6 +167,8 @@ RSpec.describe SendSchedulePostJob, type: :job do
         allow(SendPostJob).to receive(:perform_later) do |post_id|
           raise StandardError, "Processing failed" if Post.find(post_id).title == "Bad Post"
         end
+
+        SendSchedulePostJob.new.perform
 
         # First post should still be processing, second should be reverted
         expect(post1.reload.status).to eq("processing")
