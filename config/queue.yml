@@ -9,6 +9,9 @@ default: &default
         verify_dns:
           class: VerifyDNSRecordsJob
           schedule: every day
+        monitor_stuck_posts:
+          class: MonitorStuckPostsJob
+          schedule: every 10 minutes
   workers:
     - queues: "*"
       threads: 3

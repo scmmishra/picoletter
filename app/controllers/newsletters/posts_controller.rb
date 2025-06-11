@@ -68,7 +68,16 @@ class Newsletters::PostsController < ApplicationController
 
   def publish
     no_verify = params[:no_verify] == "true"
-    @post.publish_and_send(no_verify)
+
+    @post.with_lock do |post|
+      unless post.draft?
+        redirect_to post_url(slug: @newsletter.slug, id: @post.id),
+                   notice: "Post already published." and return
+      end
+
+      post.publish_and_send(no_verify)
+    end
+
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
   rescue Exceptions::LimitExceedError => e
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Sending this will exceed sending limits. Please upgrade to continue"

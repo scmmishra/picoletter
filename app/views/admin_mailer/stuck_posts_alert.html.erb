@@ -1,0 +1,33 @@
+<h2>🚨 Stuck Posts Alert</h2>
+
+<p>We've detected <strong><%= @stuck_count %></strong> post(s) that appear to be stuck in processing state:</p>
+
+<table style="border-collapse: collapse; width: 100%; margin: 20px 0;">
+  <thead>
+    <tr style="background-color: #f8f9fa;">
+      <th style="border: 1px solid #dee2e6; padding: 8px;">Post ID</th>
+      <th style="border: 1px solid #dee2e6; padding: 8px;">Title</th>
+      <th style="border: 1px solid #dee2e6; padding: 8px;">Newsletter</th>
+      <th style="border: 1px solid #dee2e6; padding: 8px;">Stuck Since</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @stuck_posts.includes(:newsletter).each do |post| %>
+      <tr>
+        <td style="border: 1px solid #dee2e6; padding: 8px;"><%= post.id %></td>
+        <td style="border: 1px solid #dee2e6; padding: 8px;"><%= post.title %></td>
+        <td style="border: 1px solid #dee2e6; padding: 8px;"><%= post.newsletter.title %></td>
+        <td style="border: 1px solid #dee2e6; padding: 8px;"><%= time_ago_in_words(post.updated_at) %> ago</td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h3>Recommended Actions:</h3>
+<ol>
+  <li>Check the job queue for any failed SendPostJob instances</li>
+  <li>Review application logs for errors around the stuck times</li>
+  <li>If needed, manually reset post status to "draft" and retry</li>
+</ol>
+
+<p><small>This alert was generated automatically by MonitorStuckPostsJob.</small></p>

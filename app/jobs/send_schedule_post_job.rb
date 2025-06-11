@@ -6,21 +6,26 @@ class SendSchedulePostJob < ApplicationJob
   def perform
     Rails.logger.info "[SendScheduledPost] Sending published post to subscribers"
 
-    posts_to_send.all.each do |post|
+    posts_to_send.pluck(:id).each do |post_id|
+      post = Post.claim_for_processing(post_id)
+      next unless post
+
       Rails.logger.info "[SendScheduledPost] Sending post #{post.title} to subscribers"
       begin
-        post.update(status: "processing")
-        post.publish_and_send
-        post.update(status: "published")
+        # Post is already claimed and validated - just queue for sending
+        SendPostJob.perform_later(post.id)
+        # Note: Status will be set to "published" by SendPostBatchJob when all batches complete
       rescue StandardError => e
+        RorVsWild.record_error(e, context: { post: post_id })
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")
-        raise e
       end
     end
   end
 
   def posts_to_send
-    Post.drafts.where(scheduled_at: (Time.now - 2.minutes)..(Time.now + 2.minutes))
+    # 1 minute before and after current time to handle job timing variations
+    # Atomic claiming prevents duplicates across multiple job runs
+    Post.drafts.where(scheduled_at: 1.minute.ago..1.minute.from_now)
   end
 end

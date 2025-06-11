@@ -82,6 +82,25 @@ class Post < ApplicationRecord
     newsletter.user.active?
   end
 
+  def self.claim_for_processing(post_id)
+    post = find(post_id)
+    post.with_lock do
+      return nil unless post.draft?
+
+      # Only claim if the post can actually be sent
+      return nil unless post.newsletter.user.subscribed?
+      return nil unless post.can_send?
+
+      post.update!(status: "processing")
+      post
+    end
+  rescue ActiveRecord::RecordNotFound
+    nil
+  rescue StandardError => e
+    RorVsWild.record_error(e, context: { post: post_id })
+    nil
+  end
+
   def send_test_email(email)
     PostMailer.test_post(email, self).deliver_now
   end
