@@ -19,7 +19,6 @@ class SendSchedulePostJob < ApplicationJob
         RorVsWild.record_error(e, context: { post: post_id })
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")
-        raise e
       end
     end
   end
