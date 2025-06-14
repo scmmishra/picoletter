@@ -91,7 +91,7 @@ group :test do
 end
 
 gem "tailwindcss-rails", "~> 3.3.1"
-gem "kaminari"
+gem "pagy"
 
 # HTML parsing
 gem "nokogiri"

@@ -7,14 +7,11 @@ class Newsletters::SubscribersController < ApplicationController
 
 
   def index
-    page = params[:page] || 0
     status = params[:status] || "verified"
 
-    @subscribers = @newsletter.subscribers
+    @pagy, @subscribers = pagy(@newsletter.subscribers
       .order(created_at: :desc)
-      .page(page || 0)
-      .where(status: status)
-      .per(30)
+      .where(status: status), limit: 30)
   end
 
   def show
