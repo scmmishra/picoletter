@@ -7,6 +7,10 @@ queue: &queue
   <<: *default
   migrations_paths: db/queue_migrations
 
+cache: &cache
+  <<: *default
+  migrations_paths: db/cache_migrations
+
 development:
   primary:
     <<: *default
@@ -14,6 +18,9 @@ development:
   queue:
     <<: *queue
     database: picoletter_development_queue
+  cache:
+    <<: *cache
+    database: picoletter_development_cache
 
 test:
   primary:
@@ -22,6 +29,9 @@ test:
   queue:
     <<: *queue
     database: picoletter_test_queue
+  cache:
+    <<: *cache
+    database: picoletter_test_cache
 
 production:
   primary:
@@ -33,3 +43,7 @@ production:
     <<: *queue
     database: picoletter_production_queue
     url: <%= ENV['QUEUE_DATABASE_URL'] %>
+  cache:
+    <<: *cache
+    database: picoletter_production_cache
+    url: <%= ENV['CACHE_DATABASE_URL'] %>

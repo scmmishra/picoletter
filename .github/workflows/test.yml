@@ -39,10 +39,12 @@ jobs:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          CACHE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: |
           bin/rails db:create
           bin/rails db:schema:load
           bin/rails db:schema:load:queue
+          bin/rails db:schema:load:cache
 
       - name: Run tests
         env:
@@ -51,4 +53,5 @@ jobs:
           ENABLE_BILLING: "true"
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          CACHE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
         run: bin/rails spec

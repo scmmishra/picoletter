@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.3.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.1"
+gem "rails", "~> 8.0.2"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -113,7 +113,7 @@ gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.4.0"
 gem "logtail-rails", "~> 0.2.7"
-gem "solid_cache", "~> 0.7.0"
+gem "solid_cache", "~> 1.0.7"
 
 gem "httparty"
 
