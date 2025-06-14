@@ -24,28 +24,23 @@
 # https://github.com/rails/solid_queue/issues/329
 # https://github.com/rails/rails/issues/52829
 # We can remove these when Rails fixes the multi-database schema loading bug.
+def load_schema(database_name, schema_file)
+  config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: database_name)
+  ActiveRecord::Base.establish_connection(config)
+  load(Rails.root.join(schema_file))
+  puts "#{database_name.capitalize} schema loaded successfully."
+end
+
 namespace :solid_queue do
   desc "Load SolidQueue schema into the queue database"
   task load_schema: :environment do
-    config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: "queue")
-
-    ActiveRecord::Base.establish_connection(config)
-
-    load(Rails.root.join("db/queue_schema.rb"))
-
-    puts "SolidQueue schema loaded successfully."
+    load_schema("queue", "db/queue_schema.rb")
   end
 end
 
 namespace :solid_cache do
   desc "Load SolidCache schema into the cache database"
   task load_schema: :environment do
-    config = ActiveRecord::Base.configurations.configs_for(env_name: Rails.env, name: "cache")
-
-    ActiveRecord::Base.establish_connection(config)
-
-    load(Rails.root.join("db/cache_schema.rb"))
-
-    puts "SolidCache schema loaded successfully."
+    load_schema("cache", "db/cache_schema.rb")
   end
 end
