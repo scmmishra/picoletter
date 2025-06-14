@@ -223,9 +223,6 @@ GEM
       pp (>= 0.6.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    jbuilder (2.13.0)
-      actionview (>= 5.0.0)
-      activesupport (>= 5.0.0)
     jmespath (1.6.2)
     json (2.12.2)
     jwt (2.10.1)
@@ -419,10 +416,6 @@ GEM
     rdoc (6.14.0)
       erb
       psych (>= 4.0.0)
-    redis (5.4.0)
-      redis-client (>= 0.22.0)
-    redis-client (0.24.0)
-      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.1)
       io-console (~> 0.5)
@@ -575,8 +568,6 @@ DEPENDENCIES
   httparty
   image_processing (~> 1.2)
   importmap-rails
-  jbuilder
-  jwt
   kaminari
   kramdown
   letter_opener
@@ -593,7 +584,6 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
-  redis (>= 4.0.1)
   resolv
   rorvswild (>= 1.9.1)
   rspec-rails (~> 6.1.0)
