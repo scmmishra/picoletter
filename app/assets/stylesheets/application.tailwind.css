@@ -62,24 +62,38 @@
     @apply shadow-none pointer-events-none bg-none opacity-65;
   }
 
-  .next,
-  .last,
-  .prev,
-  .first,
-  .page > a {
-    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center rounded-md min-w-8 text-stone-500 hover:bg-stone-100;
+  /* Pagy pagination styling with Tailwind */
+  .pagy {
+    @apply flex space-x-1 font-sans text-sm text-stone-500;
   }
 
-  .page > a {
-    @apply bg-stone-100 hover:bg-stone-200;
+  .pagy a:not(.gap) {
+    @apply inline-block h-8 px-2 leading-8 text-center rounded-md min-w-8 bg-stone-100 hover:bg-stone-200;
   }
 
-  .page.gap {
-    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center rounded-md min-w-8 text-stone-500;
+  .pagy a.current {
+    @apply text-white bg-stone-800;
   }
 
-  .page.current {
-    @apply inline-block h-8 px-2 font-sans text-sm leading-8 text-center text-white rounded-md min-w-8 bg-stone-800;
+  .pagy .gap {
+    @apply inline-block h-8 px-2 leading-8 text-center rounded-md min-w-8 text-stone-500;
+  }
+
+  /* Remove background for Prev/Next buttons, only show on hover */
+  .pagy a[aria-label="Previous"],
+  .pagy a[aria-label="Next"] {
+    @apply bg-transparent hover:bg-stone-100 text-[0px];
+  }
+
+  /* Add "Prev" and "Next" text using CSS */
+  .pagy a[aria-label="Previous"]::after {
+    content: "‹ Prev";
+    font-size: 0.875rem;
+  }
+
+  .pagy a[aria-label="Next"]::before {
+    content: "Next ›";
+    font-size: 0.875rem;
   }
 
   .flash {
