@@ -1,31 +1,40 @@
 <div
   class="border border-stone-200 bg-stone-100 rounded-2xl p-5 -mx-5 gap-5 flex"
 >
-  <!-- Enhanced Calendar Icon -->
-  <div
-    class="
-      size-12 rounded-lg bg-white border flex flex-col border-stone-600
-      overflow-hidden
-    "
-  >
+  <div class="relative">
     <div
       class="
-        bg-stone-600 py-1 text-center text-[11px] leading-none font-bold text-white
-        uppercase tracking-wide
-      "
-    >
-      <%= post.scheduled_at_tz.strftime("%b") %>
-    </div>
-    <div
-      class="
-        flex flex-grow items-center justify-center w-full text-center bg-white
+        size-12 rounded-lg bg-white border flex flex-col border-stone-600
+        overflow-hidden
       "
     >
       <div
         class="
-          text-xl font-sans font-bold leading-none text-stone-800 tabular-nums
+          bg-stone-600 py-1 text-center text-[11px] leading-none font-bold text-white
+          uppercase tracking-wide
         "
-      ><%= post.scheduled_at_tz.strftime("%-d") %></div>
+      >
+        <%= post.scheduled_at_tz.strftime("%b") %>
+      </div>
+      <div
+        class="
+          flex flex-grow items-center justify-center w-full text-center bg-white
+        "
+      >
+        <div
+          class="
+            text-xl font-sans font-bold leading-none text-stone-800 tabular-nums
+          "
+        ><%= post.scheduled_at_tz.strftime("%-d") %></div>
+      </div>
+    </div>
+    <div
+      class="
+        absolute -right-2 -top-2 size-5 bg-green-600 border-stone-100 border-2
+        rounded-full grid place-content-center
+      "
+    >
+      <%= lucide_icon("check", class: "size-2 stroke-[4px] text-white") %>
     </div>
   </div>
   <!-- Content -->
