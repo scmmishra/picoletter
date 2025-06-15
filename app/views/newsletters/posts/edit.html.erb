@@ -73,7 +73,11 @@
 
 <div class="max-w-2xl mx-auto mt-8 space-y-5">
   <% if AppConfig.get('ENABLE_SCHEDULING', true) || Current.user.super? %>
-    <%= render "posts/scheduled", post: @post %>
+    <% if @post.scheduled? %>
+      <%= render "posts/scheduled_status", post: @post %>
+    <% else %>
+      <%= render "posts/schedule_form", post: @post %>
+    <% end %>
   <% end %>
   <%= render "posts/delete", post: @post %>
 </div>
