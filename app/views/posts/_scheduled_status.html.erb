@@ -54,7 +54,7 @@
     </div>
     <p class="mt-2 text-stone-500">
       This post will automatically be sent to all your subscribers. You can
-      still makes changes to the draft without affecting the schedule
+      still make changes to the draft without affecting the schedule
     </p>
   </div>
   <%= form_with model: post, url: unschedule_post_path(slug: post.newsletter.slug, id: post.id), method: :post do |form| %>
