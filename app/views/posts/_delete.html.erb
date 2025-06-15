@@ -1,7 +1,6 @@
 <div
   class="
     border border-stone-200 bg-stone-100 rounded-2xl p-5 -mx-5 font-sans flex gap-5
-    group
   "
 >
   <div class="flex-grow">
@@ -12,8 +11,7 @@
   <div class="flex-shrink-0">
     <%= link_to "Delete forever",
     post_path(slug: post.newsletter.slug, id: post.id),
-    class:
-      "btn btn-danger grayscale group-hover:grayscale-0 transition-all duration-200",
+    class: "btn btn-danger",
     data: {
       turbo_method: :delete,
       turbo_confirm: "Are you sure you want to delete this post?",
