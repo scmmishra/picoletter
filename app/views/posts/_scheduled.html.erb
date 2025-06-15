@@ -1,20 +1,19 @@
 <% if post.scheduled? %>
   <div
     class="
-      border border-stone-200 bg-stone-100 rounded-2xl p-6 -mx-5 gap-5 flex
-      items-start
+      border border-stone-200 bg-stone-100 rounded-2xl p-5 -mx-5 gap-5 flex
     "
   >
     <!-- Enhanced Calendar Icon -->
     <div
       class="
-        size-[52px] rounded-xl bg-white border flex flex-col border-stone-600
+        size-12 rounded-lg bg-white border flex flex-col border-stone-600
         overflow-hidden
       "
     >
       <div
         class="
-          bg-stone-600 py-[5px] text-center text-[11px] leading-none font-bold text-white
+          bg-stone-600 py-1 text-center text-[11px] leading-none font-bold text-white
           uppercase tracking-wide
         "
       >
@@ -59,11 +58,11 @@
 <% else %>
   <div
     class="
-      border border-stone-200 bg-stone-100 rounded-2xl p-6 -mx-5 gap-5 font-sans
+      border border-stone-200 bg-stone-100 rounded-2xl p-5 -mx-5 gap-5 font-sans
     "
   >
     <h3 class="text-lg font-semibold text-stone-800 -mt-0.5">Schedule this post</h3>
-    <p class="text-stone-600">Schedule it to automatically send it later. You can disable this later.</p>
+    <p class="text-stone-500">Schedule it to automatically send it later. You can disable this later.</p>
     <%= form_with model: post, url: schedule_post_path(slug: post.newsletter.slug, id: post.id), class: "mt-4", method: :post do |form| %>
       <div class="hidden space-y-1">
         <%= form.text_field :timezone,
