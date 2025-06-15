@@ -1,0 +1,63 @@
+<div
+  class="border border-stone-200 bg-stone-100 rounded-2xl p-5 -mx-5 gap-5 flex"
+>
+  <div class="relative">
+    <div
+      class="
+        size-12 rounded-lg bg-white border flex flex-col border-stone-600
+        overflow-hidden
+      "
+    >
+      <div
+        class="
+          bg-stone-600 py-1 text-center text-[11px] leading-none font-bold text-white
+          uppercase tracking-wide
+        "
+      >
+        <%= post.scheduled_at_tz.strftime("%b") %>
+      </div>
+      <div
+        class="
+          flex flex-grow items-center justify-center w-full text-center bg-white
+        "
+      >
+        <div
+          class="
+            text-xl font-sans font-bold leading-none text-stone-800 tabular-nums
+          "
+        ><%= post.scheduled_at_tz.strftime("%-d") %></div>
+      </div>
+    </div>
+    <div
+      class="
+        absolute -right-2 -top-2 size-5 bg-green-600 border-stone-100 border-2
+        rounded-full grid place-content-center
+      "
+    >
+      <%= lucide_icon("check", class: "size-2 stroke-[4px] text-white") %>
+    </div>
+  </div>
+  <!-- Content -->
+  <div class="flex-1 min-w-0 font-sans">
+    <h3 class="text-lg font-semibold text-stone-800 mb-0.5 -mt-0.5">Post Scheduled</h3>
+    <div class="flex gap-5">
+      <div class="flex items-center gap-2 text-stone-500">
+        <%= lucide_icon("calendar", class: "size-4 text-stone-500") %>
+        <span class="font-medium text-stone-800"><%= post.scheduled_at_tz.strftime("%A, %B %e, %Y") %></span>
+      </div>
+
+      <div class="flex items-center gap-2 text-stone-500">
+        <%= lucide_icon("clock-2", class: "size-4 text-stone-500") %>
+        <span class="font-medium text-stone-800"><%= post.scheduled_at_tz.strftime("%H:%M %p") %></span>
+        <span class="text-stone-500">(<%= post.scheduled_at_tz.zone %>)</span>
+      </div>
+    </div>
+    <p class="mt-2 text-stone-500">
+      This post will automatically be sent to all your subscribers. You can
+      still make changes to the draft without affecting the schedule
+    </p>
+  </div>
+  <%= form_with model: post, url: unschedule_post_path(slug: post.newsletter.slug, id: post.id), method: :post do |form| %>
+    <%= form.submit "Unschedule Post", class: "btn bg-white" %>
+  <% end %>
+</div>
