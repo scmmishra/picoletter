@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  include Pagy::Backend
   def ensure_authenticated
     session = find_session_by_cookie
 
