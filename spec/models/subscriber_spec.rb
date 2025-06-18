@@ -378,14 +378,14 @@ RSpec.describe Subscriber, type: :model do
 
       it 'handles database errors gracefully' do
         allow(Subscriber).to receive(:find).and_raise(StandardError.new("DB error"))
-        allow(Rails.error).to receive(:report)
+        allow(RorVsWild).to receive(:record_error)
 
         result = Subscriber.claim_for_reminder(subscriber.id) do |sub|
           # should not be called
         end
 
         expect(result).to be_nil
-        expect(Rails.error).to have_received(:report)
+        expect(RorVsWild).to have_received(:record_error)
       end
 
       it 'uses database lock for concurrency safety' do

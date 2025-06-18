@@ -75,7 +75,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
     context 'when reminder sending fails' do
       before do
         allow_any_instance_of(Subscriber).to receive(:send_reminder).and_raise(StandardError.new("Email service error"))
-        allow(Rails.error).to receive(:report)
+        allow(RorVsWild).to receive(:record_error)
       end
 
       it 'handles errors gracefully and continues processing' do
@@ -90,10 +90,10 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
         described_class.new.perform
       end
 
-      it 'reports the error to Rails error reporting' do
+      it 'reports the error to RorVsWild' do
         described_class.new.perform
 
-        expect(Rails.error).to have_received(:report).with(
+        expect(RorVsWild).to have_received(:record_error).with(
           an_instance_of(StandardError),
           context: { subscriber_id: eligible_subscriber.id }
         )
@@ -116,7 +116,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
     context 'when record_reminder_sent! fails' do
       before do
         allow_any_instance_of(Subscriber).to receive(:record_reminder_sent!).and_raise(StandardError.new("DB error"))
-        allow(Rails.error).to receive(:report)
+        allow(RorVsWild).to receive(:record_error)
       end
 
       it 'handles the error and logs it' do

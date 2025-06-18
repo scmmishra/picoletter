@@ -21,7 +21,7 @@ class SendAutomaticRemindersJob < ApplicationJob
         rescue StandardError => e
           error_count += 1
           Rails.logger.error("[SendAutomaticRemindersJob] Failed to send reminder to subscriber #{subscriber.id}: #{e.message}")
-          Rails.error.report(e, context: { subscriber_id: subscriber.id })
+          RorVsWild.record_error(e, context: { subscriber_id: subscriber.id })
         end
       end
     end

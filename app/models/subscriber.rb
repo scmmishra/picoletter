@@ -127,7 +127,7 @@ class Subscriber < ApplicationRecord
   rescue ActiveRecord::RecordNotFound
     nil
   rescue StandardError => e
-    Rails.error.report(e, context: { subscriber_id: subscriber_id })
+    RorVsWild.record_error(e, context: { subscriber_id: subscriber_id })
     nil
   end
 
