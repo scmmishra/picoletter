@@ -191,4 +191,211 @@ RSpec.describe Subscriber, type: :model do
       }.to have_enqueued_mail(SubscriptionMailer, :confirmation_reminder)
     end
   end
+
+  describe 'automatic reminders' do
+    let(:newsletter_with_reminders) { create(:newsletter, auto_reminder_enabled: true) }
+    let(:newsletter_without_reminders) { create(:newsletter, auto_reminder_enabled: false) }
+
+    describe '.eligible_for_reminder scope' do
+      it 'includes unverified subscribers older than 24 hours with reminders enabled' do
+        eligible = create(:subscriber,
+          newsletter: newsletter_with_reminders,
+          status: 'unverified',
+          created_at: 25.hours.ago
+        )
+
+        result = Subscriber.eligible_for_reminder
+        expect(result).to include(eligible)
+      end
+
+      it 'excludes subscribers from newsletters with reminders disabled' do
+        ineligible = create(:subscriber,
+          newsletter: newsletter_without_reminders,
+          status: 'unverified',
+          created_at: 25.hours.ago
+        )
+
+        result = Subscriber.eligible_for_reminder
+        expect(result).not_to include(ineligible)
+      end
+
+      it 'excludes verified subscribers' do
+        ineligible = create(:subscriber,
+          newsletter: newsletter_with_reminders,
+          status: 'verified',
+          created_at: 25.hours.ago
+        )
+
+        result = Subscriber.eligible_for_reminder
+        expect(result).not_to include(ineligible)
+      end
+
+      it 'excludes subscribers created less than 24 hours ago' do
+        ineligible = create(:subscriber,
+          newsletter: newsletter_with_reminders,
+          status: 'unverified',
+          created_at: 23.hours.ago
+        )
+
+        result = Subscriber.eligible_for_reminder
+        expect(result).not_to include(ineligible)
+      end
+
+      it 'excludes subscribers who already received a reminder' do
+        ineligible = create(:subscriber,
+          newsletter: newsletter_with_reminders,
+          status: 'unverified',
+          created_at: 25.hours.ago,
+          additional_data: { 'last_reminder_sent_at' => 1.hour.ago.iso8601 }
+        )
+
+        result = Subscriber.eligible_for_reminder
+        expect(result).not_to include(ineligible)
+      end
+    end
+
+    describe '#eligible_for_automatic_reminder?' do
+      let(:subscriber) { create(:subscriber, newsletter: newsletter_with_reminders, status: 'unverified', created_at: 25.hours.ago) }
+
+      it 'returns true for eligible subscriber' do
+        expect(subscriber.eligible_for_automatic_reminder?).to be true
+      end
+
+      it 'returns false for verified subscriber' do
+        subscriber.update!(status: 'verified')
+        expect(subscriber.eligible_for_automatic_reminder?).to be false
+      end
+
+      it 'returns false for unsubscribed subscriber' do
+        subscriber.update!(status: 'unsubscribed')
+        expect(subscriber.eligible_for_automatic_reminder?).to be false
+      end
+
+      it 'returns false if reminder already sent' do
+        subscriber.update!(additional_data: { 'last_reminder_sent_at' => 1.hour.ago.iso8601 })
+        expect(subscriber.eligible_for_automatic_reminder?).to be false
+      end
+
+      it 'returns false if newsletter has reminders disabled' do
+        subscriber.newsletter.update!(auto_reminder_enabled: false)
+        expect(subscriber.eligible_for_automatic_reminder?).to be false
+      end
+
+      it 'returns false for subscriber created less than 24 hours ago' do
+        subscriber.update!(created_at: 23.hours.ago)
+        expect(subscriber.eligible_for_automatic_reminder?).to be false
+      end
+    end
+
+    describe '#reminder_sent?' do
+      it 'returns true when reminder was sent' do
+        subscriber.update!(additional_data: { 'last_reminder_sent_at' => 1.hour.ago.iso8601 })
+        expect(subscriber.reminder_sent?).to be true
+      end
+
+      it 'returns false when no reminder was sent' do
+        expect(subscriber.reminder_sent?).to be false
+      end
+    end
+
+    describe '#last_reminder_sent_at' do
+      it 'returns parsed time when reminder was sent' do
+        time = 1.hour.ago
+        subscriber.update!(additional_data: { 'last_reminder_sent_at' => time.iso8601 })
+        expect(subscriber.last_reminder_sent_at).to be_within(1.second).of(time)
+      end
+
+      it 'returns nil when no reminder was sent' do
+        expect(subscriber.last_reminder_sent_at).to be_nil
+      end
+
+      it 'returns nil for invalid time format' do
+        subscriber.update!(additional_data: { 'last_reminder_sent_at' => 'invalid' })
+        expect(subscriber.last_reminder_sent_at).to be_nil
+      end
+    end
+
+    describe '#record_reminder_sent!' do
+      it 'records reminder timestamp and adds to reminders array' do
+        expect {
+          subscriber.record_reminder_sent!
+        }.to change { subscriber.reminder_sent? }.from(false).to(true)
+
+        expect(subscriber.last_reminder_sent_at).to be_within(1.second).of(Time.current)
+        expect(subscriber.additional_data['reminders']).to include(subscriber.last_reminder_sent_at.iso8601)
+      end
+
+      it 'appends to existing reminders array' do
+        existing_time = 1.day.ago.iso8601
+        subscriber.update!(additional_data: { 'reminders' => [ existing_time ] })
+
+        subscriber.record_reminder_sent!
+        expect(subscriber.additional_data['reminders']).to include(existing_time, subscriber.last_reminder_sent_at.iso8601)
+      end
+    end
+
+    describe '.claim_for_reminder' do
+      let(:subscriber) { create(:subscriber, newsletter: newsletter_with_reminders, status: 'unverified', created_at: 25.hours.ago) }
+
+      it 'yields eligible subscriber to block' do
+        yielded_subscriber = nil
+        Subscriber.claim_for_reminder(subscriber.id) do |sub|
+          yielded_subscriber = sub
+        end
+
+        expect(yielded_subscriber).to eq(subscriber)
+      end
+
+      it 'does not yield if subscriber is not eligible' do
+        subscriber.update!(status: 'verified')
+        yielded = false
+
+        Subscriber.claim_for_reminder(subscriber.id) do |sub|
+          yielded = true
+        end
+
+        expect(yielded).to be false
+      end
+
+      it 'does not yield if subscriber already received reminder' do
+        subscriber.update!(additional_data: { 'last_reminder_sent_at' => 1.hour.ago.iso8601 })
+        yielded = false
+
+        Subscriber.claim_for_reminder(subscriber.id) do |sub|
+          yielded = true
+        end
+
+        expect(yielded).to be false
+      end
+
+      it 'returns nil for non-existent subscriber' do
+        result = Subscriber.claim_for_reminder(99999) do |sub|
+          # should not be called
+        end
+
+        expect(result).to be_nil
+      end
+
+      it 'handles database errors gracefully' do
+        allow(Subscriber).to receive(:find).and_raise(StandardError.new("DB error"))
+        allow(Rails.error).to receive(:report)
+
+        result = Subscriber.claim_for_reminder(subscriber.id) do |sub|
+          # should not be called
+        end
+
+        expect(result).to be_nil
+        expect(Rails.error).to have_received(:report)
+      end
+
+      it 'uses database lock for concurrency safety' do
+        allow(Subscriber).to receive(:find).and_return(subscriber)
+        expect(subscriber).to receive(:with_lock).and_call_original
+
+        Subscriber.claim_for_reminder(subscriber.id) do |sub|
+          # block executes within lock
+        end
+      end
+    end
+  end
 end
