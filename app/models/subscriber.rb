@@ -112,7 +112,6 @@ class Subscriber < ApplicationRecord
   def eligible_for_automatic_reminder?
     return false if verified? || unsubscribed?
     return false if reminder_sent?
-    return false if additional_data["processing_reminder_at"].present?
     return false unless newsletter.auto_reminder_enabled?
 
     created_at <= 24.hours.ago
@@ -121,14 +120,9 @@ class Subscriber < ApplicationRecord
   def self.claim_for_reminder(subscriber_id)
     subscriber = find(subscriber_id)
     subscriber.with_lock do
-      return nil unless subscriber.eligible_for_automatic_reminder?
+      return unless subscriber.eligible_for_automatic_reminder?
 
-      # Mark as processing to prevent other jobs from claiming
-      now = Time.current.iso8601
-      subscriber.update!(
-        additional_data: subscriber.additional_data.merge("processing_reminder_at" => now)
-      )
-      subscriber
+      yield(subscriber) if block_given?
     end
   rescue ActiveRecord::RecordNotFound
     nil

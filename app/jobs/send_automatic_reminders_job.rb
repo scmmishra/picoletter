@@ -12,22 +12,17 @@ class SendAutomaticRemindersJob < ApplicationJob
     error_count = 0
 
     eligible_subscriber_ids.each do |subscriber_id|
-      subscriber = Subscriber.claim_for_reminder(subscriber_id)
-      next unless subscriber
-
-      begin
-        subscriber.send_reminder
-        subscriber.record_reminder_sent!
-        success_count += 1
-        Rails.logger.debug("[SendAutomaticRemindersJob] Sent reminder to subscriber #{subscriber.id}")
-      rescue StandardError => e
-        # Clear processing flag on failure so it can be retried
-        subscriber.update!(
-          additional_data: subscriber.additional_data.except("processing_reminder_at")
-        )
-        error_count += 1
-        Rails.logger.error("[SendAutomaticRemindersJob] Failed to send reminder to subscriber #{subscriber.id}: #{e.message}")
-        Rails.error.report(e, context: { subscriber_id: subscriber.id })
+      Subscriber.claim_for_reminder(subscriber_id) do |subscriber|
+        begin
+          subscriber.send_reminder
+          subscriber.record_reminder_sent!
+          success_count += 1
+          Rails.logger.debug("[SendAutomaticRemindersJob] Sent reminder to subscriber #{subscriber.id}")
+        rescue StandardError => e
+          error_count += 1
+          Rails.logger.error("[SendAutomaticRemindersJob] Failed to send reminder to subscriber #{subscriber.id}: #{e.message}")
+          Rails.error.report(e, context: { subscriber_id: subscriber.id })
+        end
       end
     end
 
