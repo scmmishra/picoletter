@@ -3,12 +3,14 @@
 # Table name: subscribers
 #
 #  id                 :bigint           not null, primary key
+#  additional_data    :jsonb            not null
 #  analytics_data     :jsonb
 #  created_via        :string
 #  email              :string
 #  full_name          :string
 #  labels             :string           default([]), is an Array
 #  notes              :text
+#  reminder_status    :integer          default(0), not null
 #  status             :integer          default("unverified")
 #  unsubscribe_reason :string
 #  unsubscribed_at    :datetime
@@ -19,9 +21,12 @@
 #
 # Indexes
 #
-#  index_subscribers_on_labels         (labels) USING gin
-#  index_subscribers_on_newsletter_id  (newsletter_id)
-#  index_subscribers_on_status         (status)
+#  index_subscribers_on_additional_data   (additional_data) USING gin
+#  index_subscribers_on_labels            (labels) USING gin
+#  index_subscribers_on_newsletter_id     (newsletter_id)
+#  index_subscribers_on_reminder_sent_at  (((additional_data ->> 'last_reminder_sent_at'::text)))
+#  index_subscribers_on_reminder_status   (reminder_status)
+#  index_subscribers_on_status            (status)
 #
 # Foreign Keys
 #
