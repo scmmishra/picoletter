@@ -12,6 +12,9 @@ default: &default
         monitor_stuck_posts:
           class: MonitorStuckPostsJob
           schedule: every 10 minutes
+        send_automatic_reminders:
+          class: SendAutomaticRemindersJob
+          schedule: every 5 minutes
   workers:
     - queues: "*"
       threads: 3
