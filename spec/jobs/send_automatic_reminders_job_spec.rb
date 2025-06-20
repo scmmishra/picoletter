@@ -25,6 +25,9 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
       allow(Rails.logger).to receive(:info)
       allow(Rails.logger).to receive(:debug)
       allow(Rails.logger).to receive(:error)
+      # Enable scheduling by default for tests
+      allow(AppConfig).to receive(:get).with("ENABLE_AUTO_REMINDERS", false).and_return(true)
+      allow(AppConfig).to receive(:get).with("REMINDER_BATCH_SIZE", 50).and_return(50)
     end
 
     it 'processes eligible subscribers and sends reminders' do
@@ -177,6 +180,24 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
     context 'with custom batch size from environment' do
       it 'uses default batch size when no environment variable is set' do
         expect(described_class::BATCH_SIZE).to eq(50)
+      end
+    end
+
+    context 'when scheduling is disabled' do
+      before do
+        allow(AppConfig).to receive(:get).with("ENABLE_AUTO_REMINDERS", false).and_return(false)
+      end
+
+      it 'returns early without processing any subscribers' do
+        expect(Subscriber).not_to receive(:eligible_for_reminder)
+        expect {
+          described_class.new.perform
+        }.not_to have_enqueued_mail(SubscriptionMailer, :confirmation_reminder)
+      end
+
+      it 'does not log any processing information' do
+        expect(Rails.logger).not_to receive(:info)
+        described_class.new.perform
       end
     end
   end

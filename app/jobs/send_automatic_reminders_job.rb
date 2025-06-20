@@ -1,9 +1,11 @@
 class SendAutomaticRemindersJob < ApplicationJob
   queue_as :default
 
-  BATCH_SIZE = ENV.fetch("REMINDER_BATCH_SIZE", 50).to_i
+  BATCH_SIZE = AppConfig.get("REMINDER_BATCH_SIZE", 50)
 
   def perform
+    return unless AppConfig.get("ENABLE_AUTO_REMINDERS", false)
+
     eligible_subscriber_ids = Subscriber.eligible_for_reminder.limit(BATCH_SIZE).pluck(:id)
 
     Rails.logger.info("[SendAutomaticRemindersJob] Processing #{eligible_subscriber_ids.count} eligible subscribers")
