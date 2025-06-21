@@ -33,16 +33,18 @@
     </label>
 
     <% if AppConfig.get("ENABLE_AUTO_REMINDERS", false) %>
-      <label class="flex items-center gap-1">
-        <%= form.check_box :auto_reminder_enabled %>
-        <%= form.label :auto_reminder_enabled,
-                   "Send automatic reminder emails",
-                   class: "ml-px text-stone-500 text-sm font-sans" %>
-      </label>
-      <p class="text-xs text-stone-400 ml-5">
-        Automatically send a reminder email to unverified subscribers after 24
-        hours
-      </p>
+      <div>
+        <label class="flex items-center gap-1">
+          <%= form.check_box :auto_reminder_enabled %>
+          <%= form.label :auto_reminder_enabled,
+                     "Send automatic reminder emails",
+                     class: "ml-px text-stone-500 text-sm font-sans" %>
+        </label>
+        <p class="text-xs text-stone-400 ml-5 font-sans mt-1">
+          Automatically send a reminder email to unverified subscribers after
+          24 hours
+        </p>
+      </div>
     <% end %>
   </div>
   <div class="mt-5">
