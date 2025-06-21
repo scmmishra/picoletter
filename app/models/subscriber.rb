@@ -3,6 +3,7 @@
 # Table name: subscribers
 #
 #  id                 :bigint           not null, primary key
+#  additional_data    :jsonb            not null
 #  analytics_data     :jsonb
 #  created_via        :string
 #  email              :string
@@ -19,9 +20,11 @@
 #
 # Indexes
 #
-#  index_subscribers_on_labels         (labels) USING gin
-#  index_subscribers_on_newsletter_id  (newsletter_id)
-#  index_subscribers_on_status         (status)
+#  index_subscribers_on_additional_data   (additional_data) USING gin
+#  index_subscribers_on_labels            (labels) USING gin
+#  index_subscribers_on_newsletter_id     (newsletter_id)
+#  index_subscribers_on_reminder_sent_at  (((additional_data ->> 'last_reminder_sent_at'::text)))
+#  index_subscribers_on_status            (status)
 #
 # Foreign Keys
 #
@@ -29,11 +32,12 @@
 #
 class Subscriber < ApplicationRecord
   include Statusable
+  include Remindable
 
   taggable_array :labels
 
   generates_token_for :unsubscribe
-  generates_token_for :confirmation, expires_in: 48.hours
+  generates_token_for :confirmation, expires_in: 1.month
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
@@ -64,10 +68,6 @@ class Subscriber < ApplicationRecord
 
   def unsubscribe_with_reason!(reason)
     update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
-  end
-
-  def send_reminder
-    SubscriptionMailer.with(subscriber: self).confirmation_reminder.deliver_later
   end
 
   def send_confirmation_email
