@@ -3,8 +3,7 @@ module Remindable
 
   included do
     scope :eligible_for_reminder, -> do
-      includes(:newsletter)
-        .joins(:newsletter)
+      joins(:newsletter)
         .where(status: "unverified")
         .where(newsletters: { auto_reminder_enabled: true })
         .where("subscribers.created_at <= ?", 24.hours.ago)
