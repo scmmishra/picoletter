@@ -209,13 +209,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_143524) do
     t.text "notes"
     t.jsonb "analytics_data", default: {}
     t.string "labels", default: [], array: true
-    t.integer "reminder_status", default: 0, null: false
     t.jsonb "additional_data", default: {}, null: false
     t.index "((additional_data ->> 'last_reminder_sent_at'::text))", name: "index_subscribers_on_reminder_sent_at"
     t.index ["additional_data"], name: "index_subscribers_on_additional_data", using: :gin
     t.index ["labels"], name: "index_subscribers_on_labels", using: :gin
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
-    t.index ["reminder_status"], name: "index_subscribers_on_reminder_status"
     t.index ["status"], name: "index_subscribers_on_status"
   end
 
