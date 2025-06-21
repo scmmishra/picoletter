@@ -73,7 +73,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
       expect(Subscriber).to receive(:claim_for_reminder).exactly(2).times.and_call_original
 
       described_class.new.perform
-      
+
       # Both subscribers should have reminders sent
       eligible_subscriber.reload
       second_subscriber.reload
