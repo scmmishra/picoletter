@@ -47,7 +47,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
     end
 
     it 'logs processing information' do
-      expect(Rails.logger).to receive(:info).with(/Processing \d+ eligible subscribers/)
+      expect(Rails.logger).to receive(:info).with(/Processing batch of \d+ eligible subscribers/)
       expect(Rails.logger).to receive(:info).with(/Completed: \d+ sent, \d+ failed/)
 
       described_class.new.perform
@@ -59,20 +59,26 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
       described_class.new.perform
     end
 
-    it 'respects batch size limit' do
+    it 'processes all subscribers in batches' do
       stub_const("#{described_class}::BATCH_SIZE", 1)
 
       # Create one more eligible subscriber
-      create(:subscriber,
+      second_subscriber = create(:subscriber,
         newsletter: newsletter,
         status: 'unverified',
         created_at: 25.hours.ago
       )
 
-      # Should only process one subscriber due to batch size
-      expect(Subscriber).to receive(:claim_for_reminder).exactly(1).times.and_call_original
+      # Should process both subscribers even with batch size of 1
+      expect(Subscriber).to receive(:claim_for_reminder).exactly(2).times.and_call_original
 
       described_class.new.perform
+      
+      # Both subscribers should have reminders sent
+      eligible_subscriber.reload
+      second_subscriber.reload
+      expect(eligible_subscriber.reminder_sent?).to be true
+      expect(second_subscriber.reminder_sent?).to be true
     end
 
     context 'when reminder sending fails' do
@@ -147,7 +153,6 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
       end
 
       it 'logs zero subscribers processed' do
-        expect(Rails.logger).to receive(:info).with(/Processing 0 eligible subscribers/)
         expect(Rails.logger).to receive(:info).with(/Completed: 0 sent, 0 failed/)
 
         described_class.new.perform
