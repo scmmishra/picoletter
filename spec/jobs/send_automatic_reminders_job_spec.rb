@@ -184,7 +184,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
 
     context 'with custom batch size from environment' do
       it 'uses default batch size when no environment variable is set' do
-        expect(described_class::BATCH_SIZE).to eq(50)
+        expect(described_class::BATCH_SIZE).to eq(100)
       end
     end
 
