@@ -1,9 +1,6 @@
-<%= @post.title %>
-
 <%= strip_tags(@post.content) %>
 
 -------------------
-
 <%= strip_tags(@newsletter.footer_html) %>
-
-You are receiving this email because you are subscribed to <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+You are receiving this email because you are subscribed to
+<%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
