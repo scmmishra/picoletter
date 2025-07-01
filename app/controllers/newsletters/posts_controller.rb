@@ -102,6 +102,10 @@ class Newsletters::PostsController < ApplicationController
     redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post deleted successfully."
   end
 
+  def draft?
+    post.status == "draft"
+  end
+
   private
 
   def set_last_opened
