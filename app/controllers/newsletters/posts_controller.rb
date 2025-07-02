@@ -69,13 +69,13 @@ class Newsletters::PostsController < ApplicationController
   def publish
     no_verify = params[:no_verify] == "true"
 
-    @post.with_lock do |post|
-      unless post.draft?
+    @post.with_lock do
+      unless @post.draft?
         redirect_to post_url(slug: @newsletter.slug, id: @post.id),
                    notice: "Post already published." and return
       end
 
-      post.publish_and_send(no_verify)
+      @post.publish_and_send(no_verify)
     end
 
     redirect_to post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully published."
@@ -103,9 +103,6 @@ class Newsletters::PostsController < ApplicationController
     redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post deleted successfully."
   end
 
-  def draft?
-    post.status == "draft"
-  end
 
   private
 
