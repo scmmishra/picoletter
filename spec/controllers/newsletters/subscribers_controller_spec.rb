@@ -132,7 +132,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
     context "with valid parameters" do
       it "updates the subscriber" do
         patch :update, params: valid_params
-        
+
         subscriber.reload
         expect(subscriber.email).to eq("updated@example.com")
         expect(subscriber.full_name).to eq("Updated Name")
@@ -141,7 +141,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
       it "redirects to subscriber show page with success notice" do
         patch :update, params: valid_params
-        
+
         expect(response).to redirect_to(subscriber_url(newsletter.slug, subscriber.id))
         expect(flash[:notice]).to eq("Subscriber updated successfully")
       end
@@ -167,7 +167,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "only permits allowed parameters" do
       original_status = subscriber.status
-      
+
       patch :update, params: {
         slug: newsletter.slug,
         id: subscriber.id,
@@ -179,7 +179,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
           newsletter_id: 999 # Should not be permitted
         }
       }
-      
+
       subscriber.reload
       expect(subscriber.email).to eq("test@example.com")
       expect(subscriber.full_name).to eq("Test Name")
@@ -200,7 +200,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "redirects to subscribers index with success notice" do
       delete :destroy, params: { slug: newsletter.slug, id: subscriber.id }
-      
+
       expect(response).to redirect_to(subscribers_url(newsletter.slug))
       expect(flash[:notice]).to eq("Subscriber deleted successfully")
     end
@@ -217,15 +217,15 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "calls unsubscribe! on the subscriber" do
       expect_any_instance_of(Subscriber).to receive(:unsubscribe!)
-      
+
       patch :unsubscribe, params: { slug: newsletter.slug, id: subscriber.id }
     end
 
     it "redirects to subscriber show page with success notice" do
       allow_any_instance_of(Subscriber).to receive(:unsubscribe!)
-      
+
       patch :unsubscribe, params: { slug: newsletter.slug, id: subscriber.id }
-      
+
       expect(response).to redirect_to(subscriber_url(newsletter.slug, subscriber.id))
       expect(flash[:notice]).to include("has been unsubscribed.")
     end
@@ -233,9 +233,9 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
     it "includes subscriber display name in notice" do
       allow_any_instance_of(Subscriber).to receive(:unsubscribe!)
       subscriber.update!(full_name: "John Doe")
-      
+
       patch :unsubscribe, params: { slug: newsletter.slug, id: subscriber.id }
-      
+
       expect(flash[:notice]).to include("John Doe")
     end
   end
@@ -245,15 +245,15 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "calls send_reminder on the subscriber" do
       expect_any_instance_of(Subscriber).to receive(:send_reminder)
-      
+
       patch :send_reminder, params: { slug: newsletter.slug, id: subscriber.id }
     end
 
     it "redirects to subscriber show page with success notice" do
       allow_any_instance_of(Subscriber).to receive(:send_reminder)
-      
+
       patch :send_reminder, params: { slug: newsletter.slug, id: subscriber.id }
-      
+
       expect(response).to redirect_to(subscriber_url(newsletter.slug, subscriber.id))
       expect(flash[:notice]).to eq("Reminder sent.")
     end
@@ -264,7 +264,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "handles database errors gracefully on destroy" do
       allow_any_instance_of(Subscriber).to receive(:destroy!).and_raise(ActiveRecord::RecordNotDestroyed)
-      
+
       expect {
         delete :destroy, params: { slug: newsletter.slug, id: subscriber.id }
       }.to raise_error(ActiveRecord::RecordNotDestroyed)
@@ -272,7 +272,7 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
 
     it "handles database errors gracefully on update" do
       allow_any_instance_of(Subscriber).to receive(:update!).and_raise(ActiveRecord::RecordInvalid)
-      
+
       expect {
         patch :update, params: {
           slug: newsletter.slug,
@@ -319,19 +319,19 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
   describe "Pagy integration" do
     it "uses Pagy for pagination" do
       create_list(:subscriber, 5, newsletter: newsletter, status: :verified)
-      
+
       get :index, params: { slug: newsletter.slug }
-      
+
       pagy = controller.instance_variable_get(:@pagy)
       subscribers = controller.instance_variable_get(:@subscribers)
-      
+
       expect(pagy).to be_a(Pagy)
       expect(subscribers).to respond_to(:each) # Should be enumerable
     end
 
     it "respects the limit parameter" do
       get :index, params: { slug: newsletter.slug }
-      
+
       pagy = controller.instance_variable_get(:@pagy)
       expect(pagy.limit).to eq(30)
     end
@@ -339,9 +339,9 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
     it "handles status filtering with pagination" do
       create_list(:subscriber, 10, newsletter: newsletter, status: :verified)
       create_list(:subscriber, 10, newsletter: newsletter, status: :unverified)
-      
+
       get :index, params: { slug: newsletter.slug, status: "unverified" }
-      
+
       expect(response).to have_http_status(:success)
       pagy = controller.instance_variable_get(:@pagy)
       expect(pagy).to be_present
