@@ -88,6 +88,7 @@ class Newsletters::PostsController < ApplicationController
     flash[:has_link_error] = true
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "We found invalid links in your post."
   rescue StandardError => e
+    RorVsWild.record_error(e)
     Rails.logger.error("Error sending post: #{e.message}")
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: e.message
   end
