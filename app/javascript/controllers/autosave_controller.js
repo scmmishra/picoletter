@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["form", "editor", "title", "spinner"]
+  static targets = ["form", "editor", "title", "cohort", "spinner"]
   static values = {
     url: String,
     debounceDelay: { type: Number, default: 2000 }
@@ -25,6 +25,11 @@ export default class extends Controller {
     // Listen for title changes
     this.titleTarget.addEventListener("input", this.handleTitleChange.bind(this))
     this.titleTarget.addEventListener("blur", this.handleTitleBlur.bind(this))
+
+    // Listen for cohort changes
+    if (this.hasCohortTarget) {
+      this.cohortTarget.addEventListener("change", this.handleCohortChange.bind(this))
+    }
   }
 
   handleEditorChange() {
@@ -40,6 +45,10 @@ export default class extends Controller {
   }
 
   handleTitleBlur() {
+    this.immediateAutosave()
+  }
+
+  handleCohortChange() {
     this.immediateAutosave()
   }
 

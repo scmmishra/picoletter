@@ -1,0 +1,83 @@
+<section class="flex items-center justify-between gap-2 mb-6">
+  <div class="flex items-center gap-3">
+    <% if @cohort.emoji %>
+      <span class="text-2xl"><%= @cohort.emoji %></span>
+    <% end %>
+    <h2 class="text-xl font-medium"><%= @cohort.name %></h2>
+  </div>
+  <div class="flex items-center gap-2">
+    <%= link_to edit_cohort_path(@newsletter.slug, @cohort), class: 'btn btn-secondary' do %>
+      <%= lucide_icon("edit", class: "size-4 mr-1") %>
+      Edit
+    <% end %>
+    <%= link_to cohorts_path(@newsletter.slug), class: 'btn btn-secondary' do %>
+      <%= lucide_icon("arrow-left", class: "size-4 mr-1") %>
+      Back to Cohorts
+    <% end %>
+  </div>
+</section>
+
+<div class="space-y-6">
+  <div class="bg-stone-50 rounded-lg p-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div class="text-center">
+        <div class="text-2xl font-semibold text-stone-900"><%= @cohort.subscriber_count %></div>
+        <div class="text-sm text-stone-600">Subscribers</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-semibold text-stone-900"><%= @cohort.labels.count %></div>
+        <div class="text-sm text-stone-600">Required Labels</div>
+      </div>
+      <div class="text-center">
+        <div class="text-2xl font-semibold text-stone-900"><%= @cohort.posts.count %></div>
+        <div class="text-sm text-stone-600">Posts Sent</div>
+      </div>
+    </div>
+  </div>
+
+  <% if @cohort.description %>
+    <div>
+      <h3 class="font-medium text-stone-900 mb-2">Description</h3>
+      <p class="text-stone-600"><%= @cohort.description %></p>
+    </div>
+  <% end %>
+
+  <div>
+    <h3 class="font-medium text-stone-900 mb-3">Required Labels</h3>
+    <% if @cohort.labels.any? %>
+      <div class="flex flex-wrap gap-2">
+        <% @cohort.labels.each do |label| %>
+          <span class="inline-flex items-center px-3 py-1 text-sm font-medium rounded-full" style="background-color: <%= label.color %>20; color: <%= label.color %>;">
+            <%= label.name %>
+          </span>
+        <% end %>
+      </div>
+      <p class="text-sm text-stone-500 mt-2">
+        Subscribers must have <strong>all</strong> of these labels to be included in this cohort.
+      </p>
+    <% else %>
+      <p class="text-stone-500">No labels selected for this cohort.</p>
+    <% end %>
+  </div>
+
+  <% if @cohort.posts.any? %>
+    <div>
+      <h3 class="font-medium text-stone-900 mb-3">Posts Sent to This Cohort</h3>
+      <div class="space-y-2">
+        <% @cohort.posts.order(published_at: :desc).limit(10).each do |post| %>
+          <div class="flex items-center justify-between p-3 bg-white border border-stone-200 rounded-lg">
+            <div>
+              <h4 class="font-medium text-stone-900"><%= post.title %></h4>
+              <p class="text-sm text-stone-500">
+                Published on <%= post.published_at.strftime("%B %e, %Y") %>
+              </p>
+            </div>
+            <%= link_to post_path(@newsletter.slug, post), class: "text-stone-400 hover:text-stone-600" do %>
+              <%= lucide_icon("arrow-right", class: "size-4") %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

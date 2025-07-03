@@ -1,0 +1,65 @@
+<section class="flex items-center justify-between gap-2">
+  <h2 class="text-xl font-medium">Cohorts</h2>
+  <%= link_to new_cohort_path(@newsletter.slug), class: 'btn btn-primary' do %>
+    Create Cohort
+  <% end %>
+</section>
+
+<% if @cohorts.empty? %>
+  <div class="py-12">
+    <div class="text-center">
+      <p class="text-stone-500 mb-4">No cohorts created yet</p>
+      <p class="text-sm text-stone-400 mb-6">Create cohorts to send posts to specific groups of subscribers based on their labels.</p>
+      <%= link_to new_cohort_path(@newsletter.slug), class: 'btn btn-primary' do %>
+        Create Your First Cohort
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="mt-6 grid gap-4">
+    <% @cohorts.each do |cohort| %>
+      <div class="p-4 border border-stone-200 rounded-lg hover:border-stone-300 transition-colors">
+        <div class="flex items-start justify-between">
+          <div class="flex-grow">
+            <div class="flex items-center gap-2 mb-2">
+              <% if cohort.emoji %>
+                <span class="text-lg"><%= cohort.emoji %></span>
+              <% end %>
+              <h3 class="font-medium text-stone-900"><%= cohort.name %></h3>
+              <span class="text-sm text-stone-500">(<%= cohort.subscriber_count %> subscribers)</span>
+            </div>
+            
+            <% if cohort.description %>
+              <p class="text-sm text-stone-600 mb-3"><%= cohort.description %></p>
+            <% end %>
+            
+            <div class="flex flex-wrap gap-1">
+              <% cohort.labels.each do |label| %>
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium rounded-full" style="background-color: <%= label.color %>20; color: <%= label.color %>;">
+                  <%= label.name %>
+                </span>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="flex items-center gap-2">
+            <%= link_to cohort_path(@newsletter.slug, cohort), class: "text-stone-400 hover:text-stone-600" do %>
+              <%= lucide_icon("eye", class: "size-4") %>
+            <% end %>
+            <%= link_to edit_cohort_path(@newsletter.slug, cohort), class: "text-stone-400 hover:text-stone-600" do %>
+              <%= lucide_icon("edit", class: "size-4") %>
+            <% end %>
+            <%= link_to cohort_path(@newsletter.slug, cohort), method: :delete, 
+                class: "text-red-400 hover:text-red-600",
+                data: { 
+                  turbo_method: :delete,
+                  turbo_confirm: "Are you sure you want to delete this cohort? This action cannot be undone." 
+                } do %>
+              <%= lucide_icon("trash-2", class: "size-4") %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>

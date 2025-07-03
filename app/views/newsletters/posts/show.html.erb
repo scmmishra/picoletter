@@ -11,10 +11,32 @@
   <hr class="my-8"/>
 
   <div class="font-sans text-sm text-stone-500">
-    Published and sent on
-    <span class="font-medium text-stone-800"><%= @post.published_at_tz.strftime("%B %e, %Y") %></span>
-    at
-    <span class="font-medium text-stone-800"><%= @post.published_at_tz.strftime("%H:%M %p") %></span>
+    <div class="mb-2">
+      Published and sent on
+      <span class="font-medium text-stone-800"><%= @post.published_at_tz.strftime("%B %e, %Y") %></span>
+      at
+      <span class="font-medium text-stone-800"><%= @post.published_at_tz.strftime("%H:%M %p") %></span>
+    </div>
+    
+    <% if @post.cohort %>
+      <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+        <div class="flex items-center gap-2">
+          <% if @post.cohort.emoji %>
+            <span class="text-lg"><%= @post.cohort.emoji %></span>
+          <% end %>
+          <div>
+            <p class="text-sm font-medium text-blue-900">Sent to cohort: <%= @post.cohort.name %></p>
+            <% if @post.cohort.description %>
+              <p class="text-xs text-blue-700"><%= @post.cohort.description %></p>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% else %>
+      <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+        <p class="text-sm font-medium text-green-900">📢 Sent to all subscribers</p>
+      </div>
+    <% end %>
   </div>
 
   <% if @post.emails.count.positive? %>

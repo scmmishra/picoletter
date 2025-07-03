@@ -225,6 +225,7 @@ GEM
       reline (>= 0.4.2)
     jmespath (1.6.2)
     json (2.12.2)
+    json_logic (0.4.7)
     jwt (2.10.1)
       base64
     kramdown (2.5.1)
@@ -558,6 +559,7 @@ DEPENDENCIES
   httparty
   image_processing (~> 1.2)
   importmap-rails
+  json_logic
   kramdown
   letter_opener
   logtail-rails (~> 0.2.7)

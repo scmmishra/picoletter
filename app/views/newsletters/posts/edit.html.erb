@@ -5,7 +5,7 @@
       autosave_target: "form"
     } do |form| %>
   <%= form.hidden_field :newsletter_id, value: @newsletter.id %>
-  <div class="max-w-2xl mx-auto">
+  <div class="max-w-2xl mx-auto space-y-4">
     <label class="space-y-1">
       <%= form.label :title, "Subject", class: "ml-px text-stone-500 font-sans" %>
       <%= form.text_field :title,
@@ -16,6 +16,41 @@
                         autosave_target: "title",
                       } %>
     </label>
+
+    <% unless @post.published? %>
+      <label class="space-y-1">
+        <%= form.label :cohort_id, "Send to Cohort", class: "ml-px text-stone-500 font-sans" %>
+        <%= form.select :cohort_id, 
+            cohort_options_for_select(@cohorts, @post.cohort_id), 
+            { 
+              prompt: "📢 All subscribers (#{@newsletter.subscribers.confirmed.count})",
+              include_blank: false 
+            },
+            { 
+              class: "input w-full",
+              data: { autosave_target: "cohort" }
+            } %>
+        <p class="text-xs text-stone-400 ml-px">Choose a cohort to send this post to specific subscribers only</p>
+      </label>
+    <% else %>
+      <% if @post.cohort %>
+        <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+          <div class="flex items-center gap-2">
+            <% if @post.cohort.emoji %>
+              <span class="text-lg"><%= @post.cohort.emoji %></span>
+            <% end %>
+            <div>
+              <p class="text-sm font-medium text-blue-900">Sent to: <%= @post.cohort.name %></p>
+              <p class="text-xs text-blue-700"><%= @post.cohort.description %></p>
+            </div>
+          </div>
+        </div>
+      <% else %>
+        <div class="p-3 bg-green-50 border border-green-200 rounded-lg">
+          <p class="text-sm font-medium text-green-900">Sent to: All subscribers</p>
+        </div>
+      <% end %>
+    <% end %>
   </div>
   <div
     class="
