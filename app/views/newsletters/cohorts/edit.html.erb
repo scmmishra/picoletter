@@ -23,8 +23,8 @@
       <div class="col-span-2">
         <label class="space-y-1">
           <%= form.label :emoji, "Icon", class: "ml-px text-stone-500 font-sans text-sm" %>
-          <%= form.text_field :emoji, 
-              placeholder: "📊", 
+          <%= form.text_field :emoji,
+              placeholder: "📊",
               class: "input w-full text-center text-lg",
               maxlength: 2 %>
         </label>
@@ -32,8 +32,8 @@
       <div class="col-span-10">
         <label class="space-y-1">
           <%= form.label :name, "Cohort Name", class: "ml-px text-stone-500 font-sans text-sm" %>
-          <%= form.text_field :name, 
-              required: true, 
+          <%= form.text_field :name,
+              required: true,
               placeholder: "Premium Subscribers",
               class: "input w-full" %>
         </label>
@@ -42,7 +42,7 @@
 
     <label class="space-y-1">
       <%= form.label :description, "Description", class: "ml-px text-stone-500 font-sans text-sm" %>
-      <%= form.text_area :description, 
+      <%= form.text_area :description,
           placeholder: "Subscribers who have premium access...",
           class: "input w-full",
           rows: 3 %>
@@ -53,7 +53,7 @@
       <label class="block text-stone-500 font-sans text-sm mb-2">
         Filter Conditions
       </label>
-      
+
       <% if @labels.empty? %>
         <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
           <p class="text-sm text-yellow-700">
@@ -62,13 +62,11 @@
           </p>
         </div>
       <% else %>
-        <div class="p-4 bg-stone-50 border border-stone-200 rounded-lg">
-          <p class="text-sm text-stone-600 mb-4">
-            Build conditions to define which subscribers belong to this cohort.
-          </p>
-          <!-- TODO: Add rule builder component here -->
-          <div class="text-sm text-stone-500">
-            Rule builder coming soon. For now, cohorts will include all verified subscribers.
+        <div data-controller="rule-builder"
+             data-rule-builder-labels-value="<%= @labels.map { |l| { id: l.id, name: l.name, color: l.color } }.to_json %>"
+             data-rule-builder-initial-rule-value="<%= @cohort.filter_conditions.to_json %>">
+          <div data-rule-builder-target="container">
+            <!-- Rule builder will be inserted here -->
           </div>
         </div>
       <% end %>
