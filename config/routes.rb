@@ -92,6 +92,7 @@ Rails.application.routes.draw do
       end
 
       resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"
+      resources :cohorts, only: [ :index, :show, :new, :create, :edit, :update, :destroy ], path: "cohorts"
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers" do
         collection do
