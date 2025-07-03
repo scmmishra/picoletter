@@ -226,7 +226,7 @@ RSpec.describe JsonLogicSqlTranslator do
       result = translator.translate
 
       expect(result).to be_a(Arel::Nodes::Equality)
-      expect(result.to_sql).to include("ANY(\"subscribers\".\"labels\") = 'premium'")
+      expect(result.to_sql).to include("'premium' = ANY(\"subscribers\".\"labels\")")
     end
   end
 end
