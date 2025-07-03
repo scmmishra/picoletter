@@ -12,7 +12,7 @@
       >
         <div class="size-3.5 rounded" style="background-color: <%= @label.color %>"></div>
         <span><%= @label.name %></span>
-        <%= button_to remove_label_subscribers_path(@newsletter.slug, @subscriber.id, @label.name), 
+        <%= button_to remove_label_subscribers_path(@newsletter.slug, @subscriber.id, @label.name),
               method: :delete,
               class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
               form: { data: { turbo: true } } do %>
@@ -25,7 +25,14 @@
   <%# Update the dropdown to show the label as added with remove option %>
   <turbo-stream action="replace" target="label-dropdown-<%= @label.name %>">
     <template>
-      <%= render formats: [:html], partial: "newsletters/subscribers/partials/label_dropdown_item", locals: { label: @label, subscriber: @subscriber, newsletter: @newsletter, already_added: true } %>
+      <%= render formats: [:html],
+      partial: "newsletters/subscribers/partials/label_dropdown_item",
+      locals: {
+        label: @label,
+        subscriber: @subscriber,
+        newsletter: @newsletter,
+        already_added: true,
+      } %>
     </template>
   </turbo-stream>
 <% end %>

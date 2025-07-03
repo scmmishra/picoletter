@@ -48,6 +48,21 @@ class Newsletters::CohortsController < ApplicationController
     redirect_to cohorts_path(@newsletter.slug), notice: "Cohort was successfully deleted."
   end
 
+  def add_condition
+    @labels = @newsletter.labels.order(:name)
+    @condition_id = "condition_#{SecureRandom.hex(4)}"
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def remove_condition
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
   private
 
   def set_newsletter

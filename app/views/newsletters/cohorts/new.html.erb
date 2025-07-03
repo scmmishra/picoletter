@@ -62,11 +62,28 @@
           </p>
         </div>
       <% else %>
-        <div data-controller="rule-builder"
-             data-rule-builder-labels-value="<%= @labels.map { |l| { id: l.id, name: l.name, color: l.color } }.to_json %>"
-             data-rule-builder-initial-rule-value="{}">
-          <div data-rule-builder-target="container">
-            <!-- Rule builder will be inserted here -->
+        <div data-controller="rule-builder" data-rule-builder-initial-rule-value="{}">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <span class="text-sm text-stone-600">Subscribers must match:</span>
+              <select data-action="change->rule-builder#updateLogicOperator" class="input w-32">
+                <option value="and">All conditions</option>
+                <option value="or">Any condition</option>
+              </select>
+            </div>
+
+            <div class="space-y-2" id="conditions-container" data-rule-builder-target="conditionsContainer">
+              <!-- Conditions will be added here -->
+            </div>
+
+            <div class="flex items-center gap-2">
+              <%= link_to add_condition_cohorts_path(@newsletter.slug),
+                  class: "btn btn-sm btn-clear flex items-center",
+                  data: { turbo_method: :post } do %>
+                <%= lucide_icon("plus", class: "size-3 mr-1") %>
+                Add Condition
+              <% end %>
+            </div>
           </div>
         </div>
       <% end %>
