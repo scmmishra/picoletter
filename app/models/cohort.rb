@@ -29,7 +29,6 @@ class Cohort < ApplicationRecord
   validates :filter_conditions, presence: true
 
   before_validation :set_default_filter_conditions
-  before_save :update_filter_conditions
 
   def subscriber_count
     CohortQueryService.new(self).count
