@@ -43,14 +43,14 @@ export default class extends Controller {
         </div>
 
         <!-- Conditions -->
-        <div class="space-y-3" data-rule-builder-target="conditionsContainer">
+        <div class="space-y-3 border border-stone-300 rounded-md bg-stone-100 p-3" data-rule-builder-target="conditionsContainer">
           <!-- Dynamic conditions will be added here -->
         </div>
 
         <!-- Add Condition Button -->
         <button type="button"
                 data-action="click->rule-builder#addCondition"
-                class="inline-flex items-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-md border border-blue-200 transition-colors">
+                class="btn btn-success flex items-center">
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
@@ -105,7 +105,7 @@ export default class extends Controller {
     const conditionId = `condition_${Date.now()}`
 
     const conditionHTML = `
-      <div class="flex items-center gap-3 p-4 border border-stone-200 rounded-lg bg-white" data-condition-id="${conditionId}">
+      <div class="flex items-center gap-3" data-condition-id="${conditionId}">
         <select data-condition-field="operator" class="px-3 py-2 border border-stone-300 rounded-md text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
           <option value="in">Has label</option>
           <option value="!in">Does not have label</option>
