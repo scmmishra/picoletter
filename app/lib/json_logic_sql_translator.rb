@@ -101,7 +101,7 @@ class JsonLogicSqlTranslator
         if var_ref.is_a?(Hash) && var_ref["var"] == "labels"
           table = Arel::Table.new(:subscribers)
           any_function = Arel::Nodes::NamedFunction.new("ANY", [ table[:labels] ])
-          any_function.eq(Arel::Nodes.build_quoted(label_name))
+          Arel::Nodes.build_quoted(label_name).eq(any_function)
         end
 
       when "=="

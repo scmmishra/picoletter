@@ -14,7 +14,7 @@ RSpec.describe JsonLogicSqlTranslator do
         result = described_class.translate(rule)
 
         expect(result).to be_a(Arel::Nodes::Equality)
-        expect(result.to_sql).to include("ANY(\"subscribers\".\"labels\") = 'premium'")
+        expect(result.to_sql).to include("'premium' = ANY(\"subscribers\".\"labels\")")
       end
 
       it 'returns nil for invalid variable reference' do
@@ -84,8 +84,8 @@ RSpec.describe JsonLogicSqlTranslator do
 
         expect(result).to be_a(Arel::Nodes::And)
         sql = result.to_sql
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'premium'")
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'active'")
+        expect(sql).to include("'premium' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("'active' = ANY(\"subscribers\".\"labels\")")
         expect(sql).to include(" AND ")
       end
 
@@ -104,7 +104,7 @@ RSpec.describe JsonLogicSqlTranslator do
         result = described_class.translate(rule)
 
         expect(result).to be_a(Arel::Nodes::Equality)  # Single condition, not AND
-        expect(result.to_sql).to include("ANY(\"subscribers\".\"labels\") = 'premium'")
+        expect(result.to_sql).to include("'premium' = ANY(\"subscribers\".\"labels\")")
       end
     end
 
@@ -123,8 +123,8 @@ RSpec.describe JsonLogicSqlTranslator do
         end
 
         sql = result.to_sql
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'admin'")
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'enterprise'")
+        expect(sql).to include("'admin' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("'enterprise' = ANY(\"subscribers\".\"labels\")")
         expect(sql).to include(" OR ")
       end
 
@@ -142,7 +142,7 @@ RSpec.describe JsonLogicSqlTranslator do
         result = described_class.translate(rule)
 
         expect(result).to be_a(Arel::Nodes::Not)
-        expect(result.to_sql).to include("NOT (ANY(\"subscribers\".\"labels\") = 'inactive')")
+        expect(result.to_sql).to include("NOT ('inactive' = ANY(\"subscribers\".\"labels\"))")
       end
 
       it 'returns nil for nil condition' do
@@ -166,9 +166,9 @@ RSpec.describe JsonLogicSqlTranslator do
 
         expect(result).to be_a(Arel::Nodes::And)
         sql = result.to_sql
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'admin'")
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'enterprise'")
-        expect(sql).to include("NOT (ANY(\"subscribers\".\"labels\") = 'inactive')")
+        expect(sql).to include("'admin' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("'enterprise' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("NOT ('inactive' = ANY(\"subscribers\".\"labels\"))")
         expect(sql).to include(" OR ")
         expect(sql).to include(" AND ")
       end
@@ -188,10 +188,10 @@ RSpec.describe JsonLogicSqlTranslator do
 
         expect(result).to be_a(Arel::Nodes::And)
         sql = result.to_sql
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'premium'")
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'basic'")
-        expect(sql).to include("ANY(\"subscribers\".\"labels\") = 'verified'")
-        expect(sql).to include("NOT (ANY(\"subscribers\".\"labels\") = 'suspended')")
+        expect(sql).to include("'premium' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("'basic' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("'verified' = ANY(\"subscribers\".\"labels\")")
+        expect(sql).to include("NOT ('suspended' = ANY(\"subscribers\".\"labels\"))")
       end
     end
 
