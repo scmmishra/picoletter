@@ -10,6 +10,7 @@ class Newsletters::CohortsController < ApplicationController
   end
 
   def show
+    @pagy, @cohort_subscribers = pagy(@cohort.subscribers, limit: 15)
   end
 
   def new
