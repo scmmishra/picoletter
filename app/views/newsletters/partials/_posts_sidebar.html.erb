@@ -1,0 +1,32 @@
+<%= render "newsletters/partials/sidebar_group", title: "Posts" do %>
+  <ul class="grid">
+    <%= render "newsletters/partials/sidebar_link",
+    url: posts_path(@newsletter.slug),
+    is_active: current_page?(posts_path(@newsletter.slug)),
+    label: "Published",
+    count: @newsletter.posts.published.count,
+    level: 2 %>
+    <%= render "newsletters/partials/sidebar_link",
+    url: drafts_posts_path(@newsletter.slug),
+    is_active: current_page?(drafts_posts_path(@newsletter.slug)),
+    label: "Drafts",
+    count: @newsletter.posts.drafts.count,
+    level: 2 %>
+    <% if false %>
+      <%= render "newsletters/partials/sidebar_link",
+      url: archive_posts_path(@newsletter.slug),
+      is_active: current_page?(archive_posts_path(@newsletter.slug)),
+      label: "Archived",
+      count: @newsletter.posts.archived.count,
+      level: 2 %>
+      <% if @newsletter.posts.processing.count > 0 && false %>
+        <%= render "newsletters/partials/sidebar_link",
+        url: drafts_posts_path(@newsletter.slug),
+        is_active: false,
+        label: "Processing",
+        count: @newsletter.posts.processing.count,
+        level: 2 %>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

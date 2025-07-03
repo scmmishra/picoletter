@@ -8,21 +8,17 @@
       <%= render "newsletters/partials/account_switcher" %>
       <nav class="flex-grow text-stone-600 -mx-1.5">
         <ul class="grid gap-1">
-          <%= render "newsletters/partials/sidebar_link",
-          url: posts_path(@newsletter.slug),
-          is_active: current_page?(posts_path(@newsletter.slug)),
-          label: "Posts",
-          count: @newsletter.posts.published.count %>
-          <%= render "newsletters/partials/sidebar_link",
-          url: drafts_posts_path(@newsletter.slug),
-          is_active: current_page?(drafts_posts_path(@newsletter.slug)),
-          label: "Drafts",
-          count: @newsletter.posts.drafts.count %>
-          <%= render "newsletters/partials/sidebar_link",
-          url: subscribers_path(@newsletter.slug),
-          is_active: current_page?(subscribers_path(@newsletter.slug)),
-          label: "Subscribers",
-          count: @newsletter.subscribers.verified.count %>
+        </ul>
+      </nav>
+      
+      <%= render "newsletters/partials/posts_sidebar" %>
+
+      <%= render "newsletters/partials/subscribers_sidebar" %>
+
+      <%= render "newsletters/partials/cohorts_sidebar" %>
+      
+      <nav class="text-stone-600 -mx-1.5 mt-4">
+        <ul class="grid gap-1">
           <%= render "newsletters/partials/sidebar_link",
           url: labels_path(@newsletter.slug),
           is_active: current_page?(labels_path(@newsletter.slug)),
