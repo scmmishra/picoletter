@@ -6,11 +6,11 @@
     <h2 class="text-xl font-medium"><%= @cohort.name %></h2>
   </div>
   <div class="flex items-center gap-2">
-    <%= link_to edit_cohort_path(@newsletter.slug, @cohort), class: 'btn btn-secondary' do %>
+    <%= link_to edit_cohort_path(@newsletter.slug, @cohort), class: 'btn btn-secondary flex items-center' do %>
       <%= lucide_icon("edit", class: "size-4 mr-1") %>
       Edit
     <% end %>
-    <%= link_to cohorts_path(@newsletter.slug), class: 'btn btn-secondary' do %>
+    <%= link_to cohorts_path(@newsletter.slug), class: 'btn btn-secondary flex items-center' do %>
       <%= lucide_icon("arrow-left", class: "size-4 mr-1") %>
       Back to Cohorts
     <% end %>
