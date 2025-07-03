@@ -1,5 +1,11 @@
-<% if @newsletter.cohorts.where.not(id: nil).any? %>
-  <%= render "newsletters/partials/sidebar_group", title: "Cohorts" do %>
+<%= render "newsletters/partials/sidebar_group",
+    title: "Cohorts",
+    action: (@newsletter.cohorts.where.not(id: nil).any? ?
+      link_to(new_cohort_path(@newsletter.slug), class: "text-stone-400 hover:text-stone-600 px-1 rounded flex items-center gap-1 text-xs") {
+        content_tag(:span, lucide_icon("plus", class: "size-3")) + content_tag(:span, "New")
+      } : nil) do %>
+
+  <% if @newsletter.cohorts.where.not(id: nil).any? %>
     <ul class="grid">
       <% @newsletter.cohorts.where.not(id: nil).order(:name).limit(5).each do |cohort| %>
         <%= render "newsletters/partials/sidebar_link",
@@ -17,9 +23,7 @@
         level: 2 %>
       <% end %>
     </ul>
-  <% end %>
-<% else %>
-  <%= render "newsletters/partials/sidebar_group", title: "Cohorts" do %>
+  <% else %>
     <div class="mx-2 py-4 px-2 text-center bg-stone-200/50 border border-stone-200 rounded-md">
       <p class="text-sm text-stone-500 mb-2">No cohorts yet</p>
       <%= link_to "Create cohort", new_cohort_path(@newsletter.slug), class: "btn btn-clear mt-2 bg-white shadow-sm hover:bg-white btn-sm w-full" %>

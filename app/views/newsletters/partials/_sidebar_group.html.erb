@@ -1,6 +1,9 @@
 <div class="space-y-1 -mx-1.5">
-  <div class="px-2 py-1">
+  <div class="px-2 py-1 flex items-center justify-between">
     <span class="text-stone-600"><%= title %></span>
+    <% if local_assigns[:action] %>
+      <%= action %>
+    <% end %>
   </div>
   <div>
     <%= yield %>
