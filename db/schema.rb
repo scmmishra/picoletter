@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_09_040720) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_02_082717) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,6 +67,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_040720) do
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
+  end
+
+  create_table "cohorts", force: :cascade do |t|
+    t.string "name", null: false
+    t.text "description"
+    t.string "emoji"
+    t.jsonb "filter_conditions", default: "{}", null: false
+    t.bigint "newsletter_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["filter_conditions"], name: "index_cohorts_on_filter_conditions", using: :gin
+    t.index ["newsletter_id", "name"], name: "index_cohorts_on_newsletter_id_and_name", unique: true
+    t.index ["newsletter_id"], name: "index_cohorts_on_newsletter_id"
   end
 
   create_table "connected_services", force: :cascade do |t|
@@ -169,6 +182,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_040720) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug", null: false
+    t.bigint "cohort_id"
+    t.index ["cohort_id"], name: "index_posts_on_cohort_id"
     t.index ["newsletter_id", "slug"], name: "index_posts_on_newsletter_id_and_slug", unique: true
     t.index ["newsletter_id"], name: "index_posts_on_newsletter_id"
     t.index ["slug"], name: "index_posts_on_slug"
@@ -230,6 +245,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_040720) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "cohorts", "newsletters"
   add_foreign_key "connected_services", "users"
   add_foreign_key "domains", "newsletters"
   add_foreign_key "email_clicks", "emails"
@@ -237,6 +253,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_09_040720) do
   add_foreign_key "emails", "subscribers"
   add_foreign_key "labels", "newsletters"
   add_foreign_key "newsletters", "users"
+  add_foreign_key "posts", "cohorts"
   add_foreign_key "posts", "newsletters"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscribers", "newsletters"
