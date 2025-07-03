@@ -1,0 +1,24 @@
+<%#
+  Renders a single label tag
+
+  Parameters:
+  - label: Label object with name and color
+  - size: :small or :normal (default: :normal)
+%>
+
+<% size ||= :normal %>
+
+<%
+  if size == :small
+    classes = "inline-flex items-center justify-center px-2 py-0.5 text-xs rounded-md bg-stone-100 text-stone-700 gap-1 font-sans border border-stone-100"
+    dot_size = "size-2.5 rounded-sm"
+  else
+    classes = "inline-flex items-center justify-center px-2 py-1 text-sm rounded-md bg-stone-100 text-stone-700 gap-2 font-sans border border-stone-100"
+    dot_size = "size-3.5 rounded"
+  end
+%>
+
+<span class="<%= classes %>">
+  <div class="<%= dot_size %>" style="background-color: <%= label.color %>"></div>
+  <span><%= label.name %></span>
+</span>
