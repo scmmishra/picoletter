@@ -1,14 +1,6 @@
-<% cohort_color = color || Newsletter.theme_config.find { |t| t.name == 'Blue' }&.primary %>
-<% cohort_tint = Newsletter.theme_config.find { |t| t.primary == cohort_color }&.tint %>
 <li>
   <%= link_to url, class: "flex items-center gap-2 px-2 py-1.5 text-sm rounded-md transition-colors #{'bg-stone-100 text-stone-900' if is_active} hover:bg-stone-50" do %>
-    <% if icon && color %>
-      <div class="w-5 h-5 shadow-sm rounded flex items-center justify-center flex-shrink-0 border border-stone-300/50" style="background-color: <%= cohort_tint %>">
-        <svg class="w-3 h-3" style="color: <%= cohort_color %>">
-          <use href="#<%= icon %>"></use>
-        </svg>
-      </div>
-    <% end %>
+    <%= cohort_icon(icon: icon, color: color, size: 'sm') %>
     <span class="truncate"><%= label %></span>
     <% if count %>
       <span class="ml-auto text-xs text-stone-500"><%= count %></span>

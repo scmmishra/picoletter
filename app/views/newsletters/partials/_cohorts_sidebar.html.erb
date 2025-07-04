@@ -17,11 +17,11 @@
         count: cohort.subscriber_count %>
       <% end %>
       <% if @newsletter.cohorts.where.not(id: nil).count > 5 %>
-        <%= render "newsletters/partials/sidebar_link",
+        <%= sidebar_link(
         url: cohorts_path(@newsletter.slug),
         is_active: false,
         label: "View all...",
-        level: 2 %>
+        level: 2) %>
       <% end %>
     </ul>
   <% else %>

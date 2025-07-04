@@ -1,12 +1,6 @@
 <section class="flex items-center justify-between gap-2 mb-6">
   <div class="flex items-center gap-3">
-    <% if @cohort.icon && @cohort.color %>
-      <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: <%= @cohort.color %>20;">
-        <svg class="w-5 h-5" style="color: <%= @cohort.color %>">
-          <use href="#<%= @cohort.icon %>"></use>
-        </svg>
-      </div>
-    <% end %>
+    <%= cohort_icon(icon: @cohort.icon, color: @cohort.color, size: 'lg') %>
     <h2 class="text-xl font-medium"><%= @cohort.name %></h2>
   </div>
   <div class="flex items-center gap-2">
