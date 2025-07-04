@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["conditionsContainer", "logicOperator", "preview", "hiddenInput", "addButton"]
+  static targets = ["conditionsContainer", "logicOperator", "hiddenInput", "addButton"]
   static values = { labels: Array }
 
   connect() {
@@ -112,28 +112,5 @@ export default class extends Controller {
 
     // Update hidden input
     this.hiddenInputTarget.value = JSON.stringify(filterGroup)
-
-    // Update preview
-    this.updatePreview(conditions, logicOperator)
   }
-
-  updatePreview(conditions, logicOperator) {
-    if (conditions.length === 0) {
-      this.previewTarget.textContent = "No conditions set. All verified subscribers will be included."
-      return
-    }
-
-    const conditionTexts = conditions.map(condition => {
-      const fieldName = condition.field === 'label' ? 'Label' : condition.field
-      const operatorText = condition.operator === 'has' ? 'has' :
-                          condition.operator === 'not_has' ? 'does not have' : condition.operator
-      return `${fieldName} ${operatorText} "${condition.value}"`
-    })
-
-    const logicText = logicOperator === 'and' ? 'ALL' : 'ANY'
-    const previewText = `Subscribers who match ${logicText} of: ${conditionTexts.join(` ${logicOperator.toUpperCase()} `)}`
-
-    this.previewTarget.textContent = previewText
-  }
-
 }

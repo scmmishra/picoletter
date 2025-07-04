@@ -1,4 +1,4 @@
-<div class="condition-row flex items-center gap-2 p-3 border border-stone-200 rounded-lg bg-white mb-2" data-index="<%= index %>">
+<div class="condition-row flex items-center gap-2 rounded-lg mb-2" data-index="<%= index %>">
 
   <!-- Field Select -->
   <select name="conditions[<%= index %>][field]" class="input w-24 text-sm" data-action="change->filter-editor#updateOperators" data-index="<%= index %>">
@@ -31,9 +31,9 @@
 
   <!-- Remove Button -->
   <button type="button"
-          class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded"
+          class="btn btn-danger py-2"
           data-action="click->filter-editor#removeCondition"
           data-index="<%= index %>">
-    <%= lucide_icon("x", class: "size-4") %>
+    <%= lucide_icon("trash-2", class: "size-4") %>
   </button>
 </div>

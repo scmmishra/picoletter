@@ -1,45 +1,39 @@
-<div class="space-y-4" data-controller="filter-editor"
+<section class="space-y-4" data-controller="filter-editor"
      data-filter-editor-labels-value="<%= newsletter.labels.pluck(:name, :name, :color).to_json %>"
      data-filter-editor-add-condition-url-value="<%= add_condition_cohorts_path(newsletter.slug) %>">
 
   <!-- Logic Operator Selection -->
-  <div class="flex items-center gap-3 p-3 bg-stone-50 rounded-lg border">
-    <span class="text-sm text-stone-600">Subscribers must match:</span>
-    <select name="logic_operator" class="input w-32" data-filter-editor-target="logicOperator" data-action="change->filter-editor#updateConditions">
-      <option value="and" <%= 'selected' if cohort.filter_group.operator == 'and' %>>ALL conditions</option>
-      <option value="or" <%= 'selected' if cohort.filter_group.operator == 'or' %>>ANY condition</option>
-    </select>
-  </div>
+  <div class="p-3 bg-stone-50 rounded-lg border font-sans grid gap-4">
+    <div class="flex items-center gap-3 justify-between">
+      <span class="text-sm text-stone-600">Subscribers must match:</span>
+      <select name="logic_operator" class="text-xs border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 placeholder:text-zinc-400 placeholder:font-light" data-filter-editor-target="logicOperator" data-action="change->filter-editor#updateConditions">
+        <option value="and" <%= 'selected' if cohort.filter_group.operator == 'and' %>>All conditions</option>
+        <option value="or" <%= 'selected' if cohort.filter_group.operator == 'or' %>>Any condition</option>
+      </select>
+    </div>
 
-  <!-- Existing Conditions -->
-  <div data-filter-editor-target="conditionsContainer" id="conditions-container">
-    <% cohort.filter_group.conditions.each_with_index do |condition, index| %>
-      <%= render 'condition_row', index: index, condition: condition, newsletter: newsletter %>
-    <% end %>
+    <!-- Existing Conditions -->
+    <div data-filter-editor-target="conditionsContainer" id="conditions-container">
+      <% cohort.filter_group.conditions.each_with_index do |condition, index| %>
+        <%= render 'condition_row', index: index, condition: condition, newsletter: newsletter %>
+      <% end %>
+    </div>
   </div>
 
   <!-- Add Condition Button -->
   <%= link_to add_condition_cohorts_path(newsletter.slug, index: 0),
-      class: "btn btn-sm btn-clear flex items-center",
+      class: "btn btn-clear btn-sm outline outline-stone-200 bg-white flex items-center w-full justify-center",
       data: {
         turbo_method: :post,
         turbo_stream: true,
         filter_editor_target: "addButton",
         action: "click->filter-editor#beforeAdd"
       } do %>
-    <%= lucide_icon("plus", class: "size-3 mr-1") %>
+    <%= lucide_icon("trash-2", class: "size-3 mr-1") %>
     Add Condition
   <% end %>
-
-  <!-- Live Preview -->
-  <div class="border-t pt-4">
-    <h4 class="text-sm font-medium text-stone-700 mb-2">Preview:</h4>
-    <div data-filter-editor-target="preview" class="text-sm text-stone-600 p-3 bg-stone-50 rounded border">
-      <%= cohort.has_filters? ? cohort.filter_display_text : "No conditions set" %>
-    </div>
-  </div>
 
   <!-- Hidden Input for Form Submission -->
   <%= form.hidden_field :filter_conditions, data: { filter_editor_target: "hiddenInput" }, value: cohort.filter_group.to_hash.to_json %>
 
-</div>
+</section>
