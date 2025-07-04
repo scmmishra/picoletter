@@ -22,8 +22,12 @@
         <div class="flex items-start justify-between">
           <div class="flex-grow">
             <div class="flex items-center gap-2 mb-2">
-              <% if cohort.emoji %>
-                <span class="text-lg"><%= cohort.emoji %></span>
+              <% if cohort.icon && cohort.color %>
+                <div class="w-6 h-6 rounded flex items-center justify-center" style="background-color: <%= Newsletter.theme_config.find { |t| t.primary == cohort.color }&.tint %>;">
+                  <svg class="w-4 h-4" style="color: <%= cohort.color %>">
+                    <use href="#<%= cohort.icon %>"></use>
+                  </svg>
+                </div>
               <% end %>
               <h3 class="font-medium text-stone-900"><%= cohort.name %></h3>
               <span class="text-sm text-stone-500">(<%= cohort.subscriber_count %> subscribers)</span>

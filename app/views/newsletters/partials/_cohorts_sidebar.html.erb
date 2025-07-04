@@ -8,12 +8,13 @@
   <% if @newsletter.cohorts.where.not(id: nil).any? %>
     <ul class="grid">
       <% @newsletter.cohorts.where.not(id: nil).order(:name).limit(5).each do |cohort| %>
-        <%= render "newsletters/partials/sidebar_link",
+        <%= render "newsletters/partials/sidebar_cohort_link",
         url: cohort_path(@newsletter.slug, cohort),
         is_active: current_page?(cohort_path(@newsletter.slug, cohort)),
-        label: "#{cohort.emoji} #{cohort.name}".strip,
-        count: cohort.subscriber_count,
-        level: 2 %>
+        label: cohort.name,
+        icon: cohort.icon || 'users',
+        color: cohort.color,
+        count: cohort.subscriber_count %>
       <% end %>
       <% if @newsletter.cohorts.where.not(id: nil).count > 5 %>
         <%= render "newsletters/partials/sidebar_link",

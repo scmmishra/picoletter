@@ -68,7 +68,7 @@ class Newsletters::CohortsController < ApplicationController
   end
 
   def cohort_params
-    permitted = params.require(:cohort).permit(:name, :description, :emoji, :filter_conditions)
+    permitted = params.require(:cohort).permit(:name, :description, :icon, :color, :filter_conditions)
 
     # Parse JSON filter_conditions if present
     if permitted[:filter_conditions].present?

@@ -21,8 +21,12 @@
     <% if @post.cohort %>
       <div class="p-3 bg-blue-50 border border-blue-200 rounded-lg">
         <div class="flex items-center gap-2">
-          <% if @post.cohort.emoji %>
-            <span class="text-lg"><%= @post.cohort.emoji %></span>
+          <% if @post.cohort.icon && @post.cohort.color %>
+            <div class="w-6 h-6 rounded flex items-center justify-center" style="background-color: <%= Newsletter.theme_config.find { |t| t.primary == @post.cohort.color }&.tint %>;">
+              <svg class="w-4 h-4" style="color: <%= @post.cohort.color %>">
+                <use href="#<%= @post.cohort.icon %>"></use>
+              </svg>
+            </div>
           <% end %>
           <div>
             <p class="text-sm font-medium text-blue-900">Sent to cohort: <%= @post.cohort.name %></p>
