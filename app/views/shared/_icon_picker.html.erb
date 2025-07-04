@@ -2,7 +2,7 @@
 <div class="space-y-3">
   <!-- Current Selection Display -->
   <div class="relative">
-    <div data-icon-picker-target="currentSelection" 
+    <div data-icon-picker-target="currentSelection"
          data-action="click->icon-picker#togglePicker"
          class="w-12 h-12 rounded-lg border border-stone-300 flex items-center justify-center cursor-pointer hover:border-stone-400 transition-colors"
          style="background-color: <%= current_color %>20;">
@@ -10,16 +10,16 @@
         <use href="#<%= current_icon %>"></use>
       </svg>
     </div>
-    
+
     <!-- Picker Dropdown -->
-    <div data-icon-picker-target="picker" 
+    <div data-icon-picker-target="picker"
          class="hidden absolute top-14 left-0 z-50 bg-white border border-stone-200 rounded-lg shadow-lg w-80 h-80 flex flex-col">
-      
+
       <!-- Color Selection (Fixed) -->
       <div class="p-4 border-b border-stone-200 flex-shrink-0">
         <div class="flex flex-wrap gap-1.5">
           <% Newsletter.theme_config.each do |theme| %>
-            <button type="button" 
+            <button type="button"
                     data-action="click->icon-picker#selectColor"
                     data-color="<%= theme.primary %>"
                     data-tint="<%= theme.tint %>"
@@ -30,11 +30,11 @@
           <% end %>
         </div>
       </div>
-      
+
       <!-- Icon Selection (Scrollable) -->
       <div class="flex-1 overflow-y-auto p-4" data-icon-picker-target="iconGrid">
         <div class="grid grid-cols-8 gap-2">
-          <% %w[academic-cap archive-box-arrow-down arrow-left-start-on-rectangle arrow-right-end-on-rectangle arrow-right-start-on-rectangle arrow-top-right-on-square arrow-trending-down arrow-trending-up at-symbol backspace backward banknotes battery-0 battery-50 battery-100 beaker bell-alert bell-slash bell-snooze bell bold bolt-slash bolt book-open bookmark-slash bookmark-square bookmark briefcase bug-ant building-library building-office-2 building-office building-storefront cake calculator calendar-date-range calendar-days calendar camera chart-bar-square chart-bar chart-pie chat-bubble-bottom-center-text chat-bubble-bottom-center chat-bubble-left-ellipsis chat-bubble-left-right chat-bubble-left chat-bubble-oval-left-ellipsis chat-bubble-oval-left check-badge check-circle check circle-stack clipboard-document-check clipboard-document-list clipboard-document clipboard clock cloud code-bracket-square code-bracket cog-6-tooth cog-8-tooth cog command-line computer-desktop cpu-chip credit-card cube-transparent cube currency-bangladeshi currency-dollar currency-euro currency-pound currency-rupee currency-yen cursor-arrow-rays cursor-arrow-ripple device-phone-mobile device-tablet divide document-arrow-down document-arrow-up document-chart-bar document-check document-currency-bangladeshi document-currency-dollar document-currency-euro document-currency-pound document-currency-rupee document-currency-yen document-duplicate document-magnifying-glass document-minus document-plus document-text document ellipsis-horizontal-circle envelope-open envelope exclamation-circle exclamation-triangle eye-dropper eye-slash eye face-frown face-smile film finger-print fire flag folder-arrow-down folder-minus folder-open folder funnel gift-top gift globe-alt globe-americas globe-asia-australia globe-europe-africa hand-raised hand-thumb-down hand-thumb-up heart home-modern home identification inbox-arrow-down inbox-stack inbox key language lifebuoy light-bulb lock-closed lock-open map-pin map megaphone microphone minus-circle moon musical-note newspaper paint-brush paper-airplane paper-clip percent-badge phone photo power presentation-chart-bar presentation-chart-line printer puzzle-piece qr-code radio receipt-percent receipt-refund rectangle-group rectangle-stack rocket-launch rss scale scissors server-stack server shield-check shield-exclamation shopping-bag shopping-cart signal-slash signal sparkles square-2-stack square-3-stack-3d squares-2x2 squares-plus star sun swatch table-cells tag ticket trash trophy truck tv user-circle user-group users variable video-camera-slash video-camera view-columns viewfinder-circle wallet wifi window wrench-screwdriver wrench].each do |icon| %>
+          <% %w[academic-cap arrow-trending-up at-symbol backspace banknotes battery-50 battery-100 beaker bell-snooze bolt book-open bookmark briefcase bug-ant building-library building-office cake calculator calendar-date-range camera chart-bar chart-pie chat-bubble-bottom-center-text check-badge circle-stack clipboard-document-check clipboard clock cloud code-bracket cog-8-tooth command-line computer-desktop cpu-chip credit-card cube-transparent cube cursor-arrow-rays cursor-arrow-ripple device-phone-mobile device-tablet envelope-open envelope eye-dropper eye face-frown face-smile film finger-print fire flag folder gift globe-americas hand-raised hand-thumb-down hand-thumb-up heart home-modern identification inbox key language lifebuoy light-bulb map-pin megaphone microphone moon musical-note phone photo presentation-chart-bar presentation-chart-line printer puzzle-piece qr-code radio rectangle-group rectangle-stack rocket-launch scale scissors server-stack shield-check shield-exclamation shopping-bag shopping-cart signal sparkles square-2-stack square-3-stack-3d swatch tag ticket trash trophy truck tv user-group variable video-camera viewfinder-circle wallet wifi window wrench-screwdriver].each do |icon| %>
             <button type="button"
                     data-action="click->icon-picker#selectIcon"
                     data-icon="<%= icon %>"
@@ -48,7 +48,7 @@
       </div>
     </div>
   </div>
-  
+
   <!-- Hidden Form Fields -->
   <%= form.hidden_field icon_field, data: { icon_picker_target: "iconInput" }, value: current_icon %>
   <%= form.hidden_field color_field, data: { icon_picker_target: "colorInput" }, value: current_color %>
