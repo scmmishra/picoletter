@@ -1,9 +1,5 @@
 <section class="flex items-center justify-between gap-2 mb-6">
   <h2 class="text-xl font-medium">Edit Cohort</h2>
-  <%= link_to cohorts_path(@newsletter.slug), class: 'btn btn-secondary flex items-center' do %>
-    <%= lucide_icon("arrow-left", class: "size-4 mr-1") %>
-    Back to Cohorts
-  <% end %>
 </section>
 
 <%= form_with model: [@newsletter, @cohort], url: cohort_path(@newsletter.slug, @cohort), method: :patch, local: true, class: "space-y-6" do |form| %>
@@ -66,7 +62,7 @@
 
     <div class="flex items-center gap-2 pt-4">
       <%= form.submit "Update Cohort", class: "btn btn-primary" %>
-      <%= link_to "Cancel", cohorts_path(@newsletter.slug), class: "btn btn-secondary" %>
+      <%= link_to "Cancel", cohort_path(@newsletter.slug, @cohort), class: "btn btn-secondary" %>
     </div>
   </div>
 <% end %>

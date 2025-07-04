@@ -6,8 +6,8 @@
       } : nil) do %>
 
   <% if @newsletter.cohorts.where.not(id: nil).any? %>
-    <ul class="grid">
-      <% @newsletter.cohorts.where.not(id: nil).order(:name).limit(5).each do |cohort| %>
+    <ul class="grid max-h-80 overflow-y-auto">
+      <% @newsletter.cohorts.where.not(id: nil).order(:name).each do |cohort| %>
         <%= render "newsletters/partials/sidebar_cohort_link",
         url: cohort_path(@newsletter.slug, cohort),
         is_active: current_page?(cohort_path(@newsletter.slug, cohort)),
@@ -15,13 +15,6 @@
         icon: cohort.icon || 'users',
         color: cohort.color,
         count: cohort.subscriber_count %>
-      <% end %>
-      <% if @newsletter.cohorts.where.not(id: nil).count > 5 %>
-        <%= sidebar_link(
-        url: cohorts_path(@newsletter.slug),
-        is_active: false,
-        label: "View all...",
-        level: 2) %>
       <% end %>
     </ul>
   <% else %>

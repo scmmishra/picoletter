@@ -5,10 +5,6 @@ class Newsletters::CohortsController < ApplicationController
   before_action :set_newsletter
   before_action :set_cohort, only: [ :show, :edit, :update, :destroy ]
 
-  def index
-    @cohorts = @newsletter.cohorts.order(:name)
-  end
-
   def show
     @pagy, @cohort_subscribers = pagy(@cohort.subscribers, limit: 15)
   end

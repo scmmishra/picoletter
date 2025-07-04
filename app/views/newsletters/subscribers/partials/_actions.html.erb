@@ -1,4 +1,4 @@
-<%= render "newsletters/subscribers/partials/action_card", title: "Delete Forever", help_text: "Delete the subscriber permanently, this cannot be undone" do %>
+<%= action_card(title: "Delete Forever", help_text: "Delete the subscriber permanently, this cannot be undone") do %>
   <%= link_to "Delete Forever",
   subscriber_path(@newsletter.slug, @subscriber.id),
   class: "btn w-full btn-danger text-sm",
@@ -9,13 +9,13 @@
   } %>
 <% end %>
 <% if @subscriber.unverified? %>
-  <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to confirm their address." do %>
+  <%= action_card(title: "Resend Confirmation", help_text: "Send a reminder to #{@subscriber.display_name}, asking to confirm their address.") do %>
     <%= link_to send_reminder_subscribers_path(@newsletter.slug), class:"btn w-full btn-primary text-sm", data: { turbo_method: :post } do %>
       Send Reminder
     <% end %>
   <% end %>
 <% elsif @subscriber.verified? %>
-  <%= render "newsletters/subscribers/partials/action_card", title: "Unsubscribe", help_text: "They won't receive any of your emails. You can resubscribe them without the need to reconfirm." do %>
+  <%= action_card(title: "Unsubscribe", help_text: "They won't receive any of your emails. You can resubscribe them without the need to reconfirm.") do %>
     <%= link_to unsubscribe_subscribers_path(@newsletter.slug, @subscriber.id), class:"btn w-full btn-warning text-sm", data: {
       turbo_method: :post,
       turbo_confirm:

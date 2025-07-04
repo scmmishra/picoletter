@@ -8,10 +8,6 @@
       <%= lucide_icon("edit", class: "size-4 mr-1") %>
       Edit
     <% end %>
-    <%= link_to cohorts_path(@newsletter.slug), class: 'btn btn-secondary flex items-center' do %>
-      <%= lucide_icon("arrow-left", class: "size-4 mr-1") %>
-      Back to Cohorts
-    <% end %>
   </div>
 </section>
 
@@ -63,6 +59,25 @@
         </div>
       </div>
     <% end %>
+
+    <div class="flex gap-2 font-sans text-stone-500 items-center my-6 text-sm">
+      <h3>Actions</h3>
+      <hr class="flex-grow">
+    </div>
+    
+    <div>
+      <%= action_card(
+          title: "Delete Cohort", 
+          help_text: "Delete this cohort permanently. This cannot be undone.") do %>
+        <%= link_to "Delete Cohort",
+            cohort_path(@newsletter.slug, @cohort),
+            class: "btn w-full btn-danger text-sm",
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure you want to delete this cohort forever? This cannot be undone."
+            } %>
+      <% end %>
+    </div>
   </div>
 
   <!-- Right Column: Subscribers List -->

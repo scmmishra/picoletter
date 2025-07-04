@@ -92,7 +92,7 @@ Rails.application.routes.draw do
       end
 
       resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"
-      resources :cohorts, only: [ :index, :show, :new, :create, :edit, :update, :destroy ], path: "cohorts" do
+      resources :cohorts, only: [ :show, :new, :create, :edit, :update, :destroy ], path: "cohorts" do
         collection do
           post :add_condition
         end
