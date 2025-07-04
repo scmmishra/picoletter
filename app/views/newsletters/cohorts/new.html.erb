@@ -2,7 +2,7 @@
   <h2 class="text-xl font-medium">Create New Cohort</h2>
 </section>
 
-<%= form_with model: [@newsletter, @cohort], url: cohorts_path(@newsletter.slug), local: true, class: "space-y-6" do |form| %>
+<%= labeled_form_with model: [@newsletter, @cohort], url: cohorts_path(@newsletter.slug), local: true, class: "space-y-6" do |form| %>
   <% if @cohort.errors.any? %>
     <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
       <h3 class="font-medium text-red-900 mb-2">Please fix the following errors:</h3>
@@ -14,7 +14,7 @@
     </div>
   <% end %>
 
-  <div class="max-w-xl space-y-4">
+  <div class="max-w-xl grid gap-4">
     <div class="flex gap-4">
       <div class="flex-shrink-0">
         <label class="space-y-1">
@@ -34,7 +34,6 @@
       </div>
       <div class="flex-1">
         <label class="space-y-1">
-          <%= form.label :name, "Cohort Name", class: "ml-px text-stone-500 font-sans text-sm" %>
           <%= form.text_field :name,
               required: true,
               placeholder: "Premium Subscribers",
@@ -44,12 +43,11 @@
     </div>
 
     <label class="space-y-1">
-      <%= form.label :description, "Description", class: "ml-px text-stone-500 font-sans text-sm" %>
       <%= form.text_area :description,
           placeholder: "Subscribers who have premium access...",
           class: "input w-full",
+          hint: "Optional description to help you remember what this cohort is for",
           rows: 3 %>
-      <p class="text-xs text-stone-400 ml-px">Optional description to help you remember what this cohort is for</p>
     </label>
 
     <div>
