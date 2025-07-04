@@ -19,34 +19,34 @@
       
       <nav class="text-stone-600 -mx-1.5 mt-4">
         <ul class="grid gap-1">
-          <%= render "newsletters/partials/sidebar_link",
+          <%= sidebar_link(
           url: labels_path(@newsletter.slug),
           is_active: current_page?(labels_path(@newsletter.slug)),
-          label: "Labels" %>
-          <%= render "newsletters/partials/sidebar_link",
+          label: "Labels") %>
+          <%= sidebar_link(
           url: settings_path(@newsletter.slug),
           is_active: current_page?(settings_path(@newsletter.slug)),
-          label: "Settings" %>
+          label: "Settings") %>
         </ul>
       </nav>
     </div>
     <nav class="text-stone-500 justify-self-end -mx-1.5">
       <%= render "newsletters/partials/billing_banner" %>
       <ul class="grid gap-1">
-        <%= render "newsletters/partials/sidebar_link",
+        <%= sidebar_link(
         url: newsletter_path(slug: @newsletter.slug),
         icon: "arrow-up-right",
         is_active: false,
         target: "_blank",
-        label: "Public view" %>
-        <%= render "newsletters/partials/sidebar_link",
+        label: "Public view") %>
+        <%= sidebar_link(
         url: auth_logout_path,
         icon: "arrow-right-to-line",
         data: {
           turbo_method: :delete,
         },
         is_active: false,
-        label: "Log out" %>
+        label: "Log out") %>
       </ul>
     </nav>
   </section>

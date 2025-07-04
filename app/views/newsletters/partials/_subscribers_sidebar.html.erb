@@ -1,22 +1,22 @@
 <%= render "newsletters/partials/sidebar_group", title: "Subscribers" do %>
   <ul class="grid">
-    <%= render "newsletters/partials/sidebar_link",
+    <%= sidebar_link(
     url: subscribers_path(@newsletter.slug, status: 'verified'),
     is_active: params[:status] == 'verified',
     label: "Verified",
     count: @newsletter.subscribers.verified.count,
-    level: 2 %>
-    <%= render "newsletters/partials/sidebar_link",
+    level: 2) %>
+    <%= sidebar_link(
     url: subscribers_path(@newsletter.slug, status: 'unverified'),
     is_active: params[:status] == 'unverified',
     label: "Unverified",
     count: @newsletter.subscribers.unverified.count,
-    level: 2 %>
-    <%= render "newsletters/partials/sidebar_link",
+    level: 2) %>
+    <%= sidebar_link(
     url: subscribers_path(@newsletter.slug, status: 'unsubscribed'),
     is_active: params[:status] == 'unsubscribed',
     label: "Unsubscribed",
     count: @newsletter.subscribers.unsubscribed.count,
-    level: 2 %>
+    level: 2) %>
   </ul>
 <% end %>
