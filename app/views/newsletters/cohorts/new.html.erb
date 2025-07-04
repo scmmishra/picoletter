@@ -15,13 +15,13 @@
   <% end %>
 
   <div class="max-w-xl space-y-4">
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-2">
+    <div class="flex gap-4">
+      <div class="flex-shrink-0">
         <label class="space-y-1">
           <%= form.label :icon, "Icon", class: "ml-px text-stone-500 font-sans text-sm" %>
           <% default_color = Newsletter.theme_config.find { |t| t.name == 'Blue' }&.primary || Newsletter.theme_config.first.primary %>
           <div data-controller="icon-picker"
-               data-icon-picker-current-icon-value="<%= @cohort.icon || 'users' %>"
+               data-icon-picker-current-icon-value="<%= @cohort.icon || 'envelope' %>"
                data-icon-picker-current-color-value="<%= @cohort.color || default_color %>">
             <%= render 'shared/icon_picker',
                 form: form,
@@ -32,7 +32,7 @@
           </div>
         </label>
       </div>
-      <div class="col-span-10">
+      <div class="flex-1">
         <label class="space-y-1">
           <%= form.label :name, "Cohort Name", class: "ml-px text-stone-500 font-sans text-sm" %>
           <%= form.text_field :name,

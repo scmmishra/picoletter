@@ -4,7 +4,7 @@
   <div class="relative">
     <div data-icon-picker-target="currentSelection"
          data-action="click->icon-picker#togglePicker"
-         class="w-12 h-12 rounded-lg border border-stone-300 flex items-center justify-center cursor-pointer hover:border-stone-400 transition-colors"
+         class="size-10 rounded-lg flex items-center justify-center cursor-pointer hover:border-stone-400 transition-colors"
          style="background-color: <%= current_color %>20;">
       <svg class="w-6 h-6" style="color: <%= current_color %>">
         <use href="#<%= current_icon %>"></use>
@@ -16,30 +16,32 @@
          class="hidden absolute top-14 left-0 z-50 bg-white border border-stone-200 rounded-lg shadow-lg w-80 h-80 flex flex-col">
 
       <!-- Color Selection (Fixed) -->
-      <div class="p-4 border-b border-stone-200 flex-shrink-0">
-        <div class="flex flex-wrap gap-1.5">
+      <div class="border-b border-stone-200 flex-shrink-0">
+        <div class="flex overflow-x-auto gap-2 p-3">
           <% Newsletter.theme_config.each do |theme| %>
-            <button type="button"
-                    data-action="click->icon-picker#selectColor"
-                    data-color="<%= theme.primary %>"
-                    data-tint="<%= theme.tint %>"
-                    class="w-6 h-6 rounded-full border-2 border-white ring-1 ring-stone-300 transition-all hover:scale-110 <%= 'ring-2 ring-stone-400' if current_color == theme.primary %>"
-                    style="background-color: <%= theme.primary %>;"
-                    title="<%= theme.name %>">
-            </button>
+            <%= button_tag type: 'button',
+                          data: {
+                            action: 'click->icon-picker#selectColor',
+                            color: theme.primary,
+                            tint: theme.tint
+                          },
+                          class: "size-5 flex-shrink-0 rounded-full transition-all border-0 focus:ring-2 focus:ring-[var(--pl-current-color)]",
+                          style: "background-color: #{theme.primary}; --pl-current-color: #{theme.primary}",
+                          title: theme.name do %>
+            <% end %>
           <% end %>
         </div>
       </div>
 
       <!-- Icon Selection (Scrollable) -->
-      <div class="flex-1 overflow-y-auto p-4" data-icon-picker-target="iconGrid">
-        <div class="grid grid-cols-8 gap-2">
+      <div class="flex-1 overflow-y-auto p-3" data-icon-picker-target="iconGrid">
+        <div class="grid grid-cols-9 gap-2">
           <% %w[academic-cap arrow-trending-up at-symbol backspace banknotes battery-50 battery-100 beaker bell-snooze bolt book-open bookmark briefcase bug-ant building-library building-office cake calculator calendar-date-range camera chart-bar chart-pie chat-bubble-bottom-center-text check-badge circle-stack clipboard-document-check clipboard clock cloud code-bracket cog-8-tooth command-line computer-desktop cpu-chip credit-card cube-transparent cube cursor-arrow-rays cursor-arrow-ripple device-phone-mobile device-tablet envelope-open envelope eye-dropper eye face-frown face-smile film finger-print fire flag folder gift globe-americas hand-raised hand-thumb-down hand-thumb-up heart home-modern identification inbox key language lifebuoy light-bulb map-pin megaphone microphone moon musical-note phone photo presentation-chart-bar presentation-chart-line printer puzzle-piece qr-code radio rectangle-group rectangle-stack rocket-launch scale scissors server-stack shield-check shield-exclamation shopping-bag shopping-cart signal sparkles square-2-stack square-3-stack-3d swatch tag ticket trash trophy truck tv user-group variable video-camera viewfinder-circle wallet wifi window wrench-screwdriver].each do |icon| %>
             <button type="button"
                     data-action="click->icon-picker#selectIcon"
                     data-icon="<%= icon %>"
-                    class="w-8 h-8 rounded border border-stone-200 flex items-center justify-center hover:bg-stone-50 transition-colors <%= 'bg-stone-100 border-stone-400' if current_icon == icon %>">
-              <svg class="w-4 h-4">
+                    class="size-6 rounded-md flex items-center justify-center hover:bg-stone-50 transition-colors <%= 'bg-stone-100 border-stone-400' if current_icon == icon %>">
+              <svg class="size-3.5">
                 <use href="#<%= icon %>"></use>
               </svg>
             </button>

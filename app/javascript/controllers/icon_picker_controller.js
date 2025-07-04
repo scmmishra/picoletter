@@ -43,9 +43,9 @@ export default class extends Controller {
     if (selectedColorButton) {
       const tint = selectedColorButton.dataset.tint
       // Set background to tint color
-      this.currentSelectionTarget.style.backgroundColor = tint
+      this.currentSelectionTarget.style.backgroundColor = this.currentColorValue
       // Set icon color to primary
-      svg.style.color = this.currentColorValue
+      svg.style.color = tint
     }
   }
 
@@ -82,9 +82,9 @@ export default class extends Controller {
       buttons.forEach(button => {
         const svg = button.querySelector('svg')
         // Set background color to tint
-        button.style.backgroundColor = tint
+        button.style.backgroundColor = this.currentColorValue
         // Set icon color to primary
-        svg.style.color = this.currentColorValue
+        svg.style.color = tint
       })
     }
   }
