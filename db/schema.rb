@@ -72,7 +72,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_02_082717) do
   create_table "cohorts", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
-    t.string "emoji"
+    t.string "icon"
+    t.string "color"
     t.jsonb "filter_conditions", default: "{}", null: false
     t.bigint "newsletter_id", null: false
     t.datetime "created_at", null: false

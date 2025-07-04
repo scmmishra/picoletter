@@ -3,9 +3,10 @@
 # Table name: cohorts
 #
 #  id                :bigint           not null, primary key
+#  color             :string
 #  description       :text
-#  emoji             :string
 #  filter_conditions :jsonb            not null
+#  icon              :string
 #  name              :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null

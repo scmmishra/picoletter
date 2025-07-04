@@ -49,19 +49,13 @@ class Newsletters::CohortsController < ApplicationController
   end
 
   def add_condition
-    @labels = @newsletter.labels.order(:name)
-    @condition_id = "condition_#{SecureRandom.hex(4)}"
+    @index = params[:index]&.to_i || 0
 
     respond_to do |format|
       format.turbo_stream
     end
   end
 
-  def remove_condition
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
 
   private
 

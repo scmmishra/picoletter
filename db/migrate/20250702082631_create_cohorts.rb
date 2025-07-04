@@ -3,7 +3,8 @@ class CreateCohorts < ActiveRecord::Migration[8.0]
     create_table :cohorts do |t|
       t.string :name, null: false
       t.text :description
-      t.string :emoji
+      t.string :icon
+      t.string :color
       t.jsonb :filter_conditions, null: false, default: '{}'
       t.references :newsletter, null: false, foreign_key: true
 

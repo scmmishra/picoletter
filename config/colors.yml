@@ -2,59 +2,74 @@
   primary: "#09090B"
   primary_hover: "#27272A"
   text_on_primary: "#FFFFFF"
+  tint: "#F4F4F5"
 - name: Red
   primary: "#EF4444"
   primary_hover: "#DC2626"
   text_on_primary: "#FFFFFF"
+  tint: "#FEF2F2"
 - name: Orange
   primary: "#F97316"
   primary_hover: "#EA580C"
   text_on_primary: "#FFFFFF"
+  tint: "#FFF7ED"
 - name: Amber
   primary: "#F59E0B"
   primary_hover: "#D97706"
   text_on_primary: "#FFFFFF"
+  tint: "#FFFBEB"
 - name: Yellow
   primary: "#EAB308"
   primary_hover: "#CA8A04"
   text_on_primary: "#FFFFFF"
+  tint: "#FEFCE8"
 - name: Lime
   primary: "#84CC16"
   primary_hover: "#65A30D"
   text_on_primary: "#FFFFFF"
+  tint: "#F7FEE7"
 - name: Green
   primary: "#22C55E"
   primary_hover: "#16A34A"
   text_on_primary: "#FFFFFF"
+  tint: "#F0FDF4"
 - name: Cyan
   primary: "#06B6D4"
   primary_hover: "#0891B2"
   text_on_primary: "#FFFFFF"
+  tint: "#ECFEFF"
 - name: Sky
   primary: "#0EA5E9"
   primary_hover: "#0284C7"
   text_on_primary: "#FFFFFF"
+  tint: "#F0F9FF"
 - name: Blue
   primary: "#3B82F6"
   primary_hover: "#2563EB"
   text_on_primary: "#FFFFFF"
+  tint: "#EFF6FF"
 - name: Indigo
   primary: "#6366F1"
   primary_hover: "#4F46E5"
   text_on_primary: "#FFFFFF"
+  tint: "#EEF2FF"
 - name: Violet
   primary: "#8B5CF6"
   primary_hover: "#7C3AED"
   text_on_primary: "#FFFFFF"
+  tint: "#F5F3FF"
 - name: Purple
   primary: "#A855F7"
   primary_hover: "#9333EA"
   text_on_primary: "#FFFFFF"
+  tint: "#FAF5FF"
 - name: Fuchsia
   primary: "#D946EF"
   primary_hover: "#C026D3"
   text_on_primary: "#FFFFFF"
+  tint: "#FDF4FF"
 - name: Pink
   primary: "#EC4899"
   primary_hover: "#DB2777"
   text_on_primary: "#FFFFFF"
+  tint: "#FDF2F8"

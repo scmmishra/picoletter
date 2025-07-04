@@ -1,0 +1,39 @@
+<div class="condition-row flex items-center gap-2 p-3 border border-stone-200 rounded-lg bg-white mb-2" data-index="<%= index %>">
+
+  <!-- Field Select -->
+  <select name="conditions[<%= index %>][field]" class="input w-24 text-sm" data-action="change->filter-editor#updateOperators" data-index="<%= index %>">
+    <option value="">Field</option>
+    <option value="label" <%= 'selected' if defined?(condition) && condition&.field == 'label' %>>Label</option>
+  </select>
+
+  <!-- Operator Select -->
+  <select name="conditions[<%= index %>][operator]" class="input w-32 text-sm" data-action="change->filter-editor#updateValues" data-index="<%= index %>">
+    <option value="">Condition</option>
+    <% if defined?(condition) && condition&.field == 'label' %>
+      <option value="has" <%= 'selected' if condition&.operator == 'has' %>>has</option>
+      <option value="not_has" <%= 'selected' if condition&.operator == 'not_has' %>>does not have</option>
+    <% end %>
+  </select>
+
+  <!-- Value Select -->
+  <select name="conditions[<%= index %>][value]" class="input flex-1 text-sm" data-action="change->filter-editor#updateConditions">
+    <option value="">Choose value...</option>
+    <% if defined?(condition) && condition&.field == 'label' %>
+      <% newsletter.labels.each do |label| %>
+        <option value="<%= label.name %>"
+                <%= 'selected' if condition&.value == label.name %>
+                data-color="<%= label.color %>">
+          <%= label.name %>
+        </option>
+      <% end %>
+    <% end %>
+  </select>
+
+  <!-- Remove Button -->
+  <button type="button"
+          class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded"
+          data-action="click->filter-editor#removeCondition"
+          data-index="<%= index %>">
+    <%= lucide_icon("x", class: "size-4") %>
+  </button>
+</div>

@@ -3,9 +3,10 @@
 # Table name: cohorts
 #
 #  id                :bigint           not null, primary key
+#  color             :string
 #  description       :text
-#  emoji             :string
 #  filter_conditions :jsonb            not null
+#  icon              :string
 #  name              :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -38,12 +39,28 @@ class Cohort < ApplicationRecord
     CohortQueryService.new(self).call
   end
 
+  def filter_group
+    @filter_group ||= FilterGroup.from_hash(filter_conditions)
+  end
+
+  def filter_group=(group)
+    @filter_group = group
+    self.filter_conditions = group.to_hash
+  end
+
+  def has_filters?
+    filter_group.conditions.any?
+  end
+
+  def filter_display_text
+    filter_group.display_text
+  end
+
   def valid_rule?
     return false if filter_conditions.blank?
 
-    # Test the rule with empty data to validate syntax
-    JSONLogic.apply(filter_conditions, {})
-    true
+    # Use the new FilterGroup validation
+    filter_group.valid?
   rescue StandardError
     false
   end
@@ -51,7 +68,11 @@ class Cohort < ApplicationRecord
   def test_rule(subscriber_data)
     return false if filter_conditions.blank?
 
-    JSONLogic.apply(filter_conditions, subscriber_data)
+    # Convert to JSONLogic and test
+    jsonlogic_rule = filter_group.to_jsonlogic
+    return false if jsonlogic_rule.blank?
+
+    JSONLogic.apply(jsonlogic_rule, subscriber_data)
   rescue StandardError
     false
   end

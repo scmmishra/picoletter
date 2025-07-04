@@ -95,7 +95,6 @@ Rails.application.routes.draw do
       resources :cohorts, only: [ :index, :show, :new, :create, :edit, :update, :destroy ], path: "cohorts" do
         collection do
           post :add_condition
-          post :remove_condition
         end
       end
 

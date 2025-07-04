@@ -3,9 +3,10 @@
 # Table name: cohorts
 #
 #  id                :bigint           not null, primary key
+#  color             :string
 #  description       :text
-#  emoji             :string
 #  filter_conditions :jsonb            not null
+#  icon              :string
 #  name              :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
@@ -25,7 +26,8 @@ FactoryBot.define do
   factory :cohort do
     sequence(:name) { |n| "Cohort #{n}" }
     description { "A test cohort for segmenting subscribers" }
-    emoji { "👥" }
+    icon { "users" }
+    color { Newsletter.theme_config.find { |t| t.name == 'Blue' }&.primary || Newsletter.theme_config.first.primary }
     filter_conditions { { "label_ids" => [] } }
     association :newsletter
   end

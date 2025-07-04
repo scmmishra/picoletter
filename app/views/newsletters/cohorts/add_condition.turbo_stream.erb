@@ -1,13 +1,10 @@
 <turbo-stream action="append" target="conditions-container">
   <template>
-    <div id="<%= @condition_id %>" class="condition-group">
-      <%= render partial: "rule_condition",
-      formats: [:html],
-      locals: {
-        labels: @labels,
-        condition_id: @condition_id,
-        newsletter: @newsletter,
-      } %>
-    </div>
+    <%= render partial: "condition_row",
+    formats: [:html],
+    locals: {
+      index: @index,
+      newsletter: @newsletter,
+    } %>
   </template>
 </turbo-stream>

@@ -1,0 +1,45 @@
+<div class="space-y-3">
+  <% if cohort.has_filters? %>
+    <div class="flex items-center gap-2 text-sm text-stone-600">
+      <span>Subscribers who match:</span>
+      <span class="font-medium text-stone-800">
+        <%= cohort.filter_group.operator == 'and' ? 'ALL' : 'ANY' %>
+      </span>
+      <span>of these conditions:</span>
+    </div>
+
+    <div class="flex flex-wrap gap-2">
+      <% cohort.filter_group.flat_conditions.each do |condition| %>
+        <div class="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm">
+          <div class="flex items-center gap-1.5">
+            <span class="text-stone-600"><%= FilterCondition.field_display_name(condition.field) %></span>
+            <span class="font-medium text-stone-800"><%= FilterCondition.operator_display(condition.field, condition.operator) %></span>
+
+            <% if condition.field == 'label' %>
+              <% label = newsletter.labels.find_by(name: condition.value) %>
+              <% if label %>
+                <div class="flex items-center gap-1.5">
+                  <div class="size-3 rounded" style="background-color: <%= label.color %>"></div>
+                  <span class="font-medium text-stone-800"><%= label.name %></span>
+                </div>
+              <% else %>
+                <span class="font-medium text-red-600">"<%= condition.value %>" (deleted)</span>
+              <% end %>
+            <% else %>
+              <span class="font-medium text-stone-800">"<%= condition.value %>"</span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="text-xs text-stone-500">
+      <%= pluralize(cohort.subscriber_count, 'subscriber') %> match<%= cohort.subscriber_count == 1 ? 'es' : '' %> these conditions
+    </div>
+  <% else %>
+    <div class="flex items-center gap-2 p-3 bg-stone-50 border border-stone-200 rounded-lg">
+      <div class="size-2 bg-stone-400 rounded-full"></div>
+      <span class="text-stone-600">No filter conditions set. All verified subscribers are included.</span>
+    </div>
+  <% end %>
+</div>

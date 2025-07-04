@@ -1,7 +1,11 @@
 <section class="flex items-center justify-between gap-2 mb-6">
   <div class="flex items-center gap-3">
-    <% if @cohort.emoji %>
-      <span class="text-2xl"><%= @cohort.emoji %></span>
+    <% if @cohort.icon && @cohort.color %>
+      <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: <%= @cohort.color %>20;">
+        <svg class="w-5 h-5" style="color: <%= @cohort.color %>">
+          <use href="#<%= @cohort.icon %>"></use>
+        </svg>
+      </div>
     <% end %>
     <h2 class="text-xl font-medium"><%= @cohort.name %></h2>
   </div>
@@ -42,16 +46,7 @@
 
     <div>
       <h3 class="font-medium text-stone-900 mb-3">Filter Conditions</h3>
-      <% if @cohort.filter_conditions.present? && @cohort.filter_conditions != {} %>
-        <div class="p-4 bg-stone-50 rounded-lg border">
-          <pre class="text-sm text-stone-600 font-mono whitespace-pre-wrap"><%= JSON.pretty_generate(@cohort.filter_conditions) %></pre>
-        </div>
-        <p class="text-sm text-stone-500 mt-2">
-          Subscribers matching these conditions will be included in this cohort.
-        </p>
-      <% else %>
-        <p class="text-stone-500">No filter conditions set. All verified subscribers will be included.</p>
-      <% end %>
+      <%= render 'filter_display', cohort: @cohort, newsletter: @newsletter %>
     </div>
 
     <% if @cohort.posts.any? %>

@@ -1,7 +1,7 @@
 module Themeable
   extend ActiveSupport::Concern
 
-  ThemeConfig = Struct.new(:name, :primary, :text_on_primary, :primary_hover, keyword_init: true)
+  ThemeConfig = Struct.new(:name, :primary, :text_on_primary, :primary_hover, :tint, keyword_init: true)
 
   included do
     # add a class method to get the theme config
