@@ -10,6 +10,11 @@
       appearance: base-select;
     }
 
+    /* Hide the default picker icon */
+    &::picker-icon {
+      display: none;
+    }
+
     /* Apply input styling to the select */
     & {
       @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600;
