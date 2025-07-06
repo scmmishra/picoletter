@@ -1,0 +1,22 @@
+<%= post_action_card(
+  title: "Choose audience",
+  description: "Select which cohort to send this post to, or send to all subscribers."
+) do %>
+  <%= form_with model: post, url: post_path(slug: post.newsletter.slug, id: post.id), method: :patch do |form| %>
+    <div class="flex w-full gap-2 mt-1">
+      <div class="flex-grow">
+        <%= form.label :cohort_id, "Send to", class: "block text-sm font-medium text-stone-700 sr-only" %>
+        <%= form.select :cohort_id,
+            options_for_select([["All subscribers (#{post.newsletter.subscribers.verified.count})", nil]]) + 
+            cohort_options_for_select(post.newsletter.cohorts, post.cohort_id),
+            {},
+            {
+              class: "input w-full"
+            } %>
+      </div>
+      <div class="flex-shrink-0">
+        <%= form.submit "Update Audience", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+<% end %>
