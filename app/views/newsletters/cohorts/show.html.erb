@@ -39,27 +39,6 @@
       <%= render 'filter_display', cohort: @cohort, newsletter: @newsletter %>
     </div>
 
-    <% if @cohort.posts.any? %>
-      <div>
-        <h3 class="font-medium text-stone-900 mb-3">Posts Sent to This Cohort</h3>
-        <div class="space-y-2">
-          <% @cohort.posts.order(published_at: :desc).limit(5).each do |post| %>
-            <div class="flex items-center justify-between p-3 bg-white border border-stone-200 rounded-lg">
-              <div>
-                <h4 class="font-medium text-stone-900"><%= post.title %></h4>
-                <p class="text-sm text-stone-500">
-                  Published on <%= post.published_at.strftime("%B %e, %Y") %>
-                </p>
-              </div>
-              <%= link_to post_path(@newsletter.slug, post), class: "text-stone-400 hover:text-stone-600" do %>
-                <%= lucide_icon("arrow-right", class: "size-4") %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-
     <div class="flex gap-2 font-sans text-stone-500 items-center my-6 text-sm">
       <h3>Actions</h3>
       <hr class="flex-grow">
