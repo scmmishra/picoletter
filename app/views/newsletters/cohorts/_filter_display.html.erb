@@ -1,6 +1,6 @@
-<div class="space-y-3">
+<div class="space-y-3 text-sm">
   <% if cohort.has_filters? %>
-    <div class="flex items-center gap-2 text-sm text-stone-600">
+    <div class="font-sans text-stone-600">
       <span>Subscribers who match:</span>
       <span class="font-medium text-stone-800">
         <%= cohort.filter_group.operator == 'and' ? 'ALL' : 'ANY' %>
@@ -8,10 +8,10 @@
       <span>of these conditions:</span>
     </div>
 
-    <div class="flex flex-wrap gap-2">
+    <div class="grid gap-2">
       <% cohort.filter_group.flat_conditions.each do |condition| %>
-        <div class="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-sm">
-          <div class="flex items-center gap-1.5">
+        <div class="inline-flex items-center gap-2 px-3 py-2 bg-stone-50 border border-stone-200 rounded-lg">
+          <div class="flex items-center gap-1.5 font-sans">
             <span class="text-stone-600"><%= FilterCondition.field_display_name(condition.field) %></span>
             <span class="font-medium text-stone-800"><%= FilterCondition.operator_display(condition.field, condition.operator) %></span>
 
@@ -31,10 +31,6 @@
           </div>
         </div>
       <% end %>
-    </div>
-
-    <div class="text-xs text-stone-500">
-      <%= pluralize(cohort.subscriber_count, 'subscriber') %> match<%= cohort.subscriber_count == 1 ? 'es' : '' %> these conditions
     </div>
   <% else %>
     <div class="flex items-center gap-2 p-3 bg-stone-50 border border-stone-200 rounded-lg">
