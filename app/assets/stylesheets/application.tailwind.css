@@ -2,6 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Customizable Select Support */
+@supports (appearance: base-select) {
+  .cohort-select {
+    &,
+    &::picker(select) {
+      appearance: base-select;
+    }
+
+    /* Apply input styling to the select */
+    & {
+      @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600;
+      anchor-name: --select-anchor;
+    }
+
+    /* Style the dropdown */
+    &::picker(select) {
+      @apply border-0 rounded-lg shadow-lg ring-1 ring-stone-200 bg-white;
+      position-anchor: --select-anchor;
+      position-area: block-end span-inline-size;
+      margin-block-start: 0.25rem;
+      position-try-fallbacks: none;
+      position-visibility: anchors-valid;
+    }
+
+    /* Show icon in selected state */
+    selectedcontent {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      /* Hide anything that's not an icon or main text */
+      > :not(svg):not(span:first-of-type) {
+        display: none;
+      }
+    }
+
+    /* Layout for dropdown options */
+    option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      border: none;
+
+      &:hover {
+        @apply bg-stone-50;
+      }
+
+      svg {
+        flex-shrink: 0;
+        width: 1rem;
+        height: 1rem;
+      }
+
+      span:not(.subscriber-badge) {
+        flex: 1;
+      }
+
+      .subscriber-badge {
+        @apply bg-stone-100 text-stone-600 text-xs px-2 py-1 rounded-full font-medium;
+        flex-shrink: 0;
+      }
+    }
+  }
+}
+
 @layer components {
   .input {
     @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 placeholder:text-zinc-400 placeholder:font-light;
