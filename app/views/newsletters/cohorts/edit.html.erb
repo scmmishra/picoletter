@@ -2,67 +2,8 @@
   <h2 class="text-xl font-medium">Edit Cohort</h2>
 </section>
 
-<%= form_with model: [@newsletter, @cohort], url: cohort_path(@newsletter.slug, @cohort), method: :patch, local: true, class: "space-y-6" do |form| %>
-  <% if @cohort.errors.any? %>
-    <div class="p-4 bg-red-50 border border-red-200 rounded-lg">
-      <h3 class="font-medium text-red-900 mb-2">Please fix the following errors:</h3>
-      <ul class="text-sm text-red-700 list-disc list-inside">
-        <% @cohort.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="max-w-xl space-y-4">
-    <div class="grid grid-cols-12 gap-4">
-      <div class="col-span-2">
-        <label class="space-y-1">
-          <%= form.label :icon, "Icon", class: "ml-px text-stone-500 font-sans text-sm" %>
-          <% default_color = Newsletter.theme_config.find { |t| t.name == 'Blue' }&.primary || Newsletter.theme_config.first.primary %>
-          <div data-controller="icon-picker"
-               data-icon-picker-current-icon-value="<%= @cohort.icon || 'users' %>"
-               data-icon-picker-current-color-value="<%= @cohort.color || default_color %>">
-            <%= render 'shared/icon_picker',
-                form: form,
-                current_icon: @cohort.icon || 'users',
-                current_color: @cohort.color || default_color,
-                icon_field: :icon,
-                color_field: :color %>
-          </div>
-        </label>
-      </div>
-      <div class="col-span-10">
-        <label class="space-y-1">
-          <%= form.label :name, "Cohort Name", class: "ml-px text-stone-500 font-sans text-sm" %>
-          <%= form.text_field :name,
-              required: true,
-              placeholder: "Premium Subscribers",
-              class: "input w-full" %>
-        </label>
-      </div>
-    </div>
-
-    <label class="space-y-1">
-      <%= form.label :description, "Description", class: "ml-px text-stone-500 font-sans text-sm" %>
-      <%= form.text_area :description,
-          placeholder: "Subscribers who have premium access...",
-          class: "input w-full",
-          rows: 3 %>
-      <p class="text-xs text-stone-400 ml-px">Optional description to help you remember what this cohort is for</p>
-    </label>
-
-    <div>
-      <label class="block text-stone-500 font-sans text-sm mb-2">
-        Filter Conditions
-      </label>
-
-      <%= render 'filter_form', form: form, cohort: @cohort, newsletter: @newsletter %>
-    </div>
-
-    <div class="flex items-center gap-2 pt-4">
-      <%= form.submit "Update Cohort", class: "btn btn-primary" %>
-      <%= link_to "Cancel", cohort_path(@newsletter.slug, @cohort), class: "btn btn-secondary" %>
-    </div>
-  </div>
-<% end %>
+<%= render 'form',
+    form_url: cohort_path(@newsletter.slug, @cohort),
+    form_method: :patch,
+    submit_text: "Update Cohort",
+    cancel_url: cohort_path(@newsletter.slug, @cohort) %>
