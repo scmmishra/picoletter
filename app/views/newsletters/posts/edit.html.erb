@@ -20,13 +20,13 @@
     <% unless @post.published? %>
       <label class="space-y-1">
         <%= form.label :cohort_id, "Send to Cohort", class: "ml-px text-stone-500 font-sans" %>
-        <%= form.select :cohort_id, 
-            cohort_options_for_select(@cohorts, @post.cohort_id), 
-            { 
-              prompt: "📢 All subscribers (#{@newsletter.subscribers.confirmed.count})",
-              include_blank: false 
+        <%= form.select :cohort_id,
+            cohort_options_for_select(@cohorts, @post.cohort_id),
+            {
+              prompt: "📢 All subscribers (#{@newsletter.subscribers.verified.count})",
+              include_blank: false
             },
-            { 
+            {
               class: "input w-full",
               data: { autosave_target: "cohort" }
             } %>
