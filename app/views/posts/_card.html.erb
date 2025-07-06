@@ -1,18 +1,6 @@
 <%= link_to post.published? ? post_path(slug: post.newsletter.slug, id: post.id) : edit_post_path(slug: post.newsletter.slug, id: post.id), class: "grid grid-cols-10 py-4 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10" do %>
   <div class="col-span-4">
     <h2><%= post.title %></h2>
-    <% if post.cohort %>
-      <div class="flex items-center gap-1 mt-1">
-        <% if post.cohort.icon && post.cohort.color %>
-          <div class="w-4 h-4 rounded flex items-center justify-center" style="background-color: <%= Newsletter.theme_config.find { |t| t.primary == post.cohort.color }&.tint %>;">
-            <svg class="w-3 h-3" style="color: <%= post.cohort.color %>">
-              <use href="#<%= post.cohort.icon %>"></use>
-            </svg>
-          </div>
-        <% end %>
-        <span class="text-xs text-blue-600 font-medium"><%= post.cohort.name %></span>
-      </div>
-    <% end %>
   </div>
   <div class="col-span-3 font-sans text-sm leading-6 text-right text-stone-500">
     <% if post.published? %>
