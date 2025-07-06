@@ -6,25 +6,31 @@
     <div class="flex w-full gap-2 mt-1">
       <div class="flex-grow">
         <%= form.label :cohort_id, "Send to", class: "block text-sm font-medium text-stone-700 sr-only" %>
-        <%= form.select :cohort_id,
-            nil,
-            {},
-            {
-              class: "input w-full cohort-select"
-            } do %>
-          <option value="">
-            <%= cohort_icon(icon: 'user-group', color: '#EF4444', size: 'md') %>
-            <span>All subscribers</span>
-            <span class="subscriber-badge"><%= post.newsletter.subscribers.verified.count %></span>
-          </option>
-          <% post.newsletter.cohorts.each do |cohort| %>
-            <option value="<%= cohort.id %>" <%= 'selected' if post.cohort_id == cohort.id %>>
-              <%= cohort_icon(icon: cohort.icon, color: cohort.color, size: 'md') %>
-              <span><%= cohort.name %></span>
-              <span class="subscriber-badge"><%= cohort.subscriber_count %></span>
+        <select name="<%= form.object_name %>[cohort_id]" class="input w-full cohort-select" style="padding-left: 12px;">
+          <button>
+            <div>
+              <selectedcontent></selectedcontent>
+            </div>
+          </button>
+          <div>
+            <option value="">
+              <div class="custom-option">
+                <%= cohort_icon(icon: 'user-group', color: '#EF4444', size: 'md') %>
+                <span class="option-text">All subscribers</span>
+                <span class="subscriber-badge"><%= post.newsletter.subscribers.verified.count %></span>
+              </div>
             </option>
-          <% end %>
-        <% end %>
+            <% post.newsletter.cohorts.each do |cohort| %>
+              <option value="<%= cohort.id %>" <%= 'selected' if post.cohort_id == cohort.id %>>
+                <div class="custom-option">
+                  <%= cohort_icon(icon: cohort.icon, color: cohort.color, size: 'md') %>
+                  <span class="option-text"><%= cohort.name %></span>
+                  <span class="subscriber-badge"><%= cohort.subscriber_count %></span>
+                </div>
+              </option>
+            <% end %>
+          </div>
+        </select>
       </div>
       <div class="flex-shrink-0">
         <%= form.submit "Update Audience", class: "btn btn-primary" %>

@@ -26,29 +26,44 @@
       position-visibility: anchors-valid;
     }
 
+    /* Style the button */
+    > button {
+      @apply w-full px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 bg-white;
+
+      > div {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+    }
+
     /* Show icon in selected state */
     selectedcontent {
       display: flex;
       align-items: center;
       gap: 0.5rem;
 
-      /* Hide anything that's not an icon or main text */
-      > :not(svg):not(span:first-of-type) {
+      /* Hide badges in selected state */
+      .subscriber-badge {
         display: none;
       }
     }
 
     /* Layout for dropdown options */
     option {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
       padding: 0.75rem 1rem;
       border: none;
 
       &:hover {
         @apply bg-stone-50;
       }
+    }
+
+    /* Custom option layout */
+    .custom-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
 
       svg {
         flex-shrink: 0;
@@ -56,7 +71,7 @@
         height: 1rem;
       }
 
-      span:not(.subscriber-badge) {
+      .option-text {
         flex: 1;
       }
 
