@@ -15,14 +15,17 @@
       <div class="flex-shrink-0">
         <label class="space-y-1">
           <%= form.label :icon, "Icon", class: "ml-px text-stone-500 font-sans text-sm" %>
-          <% default_color = Newsletter.theme_config.find { |t| t.name == 'Blue' }&.primary || Newsletter.theme_config.first.primary %>
+          <%
+            random_icon = @cohort.icon || Newsletter.available_icons.sample
+            random_color = @cohort.color || Newsletter.theme_config.sample.primary
+          %>
           <div data-controller="icon-picker"
-               data-icon-picker-current-icon-value="<%= @cohort.icon || 'envelope' %>"
-               data-icon-picker-current-color-value="<%= @cohort.color || default_color %>">
+               data-icon-picker-current-icon-value="<%= random_icon %>"
+               data-icon-picker-current-color-value="<%= random_color %>">
             <%= render 'shared/icon_picker',
                 form: form,
-                current_icon: @cohort.icon || 'users',
-                current_color: @cohort.color || default_color,
+                current_icon: random_icon,
+                current_color: random_color,
                 icon_field: :icon,
                 color_field: :color %>
           </div>
