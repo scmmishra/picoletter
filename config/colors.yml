@@ -1,4 +1,4 @@
-- name: "Gray"
+- name: Gray
   primary: "#09090B"
   primary_hover: "#27272A"
   text_on_primary: "#FFFFFF"
