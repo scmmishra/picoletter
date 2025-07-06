@@ -7,6 +7,8 @@ class Newsletters::CohortsController < ApplicationController
 
   def show
     @pagy, @cohort_subscribers = pagy(@cohort.subscribers, limit: 15)
+    # Store where the user came from so we can redirect back there after deletion
+    session[:cohort_return_to] = request.referer if request.referer.present?
   end
 
   def new
@@ -41,7 +43,10 @@ class Newsletters::CohortsController < ApplicationController
 
   def destroy
     @cohort.destroy
-    redirect_to cohorts_path(@newsletter.slug), notice: "Cohort was successfully deleted."
+    # Redirect back to where the user came from before viewing this cohort
+    # If no stored location, fall back to newsletter home page
+    return_to = session.delete(:cohort_return_to) || posts_path(@newsletter.slug)
+    redirect_to return_to, notice: "Cohort was successfully deleted."
   end
 
   def add_condition
