@@ -28,6 +28,7 @@ class Cohort < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { scope: :newsletter_id }
   validates :filter_conditions, presence: true
+  validate :must_have_filter_conditions
 
   before_validation :set_default_filter_conditions
 
@@ -81,5 +82,11 @@ class Cohort < ApplicationRecord
 
   def set_default_filter_conditions
     self.filter_conditions ||= {}
+  end
+
+  def must_have_filter_conditions
+    unless has_filters?
+      errors.add(:filter_conditions, "must have at least one filter condition")
+    end
   end
 end
