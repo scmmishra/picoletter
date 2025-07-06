@@ -15,15 +15,13 @@
       display: none;
     }
 
-    /* Apply input styling to the select */
+    /* Anchor positioning for dropdown */
     & {
-      @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600;
       anchor-name: --select-anchor;
     }
 
-    /* Style the dropdown */
     &::picker(select) {
-      @apply border-0 rounded-lg shadow-lg ring-1 ring-stone-200 bg-white;
+      @apply border-0 rounded-lg shadow-lg ring-1 ring-stone-300 bg-white;
       position-anchor: --select-anchor;
       position-area: block-end span-inline-size;
       margin-block-start: 0.25rem;
@@ -31,59 +29,16 @@
       position-visibility: anchors-valid;
     }
 
-    /* Style the button */
-    > button {
-      @apply w-full px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 bg-white;
-
-      > div {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
+    /* Hide badges in selected state */
+    selectedcontent .bg-stone-100 {
+      display: none;
     }
 
-    /* Show icon in selected state */
-    selectedcontent {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      /* Hide badges in selected state */
-      .subscriber-badge {
-        display: none;
-      }
-    }
-
-    /* Layout for dropdown options */
-    option {
-      padding: 0.75rem 1rem;
-      border: none;
-
-      &:hover {
-        @apply bg-stone-50;
-      }
-    }
-
-    /* Custom option layout */
-    .custom-option {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-
-      svg {
-        flex-shrink: 0;
-        width: 1rem;
-        height: 1rem;
-      }
-
-      .option-text {
-        flex: 1;
-      }
-
-      .subscriber-badge {
-        @apply bg-stone-100 text-stone-600 text-xs px-2 py-1 rounded-full font-medium;
-        flex-shrink: 0;
-      }
+    /* Icon sizing in options */
+    svg {
+      flex-shrink: 0;
+      width: 1rem;
+      height: 1rem;
     }
   }
 }

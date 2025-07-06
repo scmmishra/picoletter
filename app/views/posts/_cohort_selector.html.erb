@@ -7,25 +7,25 @@
       <div class="flex-grow">
         <%= form.label :cohort_id, "Send to", class: "block text-sm font-medium text-stone-700 sr-only" %>
         <select name="<%= form.object_name %>[cohort_id]" class="input w-full cohort-select" style="padding-left: 12px;">
-          <button>
-            <div>
-              <selectedcontent></selectedcontent>
+          <button class="w-full px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 bg-white">
+            <div class="flex items-center gap-2">
+              <selectedcontent class="flex items-center gap-2"></selectedcontent>
             </div>
           </button>
           <div>
-            <option value="">
-              <div class="custom-option">
+            <option value="" class="px-4 py-3 border-none hover:bg-stone-50">
+              <div class="flex items-center gap-2">
                 <%= cohort_icon(icon: 'user-group', color: '#EF4444', size: 'md') %>
-                <span class="option-text">All subscribers</span>
-                <span class="subscriber-badge"><%= post.newsletter.subscribers.verified.count %></span>
+                <span class="flex-1">All subscribers</span>
+                <span class="bg-stone-100 text-stone-600 text-xs px-2 py-1 rounded-full font-medium flex-shrink-0"><%= post.newsletter.subscribers.verified.count %></span>
               </div>
             </option>
             <% post.newsletter.cohorts.each do |cohort| %>
-              <option value="<%= cohort.id %>" <%= 'selected' if post.cohort_id == cohort.id %>>
-                <div class="custom-option">
+              <option value="<%= cohort.id %>" class="px-4 py-3 border-none hover:bg-stone-50" <%= 'selected' if post.cohort_id == cohort.id %>>
+                <div class="flex items-center gap-2">
                   <%= cohort_icon(icon: cohort.icon, color: cohort.color, size: 'md') %>
-                  <span class="option-text"><%= cohort.name %></span>
-                  <span class="subscriber-badge"><%= cohort.subscriber_count %></span>
+                  <span class="flex-1"><%= cohort.name %></span>
+                  <span class="bg-stone-100 text-stone-600 text-xs px-2 py-1 rounded-full font-medium flex-shrink-0"><%= cohort.subscriber_count %></span>
                 </div>
               </option>
             <% end %>
