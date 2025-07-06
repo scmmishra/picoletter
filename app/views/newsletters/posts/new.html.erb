@@ -5,20 +5,6 @@
       <%= form.label :title, "Subject", class: "ml-px text-stone-500 font-sans" %>
       <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
     </label>
-    
-    <label class="space-y-1">
-      <%= form.label :cohort_id, "Send to Cohort", class: "ml-px text-stone-500 font-sans" %>
-      <%= form.select :cohort_id, 
-          cohort_options_for_select(@cohorts, @post.cohort_id), 
-          { 
-            prompt: "📢 All subscribers (#{@newsletter.subscribers.confirmed.count})",
-            include_blank: false 
-          },
-          { 
-            class: "input w-full" 
-          } %>
-      <p class="text-xs text-stone-400 ml-px">Choose a cohort to send this post to specific subscribers only</p>
-    </label>
   </div>
   <div
     class="
