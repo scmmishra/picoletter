@@ -64,10 +64,10 @@
       <h3>Actions</h3>
       <hr class="flex-grow">
     </div>
-    
+
     <div>
       <%= action_card(
-          title: "Delete Cohort", 
+          title: "Delete Cohort",
           help_text: "Delete this cohort permanently. This cannot be undone.") do %>
         <%= link_to "Delete Cohort",
             cohort_path(@newsletter.slug, @cohort),
@@ -94,21 +94,17 @@
       <% else %>
         <section class="divide-y divide-stone-200">
           <div class="grid grid-cols-12 py-4 px-6 font-sans text-xs font-medium tracking-widest uppercase text-stone-500 bg-stone-50">
-            <div class="col-span-3">Name</div>
-            <div class="col-span-4">Email</div>
-            <div class="col-span-5">Labels</div>
+            <div class="col-span-5">Email</div>
+            <div class="col-span-7">Labels</div>
           </div>
 
           <% @cohort_subscribers.each do |subscriber| %>
             <%= link_to subscriber_path(@newsletter.slug, subscriber.id) do %>
               <div class="grid grid-cols-12 py-4 px-6 hover:bg-gradient-to-r from-slate-50/10 via-stone-50 to-slate-50/10">
-                <div class="col-span-3 font-medium text-stone-800">
-                  <h2><%= subscriber.full_name.present? ? subscriber.full_name : "-" %></h2>
-                </div>
-                <div class="col-span-4 font-sans text-sm text-stone-500">
+                <div class="col-span-5 font-sans text-sm text-stone-500">
                   <h2><%= subscriber.email %></h2>
                 </div>
-                <div class="col-span-5">
+                <div class="col-span-7">
                   <% if subscriber.labels.any? %>
                     <div class="h-8 flex items-center">
                       <div class="flex gap-1 overflow-x-auto scrollbar-hide">
