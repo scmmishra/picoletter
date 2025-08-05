@@ -70,6 +70,11 @@ class User < ApplicationRecord
     end
   end
 
+  def newsletter_role(newsletter)
+    return :owner if newsletter.user_id == id
+    memberships.find_by(newsletter: newsletter)&.role&.to_sym
+  end
+
   private
 
   def perform_after_create
@@ -83,10 +88,5 @@ class User < ApplicationRecord
     self.active = true if self.active.nil?
     self.additional_data ||= {}
     self.limits ||= {}
-  end
-
-  def newsletter_role(newsletter)
-    return :owner if newsletter.user_id == id
-    memberships.find_by(newsletter: newsletter)&.role&.to_sym
   end
 end
