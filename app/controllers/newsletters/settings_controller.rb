@@ -3,10 +3,13 @@ class Newsletters::SettingsController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
-  before_action -> { authorize_permission!(:general) }, only: [:show, :update]
-  before_action -> { authorize_permission!(:design) }, only: [:design, :update_design]
-  before_action -> { authorize_permission!(:sending) }, only: [:sending, :update_sending, :verify_domain]
-  before_action -> { authorize_permission!(:billing) }, only: [:billing]
+  before_action -> { authorize_permission!(:general, :read) }, only: [ :show ]
+  before_action -> { authorize_permission!(:general, :write) }, only: [ :update ]
+  before_action -> { authorize_permission!(:design, :read) }, only: [ :design ]
+  before_action -> { authorize_permission!(:design, :write) }, only: [ :update_design ]
+  before_action -> { authorize_permission!(:sending, :read) }, only: [ :sending ]
+  before_action -> { authorize_permission!(:sending, :write) }, only: [ :update_sending, :verify_domain ]
+  before_action -> { authorize_permission!(:billing, :read) }, only: [ :billing ]
 
   def show; end
 
@@ -76,9 +79,9 @@ class Newsletters::SettingsController < ApplicationController
     @newsletter = Newsletter.find_by(slug: params[:slug])
   end
 
-  def authorize_permission!(permission)
-    unless @newsletter.can_access?(permission)
-      redirect_to profile_settings_path(slug: @newsletter.slug), 
+  def authorize_permission!(permission, access_type = :read)
+    unless @newsletter.can_access?(permission, access_type)
+      redirect_to profile_settings_path(slug: @newsletter.slug),
                   alert: "You don't have permission to access that section."
     end
   end

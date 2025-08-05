@@ -3,7 +3,7 @@ class Newsletters::Settings::BillingController < ApplicationController
 
   before_action :ensure_authenticated
   before_action :set_newsletter
-  before_action -> { authorize_permission!(:billing) }
+  before_action -> { authorize_permission!(:billing, :read) }
 
   def show
     # Display billing page
@@ -23,8 +23,8 @@ class Newsletters::Settings::BillingController < ApplicationController
     @newsletter = Newsletter.find_by(slug: params[:slug])
   end
 
-  def authorize_permission!(permission)
-    unless @newsletter.can_access?(permission)
+  def authorize_permission!(permission, access_type = :read)
+    unless @newsletter.can_access?(permission, access_type)
       redirect_to profile_settings_path(slug: @newsletter.slug), 
                   alert: "You don't have permission to access that section."
     end

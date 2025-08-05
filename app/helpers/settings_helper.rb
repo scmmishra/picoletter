@@ -17,17 +17,17 @@ module SettingsHelper
   def should_show_settings_link?(link_name, newsletter)
     case link_name
     when "general"
-      newsletter.can_access?(:general)
+      newsletter.can_read?(:general)
     when "sending domain"
-      newsletter.can_access?(:sending)
+      newsletter.can_read?(:sending)
     when "design"
-      newsletter.can_access?(:design)
+      newsletter.can_read?(:design)
     when "usage & billing"
-      newsletter.can_access?(:billing)
+      newsletter.can_read?(:billing)
     when "embedding"
-      newsletter.can_access?(:embedding)
+      newsletter.can_read?(:embedding)
     when "profile"
-      true # Always accessible
+      newsletter.can_read?(:profile)
     else
       true # Default to showing unknown links
     end
