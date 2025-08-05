@@ -191,4 +191,42 @@ RSpec.describe User, type: :model do
       expect(new_user.active).to be false
     end
   end
+
+  describe 'membership associations' do
+    it { should have_many(:memberships) }
+    it { should have_many(:newsletters).through(:memberships) }
+  end
+
+  describe '#newsletter_role' do
+    let(:newsletter) { create(:newsletter, user: user) }
+    let(:other_user) { create(:user) }
+
+    it 'returns :owner for owned newsletters' do
+      expect(user.newsletter_role(newsletter)).to eq(:owner)
+    end
+
+    it 'returns the membership role for member newsletters' do
+      membership = create(:membership, user: other_user, newsletter: newsletter, role: :editor)
+      expect(other_user.newsletter_role(newsletter)).to eq(:editor)
+    end
+
+    it 'returns nil for newsletters without access' do
+      expect(other_user.newsletter_role(newsletter)).to be_nil
+    end
+  end
+
+  describe 'newsletters association' do
+    let!(:owned_newsletter) { create(:newsletter, user: user) }
+    let!(:member_newsletter) { create(:newsletter) }
+    let!(:membership) { create(:membership, user: user, newsletter: member_newsletter, role: :editor) }
+
+    it 'includes newsletters where user has memberships' do
+      expect(user.newsletters).to include(member_newsletter)
+    end
+
+    it 'includes owned newsletters after membership creation callback' do
+      # The callback should create a membership for the owner
+      expect(user.newsletters).to include(owned_newsletter)
+    end
+  end
 end

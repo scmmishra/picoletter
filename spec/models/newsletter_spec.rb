@@ -48,6 +48,8 @@ RSpec.describe Newsletter, type: :model do
     it { should have_many(:subscribers) }
     it { should have_many(:posts) }
     it { should have_many(:labels) }
+    it { should have_many(:memberships) }
+    it { should have_many(:members).through(:memberships) }
     it { should have_many(:emails).through(:posts) }
 
     it { should validate_presence_of(:title) }
@@ -152,6 +154,70 @@ RSpec.describe Newsletter, type: :model do
       reloaded = Newsletter.find(subject.id)
       expect(reloaded.settings["redirect_after_subscribe"]).to eq("https://example.com/thank-you")
       expect(reloaded.settings["redirect_after_confirm"]).to eq("https://example.com/welcome")
+    end
+  end
+
+  describe "membership methods" do
+    let(:newsletter) { create(:newsletter, user: user) }
+    let(:member_user) { create(:user) }
+    let!(:membership) { create(:membership, user: member_user, newsletter: newsletter, role: :editor) }
+
+    describe "#owner?" do
+      it "returns true for the newsletter owner" do
+        expect(newsletter.owner?(user)).to be true
+      end
+
+      it "returns false for members" do
+        expect(newsletter.owner?(member_user)).to be false
+      end
+
+      it "returns false for non-members" do
+        other_user = create(:user)
+        expect(newsletter.owner?(other_user)).to be false
+      end
+    end
+
+    describe "#member?" do
+      it "returns true for members" do
+        expect(newsletter.member?(member_user)).to be true
+      end
+
+      it "returns true for the owner (who has membership)" do
+        # Newsletter creation should create owner membership via callback
+        expect(newsletter.member?(user)).to be true
+      end
+
+      it "returns false for non-members" do
+        other_user = create(:user)
+        expect(newsletter.member?(other_user)).to be false
+      end
+    end
+
+    describe "#user_role" do
+      it "returns :owner for the newsletter owner" do
+        expect(newsletter.user_role(user)).to eq(:owner)
+      end
+
+      it "returns the membership role for members" do
+        expect(newsletter.user_role(member_user)).to eq(:editor)
+      end
+
+      it "returns nil for non-members" do
+        other_user = create(:user)
+        expect(newsletter.user_role(other_user)).to be_nil
+      end
+    end
+  end
+
+  describe "callbacks" do
+    describe "after_create" do
+      it "creates an administrator membership for the owner" do
+        newsletter = create(:newsletter, user: user)
+
+        owner_membership = newsletter.memberships.find_by(user: user)
+        expect(owner_membership).to be_present
+        expect(owner_membership.role).to eq('administrator')
+      end
     end
   end
 end

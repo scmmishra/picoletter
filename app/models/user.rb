@@ -27,8 +27,9 @@ class User < ApplicationRecord
   generates_token_for :verification, expires_in: 48.hours
 
   has_many :sessions, dependent: :destroy
-  has_many :newsletters, dependent: :destroy
   has_many :connected_services, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :newsletters, through: :memberships, source: :newsletter
 
   has_many :subscribers, through: :newsletters
   has_many :posts, through: :newsletters
@@ -82,5 +83,10 @@ class User < ApplicationRecord
     self.active = true if self.active.nil?
     self.additional_data ||= {}
     self.limits ||= {}
+  end
+
+  def newsletter_role(newsletter)
+    return :owner if newsletter.user_id == id
+    memberships.find_by(newsletter: newsletter)&.role&.to_sym
   end
 end
