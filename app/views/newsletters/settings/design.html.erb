@@ -14,7 +14,7 @@
   </div>
 </div>
 
-<%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8' do |form| %>
+<%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-8', permission: :design do |form| %>
   <div class="max-w-lg space-y-4">
     <div class="space-y-2">
       <%= form.label :primary_color,
