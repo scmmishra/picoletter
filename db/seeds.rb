@@ -35,14 +35,16 @@ end
 puts "\n-- Creating newsletters"
 User.find_each do |user|
   # Tech Newsletter
-  tech_newsletter = user.newsletters.create!(
+  tech_newsletter = Newsletter.create!(
+    user: user,
     title: "#{user.name}'s Tech Insider",
     description: "Deep dives into technology, programming, and software architecture."
   )
   puts "   Created newsletter: #{tech_newsletter.title}"
 
   # Personal Newsletter
-  personal_newsletter = user.newsletters.create!(
+  personal_newsletter = Newsletter.create!(
+    user: user,
     title: "#{user.name}'s Journal",
     description: "Personal thoughts, book reviews, and life updates."
   )
