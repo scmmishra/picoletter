@@ -119,7 +119,8 @@ RSpec.describe User, type: :model do
 
   describe 'associations' do
     it { should have_many(:sessions).dependent(:destroy) }
-    it { should have_many(:newsletters).dependent(:destroy) }
+    it { should have_many(:memberships).dependent(:destroy) }
+    it { should have_many(:newsletters).through(:memberships) }
     it { should have_many(:subscribers).through(:newsletters) }
     it { should have_many(:posts).through(:newsletters) }
     it { should have_many(:emails).through(:posts) }

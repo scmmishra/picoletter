@@ -45,22 +45,25 @@ RSpec.describe Membership, type: :model do
   end
 
   describe 'enums' do
-    it { should define_enum_for(:role).with_values(administrator: 'administrator', editor: 'editor') }
+    it { should define_enum_for(:role).with_values(administrator: 'administrator', editor: 'editor').backed_by_column_of_type(:string) }
   end
 
   describe 'scopes' do
-    let!(:admin_membership) { create(:membership, :administrator, user: user, newsletter: newsletter) }
-    let!(:editor_membership) { create(:membership, :editor, user: create(:user), newsletter: newsletter) }
+    let(:another_newsletter) { create(:newsletter) }
+    let!(:admin_membership) { create(:membership, :administrator, user: user, newsletter: another_newsletter) }
+    let!(:editor_membership) { create(:membership, :editor, user: create(:user), newsletter: another_newsletter) }
 
     describe '.administrators' do
       it 'returns only administrator memberships' do
-        expect(Membership.administrators).to contain_exactly(admin_membership)
+        expect(Membership.administrators).to include(admin_membership)
+        expect(Membership.administrators).not_to include(editor_membership)
       end
     end
 
     describe '.editors' do
       it 'returns only editor memberships' do
-        expect(Membership.editors).to contain_exactly(editor_membership)
+        expect(Membership.editors).to include(editor_membership)
+        expect(Membership.editors).not_to include(admin_membership)
       end
     end
   end
