@@ -27,9 +27,10 @@
           url: labels_path(@newsletter.slug),
           is_active: current_page?(labels_path(@newsletter.slug)),
           label: "Labels" %>
+          <% settings_url = @newsletter.can_access?(:general) ? settings_path(@newsletter.slug) : profile_settings_path(@newsletter.slug) %>
           <%= render "newsletters/partials/sidebar_link",
-          url: settings_path(@newsletter.slug),
-          is_active: current_page?(settings_path(@newsletter.slug)),
+          url: settings_url,
+          is_active: current_page?(settings_url),
           label: "Settings" %>
         </ul>
       </nav>
