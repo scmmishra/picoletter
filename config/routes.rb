@@ -89,6 +89,12 @@ Rails.application.routes.draw do
           get "billing/checkout", to: "billing#checkout", as: :billing_checkout
           get "billing/manage", to: "billing#manage", as: :billing_manage
         end
+
+        # Team management routes
+        get "team", to: "team#index", as: :team
+        post "team/invite", to: "team#invite", as: :team_invite
+        delete "team/members/:id", to: "team#destroy", as: :team_member
+        delete "team/invitations/:id", to: "team#destroy_invitation", as: :team_invitation
       end
 
       resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"
