@@ -5,5 +5,4 @@ module ApplicationHelper
     options[:builder] = LabellingFormBuilder
     form_with(**options, &block)
   end
-
 end
