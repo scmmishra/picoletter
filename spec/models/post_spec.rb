@@ -11,16 +11,19 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  cohort_id     :bigint
 #  newsletter_id :integer          not null
 #
 # Indexes
 #
+#  index_posts_on_cohort_id               (cohort_id)
 #  index_posts_on_newsletter_id           (newsletter_id)
 #  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
 #  index_posts_on_slug                    (slug)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (cohort_id => cohorts.id)
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 require 'rails_helper'

@@ -1,0 +1,9 @@
+<li>
+  <%= link_to url, class: "flex items-center gap-2 px-2 py-1.5 text-sm rounded-md transition-colors #{'bg-stone-100 text-stone-900' if is_active} hover:bg-stone-50" do %>
+    <%= cohort_icon(icon: icon, color: color, size: 'sm') %>
+    <span class="truncate"><%= label %></span>
+    <% if count %>
+      <span class="ml-auto text-xs text-stone-500"><%= count %></span>
+    <% end %>
+  <% end %>
+</li>

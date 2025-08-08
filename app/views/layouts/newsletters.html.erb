@@ -12,6 +12,9 @@
   </head>
 
   <body class="font-serif bg-stone-100">
+    <!-- SVG Sprite -->
+    <%= render 'shared/svg_sprite' %>
+
     <main class="px-3 mx-auto max-w-[2000px]">
       <% if notice = flash[:notice] || flash[:alert] %>
         <div

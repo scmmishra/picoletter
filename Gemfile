@@ -14,6 +14,9 @@ gem "pg", "~> 1.5"
 # Use PostgreSQL array for labels
 gem "acts-as-taggable-array-on"
 
+# JSONLogic for flexible cohort filtering
+gem "json_logic"
+
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 

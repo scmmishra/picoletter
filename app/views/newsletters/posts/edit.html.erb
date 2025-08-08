@@ -5,7 +5,7 @@
       autosave_target: "form"
     } do |form| %>
   <%= form.hidden_field :newsletter_id, value: @newsletter.id %>
-  <div class="max-w-2xl mx-auto">
+  <div class="max-w-2xl mx-auto space-y-4">
     <label class="space-y-1">
       <%= form.label :title, "Subject", class: "ml-px text-stone-500 font-sans" %>
       <%= form.text_field :title,
@@ -16,6 +16,7 @@
                         autosave_target: "title",
                       } %>
     </label>
+
   </div>
   <div
     class="
@@ -71,7 +72,8 @@
   </div>
 <% end %>
 
-<div class="max-w-2xl mx-auto mt-8 space-y-5">
+<div class="max-w-2xl mx-auto mt-8 mb-5 space-y-5">
+  <%= render "posts/cohort_selector", post: @post %>
   <% if AppConfig.get('ENABLE_SCHEDULING', true) || Current.user.super? %>
     <% if @post.scheduled? %>
       <%= render "posts/scheduled_status", post: @post %>

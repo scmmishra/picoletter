@@ -18,21 +18,10 @@ class SendPostJob < BaseSendJob
   end
 
   def prepare_post_for_sending
-    mark_as_processing
+    # Status and batches are now handled by SendPostService
   end
 
   def dispatch_to_subscribers
-    newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch|
-      SendPostBatchJob.perform_later(post.id, batch)
-    end
-  end
-
-  def mark_as_processing
-    post.update(status: :processing)
-    Rails.cache.write(cache_key(post.id, "batches_remaining"), total_batches)
-  end
-
-  def total_batches
-    (newsletter.subscribers.verified.count.to_f / BATCH_SIZE).ceil
+    SendPostService.new(post).send
   end
 end

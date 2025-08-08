@@ -1,0 +1,9 @@
+<section class="flex items-center justify-between gap-2 mb-6">
+  <h2 class="text-xl font-medium">Edit Cohort</h2>
+</section>
+
+<%= render 'form',
+    form_url: cohort_path(@newsletter.slug, @cohort),
+    form_method: :patch,
+    submit_text: "Update Cohort",
+    cancel_url: cohort_path(@newsletter.slug, @cohort) %>

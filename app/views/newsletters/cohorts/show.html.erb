@@ -1,0 +1,120 @@
+<section class="flex items-center justify-between gap-2 mb-6">
+  <div class="flex items-center gap-3">
+    <%= cohort_icon(icon: @cohort.icon, color: @cohort.color, size: 'lg') %>
+    <h2 class="text-xl font-medium"><%= @cohort.name %></h2>
+  </div>
+  <div class="flex items-center gap-2">
+    <%= link_to edit_cohort_path(@newsletter.slug, @cohort), class: 'btn btn-secondary flex items-center' do %>
+      <%= lucide_icon("edit", class: "size-4 mr-1") %>
+      Edit
+    <% end %>
+  </div>
+</section>
+
+<div class="flex flex-col lg:flex-row gap-8">
+  <!-- Left Column: Cohort Details -->
+  <div class="max-w-lg flex-shrink-0 space-y-6 w-full">
+    <div class="bg-stone-50 rounded-lg p-4">
+      <div class="grid grid-cols-2 gap-4">
+        <div class="text-center">
+          <div class="text-2xl font-semibold text-stone-900"><%= @cohort.subscriber_count %></div>
+          <div class="text-sm text-stone-600">Subscribers</div>
+        </div>
+        <div class="text-center">
+          <div class="text-2xl font-semibold text-stone-900"><%= @cohort.posts.count %></div>
+          <div class="text-sm text-stone-600">Posts Sent</div>
+        </div>
+      </div>
+    </div>
+
+    <% if @cohort.description.present? %>
+      <div>
+        <h3 class="font-medium text-stone-900 mb-2">Description</h3>
+        <p class="text-stone-600"><%= @cohort.description %></p>
+      </div>
+    <% end %>
+
+    <div>
+      <h3 class="font-medium text-stone-900 mb-3">Filter Conditions</h3>
+      <%= render 'filter_display', cohort: @cohort, newsletter: @newsletter %>
+    </div>
+
+    <div class="flex gap-2 font-sans text-stone-500 items-center my-6 text-sm">
+      <h3>Actions</h3>
+      <hr class="flex-grow">
+    </div>
+
+    <div>
+      <%= action_card(
+          title: "Delete Cohort",
+          help_text: "Delete this cohort permanently. This cannot be undone.") do %>
+        <%= link_to "Delete Cohort",
+            cohort_path(@newsletter.slug, @cohort),
+            class: "btn w-full btn-danger text-sm",
+            data: {
+              turbo_method: :delete,
+              turbo_confirm: "Are you sure you want to delete this cohort forever? This cannot be undone."
+            } %>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Right Column: Subscribers List -->
+  <div class="flex-grow space-y-4">
+    <div class="flex items-center justify-between">
+      <h3 class="font-medium text-stone-900">Subscribers in this Cohort</h3>
+    </div>
+
+    <div class="bg-white border border-stone-200 rounded-lg overflow-hidden">
+      <% if @cohort_subscribers.empty? %>
+        <div class="py-20">
+          <p class="text-center text-stone-500">No subscribers match this cohort's conditions yet.</p>
+        </div>
+      <% else %>
+        <section class="divide-y divide-stone-200">
+          <div class="grid grid-cols-12 py-4 px-6 font-sans text-xs font-medium tracking-widest uppercase text-stone-500 bg-stone-50">
+            <div class="col-span-5">Email</div>
+            <div class="col-span-7">Labels</div>
+          </div>
+
+          <% @cohort_subscribers.each do |subscriber| %>
+            <%= link_to subscriber_path(@newsletter.slug, subscriber.id) do %>
+              <div class="grid grid-cols-12 py-3 px-6 hover:bg-stone-50">
+                <div class="col-span-5 font-sans flex items-center text-sm text-stone-500">
+                  <%= subscriber.email %>
+                </div>
+                <div class="col-span-7">
+                  <% if subscriber.labels.any? %>
+                    <div class="h-8 flex items-center">
+                      <div class="flex gap-1 overflow-x-auto scrollbar-hide">
+                        <% subscriber.labels.each do |label_name| %>
+                          <% label = @newsletter.labels.find_by(name: label_name) %>
+                          <% if label %>
+                            <div class="flex-shrink-0">
+                              <%= render "shared/label_tag", label: label %>
+                            </div>
+                          <% end %>
+                        <% end %>
+                      </div>
+                    </div>
+                  <% else %>
+                    <div class="h-8 flex items-center">
+                      <span class="text-sm text-stone-400">No labels</span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </section>
+
+        <div class="flex items-center justify-between px-6 py-3 bg-stone-50 border-t border-stone-200 font-sans">
+          <span class="text-sm text-stone-600">
+            <%= @cohort.subscriber_count %> total subscribers
+          </span>
+          <%== pagy_nav @pagy, id: "pagy-nav", aria_label: "Pagination" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

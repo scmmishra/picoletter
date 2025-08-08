@@ -1,0 +1,9 @@
+<section class="flex items-center justify-between gap-2 mb-6">
+  <h2 class="text-xl font-medium">Create New Cohort</h2>
+</section>
+
+<%= render 'form',
+    form_url: cohorts_path(@newsletter.slug),
+    form_method: :post,
+    submit_text: "Create Cohort",
+    cancel_url: nil %>

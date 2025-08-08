@@ -22,7 +22,9 @@ class Newsletters::PostsController < ApplicationController
 
   def show; end
 
-  def edit; end
+  def edit
+    @cohorts = @newsletter.cohorts.order(:name)
+  end
 
   def update
     if @post.update(post_params)
@@ -40,6 +42,7 @@ class Newsletters::PostsController < ApplicationController
 
   def new
     @post = @newsletter.posts.new
+    @cohorts = @newsletter.cohorts.order(:name)
   end
 
   def create
@@ -120,6 +123,6 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :scheduled_at, :timezone)
+    params.require(:post).permit(:title, :content, :scheduled_at, :timezone, :cohort_id)
   end
 end

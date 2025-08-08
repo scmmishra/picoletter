@@ -11,16 +11,19 @@
 #  title         :string
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  cohort_id     :bigint
 #  newsletter_id :integer          not null
 #
 # Indexes
 #
+#  index_posts_on_cohort_id               (cohort_id)
 #  index_posts_on_newsletter_id           (newsletter_id)
 #  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
 #  index_posts_on_slug                    (slug)
 #
 # Foreign Keys
 #
+#  fk_rails_...  (cohort_id => cohorts.id)
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Post < ApplicationRecord
@@ -32,10 +35,13 @@ class Post < ApplicationRecord
   has_rich_text :content
 
   belongs_to :newsletter
+  belongs_to :cohort, optional: true
 
   has_many :emails, dependent: :destroy_async
   has_many :email_clicks, dependent: :destroy_async
   enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
+
+  validate :cohort_cannot_change_after_publish
 
   scope :published, -> { where(status: "published") }
   scope :drafts, -> { where(status: "draft") }
@@ -76,6 +82,14 @@ class Post < ApplicationRecord
     PostValidationService.new(self).perform unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
+  end
+
+  def cohort_name
+    cohort&.name || "All Subscribers"
+  end
+
+  def can_change_cohort?
+    draft? || processing?
   end
 
   def can_send?
@@ -130,5 +144,14 @@ class Post < ApplicationRecord
       click_through_rate: delivered.zero? ? 0 : (unique_clickers / delivered * 100).round(1),
       click_to_open_rate: opened.zero? ? 0 : (unique_clickers / opened * 100).round(1)
     }
+  end
+
+  private
+
+  def cohort_cannot_change_after_publish
+    return unless persisted? && cohort_id_changed?
+    return if can_change_cohort?
+
+    errors.add(:cohort_id, "cannot be changed after the post has been published")
   end
 end

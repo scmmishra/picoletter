@@ -1,0 +1,57 @@
+<!-- Generic Icon Picker Component -->
+<div class="space-y-3">
+  <!-- Current Selection Display -->
+  <div class="relative">
+    <div data-icon-picker-target="currentSelection"
+         data-action="click->icon-picker#togglePicker"
+         class="size-10 rounded-lg flex items-center justify-center cursor-pointer hover:border-stone-400 transition-colors"
+         style="background-color: <%= current_color %>20;">
+      <svg class="w-6 h-6" style="color: <%= current_color %>">
+        <use href="#<%= current_icon %>"></use>
+      </svg>
+    </div>
+
+    <!-- Picker Dropdown -->
+    <div data-icon-picker-target="picker"
+         class="hidden absolute top-14 left-0 z-50 bg-white border border-stone-200 rounded-lg shadow-lg w-80 h-80 flex flex-col">
+
+      <!-- Color Selection (Fixed) -->
+      <div class="border-b border-stone-200 flex-shrink-0">
+        <div class="flex overflow-x-auto gap-2 p-3">
+          <% Newsletter.theme_config.each do |theme| %>
+            <%= button_tag type: 'button',
+                          data: {
+                            action: 'click->icon-picker#selectColor',
+                            color: theme.primary,
+                            tint: theme.tint
+                          },
+                          class: "size-5 flex-shrink-0 rounded-full transition-all border-0 focus:ring-2 focus:ring-[var(--pl-current-color)]",
+                          style: "background-color: #{theme.primary}; --pl-current-color: #{theme.primary}",
+                          title: theme.name do %>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Icon Selection (Scrollable) -->
+      <div class="flex-1 overflow-y-auto p-3" data-icon-picker-target="iconGrid">
+        <div class="grid grid-cols-9 gap-2">
+          <% Newsletter.available_icons.each do |icon| %>
+            <button type="button"
+                    data-action="click->icon-picker#selectIcon"
+                    data-icon="<%= icon %>"
+                    class="size-6 rounded-md flex items-center justify-center hover:bg-stone-50 transition-colors <%= 'bg-stone-100 border-stone-400' if current_icon == icon %>">
+              <svg class="size-3.5">
+                <use href="#<%= icon %>"></use>
+              </svg>
+            </button>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Form Fields -->
+  <%= form.hidden_field icon_field, data: { icon_picker_target: "iconInput" }, value: current_icon %>
+  <%= form.hidden_field color_field, data: { icon_picker_target: "colorInput" }, value: current_color %>
+</div>

@@ -1,0 +1,10 @@
+<turbo-stream action="append" target="conditions-container">
+  <template>
+    <%= render partial: "condition_row",
+    formats: [:html],
+    locals: {
+      index: @index,
+      newsletter: @newsletter,
+    } %>
+  </template>
+</turbo-stream>

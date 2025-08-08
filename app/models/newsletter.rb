@@ -57,6 +57,7 @@ class Newsletter < ApplicationRecord
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :labels, dependent: :destroy
+  has_many :cohorts, dependent: :destroy
 
   has_many :emails, through: :posts
 
