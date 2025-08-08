@@ -43,9 +43,9 @@ RSpec.describe Authorizable, type: :concern do
     context 'for editor' do
       before { allow(Current).to receive(:user).and_return(editor_user) }
 
-      it 'can only access profile and embedding' do
-        expect(newsletter.can_access?(:general)).to be false
-        expect(newsletter.can_access?(:design)).to be false
+      it 'can access general, design, profile and embedding for reading' do
+        expect(newsletter.can_access?(:general)).to be true
+        expect(newsletter.can_access?(:design)).to be true
         expect(newsletter.can_access?(:sending)).to be false
         expect(newsletter.can_access?(:billing)).to be false
         expect(newsletter.can_access?(:profile)).to be true

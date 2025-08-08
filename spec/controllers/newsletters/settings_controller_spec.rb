@@ -4,7 +4,7 @@ RSpec.describe Newsletters::SettingsController, type: :controller do
   let(:newsletter) { create(:newsletter) }
   let(:owner) { newsletter.user }
   let(:editor_user) { create(:user) }
-  
+
   before do
     create(:membership, user: editor_user, newsletter: newsletter, role: :editor)
   end
@@ -15,16 +15,14 @@ RSpec.describe Newsletters::SettingsController, type: :controller do
         sign_in(editor_user)
       end
 
-      it 'redirects from general settings' do
+      it 'allows access to general settings (read-only)' do
         get :show, params: { slug: newsletter.slug }
-        expect(response).to redirect_to(profile_settings_path(slug: newsletter.slug))
-        expect(flash[:alert]).to include("You don't have permission")
+        expect(response).to have_http_status(:success)
       end
 
-      it 'redirects from design settings' do
+      it 'allows access to design settings (read-only)' do
         get :design, params: { slug: newsletter.slug }
-        expect(response).to redirect_to(profile_settings_path(slug: newsletter.slug))
-        expect(flash[:alert]).to include("You don't have permission")
+        expect(response).to have_http_status(:success)
       end
 
       it 'redirects from sending settings' do
@@ -67,5 +65,4 @@ RSpec.describe Newsletters::SettingsController, type: :controller do
       end
     end
   end
-
 end
