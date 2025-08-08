@@ -17,7 +17,7 @@
   </div>
 </div>
 
-<%= labeled_form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8" do |form| %>
+<%= labeled_form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8", permission: :sending do |form| %>
   <div class="max-w-lg space-y-4">
     <%= form.text_field :sending_name,
                     placeholder: "Shivam from Picoletter",

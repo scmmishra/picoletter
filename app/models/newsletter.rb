@@ -42,6 +42,7 @@ class Newsletter < ApplicationRecord
   include Embeddable
   include Statusable
   include Themeable
+  include Authorizable
 
   VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
 
