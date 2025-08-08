@@ -5,6 +5,7 @@
     <%= settings_nav_link "Sending Domain", sending_settings_path(slug: @newsletter.slug), @newsletter %>
     <%= settings_nav_link "Design", design_settings_path(slug: @newsletter.slug), @newsletter %>
     <%= settings_nav_link "Embedding", embedding_settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Team", settings_team_path(slug: @newsletter.slug), @newsletter %>
     <% if AppConfig.get("ENABLE_BILLING", false) %>
       <%= settings_nav_link "Usage & Billing", settings_billing_path(slug: @newsletter.slug), @newsletter %>
     <% end %>

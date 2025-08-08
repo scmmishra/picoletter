@@ -30,6 +30,7 @@ class User < ApplicationRecord
   has_many :connected_services, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :newsletters, through: :memberships, source: :newsletter
+  has_many :sent_invitations, class_name: "Invitation", foreign_key: :invited_by_id, dependent: :nullify
 
   has_many :subscribers, through: :newsletters
   has_many :posts, through: :newsletters
