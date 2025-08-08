@@ -1,4 +1,4 @@
-<% if !Current.user.subscribed? %>
+<% if !Current.user.subscribed? && @newsletter.can_write?(:billing) %>
   <ul class="bg-white shadow-with-inset p-3 rounded-lg mb-3">
     <h4 class="font-medium mb-2 text-stone-900">Subscribe to start sending emails.</h4>
     <p class="mt-1">Plan starts at $5, you pay only for the emails you send.</p>

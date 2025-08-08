@@ -33,8 +33,33 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
 
   def select(method, choices, options = {}, html_options = {})
     labelled_field(method, options) do
+      if @options[:readonly]
+        html_options[:disabled] = true
+        html_options[:tabindex] = "-1"
+      end
       super(method, choices, options, default_options(html_options))
     end
+  end
+
+  def radio_button(method, tag_value, options = {})
+    if @options[:readonly]
+      options[:disabled] = true
+      options[:tabindex] = "-1"
+    end
+    super(method, tag_value, options)
+  end
+
+  def check_box(method, options = {}, checked_value = "1", unchecked_value = "0")
+    if @options[:readonly]
+      options[:disabled] = true
+      options[:tabindex] = "-1"
+    end
+    super(method, options, checked_value, unchecked_value)
+  end
+
+  def submit(value = nil, options = {})
+    return "" if @options[:readonly]
+    super(value, options)
   end
 
   private
@@ -58,6 +83,13 @@ class LabellingFormBuilder < ActionView::Helpers::FormBuilder
     field_options = { class: "input w-full" }
     field_options[:class] += " block" if options[:block]
     field_options[:class] += " #{options[:class]}" if options[:class]
+
+    # Add readonly attribute if form is readonly
+    if @options[:readonly]
+      field_options[:readonly] = true
+      field_options[:tabindex] = "-1"
+    end
+
     options.except(:hint, :label, :class).merge(field_options)
   end
 end

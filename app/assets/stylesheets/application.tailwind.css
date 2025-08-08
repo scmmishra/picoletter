@@ -5,6 +5,8 @@
 @layer components {
   .input {
     @apply px-4 py-2 border-0 rounded-lg ring-1 ring-inset ring-stone-300 focus:ring-2 focus:ring-inset focus:ring-stone-600 placeholder:text-zinc-400 placeholder:font-light;
+    @apply read-only:bg-stone-50 read-only:text-stone-600 read-only:cursor-not-allowed read-only:focus:ring-1 read-only:focus:ring-stone-300;
+    @apply disabled:bg-stone-50 disabled:text-stone-600 disabled:cursor-not-allowed disabled:focus:ring-1 disabled:focus:ring-stone-300;
   }
 
   .btn {
