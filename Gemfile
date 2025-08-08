@@ -108,7 +108,7 @@ gem "rorvswild", ">= 1.9.1"
 # production
 gem "dotenv-rails"
 
-gem "lucide-rails", "~> 0.4.0"
+gem "lucide-rails", "~> 0.7.1"
 gem "logtail-rails", "~> 0.2.7"
 gem "solid_cache", "~> 1.0.7"
 
