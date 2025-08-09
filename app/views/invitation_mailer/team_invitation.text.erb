@@ -1,0 +1,8 @@
+Hi there,
+
+<%= @invited_by.name %> has invited you to join <%= @newsletter.title %> as <%= @invitation.role == 'administrator' ? 'an' : 'a' %> <%= @invitation.role %> on Picoletter.
+
+To accept this invitation, visit:
+<%= @accept_url %>
+
+This invitation will expire in 14 days. If you didn't expect this invitation, you can safely ignore this email.

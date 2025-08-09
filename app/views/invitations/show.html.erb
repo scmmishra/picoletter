@@ -1,0 +1,11 @@
+<!-- Empty template for invitation acceptance page -->
+<!-- Design to be implemented -->
+
+<div>
+  <h1>Accept Invitation</h1>
+
+  <%= button_to "Accept Invitation",
+                invitations_path(token: params[:token]),
+                method: :post,
+                class: "btn btn-primary" %>
+</div>
