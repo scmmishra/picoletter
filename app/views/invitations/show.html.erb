@@ -69,7 +69,7 @@
 
 <main class="mx-auto flex min-h-screen items-center justify-center p-4 md:p-6">
   <section
-    class="airmail paper relative w-full max-w-4xl rounded-2xl border
+    class="airmail paper relative w-full max-w-3xl rounded-2xl border
            border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200"
     aria-label="Postcard invitation"
   >
@@ -117,7 +117,7 @@
 
         <%= button_to accept_invitation_submit_path(token: params[:token]),
                       method: :post,
-                      class: "btn btn-primary w-full mt-12" do %>
+                      class: "btn btn-primary w-full mt-8" do %>
           Accept & Join
         <% end %>
       </div>
