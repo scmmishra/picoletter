@@ -12,46 +12,32 @@ class Newsletters::Settings::TeamController < ApplicationController
   end
 
   def invite
-    existing_member = @newsletter.memberships.joins(:user).find_by(users: { email: invitation_params[:email] })
-
-    if existing_member
-      redirect_to team_settings_path(slug: @newsletter.slug),
-                  alert: "#{invitation_params[:email]} is already a member of this newsletter."
-      return
-    end
-
-    existing_invitation = @newsletter.invitations.pending.find_by(email: invitation_params[:email])
-
-    if existing_invitation
-      redirect_to team_settings_path(slug: @newsletter.slug),
-                  alert: "An invitation has already been sent to #{invitation_params[:email]}."
-      return
-    end
-
-    @invitation = @newsletter.invitations.build(
+    service = TeamInvitationService.new(
+      newsletter: @newsletter,
       email: invitation_params[:email],
       role: invitation_params[:role],
       invited_by: Current.user
     )
 
-    if @invitation.save
-      InvitationMailer.team_invitation(@invitation).deliver_later
-      redirect_to team_settings_path(slug: @newsletter.slug),
-                  notice: "Invitation sent to #{@invitation.email}."
-    else
-      redirect_to team_settings_path(slug: @newsletter.slug),
-                  alert: "Failed to send invitation: #{@invitation.errors.full_messages.join(', ')}"
-    end
+    invitation = service.call
+    redirect_to settings_team_path(slug: @newsletter.slug),
+                notice: "Invitation sent to #{invitation.email}."
+  rescue TeamInvitationService::AlreadyMemberError => e
+    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
+  rescue TeamInvitationService::ExistingInvitationError => e
+    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
+  rescue TeamInvitationService::ValidationError => e
+    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
   end
 
   def destroy
     @membership = @newsletter.memberships.find(params[:id])
 
     if @membership.destroy
-      redirect_to team_settings_path(slug: @newsletter.slug),
+      redirect_to settings_team_path(slug: @newsletter.slug),
                   notice: "Team member removed successfully."
     else
-      redirect_to team_settings_path(slug: @newsletter.slug),
+      redirect_to settings_team_path(slug: @newsletter.slug),
                   alert: "Failed to remove team member."
     end
   end
@@ -60,10 +46,10 @@ class Newsletters::Settings::TeamController < ApplicationController
     @invitation = @newsletter.invitations.find(params[:id])
 
     if @invitation.destroy
-      redirect_to team_settings_path(slug: @newsletter.slug),
+      redirect_to settings_team_path(slug: @newsletter.slug),
                   notice: "Invitation cancelled."
     else
-      redirect_to team_settings_path(slug: @newsletter.slug),
+      redirect_to settings_team_path(slug: @newsletter.slug),
                   alert: "Failed to cancel invitation."
     end
   end
