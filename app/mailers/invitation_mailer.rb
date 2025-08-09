@@ -1,8 +1,10 @@
 class InvitationMailer < ApplicationMailer
-  def team_invitation(invitation)
-    @invitation = invitation
-    @newsletter = invitation.newsletter
-    @invited_by = invitation.invited_by
+  layout "base_mailer"
+
+  def team_invitation
+    @invitation = params[:invitation]
+    @newsletter = @invitation.newsletter
+    @invited_by = @invitation.invited_by
     @accept_url = accept_invitation_url(token: @invitation.token)
 
     mail(

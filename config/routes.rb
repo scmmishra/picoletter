@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   get "/confirm", to: "users#confirm_verification", as: :confirm_verification
   post "/resend_verification_email", to: "users#resend_verification_email"
 
+  # Invitation routes
+  get "/invitations/:token", to: "invitations#show", as: :accept_invitation
+  post "/invitations/:token", to: "invitations#accept"
+
   # Redirect old login
   get "/login", to: redirect("/auth/login")
 
