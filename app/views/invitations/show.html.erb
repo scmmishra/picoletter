@@ -4,7 +4,7 @@
     @font-face {
       font-family: 'Libre Barcode 128 Text';
       font-style: normal;
-      font-display: swap;
+      font-display: fallback;
       font-weight: 400;
       src: url(https://cdn.jsdelivr.net/fontsource/fonts/libre-barcode-128-text@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/libre-barcode-128-text@latest/latin-400-normal.woff) format('woff');
       unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
@@ -176,9 +176,9 @@
           <section>
           <p class="text-xs uppercase tracking-widest text-stone-500">To</p>
           <div class="mt-3 max-w-[18rem] text-base">
-            <div class="text-stone-800 font-medium"><%= @invitation.email %></div>
-            <div class="text-stone-600"><%= @newsletter.title %> Team Member</div>
-            <div class="text-stone-500">Picoletter</div>
+            <div class="text-stone-800 font-medium"><%= Current.user.name %></div>
+            <div class="text-stone-600"><%= @invitation.email %></div>
+            <div class="text-stone-600"><%= @newsletter.title %> Team Member, Picoletter</div>
           </div>
 
           <div class="mt-6 space-y-4">
