@@ -1,6 +1,6 @@
 class InvitationsController < ApplicationController
   before_action :set_invitation
-  before_action :ensure_authenticated, only: :accept
+  before_action :ensure_authenticated
 
   def show
     if @invitation.nil? || @invitation.accepted? || @invitation.expired?
@@ -9,6 +9,7 @@ class InvitationsController < ApplicationController
     end
 
     @newsletter = @invitation.newsletter
+    @invited_by = @invitation.invited_by
   end
 
   def accept
