@@ -51,7 +51,7 @@
               <td class="px-4 py-3 whitespace-nowrap">
                 <div>
                   <p class="text-sm font-medium text-stone-700"><%= membership.user.name %></p>
-                  <p class="text-sm text-stone-500"><%= membership.user.email %></p>
+                  <p class="text-sm font-sans text-stone-500"><%= membership.user.email %></p>
                 </div>
               </td>
               <td class="px-4 py-3 whitespace-nowrap">
@@ -87,7 +87,6 @@
           <thead class="bg-stone-50 font-sans text-xs font-normal text-stone-500 uppercase tracking-wider">
             <tr>
               <th scope="col" class="px-4 py-3 text-left">Email</th>
-              <th scope="col" class="px-4 py-3 text-left">Details</th>
               <th scope="col" class="px-4 py-3 text-left">Role</th>
               <th scope="col" class="px-4 py-3 text-right">Actions</th>
             </tr>
@@ -97,28 +96,21 @@
               <tr>
                 <td class="px-4 py-3 whitespace-nowrap">
                   <p class="text-sm font-medium text-stone-700"><%= invitation.email %></p>
-                </td>
-                <td class="px-4 py-3">
-                  <p class="text-sm text-stone-500">
-                    Invited by <%= invitation.invited_by.name %> •
-                    <%= time_ago_in_words(invitation.created_at) %> ago
-                  </p>
-                  <p class="text-sm text-stone-500">
-                    Expires in <%= time_ago_in_words(invitation.expires_at) %>
-                  </p>
+                  <p class="text-sm font-sans text-stone-500">Invited on <%= invitation.created_at.strftime("%b %d, %Y") %></p>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">
-                  <span class="px-2 py-1 text-xs font-medium text-amber-600 bg-amber-100 rounded capitalize">
-                    <%= invitation.role %> (Pending)
+                  <span class="px-2 py-1 font-sans uppercase tracking-wider text-[10px] font-medium text-amber-600 bg-amber-100 rounded">
+                    <%= invitation.role %>
                   </span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-right">
                   <% if @newsletter.can_write?(:team) %>
-                    <%= button_to "Cancel",
-                                settings_team_invitation_path(slug: @newsletter.slug, id: invitation.id),
+                    <%= button_to settings_team_invitation_path(slug: @newsletter.slug, id: invitation.id),
                                 method: :delete,
                                 data: { confirm: "Are you sure you want to cancel this invitation?" },
-                                class: "text-sm text-red-600 hover:text-red-700" %>
+                                class: "btn btn-danger" do %>
+                                  <%= lucide_icon("trash-2", class: "size-3 text-white") %>
+                    <% end %>
                   <% else %>
                     <span class="text-sm text-stone-500">—</span>
                   <% end %>
