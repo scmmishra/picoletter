@@ -98,6 +98,7 @@ Rails.application.routes.draw do
         get "team", to: "team#index", as: :team
         post "team/invite", to: "team#invite", as: :team_invite
         delete "team/members/:id", to: "team#destroy", as: :team_member
+        patch "team/members/:id", to: "team#update_role", as: :team_member_role
         delete "team/invitations/:id", to: "team#destroy_invitation", as: :team_invitation
       end
 

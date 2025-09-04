@@ -4,7 +4,7 @@ class Newsletters::Settings::TeamController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action -> { authorize_permission!(:team, :read) }, only: [ :index ]
-  before_action -> { authorize_permission!(:team, :write) }, only: [ :invite, :destroy ]
+  before_action -> { authorize_permission!(:team, :write) }, only: [ :invite, :destroy, :update_role ]
 
   def index
     @memberships = @newsletter.memberships.includes(:user)
@@ -42,6 +42,18 @@ class Newsletters::Settings::TeamController < ApplicationController
     end
   end
 
+  def update_role
+    @membership = @newsletter.memberships.find(params[:id])
+
+    if @membership.update(role: role_params[:role])
+      redirect_to settings_team_path(slug: @newsletter.slug),
+                  notice: "Role updated successfully."
+    else
+      redirect_to settings_team_path(slug: @newsletter.slug),
+                  alert: "Failed to update role: #{@membership.errors.full_messages.join(', ')}"
+    end
+  end
+
   def destroy_invitation
     @invitation = @newsletter.invitations.find(params[:id])
 
@@ -62,6 +74,10 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   def invitation_params
     params.require(:invitation).permit(:email, :role)
+  end
+
+  def role_params
+    params.require(:membership).permit(:role)
   end
 
   def authorize_permission!(permission, access_type = :read)

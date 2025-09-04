@@ -45,6 +45,22 @@
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-stone-200">
+          <!-- Owner -->
+          <tr>
+            <td class="px-4 py-3 whitespace-nowrap">
+              <div>
+                <p class="text-sm font-medium text-stone-700"><%= @newsletter.user.name %></p>
+                <p class="text-sm font-sans text-stone-500"><%= @newsletter.user.email %></p>
+              </div>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap">
+              <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-stone-600 bg-stone-100 rounded">Owner</span>
+            </td>
+            <td class="px-4 py-3 whitespace-nowrap text-right text-sm text-stone-500">
+              —
+            </td>
+          </tr>
+
           <!-- Members -->
           <% @memberships.each do |membership| %>
             <tr>
@@ -61,12 +77,55 @@
               </td>
               <td class="px-4 py-3 whitespace-nowrap text-right">
                 <% if @newsletter.can_write?(:team) %>
-                  <%= button_to settings_team_member_path(slug: @newsletter.slug, id: membership.id),
-                              method: :delete,
-                              data: { confirm: "Are you sure you want to remove this team member?" },
-                              class: "btn btn-danger" do %>
-                      <%= lucide_icon("trash-2", class: "size-3 text-white") %>
-                  <% end %>
+                  <div data-controller="modal" data-action="click->modal#backdropClose" class="relative inline-block">
+                    <button
+                      class="btn btn-sm btn-tinted btn-secondary opacity-40 transition-all duration-300 grayscale hover:grayscale-0 hover:opacity-100 py-1.5"
+                      data-action="modal#open"
+                    >
+                      <%= lucide_icon("edit-2", class: "size-3 text-stone-800") %>
+                    </button>
+
+                    <!-- Modal Dialog -->
+                    <dialog
+                      data-modal-target="modal"
+                      class="p-6 pt-5 pb-7 bg-white overflow-hidden rounded-lg shadow-with-inset min-w-sm w-full max-w-lg gap-4 space-y-4 text-left"
+                    >
+                      <div class="space-y-6">
+                        <h2 class="text-xl font-semibold text-stone-800">Edit Team Member</h2>
+
+                        <div class="space-y-4">
+                          <div>
+                            <p class="font-medium text-stone-700"><%= membership.user.name %></p>
+                            <p class="text-sm text-stone-500"><%= membership.user.email %></p>
+                          </div>
+
+                          <%= labeled_form_with model: membership, url: settings_team_member_role_path(slug: @newsletter.slug, id: membership.id), method: :patch, local: true do |form| %>
+                            <%= form.select :role,
+                                options_for_select([['Editor', 'editor'], ['Administrator', 'administrator']], membership.role),
+                                {} %>
+
+                            <div class="flex gap-2 justify-between">
+                              <button type="button"
+                                      onclick="if(confirm('Are you sure you want to remove <%= membership.user.name %> from the team?')) { document.querySelector('#delete-form-<%= membership.id %>').submit(); }"
+                                      class="btn btn-danger">
+                                Delete Member
+                              </button>
+                              <div class="flex gap-2">
+                                <button type="button" class="btn btn-secondary" data-action="modal#close">Cancel</button>
+                                <%= form.submit "Update", class: "btn btn-primary" %>
+                              </div>
+                            </div>
+                          <% end %>
+
+                          <%= form_with url: settings_team_member_path(slug: @newsletter.slug, id: membership.id),
+                                      method: :delete,
+                                      id: "delete-form-#{membership.id}",
+                                      class: "hidden" do |form| %>
+                          <% end %>
+                        </div>
+                      </div>
+                    </dialog>
+                  </div>
                 <% else %>
                   <span class="text-sm text-stone-500">—</span>
                 <% end %>
@@ -96,11 +155,14 @@
               <tr>
                 <td class="px-4 py-3 whitespace-nowrap">
                   <p class="text-sm font-medium text-stone-700"><%= invitation.email %></p>
-                  <p class="text-sm font-sans text-stone-500">Invited on <%= invitation.created_at.strftime("%b %d, %Y") %></p>
+                  <p class="text-sm text-stone-500">
+                    Invited by <%= invitation.invited_by.name %> •
+                    <%= time_ago_in_words(invitation.created_at) %> ago
+                  </p>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap">
-                  <span class="px-2 py-1 font-sans uppercase tracking-wider text-[10px] font-medium text-amber-600 bg-amber-100 rounded">
-                    <%= invitation.role %>
+                  <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-amber-600 bg-amber-100 rounded">
+                    <%= invitation.role %> (Pending)
                   </span>
                 </td>
                 <td class="px-4 py-3 whitespace-nowrap text-right">
@@ -108,8 +170,8 @@
                     <%= button_to settings_team_invitation_path(slug: @newsletter.slug, id: invitation.id),
                                 method: :delete,
                                 data: { confirm: "Are you sure you want to cancel this invitation?" },
-                                class: "btn btn-danger" do %>
-                                  <%= lucide_icon("trash-2", class: "size-3 text-white") %>
+                                class: "btn btn-sm btn-tinted btn-danger opacity-20 transition-all duration-300 grayscale hover:grayscale-0 hover:opacity-100 py-1.5" do %>
+                      <%= lucide_icon("x", class: "size-3 text-white") %>
                     <% end %>
                   <% else %>
                     <span class="text-sm text-stone-500">—</span>
@@ -122,4 +184,14 @@
       </div>
     </section>
   <% end %>
+
+  <!-- Help Section -->
+  <section>
+    <h2 class="text-xl font-semibold text-stone-800 mb-4">Team Roles</h2>
+    <div class="space-y-3 text-stone-600">
+      <p><strong>Owner:</strong> Full control over the newsletter, billing, and team management.</p>
+      <p><strong>Administrator:</strong> Can manage all newsletter settings, posts, and subscribers. Cannot manage billing.</p>
+      <p><strong>Editor:</strong> Can create and edit posts, view subscribers, and manage their own profile.</p>
+    </div>
+  </section>
 </main>
