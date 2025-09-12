@@ -66,7 +66,6 @@ class Newsletter < ApplicationRecord
   enum :status, { active: "active", archived: "archived" }
 
   validates :title, presence: true
-  validates :slug, presence: true, uniqueness: true
 
   after_create :create_owner_membership
 
