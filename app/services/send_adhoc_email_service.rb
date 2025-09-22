@@ -26,22 +26,41 @@ class SendAdhocEmailService
   def send_emails(dry_run: false)
     csv_data = parse_csv
 
+    if dry_run
+      # For dry run, only process the first valid row
+      first_valid_row = csv_data.find { |row| row[:email]&.strip&.present? }
+      if first_valid_row
+        email = first_valid_row[:email].strip
+        html_content = render_html_content(first_valid_row)
+
+        puts "✓ Would send to: #{email}"
+        puts "  Subject: #{@subject}"
+        puts "  Data: #{first_valid_row.to_h}"
+        puts "\nRendered HTML:"
+        puts "=" * 50
+        puts html_content
+        puts "=" * 50
+      else
+        puts "✗ No valid rows found with email addresses"
+      end
+
+      return { sent: 0, errors: [] }
+    end
+
     csv_data.each_with_index do |row, index|
       begin
-        html_content = render_html_content(row)
-
-        if dry_run
-          puts "Would send to: #{row[:email]}"
-          puts "Subject: #{@subject}"
-          puts "Template: #{@template_name}"
-          puts "Data: #{row.to_h}"
-          puts "---"
-        else
-          send_individual_email(row[:email], html_content)
-          @sent_emails << { email: row[:email], data: row.to_h }
+        # Validate email field
+        email = row[:email]&.strip
+        if email.blank?
+          @errors << { row: index + 1, email: "blank", error: "Email field is missing or empty", data: row.to_h }
+          next
         end
+
+        html_content = render_html_content(row)
+        send_individual_email(email, html_content)
+        @sent_emails << { email: email, data: row.to_h }
       rescue => e
-        @errors << { row: index + 1, email: row[:email], error: e.message, data: row.to_h }
+        @errors << { row: index + 1, email: row[:email] || "unknown", error: e.message, data: row.to_h }
       end
     end
 
