@@ -31,17 +31,17 @@ class SendAdhocEmailService
         html_content = render_html_content(row)
 
         if dry_run
-          puts "Would send to: #{row['email']}"
+          puts "Would send to: #{row[:email]}"
           puts "Subject: #{@subject}"
           puts "Template: #{@template_name}"
           puts "Data: #{row.to_h}"
           puts "---"
         else
-          send_individual_email(row["email"], html_content)
-          @sent_emails << { email: row["email"], data: row.to_h }
+          send_individual_email(row[:email], html_content)
+          @sent_emails << { email: row[:email], data: row.to_h }
         end
       rescue => e
-        @errors << { row: index + 1, email: row["email"], error: e.message, data: row.to_h }
+        @errors << { row: index + 1, email: row[:email], error: e.message, data: row.to_h }
       end
     end
 
@@ -73,7 +73,7 @@ class SendAdhocEmailService
       reply_to: @newsletter.reply_to || @from_email,
       subject: @subject,
       html: html_content,
-      text: nil
+      text: ""
     )
   end
 end
