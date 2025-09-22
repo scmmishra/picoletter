@@ -124,3 +124,4 @@ gem "aws-sdk-rails", "~> 3"
 
 # Bot prevention
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"
+gem "liquid"
