@@ -80,7 +80,10 @@ class SendAdhocEmailService
 
     require "liquid"
     template = Liquid::Template.parse(template_content)
-    template.render("data" => data, "newsletter" => @newsletter.as_json)
+    # Convert symbol keys to string keys for Liquid
+    data_with_string_keys = data.transform_keys(&:to_s)
+    render_data = { "data" => data_with_string_keys, "newsletter" => @newsletter.as_json }
+    template.render(render_data)
   end
 
   def send_individual_email(email, html_content)
