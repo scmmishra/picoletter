@@ -64,12 +64,39 @@
       -webkit-mask-composite: source-in;
       mask-composite: intersect;
     }
+
+    @keyframes postcard-tilt-settle {
+      0% {
+        opacity: 0;
+        transform: translateY(-32px) rotate(-4deg) scale(0.98);
+      }
+      55% {
+        opacity: 1;
+        transform: translateY(10px) rotate(2.6deg) scale(1.015);
+      }
+      75% {
+        transform: translateY(-4px) rotate(-1.2deg) scale(0.995);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+
+    .postcard-tilt-wrapper {
+      animation: postcard-tilt-settle 560ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform-origin: center;
+      will-change: transform, opacity;
+      display: inline-block;
+      width: 100%;
+    }
   </style>
 <% end %>
 
 <main class="mx-auto flex min-h-screen items-center justify-center p-4 md:p-6">
+  <div class="postcard-tilt-wrapper w-full max-w-3xl">
   <section
-    class="airmail paper relative w-full max-w-3xl rounded-2xl border
+    class="airmail paper relative w-full rounded-2xl border
            border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200"
     aria-label="Postcard invitation"
   >
@@ -211,4 +238,5 @@
       </p>
     </div>
   </section>
+  </div>
 </main>
