@@ -33,7 +33,7 @@ class Newsletters::PostsController < ApplicationController
     else
       respond_to do |format|
         format.html { render :edit }
-        format.json { render json: { errors: @post.errors }, status: :unprocessable_entity }
+        format.json { render json: { errors: @post.errors }, status: :unprocessable_content }
       end
     end
   end

@@ -13,7 +13,7 @@ class Api::Admin::UsersController < Api::Admin::BaseController
         }
       }
     else
-      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_content
     end
   end
 
@@ -30,7 +30,7 @@ class Api::Admin::UsersController < Api::Admin::BaseController
         }
       }
     else
-      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_entity
+      render json: { success: false, errors: @user.errors.full_messages }, status: :unprocessable_content
     end
   end
 

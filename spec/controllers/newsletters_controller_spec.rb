@@ -53,7 +53,7 @@ RSpec.describe NewslettersController, type: :controller do
         post :create, params: invalid_params
       end.not_to change(Newsletter, :count)
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
       expect(controller.instance_variable_get(:@newsletter).user).to eq(user)
     end
   end
