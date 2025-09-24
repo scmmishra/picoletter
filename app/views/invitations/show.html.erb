@@ -65,28 +65,34 @@
       mask-composite: intersect;
     }
 
-    @keyframes postcard-tilt-settle {
+    @keyframes postcard-float-up {
       0% {
         opacity: 0;
-        transform: translateY(-32px) rotate(-4deg) scale(0.98);
+        transform: translateY(26px) scale(0.85);
+        filter: blur(6px);
       }
-      55% {
+      70% {
         opacity: 1;
-        transform: translateY(10px) rotate(2.6deg) scale(1.015);
+        transform: translateY(-10px) scale(0.998);
+        filter: blur(1);
       }
-      75% {
-        transform: translateY(-4px) rotate(-1.2deg) scale(0.995);
+      80% {
+        transform: translateY(-10px) scale(1);
+      }
+      95% {
+        transform: translateY(-10px) scale(1);
       }
       100% {
         opacity: 1;
-        transform: translateY(0) rotate(0deg) scale(1);
+        transform: translateY(0) scale(1);
+        filter: blur(0);
       }
     }
 
-    .postcard-tilt-wrapper {
-      animation: postcard-tilt-settle 560ms cubic-bezier(0.22, 1, 0.36, 1);
+    .postcard-float-wrapper {
+      animation: postcard-float-up 800ms cubic-bezier(0.22, 1, 0.36, 1);
       transform-origin: center;
-      will-change: transform, opacity;
+      will-change: transform, opacity, filter;
       display: inline-block;
       width: 100%;
     }
@@ -94,7 +100,7 @@
 <% end %>
 
 <main class="mx-auto flex min-h-screen items-center justify-center p-4 md:p-6">
-  <div class="postcard-tilt-wrapper w-full max-w-3xl">
+  <div class="postcard-float-wrapper w-full max-w-3xl">
   <section
     class="airmail paper relative w-full rounded-2xl border
            border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200"
