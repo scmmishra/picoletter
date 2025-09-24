@@ -12,14 +12,14 @@ class NewslettersController < ApplicationController
   end
 
   def new
-    @newsletter = Current.user.newsletters.new
+    @newsletter = Current.user.owned_newsletters.new
     @new_signup = Current.user.newsletters.count.zero?
 
     render :new, layout: "application"
   end
 
   def create
-    @newsletter = Current.user.newsletters.new(newsletter_params)
+    @newsletter = Current.user.owned_newsletters.new(newsletter_params)
     if @newsletter.save
       redirect_to posts_url(@newsletter.slug)
     else
