@@ -3,13 +3,13 @@ class InvitationsController < ApplicationController
   before_action :ensure_authenticated
 
   def show
-    if @invitation.nil? || @invitation.accepted? || @invitation.expired?
-      redirect_to root_path, alert: "This invitation is no longer valid."
+    if @invitation.accepted?
+      redirect_to_newsletter_home(notice: "You've already accepted this invitation.")
       return
     end
 
-    if session[:ignored_invitation_tokens]&.include?(@invitation.token)
-      redirect_to_newsletter_home(notice: "Invitation dismissed for now.")
+    if @invitation.nil? || @invitation.expired?
+      redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
       return
     end
 
@@ -19,7 +19,7 @@ class InvitationsController < ApplicationController
 
   def accept
     if @invitation.nil? || @invitation.accepted? || @invitation.expired?
-      redirect_to root_path, alert: "This invitation is no longer valid."
+      redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
       return
     end
 
@@ -34,7 +34,7 @@ class InvitationsController < ApplicationController
 
   def ignore
     if @invitation.nil? || @invitation.accepted? || @invitation.expired?
-      redirect_to root_path, alert: "This invitation is no longer valid."
+      redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
       return
     end
 
