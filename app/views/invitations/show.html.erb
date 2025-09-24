@@ -266,7 +266,7 @@
   </div>
   <div class="postcard-ignore-link text-center text-xs w-full max-w-3xl mt-8">
     <%= link_to "Ignore for now", ignore_invitation_path(token: params[:token]),
-                 method: :post,
+                 data: { turbo_method: :post },
                  class: "text-stone-500 hover:text-stone-700 underline decoration-dotted" %>
   </div>
 </main>
