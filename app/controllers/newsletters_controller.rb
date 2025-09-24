@@ -14,6 +14,7 @@ class NewslettersController < ApplicationController
   def new
     @newsletter = Current.user.owned_newsletters.new
     @new_signup = Current.user.newsletters.count.zero?
+    @pending_invitation = find_pending_invitation if @new_signup
 
     render :new, layout: "application"
   end
@@ -31,5 +32,12 @@ class NewslettersController < ApplicationController
 
   def newsletter_params
     params.require(:newsletter).permit(:title, :description, :slug, :timezone)
+  end
+
+  def find_pending_invitation
+    Invitation.pending
+               .where("LOWER(email) = ?", Current.user.email.downcase)
+               .order(created_at: :desc)
+               .first
   end
 end
