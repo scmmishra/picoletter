@@ -8,6 +8,7 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   def index
     @memberships = @newsletter.memberships.includes(:user)
+    @members_without_owners = @memberships.where.not(user_id: @newsletter.user_id)
     @invitations = @newsletter.invitations.pending.includes(:invited_by)
   end
 
@@ -44,6 +45,12 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   def update_role
     @membership = @newsletter.memberships.find(params[:id])
+
+    if @membership.user_id == @newsletter.user_id
+      redirect_to settings_team_path(slug: @newsletter.slug),
+                  alert: "You cannot change the owner's role."
+      return
+    end
 
     if @membership.update(role: role_params[:role])
       redirect_to settings_team_path(slug: @newsletter.slug),

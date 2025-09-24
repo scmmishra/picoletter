@@ -62,7 +62,7 @@
           </tr>
 
           <!-- Members -->
-          <%= render partial: "newsletters/settings/team/member_row", collection: @memberships, as: :membership %>
+          <%= render partial: "newsletters/settings/team/member_row", collection: @members_without_owners, as: :membership %>
         </tbody>
       </table>
     </div>
