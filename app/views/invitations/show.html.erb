@@ -76,7 +76,7 @@
         transform: translateY(-10px) scale(0.998);
         filter: blur(1);
       }
-      80% {
+      85% {
         transform: translateY(-10px) scale(1);
       }
       95% {
@@ -96,10 +96,28 @@
       display: inline-block;
       width: 100%;
     }
+
+    @keyframes postcard-link-reveal {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .postcard-ignore-link {
+      opacity: 0;
+      animation: postcard-link-reveal 240ms ease forwards;
+      animation-delay: 1000ms;
+      will-change: opacity, transform;
+    }
   </style>
 <% end %>
 
-<main class="mx-auto flex min-h-screen items-center justify-center p-4 md:p-6">
+<main class="mx-auto flex min-h-screen flex-col items-center justify-center p-4 md:p-6 gap-4">
   <div class="postcard-float-wrapper w-full max-w-3xl">
   <section
     class="airmail paper relative w-full rounded-2xl border
@@ -153,6 +171,7 @@
                       class: "btn btn-primary w-full mt-8" do %>
           Accept & Join
         <% end %>
+
       </div>
 
       <!-- RIGHT: Address / stamp -->
@@ -244,5 +263,10 @@
       </p>
     </div>
   </section>
+  </div>
+  <div class="postcard-ignore-link text-center text-xs w-full max-w-3xl mt-8">
+    <%= link_to "Ignore for now", ignore_invitation_path(token: params[:token]),
+                 method: :post,
+                 class: "text-stone-500 hover:text-stone-700 underline decoration-dotted" %>
   </div>
 </main>

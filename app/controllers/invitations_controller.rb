@@ -8,6 +8,11 @@ class InvitationsController < ApplicationController
       return
     end
 
+    if session[:ignored_invitation_tokens]&.include?(@invitation.token)
+      redirect_to_newsletter_home(notice: "Invitation dismissed for now.")
+      return
+    end
+
     @newsletter = @invitation.newsletter
     @invited_by = @invitation.invited_by
   end
@@ -25,6 +30,19 @@ class InvitationsController < ApplicationController
       redirect_to accept_invitation_path(token: params[:token]),
                   alert: "Failed to accept invitation. Please try again."
     end
+  end
+
+  def ignore
+    if @invitation.nil? || @invitation.accepted? || @invitation.expired?
+      redirect_to root_path, alert: "This invitation is no longer valid."
+      return
+    end
+
+    ignored_tokens = Array(session[:ignored_invitation_tokens])
+    ignored_tokens << @invitation.token unless ignored_tokens.include?(@invitation.token)
+    session[:ignored_invitation_tokens] = ignored_tokens
+
+    redirect_to_newsletter_home(notice: "Invitation dismissed for now.")
   end
 
   private

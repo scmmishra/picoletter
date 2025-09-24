@@ -36,6 +36,7 @@ Rails.application.routes.draw do
   # Invitation routes
   get "/invitations/:token", to: "invitations#show", as: :accept_invitation
   post "/invitations/:token", to: "invitations#accept", as: :accept_invitation_submit
+  post "/invitations/:token/ignore", to: "invitations#ignore", as: :ignore_invitation
 
   # Redirect old login
   get "/login", to: redirect("/auth/login")
