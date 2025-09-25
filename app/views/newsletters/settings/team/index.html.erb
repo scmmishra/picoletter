@@ -100,7 +100,7 @@
                   <% if @newsletter.can_write?(:team) %>
                     <%= button_to settings_team_invitation_path(slug: @newsletter.slug, id: invitation.id),
                                 method: :delete,
-                                data: { confirm: "Are you sure you want to cancel this invitation?" },
+                                data: { turbo_confirm: "Are you sure you want to cancel this invitation?" },
                                 class: "btn btn-sm btn-tinted btn-danger opacity-20 transition-all duration-300 grayscale hover:grayscale-0 hover:opacity-100 py-1.5" do %>
                       <%= lucide_icon("x", class: "size-3 text-white") %>
                     <% end %>
