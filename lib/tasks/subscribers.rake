@@ -86,7 +86,8 @@ namespace :subscribers do
       created: 0,
       updated: 0,
       invalid_email: 0,
-      failed: 0
+      failed: 0,
+      skipped_unsubscribed: 0
     }
 
     puts "Importing subscribers for '#{newsletter.title}'"
@@ -98,7 +99,7 @@ namespace :subscribers do
       bar_width = 30
       filled = ((percent / 100.0) * bar_width).round
       bar = "#" * filled + "-" * (bar_width - filled)
-      summary = "created: #{counters[:created]}, updated: #{counters[:updated]}, invalid: #{counters[:invalid_email]}, failed: #{counters[:failed]}"
+      summary = "created: #{counters[:created]}, updated: #{counters[:updated]}, invalid: #{counters[:invalid_email]}, failed: #{counters[:failed]}, skipped: #{counters[:skipped_unsubscribed]}"
       print "\r[#{bar}] #{percent.to_s.rjust(5)}% (#{processed}/#{total_rows}) #{summary}"
       $stdout.flush
     end
@@ -124,6 +125,12 @@ namespace :subscribers do
 
       subscriber = newsletter.subscribers.find_or_initialize_by(email: email)
       was_new = subscriber.new_record?
+
+      if subscriber.unsubscribed? && !was_new
+        counters[:skipped_unsubscribed] += 1
+        update_progress.call(counters[:processed])
+        next
+      end
 
       subscriber.full_name = row["full_name"].presence if row.headers.include?("full_name")
       subscriber.notes = row["notes"].presence if row.headers.include?("notes")
@@ -163,5 +170,6 @@ namespace :subscribers do
     puts "  Updated: #{counters[:updated]}"
     puts "  Invalid email skipped: #{counters[:invalid_email]}"
     puts "  Failed: #{counters[:failed]}"
+    puts "  Previously unsubscribed skipped: #{counters[:skipped_unsubscribed]}"
   end
 end
