@@ -126,11 +126,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
     t.string "token", null: false
     t.bigint "invited_by_id", null: false
     t.datetime "accepted_at"
-    t.datetime "expires_at"
+    t.datetime "expires_at", default: -> { "(CURRENT_TIMESTAMP + 'P14D'::interval)" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
-    t.index ["newsletter_id", "email"], name: "index_invitations_on_newsletter_id_and_email", unique: true, where: "(accepted_at IS NULL)"
     t.index ["newsletter_id"], name: "index_invitations_on_newsletter_id"
     t.index ["token"], name: "index_invitations_on_token", unique: true
   end

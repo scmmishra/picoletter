@@ -5,7 +5,7 @@
 #  id            :bigint           not null, primary key
 #  accepted_at   :datetime
 #  email         :string           not null
-#  expires_at    :datetime
+#  expires_at    :datetime         not null
 #  role          :string           default("editor"), not null
 #  token         :string           not null
 #  created_at    :datetime         not null
@@ -15,10 +15,9 @@
 #
 # Indexes
 #
-#  index_invitations_on_invited_by_id            (invited_by_id)
-#  index_invitations_on_newsletter_id            (newsletter_id)
-#  index_invitations_on_newsletter_id_and_email  (newsletter_id,email) UNIQUE WHERE (accepted_at IS NULL)
-#  index_invitations_on_token                    (token) UNIQUE
+#  index_invitations_on_invited_by_id  (invited_by_id)
+#  index_invitations_on_newsletter_id  (newsletter_id)
+#  index_invitations_on_token          (token) UNIQUE
 #
 # Foreign Keys
 #

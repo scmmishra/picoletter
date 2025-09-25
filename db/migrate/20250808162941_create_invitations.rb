@@ -13,10 +13,5 @@ class CreateInvitations < ActiveRecord::Migration[8.0]
     end
 
     add_index :invitations, :token, unique: true
-    add_index :invitations,
-              [ :newsletter_id, Arel.sql("LOWER(email)") ],
-              unique: true,
-              where: "accepted_at IS NULL",
-              name: "index_invitations_on_newsletter_and_lower_email"
   end
 end
