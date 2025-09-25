@@ -45,7 +45,7 @@ class InvitationsController < ApplicationController
   def ensure_invitation_belongs_to_current_user
     return if @invitation.email.casecmp?(Current.user.email)
 
-    redirect_to_newsletter_home(alert: "This invitation was issued to a different email.")
+    redirect_to_newsletter_home(notice: "This invitation was issued to a different email.")
     return
   end
 
