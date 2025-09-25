@@ -1,6 +1,8 @@
 Hi there,
 
-<%= @invited_by.name %> has invited you to join <%= @newsletter.title %> as <%= @invitation.role == 'administrator' ? 'an' : 'a' %> <%= @invitation.role %> on Picoletter.
+<% role = @invitation.role.to_s %>
+<% article = role.present? && role[0].match?(/[aeiou]/i) ? 'an' : 'a' %>
+<%= @invited_by.name %> has invited you to join <%= @newsletter.title %> as <%= article %> <%= role %> on Picoletter.
 
 To accept this invitation, visit:
 <%= @accept_url %>
