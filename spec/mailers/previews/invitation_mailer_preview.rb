@@ -7,7 +7,7 @@ class InvitationMailerPreview < ActionMailer::Preview
       token: SecureRandom.urlsafe_base64(16),
       newsletter: Newsletter.first,
       invited_by: User.first,
-      expires_at: 14.days.from_now
+      created_at: Time.current
     )
 
     InvitationMailer.with(invitation: invitation).team_invitation

@@ -179,8 +179,7 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
         email: "teammate@example.com",
         role: :editor,
         token: SecureRandom.hex(8),
-        accepted_at: nil,
-        expires_at: 2.days.from_now
+        accepted_at: nil
       )
     end
 

@@ -12,8 +12,7 @@ RSpec.describe InvitationMailer, type: :mailer do
         invited_by: invited_by,
         email: "invitee@example.com",
         role: :editor,
-        accepted_at: nil,
-        expires_at: 2.days.from_now
+        accepted_at: nil
       )
     end
 

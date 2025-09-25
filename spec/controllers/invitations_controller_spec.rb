@@ -12,8 +12,7 @@ RSpec.describe InvitationsController, type: :controller do
       email: invited_user.email,
       role: :editor,
       token: SecureRandom.hex(8),
-      accepted_at: nil,
-      expires_at: 2.days.from_now
+      accepted_at: nil
     )
   end
 
@@ -62,7 +61,7 @@ RSpec.describe InvitationsController, type: :controller do
     end
 
     it "redirects when invitation is expired" do
-      invitation.update!(expires_at: 1.day.ago)
+      invitation.update!(created_at: Invitation::EXPIRATION_PERIOD.ago - 1.minute)
 
       get :show, params: { token: invitation.token }
 

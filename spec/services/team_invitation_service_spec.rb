@@ -58,7 +58,7 @@ RSpec.describe TeamInvitationService do
           email: email,
           role: :editor,
           accepted_at: nil,
-          expires_at: 1.day.from_now
+          created_at: 1.day.ago
         )
       end
 

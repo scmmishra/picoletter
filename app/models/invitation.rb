@@ -5,7 +5,6 @@
 #  id            :bigint           not null, primary key
 #  accepted_at   :datetime
 #  email         :string           not null
-#  expires_at    :datetime         not null
 #  role          :string           default("editor"), not null
 #  token         :string           not null
 #  created_at    :datetime         not null
@@ -40,10 +39,8 @@ class Invitation < ApplicationRecord
 
   before_validation :generate_token, on: :create
   before_validation :normalize_email
-  before_create :set_expiration
-
-  scope :pending, -> { where(accepted_at: nil).where("expires_at > ?", Time.current) }
-  scope :expired, -> { where(accepted_at: nil).where("expires_at <= ?", Time.current) }
+  scope :pending, -> { where(accepted_at: nil).where(created_at: EXPIRATION_PERIOD.ago..) }
+  scope :expired, -> { where(accepted_at: nil).where(created_at: ...EXPIRATION_PERIOD.ago) }
   scope :accepted, -> { where.not(accepted_at: nil) }
 
   def pending?
@@ -51,7 +48,7 @@ class Invitation < ApplicationRecord
   end
 
   def expired?
-    return false if expires_at.blank?
+    return false if created_at.blank?
 
     expires_at <= Time.current
   end
@@ -74,6 +71,12 @@ class Invitation < ApplicationRecord
     end
   end
 
+  def expires_at
+    return nil if created_at.blank?
+
+    created_at + EXPIRATION_PERIOD
+  end
+
   private
 
   def normalize_email
@@ -82,9 +85,5 @@ class Invitation < ApplicationRecord
 
   def generate_token
     self.token = SecureRandom.urlsafe_base64(16)
-  end
-
-  def set_expiration
-    self.expires_at ||= EXPIRATION_PERIOD.from_now
   end
 end

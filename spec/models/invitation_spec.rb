@@ -5,7 +5,6 @@
 #  id            :bigint           not null, primary key
 #  accepted_at   :datetime
 #  email         :string           not null
-#  expires_at    :datetime         not null
 #  role          :string           default("editor"), not null
 #  token         :string           not null
 #  created_at    :datetime         not null

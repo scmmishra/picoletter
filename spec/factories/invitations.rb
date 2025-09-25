@@ -5,7 +5,6 @@
 #  id            :bigint           not null, primary key
 #  accepted_at   :datetime
 #  email         :string           not null
-#  expires_at    :datetime         not null
 #  role          :string           default("editor"), not null
 #  token         :string           not null
 #  created_at    :datetime         not null
@@ -26,12 +25,19 @@
 #
 FactoryBot.define do
   factory :invitation do
-    newsletter { nil }
-    email { "MyString" }
-    role { "MyString" }
-    token { "MyString" }
-    invited_by { nil }
-    accepted_at { "2025-08-08 21:59:41" }
-    expires_at { "2025-08-08 21:59:41" }
+    association :newsletter
+    association :invited_by, factory: :user
+    email { "invitee@example.com" }
+    role { :editor }
+    token { SecureRandom.urlsafe_base64(16) }
+    accepted_at { nil }
+
+    trait :accepted do
+      accepted_at { Time.current }
+    end
+
+    trait :expired do
+      created_at { Invitation::EXPIRATION_PERIOD.ago - 1.minute }
+    end
   end
 end

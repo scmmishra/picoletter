@@ -61,12 +61,6 @@ class InvitationsController < ApplicationController
       return
     end
 
-    if @invitation.expires_at.blank?
-      Rails.logger.warn("Invitation #{@invitation.id} has no expiry timestamp and is being treated as invalid")
-      redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
-      return
-    end
-
     if @invitation.expired?
       redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
       return
