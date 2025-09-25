@@ -177,7 +177,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
     it 'handles invalid token' do
       get :unsubscribe, params: { slug: newsletter.slug, token: 'invalid-token' }
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it 'handles POST requests' do
@@ -204,7 +204,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
     it 'handles invalid token' do
       get :confirm_subscriber, params: { slug: newsletter.slug, token: 'invalid-token' }
 
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unprocessable_content)
     end
 
     it 'handles expired token' do

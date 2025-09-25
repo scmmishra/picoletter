@@ -24,7 +24,7 @@ class NewslettersController < ApplicationController
     if @newsletter.save
       redirect_to posts_url(@newsletter.slug)
     else
-      render :new, status: :unprocessable_entity, layout: "application", notice: @newsletter.errors.full_messages.to_sentence
+      render :new, status: :unprocessable_content, layout: "application", notice: @newsletter.errors.full_messages.to_sentence
     end
   end
 
