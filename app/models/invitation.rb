@@ -40,6 +40,7 @@ class Invitation < ApplicationRecord
   validates :token, presence: true, uniqueness: true
 
   before_validation :generate_token, on: :create
+  before_validation :normalize_email
   before_create :set_expiration
 
   scope :pending, -> { where(accepted_at: nil).where("expires_at > ?", Time.current) }
@@ -64,12 +65,21 @@ class Invitation < ApplicationRecord
     return false if accepted? || expired?
 
     transaction do
-      newsletter.memberships.create!(user: user, role: role)
+      membership = newsletter.memberships.find_or_create_by!(user: user) do |record|
+        record.role = role
+      end
+
+      membership.update!(role: role) if membership.role != role
+
       update!(accepted_at: Time.current)
     end
   end
 
   private
+
+  def normalize_email
+    self.email = email.to_s.strip.downcase if email.present?
+  end
 
   def generate_token
     self.token = SecureRandom.urlsafe_base64(16)
