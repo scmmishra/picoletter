@@ -5,7 +5,7 @@ class InvitationMailer < ApplicationMailer
     @invitation = params[:invitation]
     @newsletter = @invitation.newsletter
     @invited_by = @invitation.invited_by
-    @accept_url = accept_invitation_url(token: @invitation.token)
+    @accept_url = invitation_url_for(token: @invitation.token)
 
     mail(
       to: @invitation.email,
@@ -16,8 +16,8 @@ class InvitationMailer < ApplicationMailer
 
   private
 
-  def accept_invitation_url(token:)
-    Rails.application.routes.url_helpers.accept_invitation_url(
+  def invitation_url_for(token:)
+    Rails.application.routes.url_helpers.invitation_url(
       token: token,
       host: AppConfig.get("DEFAULT_HOST", "localhost:3000")
     )
