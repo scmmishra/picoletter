@@ -40,7 +40,7 @@ class Public::SubscribersController < ApplicationController
       render :unsubscribed
     end
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    render :invalid_unsubscribe, status: :unprocessable_entity
+    render :invalid_unsubscribe, status: :unprocessable_content
   end
 
   def confirm_subscriber
@@ -53,7 +53,7 @@ class Public::SubscribersController < ApplicationController
       redirect_to redirect_url, allow_other_host: true
     end
   rescue ActiveSupport::MessageVerifier::InvalidSignature
-    render :invalid_confirmation, status: :unprocessable_entity
+    render :invalid_confirmation, status: :unprocessable_content
   end
 
   private

@@ -22,6 +22,8 @@ module SettingsHelper
       newsletter.can_read?(:sending)
     when "design"
       newsletter.can_read?(:design)
+    when "team"
+      newsletter.can_read?(:team)
     when "usage & billing"
       newsletter.can_read?(:billing)
     when "embedding"
