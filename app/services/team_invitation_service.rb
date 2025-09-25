@@ -3,18 +3,19 @@ class TeamInvitationService
   class ExistingInvitationError < StandardError; end
   class ValidationError < StandardError; end
 
-  attr_reader :newsletter, :email, :role, :invited_by
+  attr_reader :newsletter, :email, :role, :invited_by, :original_email
 
   def initialize(newsletter:, email:, role:, invited_by:)
     @newsletter = newsletter
-    @email = email
+    @original_email = email
+    @email = normalize_email(email)
     @role = role
     @invited_by = invited_by
   end
 
   def call
-    raise AlreadyMemberError, "#{email} is already a member of this newsletter." if existing_member?
-    raise ExistingInvitationError, "An invitation has already been sent to #{email}." if existing_invitation?
+    raise AlreadyMemberError, "#{original_email} is already a member of this newsletter." if existing_member?
+    raise ExistingInvitationError, "An invitation has already been sent to #{original_email}." if existing_invitation?
 
     invitation = build_invitation
 
@@ -29,11 +30,17 @@ class TeamInvitationService
   private
 
   def existing_member?
-    newsletter.memberships.joins(:user).exists?(users: { email: email })
+    newsletter.memberships
+               .joins(:user)
+               .where("LOWER(users.email) = ?", email)
+               .exists?
   end
 
   def existing_invitation?
-    newsletter.invitations.pending.exists?(email: email)
+    newsletter.invitations
+               .pending
+               .where("LOWER(email) = ?", email)
+               .exists?
   end
 
   def build_invitation
@@ -47,5 +54,9 @@ class TeamInvitationService
 
   def send_invitation_email(invitation)
     InvitationMailer.with(invitation: invitation).team_invitation.deliver_now
+  end
+
+  def normalize_email(value)
+    value.to_s.strip.downcase
   end
 end
