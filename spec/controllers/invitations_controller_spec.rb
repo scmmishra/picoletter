@@ -91,7 +91,7 @@ RSpec.describe InvitationsController, type: :controller do
 
       post :accept, params: { token: invitation.token }
 
-      expect(response).to redirect_to(accept_invitation_path(token: invitation.token))
+      expect(response).to redirect_to(invitation_path(token: invitation.token))
       expect(flash[:alert]).to eq("Failed to accept invitation. Please try again.")
     end
   end

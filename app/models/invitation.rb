@@ -26,6 +26,7 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Invitation < ApplicationRecord
+  EXPIRATION_PERIOD = 14.days
   belongs_to :newsletter
   belongs_to :invited_by, class_name: "User"
 
@@ -50,6 +51,8 @@ class Invitation < ApplicationRecord
   end
 
   def expired?
+    return false if expires_at.blank?
+
     expires_at <= Time.current
   end
 
@@ -73,6 +76,6 @@ class Invitation < ApplicationRecord
   end
 
   def set_expiration
-    self.expires_at = 14.days.from_now
+    self.expires_at ||= EXPIRATION_PERIOD.from_now
   end
 end

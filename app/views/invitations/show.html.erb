@@ -130,7 +130,15 @@
              px-4 md:px-5 py-3 text-xs text-stone-500 gap-2 sm:gap-0"
     >
       <span>Postcard • Team Invitation</span>
-      <span>Valid <%= distance_of_time_in_words(@invitation.expires_at, Time.current) %></span>
+      <% remaining_time = @invitation.expires_at.present? ? distance_of_time_in_words(Time.current, @invitation.expires_at) : nil %>
+      <% fallback_time = distance_of_time_in_words(Time.current, Time.current + Invitation::EXPIRATION_PERIOD) %>
+      <span>
+        <% if remaining_time.present? %>
+          Valid <%= remaining_time %>
+        <% else %>
+          Valid for <%= fallback_time %>
+        <% end %>
+      </span>
     </div>
 
     <!-- Two even columns; divider is pseudo-element -->

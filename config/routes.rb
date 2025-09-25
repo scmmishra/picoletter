@@ -34,7 +34,7 @@ Rails.application.routes.draw do
   post "/resend_verification_email", to: "users#resend_verification_email"
 
   # Invitation routes
-  get "/invitations/:token", to: "invitations#show", as: :accept_invitation
+  get "/invitations/:token", to: "invitations#show", as: :invitation
   post "/invitations/:token", to: "invitations#accept", as: :accept_invitation_submit
   post "/invitations/:token/ignore", to: "invitations#ignore", as: :ignore_invitation
 

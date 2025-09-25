@@ -31,7 +31,7 @@ class User < ApplicationRecord
   has_many :memberships, dependent: :destroy
   has_many :newsletters, through: :memberships, source: :newsletter
   has_many :owned_newsletters, class_name: "Newsletter", foreign_key: :user_id
-  has_many :sent_invitations, class_name: "Invitation", foreign_key: :invited_by_id, dependent: :nullify
+  has_many :sent_invitations, class_name: "Invitation", foreign_key: :invited_by_id, dependent: :restrict_with_error
 
   has_many :subscribers, through: :newsletters
   has_many :posts, through: :newsletters

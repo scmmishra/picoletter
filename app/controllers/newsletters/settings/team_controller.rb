@@ -4,7 +4,7 @@ class Newsletters::Settings::TeamController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action -> { authorize_permission!(:team, :read) }, only: [ :index ]
-  before_action -> { authorize_permission!(:team, :write) }, only: [ :invite, :destroy, :update_role ]
+  before_action -> { authorize_permission!(:team, :write) }, only: [ :invite, :destroy, :update_role, :destroy_invitation ]
 
   def index
     @memberships = @newsletter.memberships.includes(:user)
@@ -76,7 +76,7 @@ class Newsletters::Settings::TeamController < ApplicationController
   private
 
   def set_newsletter
-    @newsletter = Newsletter.find_by(slug: params[:slug])
+    @newsletter = Current.user.newsletters.find_by!(slug: params[:slug].to_s.downcase)
   end
 
   def invitation_params

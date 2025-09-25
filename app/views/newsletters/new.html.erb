@@ -21,7 +21,7 @@
   </h1>
 
   <% if @pending_invitation.present? %>
-    <%= link_to accept_invitation_path(token: @pending_invitation.token), class: "block mt-6 group" do %>
+    <%= link_to invitation_path(token: @pending_invitation.token), class: "block mt-6 group" do %>
       <div class="flex items-start gap-3 p-4 transition bg-white rounded-xl border-neutral-200 shadow-with-inset">
         <div class="flex-1 text-left">
           <p class="text-xs font-semibold tracking-wide text-stone-500 uppercase">Pending invitation</p>

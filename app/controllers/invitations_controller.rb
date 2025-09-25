@@ -16,9 +16,14 @@ class InvitationsController < ApplicationController
       redirect_to posts_path(slug: @invitation.newsletter.slug),
                   notice: "You've successfully joined #{@invitation.newsletter.title}!"
     else
-      redirect_to accept_invitation_path(token: params[:token]),
+      redirect_to invitation_path(token: params[:token]),
                   alert: "Failed to accept invitation. Please try again."
     end
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotUnique => e
+    Rails.logger.warn("Invitation acceptance failed: #{e.class} - #{e.message}")
+
+    redirect_to invitation_path(token: params[:token]),
+                alert: "Failed to accept invitation. Please try again."
   end
 
   def ignore
@@ -53,6 +58,12 @@ class InvitationsController < ApplicationController
     if @invitation.accepted?
       redirect_to posts_path(slug: @invitation.newsletter.slug),
                   notice: "You've already accepted this invitation."
+      return
+    end
+
+    if @invitation.expires_at.blank?
+      Rails.logger.warn("Invitation #{@invitation.id} has no expiry timestamp and is being treated as invalid")
+      redirect_to_newsletter_home(notice: "This invitation is no longer valid.")
       return
     end
 

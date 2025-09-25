@@ -40,7 +40,8 @@ class TeamInvitationService
     newsletter.invitations.build(
       email: email,
       role: role,
-      invited_by: invited_by
+      invited_by: invited_by,
+      expires_at: Invitation::EXPIRATION_PERIOD.from_now
     )
   end
 
