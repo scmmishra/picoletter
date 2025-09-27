@@ -39,7 +39,7 @@ class TeamInvitationService
   def existing_invitation?
     newsletter.invitations
                .pending
-               .where("LOWER(email) = ?", email)
+               .for_email(email)
                .exists?
   end
 
