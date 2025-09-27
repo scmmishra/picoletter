@@ -26,5 +26,15 @@
 require 'rails_helper'
 
 RSpec.describe Invitation, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe ".for_email" do
+    let!(:invitation) { create(:invitation, email: "person@example.com") }
+
+    it "matches case-insensitively" do
+      expect(Invitation.for_email("Person@Example.com")).to include(invitation)
+    end
+
+    it "returns empty relation when email blank" do
+      expect(Invitation.for_email(nil)).to be_empty
+    end
+  end
 end

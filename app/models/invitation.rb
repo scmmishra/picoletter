@@ -42,6 +42,10 @@ class Invitation < ApplicationRecord
   scope :pending, -> { where(accepted_at: nil).where(created_at: EXPIRATION_PERIOD.ago..) }
   scope :expired, -> { where(accepted_at: nil).where(created_at: ...EXPIRATION_PERIOD.ago) }
   scope :accepted, -> { where.not(accepted_at: nil) }
+  scope :for_email, ->(value) do
+    normalized_email = value.to_s.strip.downcase
+    normalized_email.present? ? where("LOWER(email) = ?", normalized_email) : none
+  end
 
   def pending?
     accepted_at.nil? && !expired?
