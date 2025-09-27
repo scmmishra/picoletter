@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  helper_method :latest_pending_invitation_for_current_user
   def ensure_authenticated
     session = find_session_by_cookie
 
@@ -63,16 +64,24 @@ class ApplicationController < ActionController::Base
   end
 
   def pending_invitation_for_current_user
-    return if Current.user.blank?
-
-    scope = Invitation.pending
-                        .for_email(Current.user.email)
-                        .order(created_at: :desc)
+    scope = pending_invitations_for_current_user
 
     # Allow users to ignore specific invites without surfacing them again.
     ignored_tokens = Array(session[:ignored_invitation_tokens])
     scope = scope.where.not(token: ignored_tokens) if ignored_tokens.present?
 
     scope.first
+  end
+
+  def latest_pending_invitation_for_current_user
+    pending_invitations_for_current_user.first
+  end
+
+  def pending_invitations_for_current_user
+    return Invitation.none if Current.user.blank?
+
+    Invitation.pending
+               .for_email(Current.user.email)
+               .order(created_at: :desc)
   end
 end
