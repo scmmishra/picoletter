@@ -120,12 +120,13 @@ RSpec.describe InvitationsController, type: :controller do
   describe "invalid tokens" do
     before do
       sign_in(invited_user)
+      invitation
     end
 
     it "redirects when invitation is not found" do
       get :show, params: { token: "missing" }
 
-      expect(response).to redirect_to(new_newsletter_path)
+      expect(response).to redirect_to(invitation_path(token: invitation.token))
       expect(flash[:notice]).to eq("This invitation is no longer valid.")
     end
   end

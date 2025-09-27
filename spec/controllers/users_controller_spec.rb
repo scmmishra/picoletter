@@ -25,6 +25,14 @@ RSpec.describe UsersController, type: :controller do
         get :new
         expect(response).to redirect_to(new_newsletter_path)
       end
+
+      it "redirects to pending invitation when available" do
+        invitation = create(:invitation, email: user.email)
+
+        get :new
+
+        expect(response).to redirect_to(invitation_path(token: invitation.token))
+      end
     end
   end
 

@@ -41,15 +41,35 @@ class ApplicationController < ActionController::Base
   def redirect_to_newsletter_home(notice: nil)
     return verify_user unless Current.user.verified?
 
-    has_newsletter = Current.user.newsletters.count > 0
-    last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
+    newsletters = Current.user.newsletters
 
-    if has_newsletter && last_opened_newsletter.present?
-      redirect_to posts_path(last_opened_newsletter), notice: notice
-    elsif has_newsletter
-      redirect_to posts_path(Current.user.newsletters.first.slug), notice: notice
-    else
-      redirect_to new_newsletter_path, notice: notice
+    if newsletters.none?
+      # No personal newsletters yet; surface the most relevant invite if one exists.
+      invitation = pending_invitation_for_current_user
+      target_path = invitation ? invitation_path(token: invitation.token) : new_newsletter_path
+
+      redirect_to target_path, notice: notice
+      return
     end
+
+    # Prefer the last opened newsletter cache, otherwise fall back to the first one available.
+    last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
+    target_slug = last_opened_newsletter.presence || newsletters.first.slug
+
+    redirect_to posts_path(target_slug), notice: notice
+  end
+
+  def pending_invitation_for_current_user
+    return if Current.user.blank?
+
+    scope = Invitation.pending
+                        .for_email(Current.user.email)
+                        .order(created_at: :desc)
+
+    # Allow users to ignore specific invites without surfacing them again.
+    ignored_tokens = Array(session[:ignored_invitation_tokens])
+    scope = scope.where.not(token: ignored_tokens) if ignored_tokens.present?
+
+    scope.first
   end
 end
