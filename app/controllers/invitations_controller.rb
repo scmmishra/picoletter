@@ -7,8 +7,6 @@ class InvitationsController < ApplicationController
   before_action :redirect_if_already_member, only: [:show, :accept, :ignore]
 
   def show
-    session[:ignored_invitation_tokens] = session[:ignored_invitation_tokens].reject { |token| token == @invitation.token }
-
     @newsletter = @invitation.newsletter
     @invited_by = @invitation.invited_by
   end
