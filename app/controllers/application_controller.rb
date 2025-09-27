@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   include Pagy::Backend
+  helper_method :latest_pending_invitation_for_current_user
   def ensure_authenticated
     session = find_session_by_cookie
 
@@ -41,15 +42,46 @@ class ApplicationController < ActionController::Base
   def redirect_to_newsletter_home(notice: nil)
     return verify_user unless Current.user.verified?
 
-    has_newsletter = Current.user.newsletters.count > 0
-    last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
-
-    if has_newsletter && last_opened_newsletter.present?
-      redirect_to posts_path(last_opened_newsletter), notice: notice
-    elsif has_newsletter
-      redirect_to posts_path(Current.user.newsletters.first.slug), notice: notice
-    else
-      redirect_to new_newsletter_path, notice: notice
+    pending_invitation = pending_invitation_for_current_user
+    if pending_invitation.present?
+      # Visiting teams invites takes priority even if the user already operates other newsletters.
+      redirect_to invitation_path(token: pending_invitation.token), notice: notice
+      return
     end
+
+    newsletters = Current.user.newsletters
+
+    if newsletters.none?
+      redirect_to new_newsletter_path, notice: notice
+      return
+    end
+
+    # Prefer the last opened newsletter cache, otherwise fall back to the first one available.
+    last_opened_newsletter = Rails.cache.read("last_opened_newsletter_#{Current.user.id}")
+    target_slug = last_opened_newsletter.presence || newsletters.first.slug
+
+    redirect_to posts_path(target_slug), notice: notice
+  end
+
+  def pending_invitation_for_current_user
+    scope = pending_invitations_for_current_user
+
+    # Allow users to ignore specific invites without surfacing them again.
+    ignored_tokens = Array(session[:ignored_invitation_tokens])
+    scope = scope.where.not(token: ignored_tokens) if ignored_tokens.present?
+
+    scope.first
+  end
+
+  def latest_pending_invitation_for_current_user
+    pending_invitations_for_current_user.first
+  end
+
+  def pending_invitations_for_current_user
+    return Invitation.none if Current.user.blank?
+
+    Invitation.pending
+               .for_email(Current.user.email)
+               .order(created_at: :desc)
   end
 end

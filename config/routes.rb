@@ -33,6 +33,11 @@ Rails.application.routes.draw do
   get "/confirm", to: "users#confirm_verification", as: :confirm_verification
   post "/resend_verification_email", to: "users#resend_verification_email"
 
+  # Invitation routes
+  get "/invitations/:token", to: "invitations#show", as: :invitation
+  post "/invitations/:token", to: "invitations#accept", as: :accept_invitation_submit
+  post "/invitations/:token/ignore", to: "invitations#ignore", as: :ignore_invitation
+
   # Redirect old login
   get "/login", to: redirect("/auth/login")
 
@@ -89,6 +94,13 @@ Rails.application.routes.draw do
           get "billing/checkout", to: "billing#checkout", as: :billing_checkout
           get "billing/manage", to: "billing#manage", as: :billing_manage
         end
+
+        # Team management routes
+        get "team", to: "team#index", as: :team
+        post "team/invite", to: "team#invite", as: :team_invite
+        delete "team/members/:id", to: "team#destroy", as: :team_member
+        patch "team/members/:id", to: "team#update_role", as: :team_member_role
+        delete "team/invitations/:id", to: "team#destroy_invitation", as: :team_invitation
       end
 
       resources :labels, only: [ :index, :create, :destroy, :update ], path: "labels"

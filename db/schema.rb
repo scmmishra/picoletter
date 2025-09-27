@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_05_221309) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -117,6 +117,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_221309) do
     t.datetime "opened_at"
     t.index ["post_id"], name: "index_emails_on_post_id"
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
+  end
+
+  create_table "invitations", force: :cascade do |t|
+    t.bigint "newsletter_id", null: false
+    t.string "email", null: false
+    t.string "role", default: "editor", null: false
+    t.string "token", null: false
+    t.bigint "invited_by_id", null: false
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
+    t.index ["newsletter_id"], name: "index_invitations_on_newsletter_id"
+    t.index ["token"], name: "index_invitations_on_token", unique: true
   end
 
   create_table "labels", force: :cascade do |t|
@@ -247,6 +261,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_05_221309) do
   add_foreign_key "email_clicks", "emails"
   add_foreign_key "emails", "posts"
   add_foreign_key "emails", "subscribers"
+  add_foreign_key "invitations", "newsletters"
+  add_foreign_key "invitations", "users", column: "invited_by_id"
   add_foreign_key "labels", "newsletters"
   add_foreign_key "memberships", "newsletters"
   add_foreign_key "memberships", "users"

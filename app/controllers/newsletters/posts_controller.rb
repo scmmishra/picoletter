@@ -111,8 +111,10 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def set_newsletter
-    @newsletter = Current.user.newsletters.from_slug(params[:slug])
-    redirect_to newsletter_url(Current.user.newsletters.first.slug) unless @newsletter
+    @newsletter ||= Current.user.newsletters.from_slug(params[:slug])
+    return if @newsletter
+
+    redirect_to_newsletter_home(notice: "You do not have access to this newsletter.")
   end
 
   def set_post
