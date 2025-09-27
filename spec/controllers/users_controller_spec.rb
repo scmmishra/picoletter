@@ -33,6 +33,15 @@ RSpec.describe UsersController, type: :controller do
 
         expect(response).to redirect_to(invitation_path(token: invitation.token))
       end
+
+      it "redirects to pending invitation even when user has newsletters" do
+        create(:membership, user: user)
+        invitation = create(:invitation, email: user.email)
+
+        get :new
+
+        expect(response).to redirect_to(invitation_path(token: invitation.token))
+      end
     end
   end
 

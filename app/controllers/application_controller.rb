@@ -41,14 +41,17 @@ class ApplicationController < ActionController::Base
   def redirect_to_newsletter_home(notice: nil)
     return verify_user unless Current.user.verified?
 
+    pending_invitation = pending_invitation_for_current_user
+    if pending_invitation.present?
+      # Visiting teams invites takes priority even if the user already operates other newsletters.
+      redirect_to invitation_path(token: pending_invitation.token), notice: notice
+      return
+    end
+
     newsletters = Current.user.newsletters
 
     if newsletters.none?
-      # No personal newsletters yet; surface the most relevant invite if one exists.
-      invitation = pending_invitation_for_current_user
-      target_path = invitation ? invitation_path(token: invitation.token) : new_newsletter_path
-
-      redirect_to target_path, notice: notice
+      redirect_to new_newsletter_path, notice: notice
       return
     end
 
