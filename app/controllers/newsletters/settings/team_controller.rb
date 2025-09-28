@@ -97,6 +97,7 @@ class Newsletters::Settings::TeamController < ApplicationController
     unless @newsletter.can_access?(permission, access_type)
       redirect_to profile_settings_path(slug: @newsletter.slug),
                   alert: "You don't have permission to access that section."
+      return
     end
   end
 end
