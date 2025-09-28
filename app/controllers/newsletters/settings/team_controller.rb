@@ -34,6 +34,12 @@ class Newsletters::Settings::TeamController < ApplicationController
   def destroy
     @membership = @newsletter.memberships.find(params[:id])
 
+    if @membership.user_id == @newsletter.user_id
+      redirect_to settings_team_path(slug: @newsletter.slug),
+                  alert: "You cannot remove the owner's membership."
+      return
+    end
+
     if @membership.destroy
       redirect_to settings_team_path(slug: @newsletter.slug),
                   notice: "Team member removed successfully."
