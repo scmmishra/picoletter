@@ -180,6 +180,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
     t.boolean "enable_archive", default: true
     t.string "sending_name"
     t.jsonb "settings", default: {}, null: false
+    t.boolean "auto_reminder_enabled", default: true, null: false
     t.index ["settings"], name: "index_newsletters_on_settings", using: :gin
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"
@@ -234,6 +235,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
     t.text "notes"
     t.jsonb "analytics_data", default: {}
     t.string "labels", default: [], array: true
+    t.jsonb "additional_data", default: {}, null: false
+    t.index "((additional_data ->> 'last_reminder_sent_at'::text))", name: "index_subscribers_on_reminder_sent_at"
+    t.index ["additional_data"], name: "index_subscribers_on_additional_data", using: :gin
     t.index ["labels"], name: "index_subscribers_on_labels", using: :gin
     t.index ["newsletter_id"], name: "index_subscribers_on_newsletter_id"
     t.index ["status"], name: "index_subscribers_on_status"

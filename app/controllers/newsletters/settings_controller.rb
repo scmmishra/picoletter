@@ -87,7 +87,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def newsletter_params
-    params.require(:newsletter).permit(:title, :description, :timezone, :website, :enable_archive)
+    params.require(:newsletter).permit(:title, :description, :timezone, :website, :enable_archive, :auto_reminder_enabled)
   end
 
   def design_params
