@@ -14,6 +14,7 @@ class NewslettersController < ApplicationController
   def new
     @newsletter = Current.user.owned_newsletters.new
     @new_signup = Current.user.newsletters.count.zero?
+    @pending_invitation = latest_pending_invitation_for_current_user if @new_signup
 
     render :new, layout: "application"
   end

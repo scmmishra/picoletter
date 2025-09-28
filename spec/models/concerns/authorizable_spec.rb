@@ -74,4 +74,44 @@ RSpec.describe Authorizable, type: :concern do
       end
     end
   end
+
+  describe '#can_read?' do
+    context 'team section' do
+      it 'allows owner, administrator, and editor to read team settings' do
+        allow(Current).to receive(:user).and_return(owner)
+        expect(newsletter.can_read?(:team)).to be true
+
+        allow(Current).to receive(:user).and_return(admin_user)
+        expect(newsletter.can_read?(:team)).to be true
+
+        allow(Current).to receive(:user).and_return(editor_user)
+        expect(newsletter.can_read?(:team)).to be true
+      end
+
+      it 'denies non members' do
+        allow(Current).to receive(:user).and_return(non_member)
+        expect(newsletter.can_read?(:team)).to be false
+      end
+    end
+  end
+
+  describe '#can_write?' do
+    context 'team section' do
+      it 'allows owner and administrator to manage team settings' do
+        allow(Current).to receive(:user).and_return(owner)
+        expect(newsletter.can_write?(:team)).to be true
+
+        allow(Current).to receive(:user).and_return(admin_user)
+        expect(newsletter.can_write?(:team)).to be true
+      end
+
+      it 'denies editors and non members' do
+        allow(Current).to receive(:user).and_return(editor_user)
+        expect(newsletter.can_write?(:team)).to be false
+
+        allow(Current).to receive(:user).and_return(non_member)
+        expect(newsletter.can_write?(:team)).to be false
+      end
+    end
+  end
 end

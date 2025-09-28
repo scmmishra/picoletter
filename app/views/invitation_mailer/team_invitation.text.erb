@@ -1,0 +1,10 @@
+Hi there,
+
+<% role = @invitation.role.to_s %>
+<% article = role.present? && role[0].match?(/[aeiou]/i) ? 'an' : 'a' %>
+<%= @invited_by.name %> has invited you to join <%= @newsletter.title %> as <%= article %> <%= role %> on Picoletter.
+
+To accept this invitation, visit:
+<%= @accept_url %>
+
+This invitation will expire in 14 days. If you didn't expect this invitation, you can safely ignore this email.
