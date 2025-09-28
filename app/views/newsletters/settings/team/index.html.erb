@@ -84,19 +84,21 @@
           <tbody class="bg-white divide-y divide-stone-200">
             <% @invitations.each do |invitation| %>
               <tr>
-                <td class="px-4 py-3 whitespace-nowrap">
+                <td class="px-4 py-3">
                   <p class="text-sm font-medium text-stone-700"><%= invitation.email %></p>
-                  <p class="text-sm text-stone-500">
-                    Invited by <%= invitation.invited_by.name %> •
-                    <%= time_ago_in_words(invitation.created_at) %> ago
+                  <p class="text-sm font-sans text-stone-500">
+                    Invited by <%= invitation.invited_by.name %>
+                  </p>
+                  <p class="text-sm font-sans text-stone-500">
+                    <%= time_ago_in_words(invitation.created_at).capitalize %> ago
                   </p>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap">
+                <td class="px-4 py-3">
                   <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-amber-600 bg-amber-100 rounded">
-                    <%= invitation.role %> (Pending)
+                    <%= invitation.role %>
                   </span>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-right">
+                <td class="px-4 py-3 text-right">
                   <% if @newsletter.can_write?(:team) %>
                     <%= button_to settings_team_invitation_path(slug: @newsletter.slug, id: invitation.id),
                                 method: :delete,
