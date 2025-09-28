@@ -43,6 +43,7 @@ class Newsletter < ApplicationRecord
   include Embeddable
   include Statusable
   include Themeable
+  include Authorizable
 
   VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
 
@@ -58,16 +59,20 @@ class Newsletter < ApplicationRecord
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :labels, dependent: :destroy
+  has_many :memberships, dependent: :destroy
+  has_many :invitations, dependent: :destroy
 
   has_many :emails, through: :posts
+  has_many :members, through: :memberships, source: :user
 
   enum :status, { active: "active", archived: "archived" }
 
   validates :title, presence: true
-  validates :slug, presence: true, uniqueness: true
   validates :auto_reminder_enabled, inclusion: { in: [ true, false ] }
 
   scope :with_auto_reminders_enabled, -> { where(auto_reminder_enabled: true) }
+
+  after_create :create_owner_membership
 
   attr_accessor :dkim_tokens
 
@@ -100,5 +105,24 @@ class Newsletter < ApplicationRecord
 
   def full_sending_address
     "#{sending_name || title} <#{sending_from}>"
+  end
+
+  def owner?(user)
+    self.user_id == user.id
+  end
+
+  def member?(user)
+    memberships.exists?(user: user)
+  end
+
+  def user_role(user)
+    return :owner if owner?(user)
+    memberships.find_by(user: user)&.role&.to_sym
+  end
+
+  private
+
+  def create_owner_membership
+    memberships.create!(user: user, role: :administrator)
   end
 end

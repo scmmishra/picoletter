@@ -1,0 +1,275 @@
+<% content_for :head do %>
+  <style>
+    /* libre-barcode-128-text-latin-400-normal */
+    @font-face {
+      font-family: 'Libre Barcode 128 Text';
+      font-style: normal;
+      font-display: fallback;
+      font-weight: 400;
+      src: url(https://cdn.jsdelivr.net/fontsource/fonts/libre-barcode-128-text@latest/latin-400-normal.woff2) format('woff2'), url(https://cdn.jsdelivr.net/fontsource/fonts/libre-barcode-128-text@latest/latin-400-normal.woff) format('woff');
+      unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+    }
+    /* Paper texture */
+    .paper {
+      background-image: radial-gradient(
+          rgba(0, 0, 0, 0.035) 1px,
+          transparent 1px
+        ),
+        radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+      background-position: 0 0, 10px 10px;
+      background-size: 20px 20px, 20px 20px;
+    }
+    /* Subtle airmail border */
+    .airmail::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      background: repeating-linear-gradient(
+        45deg,
+        rgba(87, 83, 78, 0.16) 0 14px,
+        rgba(214, 211, 209, 0.32) 14px 28px
+      );
+      border-radius: 22px;
+      z-index: -1;
+    }
+    /* Center divider drawn as pseudo-element (no extra grid column) */
+    .postcard {
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .postcard::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-0.5px);
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          rgba(168, 162, 158, 0.6),
+          rgba(214, 211, 209, 0.9),
+          rgba(168, 162, 158, 0.6)
+        );
+      }
+    }
+
+    .perforated {
+      -webkit-mask: radial-gradient(circle 6px, #000 98%, transparent) -6px
+            -6px/12px 12px repeat,
+        linear-gradient(#000, #000);
+      mask: radial-gradient(circle 6px, #000 98%, transparent) -6px -6px/12px
+          12px repeat,
+        linear-gradient(#000, #000);
+      -webkit-mask-composite: source-in;
+      mask-composite: intersect;
+    }
+
+    @keyframes postcard-float-up {
+      0% {
+        opacity: 0;
+        transform: translateY(26px) scale(0.85);
+        filter: blur(6px);
+      }
+      70% {
+        opacity: 1;
+        transform: translateY(-10px) scale(0.998);
+        filter: blur(1);
+      }
+      85% {
+        transform: translateY(-10px) scale(1);
+      }
+      95% {
+        transform: translateY(-10px) scale(1);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    .postcard-float-wrapper {
+      animation: postcard-float-up 800ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform-origin: center;
+      will-change: transform, opacity, filter;
+      display: inline-block;
+      width: 100%;
+    }
+
+    @keyframes postcard-link-reveal {
+      from {
+        opacity: 0;
+        transform: translateY(-6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .postcard-ignore-link {
+      opacity: 0;
+      animation: postcard-link-reveal 240ms ease forwards;
+      animation-delay: 1000ms;
+      will-change: opacity, transform;
+    }
+  </style>
+<% end %>
+
+<main class="mx-auto flex min-h-screen flex-col items-center justify-center p-4 md:p-6 gap-4">
+  <div class="postcard-float-wrapper w-full max-w-3xl">
+  <section
+    class="airmail paper relative w-full rounded-2xl border
+           border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200"
+    aria-label="Postcard invitation"
+  >
+    <!-- Header strip -->
+    <div
+      class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-stone-200
+             px-4 md:px-5 py-3 text-xs text-stone-500 gap-2 sm:gap-0"
+    >
+      <span>Postcard • Team Invitation</span>
+      <% remaining_time = distance_of_time_in_words(Time.current, @invitation.expires_at) %>
+      <span>
+        Valid for <%= remaining_time %>
+      </span>
+    </div>
+
+    <!-- Two even columns; divider is pseudo-element -->
+    <div class="postcard grid grid-cols-1 md:grid-cols-2">
+      <!-- LEFT: Message -->
+      <div class="p-4 md:p-6 lg:p-8">
+        <div class="mb-4 gap-3 flex flex-col">
+          <div
+            class="grid h-10 w-10 place-items-center rounded-lg bg-stone-200
+                   text-stone-700 shrink-0"
+            aria-hidden="true"
+          >
+            <%= lucide_icon("mail", class: "size-4 text-stone-600") %>
+          </div>
+          <div class="min-w-0 flex-1">
+            <h1 class="text-lg sm:text-xl font-semibold">Team Invitation</h1>
+            <p class="text-sm text-stone-600 break-words">
+              From: <%= @invited_by.name %> • <%= @newsletter.title %>
+            </p>
+          </div>
+        </div>
+
+        <p
+          class="mb-4 font-medium leading-7 text-stone-800 text-base"
+        >
+          Hi there! We'd love you on
+          <span class="underline decoration-stone-400/60"><%= @newsletter.title %></span>.
+          <% if @newsletter.description.present? %>
+            <%= @newsletter.description %>
+          <% else %>
+            Ready to join our team?
+          <% end %>
+        </p>
+
+
+        <%= button_to accept_invitation_submit_path(token: params[:token]),
+                      method: :post,
+                      class: "btn btn-primary w-full mt-8" do %>
+          Accept & Join
+        <% end %>
+
+      </div>
+
+      <!-- RIGHT: Address / stamp -->
+      <div class="relative border-t border-stone-200 md:border-t-0">
+        <!-- Stamp + cancellation -->
+        <div class="absolute right-6 top-6">
+          <div
+            class="perforated relative h-16 w-14 -rotate-3 rounded-[8px] bg-gradient-to-br from-green-700/40
+                   to-green-100 p-1 shadow-sm"
+            aria-hidden="true"
+          >
+          </div>
+
+          <div
+            class="pointer-events-none absolute -left-12 -top-3 rotate-6
+                   rounded-full border-[3px] border-double border-red-600/80 px-2 py-1
+                   text-[10px] font-semibold uppercase tracking-widest
+                   text-red-600/70"
+            aria-hidden="true"
+          >
+            Invited
+          </div>
+
+          <svg
+            class="pointer-events-none absolute -left-16 top-9 h-10 w-28
+                   rotate-6 text-blue-500"
+            viewBox="0 0 140 40"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M2 10c20 10 40-10 60 0s40-10 60 0"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <path
+              d="M2 20c20 10 40-10 60 0s40-10 60 0"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+            <path
+              d="M2 30c20 10 40-10 60 0s40-10 60 0"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linecap="round"
+            />
+          </svg>
+        </div>
+
+        <!-- Address lines -->
+        <div class="p-4 md:p-6 lg:p-8 flex flex-col justify-between h-full">
+          <section>
+          <p class="text-xs uppercase tracking-widest text-stone-500">To</p>
+          <div class="mt-3 max-w-[18rem] text-base">
+            <div class="text-stone-800 font-medium"><%= Current.user.name %></div>
+            <div class="text-stone-600"><%= @invitation.email %></div>
+            <div class="text-stone-600"><%= @newsletter.title %> Team Member, Picoletter</div>
+          </div>
+
+          <div class="mt-6 space-y-4">
+            <div class="h-px w-full bg-stone-200"></div>
+            <div class="h-px w-full bg-stone-200"></div>
+            <div class="h-px w-full bg-stone-200"></div>
+            <div class="h-px w-full bg-stone-200"></div>
+            <div class="h-px w-full bg-stone-200"></div>
+            <div class="h-px w-full bg-stone-200"></div>
+          </div>
+          </section>
+
+          <div class="mt-8 text-right pointer-events-none">
+            <div class="text-stone-900/10 select-none pointer-events-none" style="font-family: 'Libre Barcode 128 Text'; font-size: 28px;">
+              <%= @invitation.token %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="flex flex-wrap items-center justify-between gap-3 border-t
+             border-stone-200 px-4 md:px-6 py-4 text-xs text-stone-500 lg:px-8"
+    >
+      <p>Posted from: <%= @invited_by.name %></p>
+      <p class="text-stone-400">
+        If you didn't expect this invitation, you can safely ignore it.
+      </p>
+    </div>
+  </section>
+  </div>
+  <div class="postcard-ignore-link text-center text-xs w-full max-w-3xl mt-8">
+    <%= link_to "Ignore for now", ignore_invitation_path(token: params[:token]),
+                 data: { turbo_method: :post },
+                 class: "text-stone-500 hover:text-stone-700 underline decoration-dotted" %>
+  </div>
+</main>

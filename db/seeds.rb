@@ -10,6 +10,12 @@ users = [
     email: "neo@example.com",
     password: "admin@123456",
     active: true
+  },
+  {
+    name: "Morpheus",
+    email: "morpheus@example.com",
+    password: "admin@123456",
+    active: true
   }
 ]
 
@@ -35,18 +41,43 @@ end
 puts "\n-- Creating newsletters"
 User.find_each do |user|
   # Tech Newsletter
-  tech_newsletter = user.newsletters.create!(
+  tech_newsletter = Newsletter.create!(
+    user: user,
     title: "#{user.name}'s Tech Insider",
     description: "Deep dives into technology, programming, and software architecture."
   )
   puts "   Created newsletter: #{tech_newsletter.title}"
 
   # Personal Newsletter
-  personal_newsletter = user.newsletters.create!(
+  personal_newsletter = Newsletter.create!(
+    user: user,
     title: "#{user.name}'s Journal",
     description: "Personal thoughts, book reviews, and life updates."
   )
   puts "   Created newsletter: #{personal_newsletter.title}"
+end
+
+# Create team memberships
+puts "\n-- Creating team memberships"
+morpheus = User.find_by(email: "morpheus@example.com")
+neo = User.find_by(email: "neo@example.com")
+
+if morpheus && neo
+  # Create Morpheus's special newsletter
+  matrix_newsletter = Newsletter.create!(
+    user: morpheus,
+    title: "The Matrix Weekly",
+    description: "Red pill insights into reality, technology, and the nature of existence."
+  )
+  puts "   Created newsletter: #{matrix_newsletter.title}"
+
+  # Add Neo as an editor to Morpheus's newsletter
+  Membership.create!(
+    user: neo,
+    newsletter: matrix_newsletter,
+    role: :editor
+  )
+  puts "   Added #{neo.name} as editor to #{matrix_newsletter.title}"
 end
 
 # Create rich label structure for each newsletter

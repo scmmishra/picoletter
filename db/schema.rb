@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_15_143524) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -119,6 +119,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_143524) do
     t.index ["subscriber_id"], name: "index_emails_on_subscriber_id"
   end
 
+  create_table "invitations", force: :cascade do |t|
+    t.bigint "newsletter_id", null: false
+    t.string "email", null: false
+    t.string "role", default: "editor", null: false
+    t.string "token", null: false
+    t.bigint "invited_by_id", null: false
+    t.datetime "accepted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["invited_by_id"], name: "index_invitations_on_invited_by_id"
+    t.index ["newsletter_id"], name: "index_invitations_on_newsletter_id"
+    t.index ["token"], name: "index_invitations_on_token", unique: true
+  end
+
   create_table "labels", force: :cascade do |t|
     t.string "name", null: false
     t.text "description"
@@ -128,6 +142,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_143524) do
     t.datetime "updated_at", null: false
     t.index ["newsletter_id", "name"], name: "index_labels_on_newsletter_id_and_name", unique: true
     t.index ["newsletter_id"], name: "index_labels_on_newsletter_id"
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "newsletter_id", null: false
+    t.string "role", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["newsletter_id"], name: "index_memberships_on_newsletter_id"
+    t.index ["role"], name: "index_memberships_on_role"
+    t.index ["user_id", "newsletter_id"], name: "index_memberships_on_user_id_and_newsletter_id", unique: true
+    t.index ["user_id"], name: "index_memberships_on_user_id"
   end
 
   create_table "newsletters", force: :cascade do |t|
@@ -239,7 +265,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_15_143524) do
   add_foreign_key "email_clicks", "emails"
   add_foreign_key "emails", "posts"
   add_foreign_key "emails", "subscribers"
+  add_foreign_key "invitations", "newsletters"
+  add_foreign_key "invitations", "users", column: "invited_by_id"
   add_foreign_key "labels", "newsletters"
+  add_foreign_key "memberships", "newsletters"
+  add_foreign_key "memberships", "users"
   add_foreign_key "newsletters", "users"
   add_foreign_key "posts", "newsletters"
   add_foreign_key "sessions", "users"

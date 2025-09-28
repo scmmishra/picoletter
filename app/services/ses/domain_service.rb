@@ -66,7 +66,7 @@ class SES::DomainService < BaseAwsService
   private
 
   def generate_key_pair
-    key = OpenSSL::PKey::RSA.new(2048)
+    key = OpenSSL::PKey::RSA.new(1024)
 
     private_key = key.to_pem
     public_key = key.public_key.to_pem

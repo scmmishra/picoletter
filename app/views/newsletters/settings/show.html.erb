@@ -1,6 +1,6 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<%= labeled_form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+<%= labeled_form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch, permission: :general do |form| %>
   <div class="max-w-lg space-y-4">
     <%= form.text_field :title,
                     required: true,

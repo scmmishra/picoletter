@@ -1,66 +1,13 @@
 <section class="flex items-center mb-4 justify-between">
   <div class="flex items-center gap-6 text-xl font-medium text-stone-400">
-    <%= link_to "General",
-    settings_path(slug: @newsletter.slug),
-    class:
-      (
-        if current_page?(settings_path(@newsletter.slug))
-          "text-stone-800"
-        else
-          "hover:text-stone-500"
-        end
-      ) %>
-    <%= link_to "Profile",
-    profile_settings_path(slug: @newsletter.slug),
-    class:
-      (
-        if current_page?(profile_settings_path(@newsletter.slug))
-          "text-stone-800"
-        else
-          "hover:text-stone-500"
-        end
-      ) %>
-    <%= link_to "Sending Domain",
-    sending_settings_path(slug: @newsletter.slug),
-    class:
-      (
-        if current_page?(sending_settings_path(@newsletter.slug))
-          "text-stone-800"
-        else
-          "hover:text-stone-500"
-        end
-      ) %>
-    <%= link_to "Design",
-    design_settings_path(slug: @newsletter.slug),
-    class:
-      (
-        if current_page?(design_settings_path(@newsletter.slug))
-          "text-stone-800"
-        else
-          "hover:text-stone-500"
-        end
-      ) %>
-    <%= link_to "Embedding",
-    embedding_settings_path(slug: @newsletter.slug),
-    class:
-      (
-        if current_page?(embedding_settings_path(@newsletter.slug))
-          "text-stone-800"
-        else
-          "hover:text-stone-500"
-        end
-      ) %>
+    <%= settings_nav_link "General", settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Profile", profile_settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Sending Domain", sending_settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Design", design_settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Embedding", embedding_settings_path(slug: @newsletter.slug), @newsletter %>
+    <%= settings_nav_link "Team", settings_team_path(slug: @newsletter.slug), @newsletter %>
     <% if AppConfig.get("ENABLE_BILLING", false) %>
-      <%= link_to "Usage & Billing",
-      settings_billing_path(slug: @newsletter.slug),
-      class:
-        (
-          if current_page?(settings_billing_path(@newsletter.slug))
-            "text-stone-800"
-          else
-            "hover:text-stone-500"
-          end
-        ) %>
+      <%= settings_nav_link "Usage & Billing", settings_billing_path(slug: @newsletter.slug), @newsletter %>
     <% end %>
   </div>
 </section>
