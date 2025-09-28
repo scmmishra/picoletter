@@ -86,10 +86,10 @@
               <tr>
                 <td class="px-4 py-3">
                   <p class="text-sm font-medium text-stone-700"><%= invitation.email %></p>
-                  <p class="text-xs font-sans text-stone-500">
+                  <p class="text-sm font-sans text-stone-500">
                     Invited by <%= invitation.invited_by.name %>
                   </p>
-                  <p class="text-xs font-sans text-stone-500">
+                  <p class="text-sm font-sans text-stone-500">
                     <%= time_ago_in_words(invitation.created_at).capitalize %> ago
                   </p>
                 </td>
