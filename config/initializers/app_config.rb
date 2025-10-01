@@ -3,6 +3,10 @@ class AppConfig
     AppConfig.get("ENABLE_BILLING", false)
   end
 
+  def self.platform_publishing_domain
+    AppConfig.get("PLATFORM_PUBLISHING_DOMAIN", "picoletter.me")
+  end
+
   class << self
     def get!(env_key)
       value = ENV[env_key]
