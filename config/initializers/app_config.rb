@@ -4,7 +4,7 @@ class AppConfig
   end
 
   def self.platform_publishing_domain
-    AppConfig.get("PLATFORM_PUBLISHING_DOMAIN", "picoletter.me")
+    AppConfig.get("PLATFORM_PUBLISHING_DOMAIN", "picoletter.page")
   end
 
   class << self
