@@ -5,8 +5,6 @@
 #  id              :bigint           not null, primary key
 #  description     :text
 #  dns_records     :json
-#  domain          :string
-#  domain_verified :boolean          default(FALSE)
 #  email_css       :text
 #  email_footer    :text             default("")
 #  enable_archive  :boolean          default(TRUE)
@@ -60,6 +58,7 @@ class Newsletter < ApplicationRecord
   has_many :labels, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :invitations, dependent: :destroy
+  has_one :publishing_domain, class_name: "PublishingDomain", dependent: :destroy
 
   has_many :emails, through: :posts
   has_many :members, through: :memberships, source: :user
@@ -101,6 +100,10 @@ class Newsletter < ApplicationRecord
 
   def full_sending_address
     "#{sending_name || title} <#{sending_from}>"
+  end
+
+  def platform_hostname
+    PublishingDomain.platform_hostname_for(self)
   end
 
   def owner?(user)

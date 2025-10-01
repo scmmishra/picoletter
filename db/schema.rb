@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
+ActiveRecord::Schema[8.0].define(version: 2025_08_08_163001) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -171,10 +171,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
     t.string "primary_color", default: "#09090b"
     t.string "font_preference", default: "sans-serif"
     t.text "email_footer", default: ""
-    t.string "domain"
     t.string "sending_address"
     t.string "reply_to"
-    t.boolean "domain_verified", default: false
     t.string "domain_id"
     t.json "dns_records"
     t.boolean "enable_archive", default: true
@@ -198,6 +196,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_08_08_162941) do
     t.index ["newsletter_id", "slug"], name: "index_posts_on_newsletter_id_and_slug", unique: true
     t.index ["newsletter_id"], name: "index_posts_on_newsletter_id"
     t.index ["slug"], name: "index_posts_on_slug"
+  end
+
+  create_table "publishing_domains", force: :cascade do |t|
+    t.bigint "newsletter_id", null: false
+    t.string "hostname", null: false
+    t.string "domain_type", default: "custom_cname", null: false
+    t.string "status", default: "pending", null: false
+    t.string "cloudflare_id"
+    t.string "cloudflare_ssl_status"
+    t.string "verification_method"
+    t.string "verification_http_path"
+    t.text "verification_http_body"
+    t.datetime "verified_at"
+    t.text "last_error"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["hostname"], name: "index_publishing_domains_on_hostname", unique: true
+    t.index ["newsletter_id"], name: "index_publishing_domains_on_newsletter_id", unique: true
   end
 
   create_table "sessions", force: :cascade do |t|
