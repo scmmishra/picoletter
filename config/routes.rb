@@ -49,6 +49,9 @@ Rails.application.routes.draw do
   # Health check
   get "healthz" => "rails/health#show", as: :rails_health_check
 
+  # Cloudflare HTTP verification endpoint
+  get "/.well-known/cf-custom-hostname-challenge/:token", to: "cloudflare_verification#show", as: :cloudflare_http_verification
+
   # Password token-based routes
   resources :passwords, param: :token
 
