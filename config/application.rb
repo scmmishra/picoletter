@@ -1,6 +1,7 @@
 require_relative "boot"
 
 require "rails/all"
+require "uri"
 
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
@@ -37,7 +38,17 @@ module PicoLetter
     # config.eager_load_paths << Rails.root.join("extras")
 
     # pico config
+    # TODO: this is not a good pattern, we need to shift to using AppConfig outside this
     config.host = ENV.fetch("PICO_HOST", "http://localhost:3000")
+
+    primary_uri = URI(config.host)
+    config.hosts = [primary_uri.host]
+    config.hosts << "#{primary_uri.host}:#{primary_uri.port}" if primary_uri.port
+
+    if (publishing_domain = AppConfig.get("PLATFORM_PUBLISHING_DOMAIN", nil))
+      config.hosts << "*.#{publishing_domain}"
+    end
+
     config.support_email = ENV.fetch("PICO_SUPPORT_EMAIL", "support@picoletter.com")
     if ENV.fetch("BETTERSTACK__LOGS_TOKEN", nil)
       config.logger = Logtail::Logger.create_default_logger(ENV.fetch("BETTERSTACK__LOGS_TOKEN", nil))
