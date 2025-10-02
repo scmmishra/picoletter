@@ -1,7 +1,7 @@
 <% autofocus = local_assigns.fetch(:autofocus, false) %>
 
 <div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">
-  <%= labeled_form_with url: subscribe_path, class: "flex flex-col gap-4" do |form| %>
+  <%= labeled_form_with url: public_subscribe_path, class: "flex flex-col gap-4" do |form| %>
     <%= form.email_field :email,
                      required: true,
                      class: "input w-full",

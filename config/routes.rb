@@ -55,6 +55,19 @@ Rails.application.routes.draw do
   # Password token-based routes
   resources :passwords, param: :token
 
+  constraints PublicHostConstraint.new do
+    scope module: "public", as: :hosted_public do
+      get "/", to: "newsletters#show", as: :newsletter
+      get "/posts", to: "newsletters#all_posts", as: :newsletter_all_posts
+      get "/posts/:post_slug", to: "newsletters#show_post", as: :newsletter_post
+      match "/subscribe", to: "subscribers#public_subscribe", as: :subscribe, via: [ :get, :post ]
+      match "/embed/subscribe", to: "subscribers#embed_subscribe", as: :embed_subscribe, via: :post
+      match "/unsubscribe", to: "subscribers#unsubscribe", as: :unsubscribe, via: [ :get, :post ]
+      get "/confirm", to: "subscribers#confirm_subscriber", as: :confirm
+      get "/almost-there", to: "subscribers#almost_there", as: :almost_there
+    end
+  end
+
   # Public newsletter routes
   scope path: ":slug", module: "public" do
     match "unsubscribe", to: "subscribers#unsubscribe", as: :unsubscribe, via: [ :get, :post ]

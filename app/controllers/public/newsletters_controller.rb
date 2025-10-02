@@ -1,8 +1,8 @@
 class Public::NewslettersController < ApplicationController
   include ActiveHashcash
+  include PublicHostResolver
 
   layout "public"
-  before_action :set_newsletter
   before_action :set_newsletter_layout
   before_action :set_post, only: [ :show_post ]
   before_action :ensure_archive_enabled, only: [ :show_post, :all_posts ]
@@ -22,19 +22,13 @@ class Public::NewslettersController < ApplicationController
   private
 
   def ensure_archive_enabled
-    redirect_to newsletter_url(@newsletter.slug) unless @newsletter.enable_archive
+    redirect_to public_newsletter_url unless @newsletter.enable_archive
   end
 
   def set_post
     @post = @newsletter.posts.published.from_slug(params[:post_slug])
 
     head :not_found unless @post
-  end
-
-  def set_newsletter
-    @newsletter = Newsletter.from_slug(params[:slug])
-
-    head :not_found unless @newsletter
   end
 
   def set_newsletter_layout

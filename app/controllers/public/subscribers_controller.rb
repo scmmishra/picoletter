@@ -1,8 +1,7 @@
 class Public::SubscribersController < ApplicationController
   include ActiveHashcash
+  include PublicHostResolver
   layout "application"
-
-  before_action :set_newsletter
 
   before_action :check_hashcash, only: :public_subscribe unless Rails.env.test?
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
@@ -87,15 +86,15 @@ class Public::SubscribersController < ApplicationController
       if success_url.present?
         redirect_to success_url, allow_other_host: true
       else
-        redirect_to almost_there_path(@newsletter.slug, email: params[:email])
+        redirect_to public_almost_there_path(email: params[:email])
       end
     else
-      redirect_to newsletter_path(@newsletter.slug), notice: "Our system detected some issues with your request. Please try again."
+      redirect_to public_newsletter_path, notice: "Our system detected some issues with your request. Please try again."
     end
   rescue => e
     Rails.logger.error(e)
     RorVsWild.record_error(e, context: { email: params[:email], name: params[:name], source: source })
-    redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
+    redirect_to public_newsletter_path, notice: "Seems like you entered an invalid email. Please try again."
   end
 
   def detect_device_type(browser)
@@ -112,8 +111,4 @@ class Public::SubscribersController < ApplicationController
     end
   end
 
-  def set_newsletter
-    @newsletter = Newsletter.from_slug(params[:slug])
-    head :not_found unless @newsletter
-  end
 end
