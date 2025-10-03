@@ -19,7 +19,7 @@ class InvitationMailer < ApplicationMailer
   def invitation_url_for(token:)
     Rails.application.routes.url_helpers.invitation_url(
       token: token,
-      host: AppConfig.get("DEFAULT_HOST", "localhost:3000")
+      host: AppConfig.get("PICO_HOST", "localhost:3000")
     )
   end
 end
