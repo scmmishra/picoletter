@@ -44,8 +44,7 @@ module PicoLetter
     primary_uri = URI(config.host)
     config.hosts = [primary_uri.host]
     config.hosts << "#{primary_uri.host}:#{primary_uri.port}" if primary_uri.port
-
-    if (publishing_domain = AppConfig.get("PLATFORM_PUBLISHING_DOMAIN", nil))
+    if (publishing_domain = ENV.fetch("PLATFORM_PUBLISHING_DOMAIN", nil))
       config.hosts << "*.#{publishing_domain}"
     end
 
