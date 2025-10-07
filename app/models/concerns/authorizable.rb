@@ -15,8 +15,8 @@ module Authorizable
       write: [ :owner, :administrator ]
     },
     billing: {
-      read: [ :owner, :administrator ],
-      write: [ :owner, :administrator ]
+      read: [ :owner ],
+      write: [ :owner ]
     },
     profile: {
       read: [ :owner, :administrator, :editor ],
