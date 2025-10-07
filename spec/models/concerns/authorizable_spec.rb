@@ -30,11 +30,11 @@ RSpec.describe Authorizable, type: :concern do
     context 'for administrator' do
       before { allow(Current).to receive(:user).and_return(admin_user) }
 
-      it 'can access all sections' do
+      it 'can access all sections except billing' do
         expect(newsletter.can_access?(:general)).to be true
         expect(newsletter.can_access?(:design)).to be true
         expect(newsletter.can_access?(:sending)).to be true
-        expect(newsletter.can_access?(:billing)).to be true
+        expect(newsletter.can_access?(:billing)).to be false
         expect(newsletter.can_access?(:profile)).to be true
         expect(newsletter.can_access?(:embedding)).to be true
       end
