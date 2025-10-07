@@ -1,6 +1,5 @@
-class Public::SubscribersController < ApplicationController
+class Public::SubscribersController < Public::BaseController
   include ActiveHashcash
-  include PublicHostResolver
   layout "application"
 
   before_action :check_hashcash, only: :public_subscribe unless Rails.env.test?

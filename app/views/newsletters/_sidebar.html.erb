@@ -48,7 +48,7 @@
       <%= render "newsletters/partials/billing_banner" %>
       <ul class="grid gap-1">
         <%= render "newsletters/partials/sidebar_link",
-        url: newsletter_path(slug: @newsletter.slug),
+        url: public_newsletter_home_url(@newsletter),
         icon: "arrow-up-right",
         is_active: false,
         target: "_blank",

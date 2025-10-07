@@ -28,7 +28,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
           labels: [ 'label1', 'label2' ]
         }
 
-        expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+        expect(response).to redirect_to(public_almost_there_path(email: 'test@example.com'))
       end
 
       it 'creates a subscriber without labels' do
@@ -41,7 +41,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
           name: 'Test User'
         }
 
-        expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+        expect(response).to redirect_to(public_almost_there_path(email: 'test@example.com'))
       end
     end
 
@@ -94,7 +94,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
         labels: [ 'label1', 'label2' ]
       }
 
-      expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+      expect(response).to redirect_to(public_almost_there_path(email: 'test@example.com'))
     end
 
     it 'creates a subscriber with UTM parameters' do
@@ -120,7 +120,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
         name: 'Test User'
       }.merge(utm_params)
 
-      expect(response).to redirect_to(almost_there_path(newsletter.slug, email: 'test@example.com'))
+      expect(response).to redirect_to(public_almost_there_path(email: 'test@example.com'))
     end
 
     it 'handles invalid emails' do
@@ -129,7 +129,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
 
       post :public_subscribe, params: { slug: newsletter.slug, email: 'invalid' }
 
-      expect(response).to redirect_to(newsletter_path(newsletter.slug))
+      expect(response).to redirect_to(public_newsletter_path)
       expect(flash[:notice]).to match(/invalid email/)
     end
   end

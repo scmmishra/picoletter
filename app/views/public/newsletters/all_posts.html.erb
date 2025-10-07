@@ -5,9 +5,11 @@
         text-stone-500 font-sans uppercase tracking-wider font-semibold text-xs
       "
     >
-      <%= link_to "#{@newsletter.title} Home",
-      :newsletter,
-      class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors" %>
+      <%= link_to(
+        "#{@newsletter.title} Home",
+        public_newsletter_path,
+        class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors"
+      ) %>
     </div>
     <h1 class="text-2xl mt-2">
       All posts
@@ -15,7 +17,7 @@
   </section>
   <section class="space-y-2">
     <% @posts.each do |post| %>
-      <%= link_to newsletter_post_path(post_slug: post.slug, slug: @newsletter.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
+      <%= link_to public_newsletter_post_path(post_slug: post.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
         <h2 class="text-lg"><%= post.title %></h2>
         <p class="text-stone-500">
           <%= truncate(post.content.to_plain_text, length: 100) %>

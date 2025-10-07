@@ -1,6 +1,5 @@
-class Public::NewslettersController < ApplicationController
+class Public::NewslettersController < Public::BaseController
   include ActiveHashcash
-  include PublicHostResolver
 
   layout "public"
   before_action :set_newsletter_layout

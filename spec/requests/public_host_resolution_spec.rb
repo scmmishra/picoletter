@@ -7,6 +7,14 @@ RSpec.describe "Public host resolution", type: :request do
 
   describe "platform subdomains" do
     let!(:newsletter) { create(:newsletter, title: "Demo", slug: "demo") }
+    let!(:post) do
+      create(
+        :post,
+        newsletter: newsletter,
+        status: "published",
+        published_at: Time.current
+      ).tap { |post| post.update!(content: "<div>Test body</div>") }
+    end
 
     it "renders the newsletter homepage when accessed via the platform hostname" do
       host! "demo.picoletter.page"
@@ -15,6 +23,25 @@ RSpec.describe "Public host resolution", type: :request do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include("Demo")
+    end
+
+    it "renders the newsletter archive when accessed via the platform hostname" do
+      host! "demo.picoletter.page"
+
+      get "/posts"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include("All posts")
+      expect(response.body).to include(post.title)
+    end
+
+    it "renders a published post when accessed via the platform hostname" do
+      host! "demo.picoletter.page"
+
+      get "/posts/#{post.slug}"
+
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include(post.title)
     end
   end
 
@@ -43,4 +70,5 @@ RSpec.describe "Public host resolution", type: :request do
       expect(response).to have_http_status(:not_found)
     end
   end
+
 end
