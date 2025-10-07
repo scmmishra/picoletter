@@ -45,7 +45,7 @@ module PicoLetter
     config.hosts = [primary_uri.host]
     config.hosts << "#{primary_uri.host}:#{primary_uri.port}" if primary_uri.port
     if (publishing_domain = ENV.fetch("PLATFORM_PUBLISHING_DOMAIN", nil))
-      config.hosts << "*.#{publishing_domain}"
+      config.hosts << ".#{publishing_domain}"
     end
 
     config.support_email = ENV.fetch("PICO_SUPPORT_EMAIL", "support@picoletter.com")
