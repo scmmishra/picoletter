@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <title>Picoletter</title>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <link rel="icon" href="/favicon.png" type="image/x-icon">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
@@ -32,14 +36,11 @@
 
       <section class="flex flex-wrap gap-3">
         <%= render "newsletters/sidebar" %>
-        <section
-          class="
-            basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-3
-          "
-        >
+        <section class="basis-0 flex-grow-[999] [min-inline-size_50%] min-h-screen py-3">
           <section
             class="
-              w-full min-h-full py-3 px-5 bg-white border rounded-md shadow-sm border-zinc-100
+              w-full min-h-full py-3 px-5 bg-white border rounded-md
+              shadow-sm border-zinc-100
             "
           >
             <%= yield %>

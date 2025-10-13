@@ -5,7 +5,9 @@
     data-controller="modal"
     data-action="click->modal#backdropClose"
   >
-    <button class="font-sans text-sm btn btn-primary" data-action="modal#open">Create Label</button>
+    <button class="font-sans text-sm btn btn-primary" data-action="modal#open">
+      Create Label
+    </button>
     <div>
       <dialog
         data-modal-target="modal"
@@ -20,6 +22,7 @@
     </div>
   </div>
 </section>
+
 <% if @labels.empty? %>
   <div class="h-full py-20 mt-6 border border-dashed rounded-md border-stone-300">
     <p class="text-center text-stone-500">No labels found</p>
@@ -35,12 +38,15 @@
       <div class="col-span-1">
         Name
       </div>
+
       <div class="col-span-2">
         Description
       </div>
+
       <div class="col-span-1">
         Subscribers
       </div>
+
       <div class="col-span-1 text-right">
         Actions
       </div>

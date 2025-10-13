@@ -2,6 +2,7 @@
   <div class="col-span-4">
     <h2><%= post.title %></h2>
   </div>
+
   <div class="col-span-3 font-sans text-sm leading-6 text-right text-stone-500">
     <% if post.published? %>
       Published on
@@ -12,11 +13,10 @@
       at
       <span class="font-medium text-stone-800"><%= post.scheduled_at.strftime("%H:%M %p") %></span>
     <% else %>
-      <span class="text-stone-500">
-        —
-      </span>
+      <span class="text-stone-500">—</span>
     <% end %>
   </div>
+
   <div class="col-span-3 font-sans text-sm leading-6 text-right text-stone-500">
     Created on
     <b class="font-medium text-stone-700"><%= post.created_at.strftime("%B %d, %Y") %></b>

@@ -8,11 +8,13 @@
     <div class="w-4 h-4 rounded" style="background-color: <%= label.color %>"></div>
     <h3 class="font-medium"><%= label.name %></h3>
   </div>
+
   <div class="col-span-2 font-sans flex items-center">
     <% if label.description.present? %>
       <p class="mt-0.5 text-sm text-stone-500"><%= label.description %></p>
     <% end %>
   </div>
+
   <div class="col-span-1 font-sans flex items-center">
     <% if label.description.present? %>
       <p class="mt-0.5 text-sm text-stone-500">
@@ -22,6 +24,7 @@
       </p>
     <% end %>
   </div>
+
   <div class="col-span-1 font-sans items-center flex justify-end gap-2">
     <div
       class="space-x-1"

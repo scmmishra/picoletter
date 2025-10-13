@@ -8,11 +8,17 @@
   >
     <%= lucide_icon("fingerprint", class: "size-6") %>
   </div>
+
   <h1 class="text-3xl text-stone-900">Forgot your password?</h1>
-  <p class="mt-2 text-xl text-stone-700">No worries, we will send you the reset instructions.</p>
+
+  <p class="mt-2 text-xl text-stone-700">
+    No worries, we will send you the reset instructions.
+  </p>
+
   <div
     class="
-      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
+      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7
+      border-neutral-200
     "
   >
     <%= labeled_form_with url: passwords_path, class: "flex flex-col gap-4" do |form| %>
@@ -29,7 +35,6 @@
       </div>
     <% end %>
   </div>
-
 </div>
 
 <% content_for :head do %>

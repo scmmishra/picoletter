@@ -1,4 +1,5 @@
-<%# This partial renders a single label item in the dropdown
+<%#
+  This partial renders a single label item in the dropdown
   Parameters:
   - label: The label object
   - subscriber: The subscriber object
@@ -13,7 +14,10 @@
           class: "w-full dropdown-item flex items-center py-1.5 px-2 hover:bg-stone-100 font-sans text-sm rounded-md text-stone-700 gap-2 justify-between cursor-pointer",
           form: { data: { turbo: true } } do %>
       <span class="flex gap-2 items-center">
-        <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
+        <span
+          class="size-3.5 rounded"
+          style="background-color: <%= label.color %>"
+        ></span>
         <%= label.name %>
       </span>
       <div class="check-icon">
@@ -33,7 +37,10 @@
         "
       >
         <span class="flex gap-2 items-center">
-          <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
+          <span
+            class="size-3.5 rounded"
+            style="background-color: <%= label.color %>"
+          ></span>
           <%= label.name %>
         </span>
         <div class="check-icon hidden">

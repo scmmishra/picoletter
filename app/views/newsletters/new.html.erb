@@ -22,21 +22,38 @@
 
   <% if @pending_invitation.present? %>
     <%= link_to invitation_path(token: @pending_invitation.token), class: "block mt-6 group" do %>
-      <div class="flex items-start gap-3 p-4 transition bg-white rounded-xl border-neutral-200 shadow-with-inset">
+      <div
+        class="
+          flex items-start gap-3 p-4 transition bg-white rounded-xl
+          border-neutral-200 shadow-with-inset
+        "
+      >
         <div class="flex-1 text-left">
-          <p class="text-xs font-semibold tracking-wide text-stone-500 uppercase">Pending invitation</p>
+          <p class="text-xs font-semibold tracking-wide text-stone-500 uppercase">
+            Pending invitation
+          </p>
           <p class="mt-1 text-sm text-stone-700">
-            Review your invite to <span class="font-medium text-stone-900"><%= @pending_invitation.newsletter.title %></span>.
+            Review your invite to
+            <span class="font-medium text-stone-900"><%= @pending_invitation.newsletter.title %></span>
+            .
           </p>
         </div>
-        <span class="text-base font-medium text-stone-400 group-hover:translate-x-1 duration-300">&rarr;</span>
+        <span
+          class="
+            text-base font-medium text-stone-400 group-hover:translate-x-1
+            duration-300
+          "
+        >
+          &rarr;
+        </span>
       </div>
     <% end %>
   <% end %>
 
   <div
     class="
-      p-6 pt-5 mt-6 bg-white shadow-without-inset rounded-xl pb-7 border-neutral-200
+      p-6 pt-5 mt-6 bg-white shadow-without-inset rounded-xl pb-7
+      border-neutral-200
     "
   >
     <%= labeled_form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
@@ -74,9 +91,11 @@
       </div>
     <% end %>
   </div>
-  <div class=" font-sans text-sm text-stone-400 mt-5 text-center px-1 ">
+
+  <div class="font-sans text-sm text-stone-400 mt-5 text-center px-1">
     Logged in as
-    <%= Current.user.email %>,
+    <%= Current.user.email %>
+    ,
     <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
       <span>click here to log out.</span>
     <% end %>

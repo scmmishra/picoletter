@@ -117,155 +117,184 @@
   </style>
 <% end %>
 
-<main class="mx-auto flex min-h-screen flex-col items-center justify-center p-4 md:p-6 gap-4">
+<main
+  class="
+    mx-auto flex min-h-screen flex-col items-center justify-center p-4
+    md:p-6 gap-4
+  "
+>
   <div class="postcard-float-wrapper w-full max-w-3xl">
-  <section
-    class="airmail paper relative w-full rounded-2xl border
-           border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200"
-    aria-label="Postcard invitation"
-  >
-    <!-- Header strip -->
-    <div
-      class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-stone-200
-             px-4 md:px-5 py-3 text-xs text-stone-500 gap-2 sm:gap-0"
+    <section
+      class="
+        airmail paper relative w-full rounded-2xl border
+        border-stone-300 bg-stone-50 shadow-xl ring-1 ring-stone-200
+      "
+      aria-label="Postcard invitation"
     >
-      <span>Postcard • Team Invitation</span>
-      <% remaining_time = distance_of_time_in_words(Time.current, @invitation.expires_at) %>
-      <span>
-        Valid for <%= remaining_time %>
-      </span>
-    </div>
+      <!-- Header strip -->
+      <div
+        class="
+          flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-stone-200
+          px-4 md:px-5 py-3 text-xs text-stone-500 gap-2 sm:gap-0
+        "
+      >
+        <span>Postcard • Team Invitation</span>
 
-    <!-- Two even columns; divider is pseudo-element -->
-    <div class="postcard grid grid-cols-1 md:grid-cols-2">
-      <!-- LEFT: Message -->
-      <div class="p-4 md:p-6 lg:p-8">
-        <div class="mb-4 gap-3 flex flex-col">
-          <div
-            class="grid h-10 w-10 place-items-center rounded-lg bg-stone-200
-                   text-stone-700 shrink-0"
-            aria-hidden="true"
-          >
-            <%= lucide_icon("mail", class: "size-4 text-stone-600") %>
-          </div>
-          <div class="min-w-0 flex-1">
-            <h1 class="text-lg sm:text-xl font-semibold">Team Invitation</h1>
-            <p class="text-sm text-stone-600 break-words">
-              From: <%= @invited_by.name %> • <%= @newsletter.title %>
-            </p>
-          </div>
-        </div>
-
-        <p
-          class="mb-4 font-medium leading-7 text-stone-800 text-base"
-        >
-          Hi there! We'd love you on
-          <span class="underline decoration-stone-400/60"><%= @newsletter.title %></span>.
-          <% if @newsletter.description.present? %>
-            <%= @newsletter.description %>
-          <% else %>
-            Ready to join our team?
-          <% end %>
-        </p>
-
-
-        <%= button_to accept_invitation_submit_path(token: params[:token]),
-                      method: :post,
-                      class: "btn btn-primary w-full mt-8" do %>
-          Accept & Join
-        <% end %>
-
+        <% remaining_time = distance_of_time_in_words(Time.current, @invitation.expires_at) %>
+        <span>Valid for <%= remaining_time %></span>
       </div>
 
-      <!-- RIGHT: Address / stamp -->
-      <div class="relative border-t border-stone-200 md:border-t-0">
-        <!-- Stamp + cancellation -->
-        <div class="absolute right-6 top-6">
-          <div
-            class="perforated relative h-16 w-14 -rotate-3 rounded-[8px] bg-gradient-to-br from-green-700/40
-                   to-green-100 p-1 shadow-sm"
-            aria-hidden="true"
-          >
+      <!-- Two even columns; divider is pseudo-element -->
+      <div class="postcard grid grid-cols-1 md:grid-cols-2">
+        <!-- LEFT: Message -->
+        <div class="p-4 md:p-6 lg:p-8">
+          <div class="mb-4 gap-3 flex flex-col">
+            <div
+              class="
+                grid h-10 w-10 place-items-center rounded-lg bg-stone-200
+                text-stone-700 shrink-0
+              "
+              aria-hidden="true"
+            >
+              <%= lucide_icon("mail", class: "size-4 text-stone-600") %>
+            </div>
+            <div class="min-w-0 flex-1">
+              <h1 class="text-lg sm:text-xl font-semibold">Team Invitation</h1>
+              <p class="text-sm text-stone-600 break-words">
+                From: <%= @invited_by.name %> • <%= @newsletter.title %>
+              </p>
+            </div>
           </div>
 
-          <div
-            class="pointer-events-none absolute -left-12 -top-3 rotate-6
-                   rounded-full border-[3px] border-double border-red-600/80 px-2 py-1
-                   text-[10px] font-semibold uppercase tracking-widest
-                   text-red-600/70"
-            aria-hidden="true"
-          >
-            Invited
-          </div>
+          <p class="mb-4 font-medium leading-7 text-stone-800 text-base">
+            Hi there! We'd love you on
+            <span class="underline decoration-stone-400/60"><%= @newsletter.title %></span>
+            .
+            <% if @newsletter.description.present? %>
+              <%= @newsletter.description %>
+            <% else %>
+              Ready to join our team?
+            <% end %>
+          </p>
 
-          <svg
-            class="pointer-events-none absolute -left-16 top-9 h-10 w-28
-                   rotate-6 text-blue-500"
-            viewBox="0 0 140 40"
-            fill="none"
-            aria-hidden="true"
-          >
-            <path
-              d="M2 10c20 10 40-10 60 0s40-10 60 0"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-            <path
-              d="M2 20c20 10 40-10 60 0s40-10 60 0"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-            <path
-              d="M2 30c20 10 40-10 60 0s40-10 60 0"
-              stroke="currentColor"
-              stroke-width="3"
-              stroke-linecap="round"
-            />
-          </svg>
+          <%= button_to accept_invitation_submit_path(token: params[:token]),
+                      method: :post,
+                      class: "btn btn-primary w-full mt-8" do %>
+            Accept & Join
+          <% end %>
         </div>
 
-        <!-- Address lines -->
-        <div class="p-4 md:p-6 lg:p-8 flex flex-col justify-between h-full">
-          <section>
-          <p class="text-xs uppercase tracking-widest text-stone-500">To</p>
-          <div class="mt-3 max-w-[18rem] text-base">
-            <div class="text-stone-800 font-medium"><%= Current.user.name %></div>
-            <div class="text-stone-600"><%= @invitation.email %></div>
-            <div class="text-stone-600"><%= @newsletter.title %> Team Member, Picoletter</div>
+        <!-- RIGHT: Address / stamp -->
+        <div class="relative border-t border-stone-200 md:border-t-0">
+          <!-- Stamp + cancellation -->
+          <div class="absolute right-6 top-6">
+            <div
+              class="
+                perforated relative h-16 w-14 -rotate-3 rounded-[8px] bg-gradient-to-br from-green-700/40
+                to-green-100 p-1 shadow-sm
+              "
+              aria-hidden="true"
+            ></div>
+
+            <div
+              class="
+                pointer-events-none absolute -left-12 -top-3 rotate-6
+                rounded-full border-[3px] border-double border-red-600/80 px-2 py-1
+                text-[10px] font-semibold uppercase tracking-widest
+                text-red-600/70
+              "
+              aria-hidden="true"
+            >
+              Invited
+            </div>
+
+            <svg
+              class="
+                pointer-events-none absolute -left-16 top-9 h-10 w-28
+                rotate-6 text-blue-500
+              "
+              viewBox="0 0 140 40"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M2 10c20 10 40-10 60 0s40-10 60 0"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+              <path
+                d="M2 20c20 10 40-10 60 0s40-10 60 0"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+              <path
+                d="M2 30c20 10 40-10 60 0s40-10 60 0"
+                stroke="currentColor"
+                stroke-width="3"
+                stroke-linecap="round"
+              />
+            </svg>
           </div>
 
-          <div class="mt-6 space-y-4">
-            <div class="h-px w-full bg-stone-200"></div>
-            <div class="h-px w-full bg-stone-200"></div>
-            <div class="h-px w-full bg-stone-200"></div>
-            <div class="h-px w-full bg-stone-200"></div>
-            <div class="h-px w-full bg-stone-200"></div>
-            <div class="h-px w-full bg-stone-200"></div>
-          </div>
-          </section>
+          <!-- Address lines -->
+          <div class="p-4 md:p-6 lg:p-8 flex flex-col justify-between h-full">
+            <section>
+              <p class="text-xs uppercase tracking-widest text-stone-500">To</p>
 
-          <div class="mt-8 text-right pointer-events-none">
-            <div class="text-stone-900/10 select-none pointer-events-none" style="font-family: 'Libre Barcode 128 Text'; font-size: 28px;">
-              <%= @invitation.token %>
+              <div class="mt-3 max-w-[18rem] text-base">
+                <div class="text-stone-800 font-medium">
+                  <%= Current.user.name %>
+                </div>
+
+                <div class="text-stone-600"><%= @invitation.email %></div>
+
+                <div class="text-stone-600">
+                  <%= @newsletter.title %> Team Member, Picoletter
+                </div>
+              </div>
+
+              <div class="mt-6 space-y-4">
+                <div class="h-px w-full bg-stone-200"></div>
+
+                <div class="h-px w-full bg-stone-200"></div>
+
+                <div class="h-px w-full bg-stone-200"></div>
+
+                <div class="h-px w-full bg-stone-200"></div>
+
+                <div class="h-px w-full bg-stone-200"></div>
+
+                <div class="h-px w-full bg-stone-200"></div>
+              </div>
+            </section>
+
+            <div class="mt-8 text-right pointer-events-none">
+              <div
+                class="text-stone-900/10 select-none pointer-events-none"
+                style="font-family: 'Libre Barcode 128 Text'; font-size: 28px;"
+              >
+                <%= @invitation.token %>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Footer -->
-    <div
-      class="flex flex-wrap items-center justify-between gap-3 border-t
-             border-stone-200 px-4 md:px-6 py-4 text-xs text-stone-500 lg:px-8"
-    >
-      <p>Posted from: <%= @invited_by.name %></p>
-      <p class="text-stone-400">
-        If you didn't expect this invitation, you can safely ignore it.
-      </p>
-    </div>
-  </section>
+      <!-- Footer -->
+      <div
+        class="
+          flex flex-wrap items-center justify-between gap-3 border-t
+          border-stone-200 px-4 md:px-6 py-4 text-xs text-stone-500 lg:px-8
+        "
+      >
+        <p>Posted from: <%= @invited_by.name %></p>
+        <p class="text-stone-400">
+          If you didn't expect this invitation, you can safely ignore it.
+        </p>
+      </div>
+    </section>
   </div>
   <div class="postcard-ignore-link text-center text-xs w-full max-w-3xl mt-8">
     <%= link_to "Ignore for now", ignore_invitation_path(token: params[:token]),
