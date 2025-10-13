@@ -29,9 +29,7 @@
                         disabled: true,
                         hint: "To change your email address, please contact support." %>
       </div>
-      <div class="mt-5">
-        <%= form.submit "Update Profile", class: "btn btn-primary" %>
-      </div>
+      <div class="mt-5"><%= form.submit "Update Profile", class: "btn btn-primary" %></div>
     <% end %>
   </section>
 
@@ -81,11 +79,7 @@
             <div class="grid grid-cols-2 gap-2">
               <% if github_enabled && !github_connected %>
                 <%= button_to "/auth/github", method: :post, data: {turbo: false}, class: "btn hover:bg-stone-100 w-full bg-white flex items-center justify-center gap-2" do %>
-                  <svg
-                    class="h-4 w-auto"
-                    viewBox="0 0 98 96"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg class="h-4 w-auto" viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg">
                     <path
                       fill-rule="evenodd"
                       clip-rule="evenodd"
@@ -99,11 +93,7 @@
 
               <% if google_enabled && !google_connected %>
                 <%= button_to "/auth/google_oauth2", method: :post, data: {turbo: false}, class: "btn hover:bg-stone-100 w-full bg-white flex items-center justify-center gap-2" do %>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="size-4"
-                    viewBox="0 0 24 24"
-                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" class="size-4" viewBox="0 0 24 24">
                     <path
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                       fill="#4285F4"

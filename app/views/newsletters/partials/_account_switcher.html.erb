@@ -6,9 +6,7 @@
     "
     data-action="dropdown#toggle click@window->dropdown#hide"
   >
-    <div class="font-sans text-sm truncate text-stone-900 flex-grow-0">
-      <%= @newsletter.title %>
-    </div>
+    <div class="font-sans text-sm truncate text-stone-900 flex-grow-0"><%= @newsletter.title %></div>
     <%= lucide_icon("chevrons-up-down", class: "size-3 text-stone-500") %>
   </button>
   <div

@@ -1,10 +1,5 @@
 <article class="max-w-xl py-8 mx-auto">
-  <div
-    class="
-      prose prose-headings:text-newsletter-primary
-      prose-a:text-newsletter-primary
-    "
-  >
+  <div class="prose prose-headings:text-newsletter-primary prose-a:text-newsletter-primary">
     <h1 class="text-3xl"><%= @post.title %></h1>
     <%= @post.content %>
   </div>
@@ -27,44 +22,32 @@
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-2">
         <% stats = @post.stats %>
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:total] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:total] %></div>
           <div class="text-sm font-sans text-stone-600">Total Sent</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:delivered] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:delivered] %></div>
           <div class="text-sm font-sans text-stone-600">Delivered</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:opened] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:opened] %></div>
           <div class="text-sm font-sans text-stone-600">Opened</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:bounced] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:bounced] %></div>
           <div class="text-sm font-sans text-stone-600">Bounced</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:delivery_rate] %>%
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:delivery_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Delivery Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:bounce_rate] %>%
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:bounce_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Bounce Rate</div>
         </div>
       </div>
@@ -79,37 +62,27 @@
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:open_rate] %>%
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:open_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Open Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:click_through_rate] %>%
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:click_through_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Click-Through Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= stats[:click_to_open_rate] %>%
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= stats[:click_to_open_rate] %>%</div>
           <div class="text-sm font-sans text-stone-600">Click-to-Open Rate</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= @post.stats[:total_clicks] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= @post.stats[:total_clicks] %></div>
           <div class="text-sm font-sans text-stone-600">Total Clicks</div>
         </div>
 
         <div>
-          <div class="text-xl font-semibold text-stone-900">
-            <%= @post.stats[:unique_clickers] %>
-          </div>
+          <div class="text-xl font-semibold text-stone-900"><%= @post.stats[:unique_clickers] %></div>
           <div class="text-sm font-sans text-stone-600">Unique Clickers</div>
         </div>
       </div>

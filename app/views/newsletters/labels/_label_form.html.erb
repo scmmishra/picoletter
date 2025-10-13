@@ -31,10 +31,7 @@
                      "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
   </label>
 
-  <label
-    data-controller="color-picker"
-    data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false' %>"
-  >
+  <label data-controller="color-picker" data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false' %>">
     <%= form.label :color, "Color", class: "block text-sm font-medium text-stone-700" %>
     <div class="border border-stone-300 px-1 py-1 rounded-md flex items-center gap-2">
       <%= form.color_field :color,

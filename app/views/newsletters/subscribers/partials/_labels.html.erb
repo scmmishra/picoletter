@@ -14,10 +14,7 @@
           "
           data-label-name="<%= label.name %>"
         >
-          <div
-            class="size-3.5 rounded"
-            style="background-color: <%= label.color %>"
-          ></div>
+          <div class="size-3.5 rounded" style="background-color: <%= label.color %>"></div>
           <span><%= label.name %></span>
           <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name),
                 method: :delete,
@@ -40,10 +37,7 @@
     >
       <%= lucide_icon("plus", class: "size-3 text-stone-500") %> Add Label
     </button>
-    <div
-      class="absolute top-8 w-64 mt-2 hidden z-10"
-      data-dropdown-target="menu"
-    >
+    <div class="absolute top-8 w-64 mt-2 hidden z-10" data-dropdown-target="menu">
       <div
         class="
           py-1 px-1 bg-white shadow-lg rounded-lg outline outline-1 outline-stone-200

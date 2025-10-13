@@ -1,6 +1,4 @@
-<p>
-  Hey<%= @subscriber.full_name.present? ? " #{@subscriber.full_name}" : "" %>,
-</p>
+<p>Hey<%= @subscriber.full_name.present? ? " #{@subscriber.full_name}" : "" %>,</p>
 
 <p>
   Thank you for subscribing to <%= @newsletter.title %>. To confirm your email address, please click on the link below.
@@ -24,9 +22,7 @@
         >
           <tbody>
             <tr>
-              <td>
-                <a href="<%= @confirmation_url %>" target="_blank">Confirm subscription</a>
-              </td>
+              <td><a href="<%= @confirmation_url %>" target="_blank">Confirm subscription</a></td>
             </tr>
           </tbody>
         </table>
@@ -36,14 +32,12 @@
 </table>
 
 <p>
-  If you didn't subscribe to this list, you can ignore this email. You will not
-  receive any emails if you don't click on the link above.
+  If you didn't subscribe to this list, you can ignore this email. You will not receive any emails if you don't click on
+  the link above.
 </p>
 
 <% content_for :footer do %>
   <tr>
-    <td class="content-block powered-by">
-      Powered by <a href="http://picoletter.com">Picoletter</a>
-    </td>
+    <td class="content-block powered-by">Powered by <a href="http://picoletter.com">Picoletter</a></td>
   </tr>
 <% end %>

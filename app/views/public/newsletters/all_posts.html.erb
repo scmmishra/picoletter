@@ -1,11 +1,6 @@
 <main class="max-w-xl py-10 mx-auto min-h-screen">
   <section class="mb-5">
-    <div
-      class="
-        text-stone-500 font-sans uppercase tracking-wider font-semibold
-        text-xs
-      "
-    >
+    <div class="text-stone-500 font-sans uppercase tracking-wider font-semibold text-xs">
       <%= link_to "#{@newsletter.title} Home",
       :newsletter,
       class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors" %>
@@ -20,13 +15,10 @@
       <%= link_to newsletter_post_path(post_slug: post.slug, slug: @newsletter.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
         <h2 class="text-lg"><%= post.title %></h2>
 
-        <p class="text-stone-500">
-          <%= truncate(post.content.to_plain_text, length: 100) %>
-        </p>
+        <p class="text-stone-500"><%= truncate(post.content.to_plain_text, length: 100) %></p>
 
         <div class="text-sm text-stone-500 font-sans">
-          Published on
-          <span class="font-medium text-stone-700"><%= post.published_at.strftime("%B %e, %Y") %></span>
+          Published on <span class="font-medium text-stone-700"><%= post.published_at.strftime("%B %e, %Y") %></span>
         </div>
       <% end %>
     <% end %>

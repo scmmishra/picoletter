@@ -15,13 +15,9 @@
       <% sorted_links.first(5).each do |link, count| %>
         <div class="flex justify-between items-center font-sans">
           <div class="flex-1 min-w-0">
-            <div class="text-sm text-stone-900 truncate" title="<%= link %>">
-              <%= link %>
-            </div>
+            <div class="text-sm text-stone-900 truncate" title="<%= link %>"><%= link %></div>
           </div>
-          <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
-            <%= count %>
-          </div>
+          <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums"><%= count %></div>
         </div>
       <% end %>
 
@@ -30,16 +26,9 @@
           <% sorted_links[5..-1].each do |link, count| %>
             <div class="flex justify-between items-center font-sans">
               <div class="flex-1 min-w-0">
-                <div
-                  class="text-sm text-stone-900 truncate"
-                  title="<%= link %>"
-                >
-                  <%= link %>
-                </div>
+                <div class="text-sm text-stone-900 truncate" title="<%= link %>"><%= link %></div>
               </div>
-              <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
-                <%= count %>
-              </div>
+              <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums"><%= count %></div>
             </div>
           <% end %>
         </div>

@@ -25,9 +25,7 @@
                           hint: "Editors can manage content, Administrators have full access" %>
             </div>
           </div>
-          <div>
-            <%= form.submit "Send Invitation", class: "btn w-full mt-4 btn-primary text-sm" %>
-          </div>
+          <div><%= form.submit "Send Invitation", class: "btn w-full mt-4 btn-primary text-sm" %></div>
         <% end %>
       </div>
     </section>
@@ -55,12 +53,8 @@
           <tr>
             <td class="px-4 py-3 whitespace-nowrap">
               <div>
-                <p class="text-sm font-medium text-stone-700">
-                  <%= @newsletter.user.name %>
-                </p>
-                <p class="text-sm font-sans text-stone-500">
-                  <%= @newsletter.user.email %>
-                </p>
+                <p class="text-sm font-medium text-stone-700"><%= @newsletter.user.name %></p>
+                <p class="text-sm font-sans text-stone-500"><%= @newsletter.user.email %></p>
               </div>
             </td>
             <td class="px-4 py-3 whitespace-nowrap">
@@ -110,9 +104,7 @@
             <% @invitations.each do |invitation| %>
               <tr>
                 <td class="px-4 py-3">
-                  <p class="text-sm font-medium text-stone-700">
-                    <%= invitation.email %>
-                  </p>
+                  <p class="text-sm font-medium text-stone-700"><%= invitation.email %></p>
                   <p class="text-sm font-sans text-stone-500">
                     Invited by <%= invitation.invited_by.name %>
                   </p>
@@ -155,19 +147,14 @@
   <section>
     <h2 class="text-xl font-semibold text-stone-800 mb-4">Team Roles</h2>
     <div class="space-y-3 text-stone-600">
-      <p>
-        <strong>Owner:</strong> Full control over the newsletter, billing, and team management.
-      </p>
+      <p><strong>Owner:</strong> Full control over the newsletter, billing, and team management.</p>
 
       <p>
         <strong>Administrator:</strong>
-        Can manage all newsletter settings, posts, and subscribers. Cannot
-        manage billing.
+        Can manage all newsletter settings, posts, and subscribers. Cannot manage billing.
       </p>
 
-      <p>
-        <strong>Editor:</strong> Can create and edit posts, view subscribers, and manage their own profile.
-      </p>
+      <p><strong>Editor:</strong> Can create and edit posts, view subscribers, and manage their own profile.</p>
     </div>
   </section>
 </main>
