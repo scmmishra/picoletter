@@ -1,0 +1,11 @@
+name: Herb Lint
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Run Herb Linter
+        run: bunx @herb-tools/linter
