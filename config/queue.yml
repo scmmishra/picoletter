@@ -14,7 +14,7 @@ default: &default
           schedule: every 10 minutes
   workers:
     - queues: "*"
-      threads: 3
+      threads: <%= ENV.fetch("RAILS_MAX_THREADS", 3) %>
       processes: <%= ENV.fetch("JOB_CONCURRENCY", 1) %>
       polling_interval: 0.1
 
