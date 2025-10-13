@@ -13,8 +13,7 @@
             bg-green-100 rounded-md
           "
         >
-          <%= lucide_icon("mail-check", class: "size-3") %>
-          Verified
+          <%= lucide_icon("mail-check", class: "size-3") %> Verified
         </span>
       <% elsif @subscriber.unsubscribed? %>
         <span
@@ -24,8 +23,7 @@
             text-orange-500 bg-orange-100 rounded-md
           "
         >
-          <%= lucide_icon("mail-x", class: "size-3") %>
-          Unsubscribed
+          <%= lucide_icon("mail-x", class: "size-3") %> Unsubscribed
         </span>
       <% elsif @subscriber.unverified? %>
         <span
@@ -35,8 +33,7 @@
             text-yellow-600 bg-yellow-100 rounded-md
           "
         >
-          <%= lucide_icon("mail-question", class: "size-3") %>
-          Verification Pending
+          <%= lucide_icon("mail-question", class: "size-3") %> Verification Pending
         </span>
       <% end %>
     </div>
@@ -51,9 +48,7 @@
                       required: true,
                       disabled: true,
                       class: "input w-full bg-stone-200 text-stone-600" %>
-      <div class="absolute right-2 top-2 font-mono text-xs">
-        <%= button_to_copy_to_clipboard(@subscriber.email) %>
-      </div>
+      <div class="absolute right-2 top-2 font-mono text-xs"><%= button_to_copy_to_clipboard(@subscriber.email) %></div>
     </div>
   </label>
   <label class="block space-y-1">
@@ -72,29 +67,22 @@
                class: "ml-px text-stone-500 text-sm font-sans" %>
     <%= form.text_area :notes, rows: 5, class: "input w-full" %>
   </label>
+
   <%= form.submit "Update Subscriber", class: "btn btn-primary" %>
 <% end %>
-<div
-  class="
-    flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm
-  "
->
+
+<div class="flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm">
   <h3>Tags</h3>
   <hr class="flex-grow">
 </div>
-<section class="max-w-lg grid gap-2">
-  <%= render "newsletters/subscribers/partials/labels" %>
-</section>
-<div
-  class="
-    flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm
-  "
->
+
+<section class="max-w-lg grid gap-2"><%= render "newsletters/subscribers/partials/labels" %></section>
+
+<div class="flex gap-2 font-sans text-stone-500 items-center my-8 max-w-lg text-sm">
   <h3>Actions</h3>
   <hr class="flex-grow">
 </div>
-<section class="max-w-lg grid gap-6">
-  <%= render "newsletters/subscribers/partials/actions" %>
-</section>
+
+<section class="max-w-lg grid gap-6"><%= render "newsletters/subscribers/partials/actions" %></section>
 
 <%= render "newsletters/subscribers/partials/info" %>

@@ -2,13 +2,7 @@
   <%= link_to url, data: local_assigns[:data], target: local_assigns[:target], class: "flex items-center justify-between gap-2 px-2 py-1 rounded-md #{'bg-stone-200/50' if is_active}" do %>
     <span><%= label %></span>
     <% if local_assigns[:count] && count.present? %>
-      <span
-        class="
-          rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] tabular-nums
-        "
-      >
-        <%= count %>
-      </span>
+      <span class="rounded-md px-2 py-0.5 leading-3 bg-stone-200 text-[10px] tabular-nums"><%= count %></span>
     <% elsif local_assigns[:icon] && icon.present? %>
       <%= lucide_icon(icon, class: "size-4") %>
     <% end %>

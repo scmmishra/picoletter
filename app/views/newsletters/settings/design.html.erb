@@ -6,9 +6,7 @@
     text-stone-800
   "
 >
-  <div class="w-5 pt-px text-stone-400">
-    <%= lucide_icon("info", class: "size-[18px]") %>
-  </div>
+  <div class="w-5 pt-px text-stone-400"><%= lucide_icon("info", class: "size-[18px]") %></div>
   <div class="flex-grow leading-normal text-stone-500">
     Update the design of your newsletter emails and public archive page.
   </div>
@@ -47,8 +45,7 @@
             has-[:checked]:text-stone-900
           "
         >
-          <%= form.radio_button :font_preference, "serif", class: "sr-only", id: "font-serif" %>
-          Serif
+          <%= form.radio_button :font_preference, "serif", class: "sr-only", id: "font-serif" %> Serif
         </label>
         <label
           for="font-sans-serif"
@@ -94,7 +91,5 @@
                    hint:
                      'This footer will automatically be added at the end of every email. Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
   </div>
-  <div class="mt-5">
-    <%= form.submit "Update Settings", class: "btn btn-primary" %>
-  </div>
+  <div class="mt-5"><%= form.submit "Update Settings", class: "btn btn-primary" %></div>
 <% end %>

@@ -18,11 +18,18 @@
       />
     </svg>
   </div>
+
   <h1 class="text-3xl leading-10 text-stone-900">Subscription Confirmed</h1>
-  <p class="mt-2 text-xl text-stone-600">We're all done now, you will soon start getting all the lastest editions
-    from
-    <span class="font-medium text-stone-900"><%= @newsletter.title %></span>.</p>
+
+  <p class="mt-2 text-xl text-stone-600">
+    We're all done now, you will soon start getting all the lastest editions from
+    <span class="font-medium text-stone-900"><%= @newsletter.title %></span>
+    .
+  </p>
+
   <hr class="my-5">
-  <p class="text-xl text-stone-700">This newsletter is managed by
-    <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.</p>
+
+  <p class="text-xl text-stone-700">
+    This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+  </p>
 </div>

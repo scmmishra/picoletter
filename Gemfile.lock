@@ -203,6 +203,8 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
+    herb (0.7.5-arm64-darwin)
+    herb (0.7.5-x86_64-linux-gnu)
     hotwire-spark (0.1.13)
       listen
       rails (>= 7.0.0)
@@ -410,6 +412,9 @@ GEM
     rdoc (6.14.2)
       erb
       psych (>= 4.0.0)
+    reactionview (0.1.4)
+      actionview (>= 7.0)
+      herb (>= 0.7.5, < 1.0.0)
     regexp_parser (2.11.0)
     reline (0.6.2)
       io-console (~> 0.5)
@@ -581,6 +586,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.0.2)
+  reactionview (~> 0.1.4)
   resolv
   rorvswild (>= 1.9.1)
   rspec-rails (~> 6.1.0)

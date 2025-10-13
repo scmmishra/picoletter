@@ -1,9 +1,5 @@
 <% if @newsletter.errors.any? %>
-  <div
-    class="flash"
-    data-controller="element-removal"
-    data-action="animationend->element-removal#remove"
-  >
+  <div class="flash" data-controller="element-removal" data-action="animationend->element-removal#remove">
     <div
       class="
         flex items-center justify-center px-4 py-2 m-auto mt-3 font-sans text-sm
@@ -22,11 +18,20 @@
 
   <% if @pending_invitation.present? %>
     <%= link_to invitation_path(token: @pending_invitation.token), class: "block mt-6 group" do %>
-      <div class="flex items-start gap-3 p-4 transition bg-white rounded-xl border-neutral-200 shadow-with-inset">
+      <div
+        class="
+          flex items-start gap-3 p-4 transition bg-white rounded-xl
+          border-neutral-200 shadow-with-inset
+        "
+      >
         <div class="flex-1 text-left">
-          <p class="text-xs font-semibold tracking-wide text-stone-500 uppercase">Pending invitation</p>
+          <p class="text-xs font-semibold tracking-wide text-stone-500 uppercase">
+            Pending invitation
+          </p>
           <p class="mt-1 text-sm text-stone-700">
-            Review your invite to <span class="font-medium text-stone-900"><%= @pending_invitation.newsletter.title %></span>.
+            Review your invite to
+            <span class="font-medium text-stone-900"><%= @pending_invitation.newsletter.title %></span>
+            .
           </p>
         </div>
         <span class="text-base font-medium text-stone-400 group-hover:translate-x-1 duration-300">&rarr;</span>
@@ -34,11 +39,7 @@
     <% end %>
   <% end %>
 
-  <div
-    class="
-      p-6 pt-5 mt-6 bg-white shadow-without-inset rounded-xl pb-7 border-neutral-200
-    "
-  >
+  <div class="p-6 pt-5 mt-6 bg-white shadow-without-inset rounded-xl pb-7 border-neutral-200">
     <%= labeled_form_with model: @newsletter, url: new_newsletter_path, local: true, class: "flex flex-col gap-4", data: { controller: "auto-slug" } do |form| %>
       <%= form.text_field :title,
                       required: true,
@@ -65,18 +66,16 @@
                      hint:
                        'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>' %>
 
-      <div class="hidden">
-        <%= form.text_field :timezone, data: { controller: "auto-timezone" } %>
-      </div>
+      <div class="hidden"><%= form.text_field :timezone, data: { controller: "auto-timezone" } %></div>
 
-      <div class="mt-1">
-        <%= form.submit "Create newsletter", class: "btn btn-primary w-full" %>
-      </div>
+      <div class="mt-1"><%= form.submit "Create newsletter", class: "btn btn-primary w-full" %></div>
     <% end %>
   </div>
-  <div class=" font-sans text-sm text-stone-400 mt-5 text-center px-1 ">
+
+  <div class="font-sans text-sm text-stone-400 mt-5 text-center px-1">
     Logged in as
-    <%= Current.user.email %>,
+    <%= Current.user.email %>
+    ,
     <%= link_to auth_logout_path, data: { turbo_method: :delete }, class: "hover:underline" do %>
       <span>click here to log out.</span>
     <% end %>

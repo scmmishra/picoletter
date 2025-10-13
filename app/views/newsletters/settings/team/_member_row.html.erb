@@ -6,7 +6,12 @@
     </div>
   </td>
   <td class="px-4 py-3 whitespace-nowrap">
-    <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-stone-600 bg-stone-100 rounded">
+    <span
+      class="
+        px-2 py-1 text-[10px] font-medium uppercase tracking-widest
+        font-sans text-stone-600 bg-stone-100 rounded
+      "
+    >
       <%= membership.role %>
     </span>
   </td>
@@ -14,7 +19,11 @@
     <% if @newsletter.can_write?(:team) %>
       <div data-controller="modal" data-action="click->modal#backdropClose" class="relative inline-block">
         <button
-          class="btn btn-sm btn-tinted btn-secondary opacity-40 transition-all duration-300 grayscale hover:grayscale-0 hover:opacity-100 py-1.5"
+          class="
+            btn btn-sm btn-tinted btn-secondary opacity-40 transition-all
+            duration-300 grayscale hover:grayscale-0 hover:opacity-100
+            py-1.5
+          "
           data-action="modal#open"
         >
           <%= lucide_icon("edit-2", class: "size-3 text-stone-800") %>
@@ -29,7 +38,9 @@
           "
         >
           <div class="space-y-6">
-            <h2 class="text-xl font-semibold text-stone-800">Edit Team Member</h2>
+            <h2 class="text-xl font-semibold text-stone-800">
+              Edit Team Member
+            </h2>
 
             <div class="space-y-4">
               <div>
@@ -51,12 +62,13 @@
                               data: { turbo_method: :delete, turbo_confirm: confirm_message },
                               class: "btn btn-danger" %>
                   <div class="flex gap-2">
-                    <button type="button" class="btn btn-secondary" data-action="modal#close">Cancel</button>
+                    <button type="button" class="btn btn-secondary" data-action="modal#close">
+                      Cancel
+                    </button>
                     <%= form.submit "Update", class: "btn btn-primary" %>
                   </div>
                 </div>
               <% end %>
-
             </div>
           </div>
         </dialog>

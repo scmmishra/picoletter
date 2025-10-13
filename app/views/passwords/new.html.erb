@@ -8,13 +8,14 @@
   >
     <%= lucide_icon("fingerprint", class: "size-6") %>
   </div>
+
   <h1 class="text-3xl text-stone-900">Forgot your password?</h1>
-  <p class="mt-2 text-xl text-stone-700">No worries, we will send you the reset instructions.</p>
-  <div
-    class="
-      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
-    "
-  >
+
+  <p class="mt-2 text-xl text-stone-700">
+    No worries, we will send you the reset instructions.
+  </p>
+
+  <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
     <%= labeled_form_with url: passwords_path, class: "flex flex-col gap-4" do |form| %>
       <%= form.email_field :email,
                        required: true,
@@ -24,12 +25,9 @@
                        placeholder: "Enter your email address",
                        value: params[:email] %>
       <%= hashcash_hidden_field_tag %>
-      <div class="mt-1">
-        <%= form.submit "Email reset instructions", class: "btn btn-primary w-full" %>
-      </div>
+      <div class="mt-1"><%= form.submit "Email reset instructions", class: "btn btn-primary w-full" %></div>
     <% end %>
   </div>
-
 </div>
 
 <% content_for :head do %>

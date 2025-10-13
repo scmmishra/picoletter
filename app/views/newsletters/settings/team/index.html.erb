@@ -4,7 +4,9 @@
   <!-- Invite Team Member Section -->
   <% if @newsletter.can_write?(:team) %>
     <section>
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">Invite Team Member</h2>
+      <h2 class="text-xl font-semibold text-stone-800 mb-4">
+        Invite Team Member
+      </h2>
       <div class="shadow-with-inset bg-stone-50 font-sans p-5 rounded-lg">
         <%= labeled_form_with scope: :invitation, url: settings_team_invite_path(slug: @newsletter.slug), method: :post, local: true do |form| %>
           <div class="flex gap-3 items-end">
@@ -22,11 +24,8 @@
                           label: "Role",
                           hint: "Editors can manage content, Administrators have full access" %>
             </div>
-
           </div>
-          <div>
-            <%= form.submit "Send Invitation", class: "btn w-full mt-4 btn-primary text-sm" %>
-          </div>
+          <div><%= form.submit "Send Invitation", class: "btn w-full mt-4 btn-primary text-sm" %></div>
         <% end %>
       </div>
     </section>
@@ -37,7 +36,12 @@
     <h2 class="text-xl font-semibold text-stone-800 mb-4">Team Members</h2>
     <div class="overflow-hidden border border-stone-200 rounded-lg">
       <table class="min-w-full divide-y divide-stone-200">
-        <thead class="bg-stone-50 font-sans text-xs font-normal text-stone-500 uppercase tracking-wider">
+        <thead
+          class="
+            bg-stone-50 font-sans text-xs font-normal text-stone-500
+            uppercase tracking-wider
+          "
+        >
           <tr>
             <th scope="col" class="px-4 py-3 text-left">Member</th>
             <th scope="col" class="px-4 py-3 text-left">Role</th>
@@ -54,7 +58,15 @@
               </div>
             </td>
             <td class="px-4 py-3 whitespace-nowrap">
-              <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-stone-600 bg-stone-100 rounded">Owner</span>
+              <span
+                class="
+                  px-2 py-1 text-[10px] font-medium uppercase
+                  tracking-widest font-sans text-stone-600 bg-stone-100
+                  rounded
+                "
+              >
+                Owner
+              </span>
             </td>
             <td class="px-4 py-3 whitespace-nowrap text-right text-sm text-stone-500">
               —
@@ -71,10 +83,17 @@
   <!-- Pending Invitations Section -->
   <% if @invitations.any? %>
     <section>
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">Pending Invitations</h2>
+      <h2 class="text-xl font-semibold text-stone-800 mb-4">
+        Pending Invitations
+      </h2>
       <div class="overflow-hidden border border-stone-200 rounded-lg">
         <table class="min-w-full divide-y divide-stone-200">
-          <thead class="bg-stone-50 font-sans text-xs font-normal text-stone-500 uppercase tracking-wider">
+          <thead
+            class="
+              bg-stone-50 font-sans text-xs font-normal text-stone-500
+              uppercase tracking-wider
+            "
+          >
             <tr>
               <th scope="col" class="px-4 py-3 text-left">Email</th>
               <th scope="col" class="px-4 py-3 text-left">Role</th>
@@ -94,7 +113,13 @@
                   </p>
                 </td>
                 <td class="px-4 py-3">
-                  <span class="px-2 py-1 text-[10px] font-medium uppercase tracking-widest font-sans text-amber-600 bg-amber-100 rounded">
+                  <span
+                    class="
+                      px-2 py-1 text-[10px] font-medium uppercase
+                      tracking-widest font-sans text-amber-600 bg-amber-100
+                      rounded
+                    "
+                  >
                     <%= invitation.role %>
                   </span>
                 </td>
@@ -123,7 +148,12 @@
     <h2 class="text-xl font-semibold text-stone-800 mb-4">Team Roles</h2>
     <div class="space-y-3 text-stone-600">
       <p><strong>Owner:</strong> Full control over the newsletter, billing, and team management.</p>
-      <p><strong>Administrator:</strong> Can manage all newsletter settings, posts, and subscribers. Cannot manage billing.</p>
+
+      <p>
+        <strong>Administrator:</strong>
+        Can manage all newsletter settings, posts, and subscribers. Cannot manage billing.
+      </p>
+
       <p><strong>Editor:</strong> Can create and edit posts, view subscribers, and manage their own profile.</p>
     </div>
   </section>

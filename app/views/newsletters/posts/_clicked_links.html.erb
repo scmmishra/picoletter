@@ -10,31 +10,25 @@
           Count
         </div>
       </div>
+
       <% sorted_links = post.email_clicks.group(:link).count.sort_by(&:last).reverse %>
       <% sorted_links.first(5).each do |link, count| %>
         <div class="flex justify-between items-center font-sans">
           <div class="flex-1 min-w-0">
-            <div class="text-sm text-stone-900 truncate" title="<%= link %>">
-              <%= link %>
-            </div>
+            <div class="text-sm text-stone-900 truncate" title="<%= link %>"><%= link %></div>
           </div>
-          <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
-            <%= count %>
-          </div>
+          <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums"><%= count %></div>
         </div>
       <% end %>
+
       <% if sorted_links.length > 5 %>
         <div data-collapsible-target="content" class="space-y-2">
           <% sorted_links[5..-1].each do |link, count| %>
             <div class="flex justify-between items-center font-sans">
               <div class="flex-1 min-w-0">
-                <div class="text-sm text-stone-900 truncate" title="<%= link %>">
-                  <%= link %>
-                </div>
+                <div class="text-sm text-stone-900 truncate" title="<%= link %>"><%= link %></div>
               </div>
-              <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums">
-                <%= count %>
-              </div>
+              <div class="ml-4 text-sm font-medium text-stone-600 tabular-nums"><%= count %></div>
             </div>
           <% end %>
         </div>
@@ -44,9 +38,7 @@
             data-collapsible-target="button"
             class="text-xs text-stone-600 font-sans hover:text-stone-500"
           >
-            Show
-            <%= sorted_links.length - 5 %>
-            more links
+            Show <%= sorted_links.length - 5 %> more links
           </button>
         </div>
       <% end %>

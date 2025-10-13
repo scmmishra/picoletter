@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,16 +55,13 @@
   </head>
   <body>
     <div class="container">
-      <div class="content">
-        <%= @post.content %>
-      </div>
+      <div class="content"><%= @post.content %></div>
       <div class="footer">
-        <p>
-          <%= sanitize @newsletter.footer_html %>
-        </p>
+        <p><%= sanitize @newsletter.footer_html %></p>
         <p>
           You are receiving this email because you are subscribed to
-          <%= @newsletter.title %>. Click here to {{unsubscribe_link}}.
+          <%= @newsletter.title %>
+          . Click here to {{unsubscribe_link}}.
         </p>
       </div>
     </div>

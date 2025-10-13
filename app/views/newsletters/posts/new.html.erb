@@ -6,6 +6,7 @@
       <%= form.text_field :title, required: true, class: "input w-full", autofocus: true %>
     </label>
   </div>
+
   <div
     class="
       max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl
@@ -14,7 +15,6 @@
   >
     <%= form.rich_text_area :content %>
   </div>
-  <div class="flex items-end max-w-2xl mx-auto mt-2">
-    <%= form.submit "Save Draft", class: "btn btn-primary" %>
-  </div>
+
+  <div class="flex items-end max-w-2xl mx-auto mt-2"><%= form.submit "Save Draft", class: "btn btn-primary" %></div>
 <% end %>

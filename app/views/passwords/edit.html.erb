@@ -8,13 +8,14 @@
   >
     <%= lucide_icon("fingerprint", class: "size-6") %>
   </div>
+
   <h1 class="text-3xl text-stone-900">Update your password</h1>
-  <p class="mt-2 text-xl text-stone-700">No worries, we will send you the reset instructions.</p>
-  <div
-    class="
-      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
-    "
-  >
+
+  <p class="mt-2 text-xl text-stone-700">
+    No worries, we will send you the reset instructions.
+  </p>
+
+  <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
     <%= labeled_form_with url: password_path(params[:token]), class: "flex flex-col gap-4", method: :put do |form| %>
       <%= form.password_field :password,
                           class: "input w-full",
@@ -31,10 +32,7 @@
                           placeholder: "Repeat new password",
                           minLength: 10,
                           maxlength: 72 %>
-      <div class="mt-1">
-        <%= form.submit "Update password", class: "btn btn-primary w-full" %>
-      </div>
+      <div class="mt-1"><%= form.submit "Update password", class: "btn btn-primary w-full" %></div>
     <% end %>
   </div>
-
 </div>

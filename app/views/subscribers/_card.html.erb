@@ -8,9 +8,11 @@
     <div class="col-span-3 font-medium text-stone-800">
       <h2><%= subscriber.full_name %></h2>
     </div>
+
     <div class="col-span-3 font-sans text-sm text-stone-500">
       <h2><%= subscriber.email %></h2>
     </div>
+
     <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
       <% if subscriber.unsubscribed? %>
         <%= subscriber.unsubscribed_at.strftime("%B %d, %Y") %>
@@ -20,6 +22,7 @@
         <%= subscriber.created_at.strftime("%B %d, %Y") %>
       <% end %>
     </div>
+
     <div class="col-span-2 font-sans text-sm leading-6 text-right text-stone-500">
       <%= subscriber.created_at.strftime("%B %d, %Y") %>
     </div>

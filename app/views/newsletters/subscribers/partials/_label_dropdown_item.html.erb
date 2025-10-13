@@ -1,4 +1,5 @@
-<%# This partial renders a single label item in the dropdown
+<%#
+  This partial renders a single label item in the dropdown
   Parameters:
   - label: The label object
   - subscriber: The subscriber object
@@ -16,9 +17,7 @@
         <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
         <%= label.name %>
       </span>
-      <div class="check-icon">
-        <%= lucide_icon("check", class: "size-3 text-stone-500") %>
-      </div>
+      <div class="check-icon"><%= lucide_icon("check", class: "size-3 text-stone-500") %></div>
     <% end %>
   <% else %>
     <%= form_with url: add_label_subscribers_path(newsletter.slug, subscriber.id),
@@ -36,9 +35,7 @@
           <span class="size-3.5 rounded" style="background-color: <%= label.color %>"></span>
           <%= label.name %>
         </span>
-        <div class="check-icon hidden">
-          <%= lucide_icon("check", class: "size-3 text-stone-500") %>
-        </div>
+        <div class="check-icon hidden"><%= lucide_icon("check", class: "size-3 text-stone-500") %></div>
       </button>
     <% end %>
   <% end %>

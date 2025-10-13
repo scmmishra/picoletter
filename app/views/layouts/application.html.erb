@@ -1,9 +1,13 @@
 <!DOCTYPE html>
+
 <html>
   <head>
     <title>Picoletter</title>
+
     <meta name="viewport" content="width=device-width,initial-scale=1">
+
     <link rel="icon" href="/favicon.png" type="image/x-icon">
+
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
@@ -14,11 +18,7 @@
 
   <body class="bg-stone-100">
     <% if notice = flash[:notice] || flash[:alert] %>
-      <div
-        class="flash"
-        data-controller="element-removal"
-        data-action="animationend->element-removal#remove"
-      >
+      <div class="flash" data-controller="element-removal" data-action="animationend->element-removal#remove">
         <div
           class="
             flex items-center justify-center px-4 py-2 m-auto mt-3 font-sans text-sm
@@ -30,8 +30,6 @@
       </div>
     <% end %>
 
-    <main class="container px-5 mx-auto">
-      <%= yield %>
-    </main>
+    <main class="container px-5 mx-auto"><%= yield %></main>
   </body>
 </html>

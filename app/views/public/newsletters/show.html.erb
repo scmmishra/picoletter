@@ -1,21 +1,20 @@
 <main
   class="
-    <%= @newsletter_layout == 'horizontal' ? 'max-w-4xl' : 'max-w-lg'  %> pt-20 pb-10 mx-auto md:flex md:flex-col
+    <%= @newsletter_layout == 'horizontal' ? 'max-w-4xl' : 'max-w-lg' %> pt-20 pb-10 mx-auto md:flex md:flex-col
     md:justify-between min-h-screen
   "
 >
-  <section
-    class="md:gap-x-8 gap-y-5 gap-6 <%= @newsletter_layout == 'horizontal' ? 'grid grid-cols-1 md:grid-cols-2' : 'grid grid-cols-1'  %>"
-  >
-    <div class="<%= @newsletter_layout == 'horizontal' ? 'md:col-span-2' : ''  %>">
+  <section class="md:gap-x-8 gap-y-5 gap-6 <%= @newsletter_layout == 'horizontal' ? 'grid grid-cols-1 md:grid-cols-2' : 'grid grid-cols-1' %>">
+    <div class="<%= @newsletter_layout == 'horizontal' ? 'md:col-span-2' : '' %>">
       <h1 class="text-3xl leading-10 text-stone-900 font-bold"><%= @newsletter.title %></h1>
     </div>
-    <div class="text-stone-700 prose">
-      <%= sanitize @newsletter.description_html %>
-    </div>
+
+    <div class="text-stone-700 prose"><%= sanitize @newsletter.description_html %></div>
+
     <div>
       <%= render "public/newsletters/partials/subscribe", autofocus: true %>
       <hr class="my-5">
+
       <div class="space-y-2">
         <% if @newsletter.website.present? %>
           <%= link_to @newsletter.website, class: "text-stone-700 flex items-center gap-1 group"  do %>
@@ -39,8 +38,8 @@
     </div>
   </section>
   <footer class="max-w-3xl mx-auto mt-12">
-    <p class="text-sm text-stone-500 text-center">This newsletter is managed by
-      <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+    <p class="text-sm text-stone-500 text-center">
+      This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
     </p>
   </footer>
 </main>

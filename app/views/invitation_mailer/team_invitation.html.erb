@@ -1,7 +1,14 @@
 <p>Hi there,</p>
 
 <p>
-  <%= @invited_by.name %> has invited you to join <strong><%= @newsletter.title %></strong> as <%= @invitation.role == 'administrator' ? 'an' : 'a' %> <strong><%= @invitation.role %></strong> on Picoletter. <a href="<%= @accept_url %>" target="_blank">Click here to accept.</a>
+  <%= @invited_by.name %>
+  has invited you to join
+  <strong><%= @newsletter.title %></strong>
+  as
+  <%= @invitation.role == 'administrator' ? 'an' : 'a' %>
+  <strong><%= @invitation.role %></strong>
+  on Picoletter.
+  <a href="<%= @accept_url %>" target="_blank">Click here to accept.</a>
 </p>
 
 <p>

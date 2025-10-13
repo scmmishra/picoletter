@@ -1,13 +1,11 @@
 <div class="max-w-md py-20 mx-auto">
   <h1 class="text-3xl text-stone-900">Start publishing today</h1>
+
   <div class="mt-2 text-xl text-stone-700">
     Create an account and start sending wonderful newsletters to your fans & friends.
   </div>
-  <div
-    class="
-      p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200
-    "
-  >
+
+  <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
     <%= labeled_form_with url: signup_path, local: true, class: "flex flex-col gap-4" do |form| %>
       <%= form.text_field :name,
                       required: true,
@@ -30,7 +28,7 @@
                           placeholder: "··············" %>
 
       <% if @require_invite %>
-      <%= form.text_field :invite_code,
+        <%= form.text_field :invite_code,
                           required: true,
                           class: "input w-full",
                           placeholder: "ZPR1234" %>
@@ -38,20 +36,17 @@
 
       <%= hashcash_hidden_field_tag %>
 
-      <div class="mt-1">
-        <%= form.submit "Start publishing", class: "btn btn-primary w-full" %>
-      </div>
+      <div class="mt-1"><%= form.submit "Start publishing", class: "btn btn-primary w-full" %></div>
     <% end %>
 
     <% unless @require_invite %>
       <%= render partial: "shared/social_buttons", locals: { label: "Or sign up with" } %>
     <% end %>
-</div>
-<div class="mt-3 space-y-2 text-stone-700">
-  <div>
-    Already have an account?
-    <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %>
   </div>
+</div>
+
+<div class="mt-3 space-y-2 text-stone-700">
+  <div>Already have an account? <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %></div>
 </div>
 
 <% content_for :head do %>

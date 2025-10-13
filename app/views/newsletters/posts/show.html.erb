@@ -1,14 +1,10 @@
 <article class="max-w-xl py-8 mx-auto">
-  <div
-    class="
-      prose prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
-    "
-  >
+  <div class="prose prose-headings:text-newsletter-primary prose-a:text-newsletter-primary">
     <h1 class="text-3xl"><%= @post.title %></h1>
     <%= @post.content %>
   </div>
 
-  <hr class="my-8"/>
+  <hr class="my-8">
 
   <div class="font-sans text-sm text-stone-500">
     Published and sent on
@@ -19,7 +15,9 @@
 
   <% if @post.emails.count.positive? %>
     <div class="mt-8 bg-stone-50 rounded-lg px-4 py-3">
-      <h3 class="text-base font-medium text-stone-900 mb-4">Delivery Metrics</h3>
+      <h3 class="text-base font-medium text-stone-900 mb-4">
+        Delivery Metrics
+      </h3>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-2">
         <% stats = @post.stats %>
@@ -58,7 +56,9 @@
 
   <% if @post.email_clicks.any? %>
     <div class="mt-8 bg-stone-50 rounded-lg px-4 py-3">
-      <h3 class="text-base font-medium text-stone-900 mb-4">Engagement Metrics</h3>
+      <h3 class="text-base font-medium text-stone-900 mb-4">
+        Engagement Metrics
+      </h3>
 
       <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
         <div>
@@ -80,6 +80,7 @@
           <div class="text-xl font-semibold text-stone-900"><%= @post.stats[:total_clicks] %></div>
           <div class="text-sm font-sans text-stone-600">Total Clicks</div>
         </div>
+
         <div>
           <div class="text-xl font-semibold text-stone-900"><%= @post.stats[:unique_clickers] %></div>
           <div class="text-sm font-sans text-stone-600">Unique Clickers</div>
@@ -89,5 +90,4 @@
       <%= render "clicked_links", post: @post %>
     </div>
   <% end %>
-  </div>
 </article>

@@ -1,4 +1,5 @@
 <% is_new = label.new_record? %>
+
 <%= form_with model: label, url: is_new ? labels_path: label_path(@newsletter.slug, label.id), method: is_new ? :post : :patch, class: "flex flex-col gap-4" do |form| %>
   <label data-controller="auto-slug">
     <%= form.label :name, "Name", class: "block text-sm font-medium text-stone-700" %>
@@ -30,24 +31,16 @@
                      "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
   </label>
 
-  <label
-    data-controller="color-picker"
-    data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false'%>"
-  >
+  <label data-controller="color-picker" data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false' %>">
     <%= form.label :color, "Color", class: "block text-sm font-medium text-stone-700" %>
-    <div
-      class="
-        border border-stone-300 px-1 py-1 rounded-md flex items-center gap-2
-      "
-    >
+    <div class="border border-stone-300 px-1 py-1 rounded-md flex items-center gap-2">
       <%= form.color_field :color,
                        data: {
                          "color-picker-target": "colorPicker",
                        },
                        class:
                          "bg-transparent size-6 rounded-sm overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch-wrapper]:border-0" %>
-      <span data-color-picker-target="hex">
-      </span>
+      <span data-color-picker-target="hex"></span>
     </div>
   </label>
 
