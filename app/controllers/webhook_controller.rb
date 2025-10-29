@@ -7,10 +7,10 @@ class WebhookController < ApplicationController
 
     head :no_content
   rescue JSON::ParserError => e
-    RorVsWild.record_error(e)
+    Rails.error.report(e,
     head :bad_request
   rescue StandardError => e
-    RorVsWild.record_error(e, context: { body: payload })
+    Rails.error.report(e, context: { body: payload })
     head :bad_request
   end
 end
