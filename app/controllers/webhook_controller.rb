@@ -7,7 +7,7 @@ class WebhookController < ApplicationController
 
     head :no_content
   rescue JSON::ParserError => e
-    Rails.error.report(e,
+    Rails.error.report(e)
     head :bad_request
   rescue StandardError => e
     Rails.error.report(e, context: { body: payload })
