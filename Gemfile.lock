@@ -420,7 +420,7 @@ GEM
       io-console (~> 0.5)
     resolv (0.6.2)
     rexml (3.4.1)
-    rorvswild (1.9.2)
+    rorvswild (1.10.0)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -546,6 +546,7 @@ GEM
 PLATFORMS
   arm64-darwin-23
   arm64-darwin-24
+  arm64-darwin-25
   x86_64-linux
 
 DEPENDENCIES
@@ -588,7 +589,7 @@ DEPENDENCIES
   rails (~> 8.0.2)
   reactionview (~> 0.1.4)
   resolv
-  rorvswild (>= 1.9.1)
+  rorvswild (>= 1.10.0)
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
   selenium-webdriver

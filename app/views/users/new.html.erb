@@ -43,11 +43,11 @@
       <%= render partial: "shared/social_buttons", locals: { label: "Or sign up with" } %>
     <% end %>
   </div>
+  <div class="mt-3 space-y-2 text-stone-700">
+    <div>Already have an account? <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %></div>
+  </div>
 </div>
 
-<div class="mt-3 space-y-2 text-stone-700">
-  <div>Already have an account? <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %></div>
-</div>
 
 <% content_for :head do %>
   <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
