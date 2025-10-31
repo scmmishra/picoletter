@@ -38,7 +38,7 @@ class Newsletters::SettingsController < ApplicationController
     DomainSetupService.new(@newsletter, sending_params).perform
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: "Settings successfully updated."
   rescue StandardError => e
-    RorVsWild.record_error(e, context: { params: sending_params, newsletter_id: @newsletter.id })
+    Rails.error.report(e, context: { params: sending_params, newsletter_id: @newsletter.id })
     redirect_to sending_settings_url(slug: @newsletter.slug), alert: e.message
   end
 
