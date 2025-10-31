@@ -18,8 +18,8 @@ gem "acts-as-taggable-array-on"
 gem "puma", ">= 5.0"
 
 # SolidQueue
-gem "solid_queue"
-gem "mission_control-jobs"
+gem "solid_queue", "~> 1.2.3"
+gem "mission_control-jobs", "~> 1.1.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem "importmap-rails"
@@ -110,7 +110,7 @@ gem "dotenv-rails"
 
 gem "lucide-rails", "~> 0.7.1"
 gem "logtail-rails", "~> 0.2.7"
-gem "solid_cache", "~> 1.0.7"
+gem "solid_cache", "~> 1.0.8"
 
 gem "httparty"
 
