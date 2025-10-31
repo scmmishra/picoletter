@@ -104,7 +104,6 @@ gem "premailer-rails"
 
 # monitoring
 gem "rorvswild", ">= 1.10.0"
-gem "appsignal"
 
 # production
 gem "dotenv-rails"
