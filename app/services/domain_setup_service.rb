@@ -41,7 +41,7 @@ class DomainSetupService
         existing_domain: newsletter.sending_domain.name,
         new_domain: domain_to_register
       }
-      Rails.error.report(e, context: context)
+      RorVsWild.record_error(e, context: context)
     end
 
     newsletter.sending_domain.destroy!

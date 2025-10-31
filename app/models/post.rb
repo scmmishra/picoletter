@@ -97,7 +97,7 @@ class Post < ApplicationRecord
   rescue ActiveRecord::RecordNotFound
     nil
   rescue StandardError => e
-    Rails.error.report(e, context: { post: post_id })
+    RorVsWild.record_error(e, context: { post: post_id })
     nil
   end
 

@@ -87,9 +87,6 @@ GEM
     annotaterb (4.18.0)
       activerecord (>= 6.0.0)
       activesupport (>= 6.0.0)
-    appsignal (4.7.5)
-      logger
-      rack (>= 2.0.0)
     ast (2.4.3)
     aws-eventstream (1.4.0)
     aws-partitions (1.1143.0)
@@ -556,7 +553,6 @@ DEPENDENCIES
   active_hashcash!
   acts-as-taggable-array-on
   annotaterb
-  appsignal
   aws-sdk-rails (~> 3)
   aws-sdk-s3
   bcrypt (~> 3.1.7)

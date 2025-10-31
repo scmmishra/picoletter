@@ -23,7 +23,7 @@ class IPShieldService
       result == "SAFE"
     rescue StandardError => e
       Rails.logger.error "[IPShieldService] Error checking IP: #{e.message}"
-      Rails.error.report(e, context: { ip: @ip })
+      RorVsWild.record_error(e, context: { ip: @ip })
       true
     end
   end
