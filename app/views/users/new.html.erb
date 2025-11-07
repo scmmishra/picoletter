@@ -6,7 +6,7 @@
   </div>
 
   <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
-    <%= labeled_form_with url: signup_path, local: true, class: "flex flex-col gap-4" do |form| %>
+    <%= labeled_form_with url: signup_path, class: "flex flex-col gap-4", data: { turbo: false } do |form| %>
       <%= form.text_field :name,
                       required: true,
                       class: "input w-full",

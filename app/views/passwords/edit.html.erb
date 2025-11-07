@@ -16,7 +16,7 @@
   </p>
 
   <div class="p-6 pt-5 mt-6 bg-white border shadow-sm rounded-xl pb-7 border-neutral-200">
-    <%= labeled_form_with url: password_path(params[:token]), class: "flex flex-col gap-4", method: :put do |form| %>
+    <%= labeled_form_with url: password_path(params[:token]), class: "flex flex-col gap-4", method: :put, data: { turbo: false } do |form| %>
       <%= form.password_field :password,
                           class: "input w-full",
                           required: true,
