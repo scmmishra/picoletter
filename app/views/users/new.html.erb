@@ -44,7 +44,7 @@
     <% end %>
   </div>
   <div class="mt-3 space-y-2 text-stone-700">
-    <div>Already have an account? <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline" %></div>
+    <div>Already have an account? <%= link_to "Log in", auth_login_url, class: "text-zinc-500 hover:underline", data: { turbo: false } %></div>
   </div>
 </div>
 

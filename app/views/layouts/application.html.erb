@@ -10,6 +10,10 @@
 
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <% if controller_name.in?(['sessions', 'users', 'passwords']) && action_name.in?(['new', 'create', 'edit', 'update']) %>
+      <meta name="turbo-visit-control" content="reload">
+    <% end %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
