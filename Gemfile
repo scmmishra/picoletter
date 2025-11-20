@@ -126,4 +126,4 @@ gem "aws-sdk-rails", "~> 3"
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"
 gem "liquid"
 
-gem "reactionview", "~> 0.1.4"
+gem "reactionview", "~> 0.1.6"
