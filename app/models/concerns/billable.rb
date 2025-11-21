@@ -27,7 +27,7 @@ module Billable
       headers: headers
     )
 
-    response["customerPortalUrl"]
+    response.parsed_response["customerPortalUrl"]
   end
 
   def billing_checkout_url
@@ -35,7 +35,7 @@ module Billable
       headers: headers
     )
 
-    response["url"]
+    response.parsed_response["url"]
   end
 
   def update_meter(count)
