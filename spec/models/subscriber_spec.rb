@@ -186,4 +186,26 @@ RSpec.describe Subscriber, type: :model do
       }.to have_enqueued_mail(SubscriptionMailer, :confirmation_reminder)
     end
   end
+
+  describe 'reminder logging' do
+    it 'persists a reminder record with timestamp' do
+      expect {
+        subscriber.send_reminder
+      }.to change { subscriber.reminders.count }.by(1)
+
+      reminder = subscriber.reminders.last
+
+      expect(reminder.kind).to eq("manual")
+      expect(reminder.sent_at).to be_within(1.second).of(Time.current)
+    end
+
+    it 'allows specifying the reminder kind' do
+      expect {
+        subscriber.send_reminder(kind: :automatic)
+      }.to change { subscriber.reminders.count }.by(1)
+
+      reminder = subscriber.reminders.last
+      expect(reminder.kind).to eq("automatic")
+    end
+  end
 end

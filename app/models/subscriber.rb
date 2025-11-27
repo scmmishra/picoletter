@@ -37,6 +37,7 @@ class Subscriber < ApplicationRecord
 
   belongs_to :newsletter
   has_many :emails, dependent: :destroy
+  has_many :reminders, class_name: "SubscriberReminder", dependent: :destroy
 
   before_validation :normalize_labels
   before_save :filter_invalid_labels
@@ -66,8 +67,13 @@ class Subscriber < ApplicationRecord
     update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
   end
 
-  def send_reminder
+  def send_reminder(kind: :manual)
     SubscriptionMailer.with(subscriber: self).confirmation_reminder.deliver_later
+
+    reminders.create!(
+      kind: kind,
+      sent_at: Time.current
+    )
   end
 
   def send_confirmation_email
