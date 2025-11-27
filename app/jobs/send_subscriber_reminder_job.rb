@@ -13,10 +13,15 @@ class SendSubscriberReminderJob < ApplicationJob
 
     response = send_email(subject, html_content, text_content)
 
-    @subscriber.reminders.create!(
+    reminder = @subscriber.reminders.create!(
       kind: kind,
       message_id: response.message_id,
       sent_at: Time.current
+    )
+
+    reminder.emails.create!(
+      id: response.message_id,
+      subscriber: @subscriber
     )
   end
 
@@ -46,8 +51,6 @@ class SendSubscriberReminderJob < ApplicationJob
   end
 
   def send_email(subject, html_content, text_content)
-    return OpenStruct.new(message_id: SecureRandom.uuid) if Rails.env.development?
-
     ses_service = SES::EmailService.new
     ses_service.send(
       to: [ @subscriber.email ],

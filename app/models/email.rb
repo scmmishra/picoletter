@@ -2,31 +2,34 @@
 #
 # Table name: emails
 #
-#  id            :string           not null, primary key
-#  bounced_at    :datetime
-#  complained_at :datetime
-#  delivered_at  :datetime
-#  opened_at     :datetime
-#  status        :string           default("sent")
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  post_id       :bigint           not null
-#  subscriber_id :integer
+#  id             :string           not null, primary key
+#  bounced_at     :datetime
+#  complained_at  :datetime
+#  delivered_at   :datetime
+#  emailable_type :string
+#  emailable_id   :bigint
+#  opened_at      :datetime
+#  status         :string           default("sent")
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  post_id        :bigint
+#  subscriber_id  :integer
 #
 # Indexes
 #
-#  index_emails_on_post_id        (post_id)
-#  index_emails_on_subscriber_id  (subscriber_id)
+#  index_emails_on_emailable_type_and_emailable_id  (emailable_type,emailable_id)
+#  index_emails_on_post_id                          (post_id)
+#  index_emails_on_subscriber_id                    (subscriber_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (post_id => posts.id)
 #  fk_rails_...  (subscriber_id => subscribers.id)
 #
 class Email < ApplicationRecord
   include Statusable
 
-  belongs_to :post
+  belongs_to :emailable, polymorphic: true
+  belongs_to :post, optional: true # Kept for backwards compatibility
   has_many :clicks, class_name: "EmailClick", dependent: :destroy
   belongs_to :subscriber, optional: true
 

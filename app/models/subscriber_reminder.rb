@@ -22,6 +22,7 @@
 #
 class SubscriberReminder < ApplicationRecord
   belongs_to :subscriber
+  has_many :emails, as: :emailable, dependent: :destroy
 
   enum :kind, { manual: 0, automatic: 1 }
 
