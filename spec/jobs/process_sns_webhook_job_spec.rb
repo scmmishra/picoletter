@@ -118,11 +118,11 @@ RSpec.describe ProcessSNSWebhookJob, type: :job do
         click = EmailClick.last
         expect(click.link).to eq(link)
         expect(click.timestamp).to be_within(1.second).of(timestamp)
-        expect(click.post_id).to eq(email.post_id)
+        expect(click.post_id).to eq(email.emailable_id)
       end
 
       it 'does not create duplicate click records' do
-        create(:email_click, email_id: email.id, link: link, post_id: email.post_id)
+        create(:email_click, email_id: email.id, link: link, post_id: email.emailable_id)
 
         expect {
           described_class.perform_now(payload)
