@@ -68,12 +68,7 @@ class Subscriber < ApplicationRecord
   end
 
   def send_reminder(kind: :manual)
-    SubscriptionMailer.with(subscriber: self).confirmation_reminder.deliver_later
-
-    reminders.create!(
-      kind: kind,
-      sent_at: Time.current
-    )
+    SendSubscriberReminderJob.perform_later(id, kind: kind)
   end
 
   def send_confirmation_email
