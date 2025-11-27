@@ -5,8 +5,6 @@
 #  id              :bigint           not null, primary key
 #  description     :text
 #  dns_records     :json
-#  domain          :string
-#  domain_verified :boolean          default(FALSE)
 #  email_css       :text
 #  email_footer    :text             default("")
 #  enable_archive  :boolean          default(TRUE)
