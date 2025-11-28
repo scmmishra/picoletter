@@ -11,6 +11,13 @@ class Public::SubscribersController < ApplicationController
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
+
+    # GET requests redirect to the newsletter page
+    if request.get?
+      redirect_to newsletter_path(@newsletter.slug), notice: "Something went wrong. You can subscribe manually from here."
+      return
+    end
+
     success_url = @newsletter.redirect_after_subscribe
     create_subscriber("embed", success_url)
   end

@@ -56,7 +56,7 @@ Rails.application.routes.draw do
   scope path: ":slug", module: "public" do
     match "unsubscribe", to: "subscribers#unsubscribe", as: :unsubscribe, via: [ :get, :post ]
     match "subscribe", to: "subscribers#public_subscribe", as: :subscribe, via: [ :get, :post ]
-    match "embed/subscribe", to: "subscribers#embed_subscribe", as: :embed_subscribe, via: :post
+    match "embed/subscribe", to: "subscribers#embed_subscribe", as: :embed_subscribe, via: [ :get, :post ]
     get "confirm", to: "subscribers#confirm_subscriber", as: :confirm
     get "almost-there", to: "subscribers#almost_there", as: :almost_there
     get "/", to: "newsletters#show", as: :newsletter
