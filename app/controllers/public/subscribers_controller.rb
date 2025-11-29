@@ -11,6 +11,14 @@ class Public::SubscribersController < ApplicationController
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")
+
+    # Embedded forms may fail to POST (e.g., JS disabled, iframe restrictions) and fall back to GET.
+    # Redirect non-POST requests to the newsletter page so users can subscribe manually.
+    unless request.post?
+      redirect_to newsletter_path(@newsletter.slug), notice: "Something went wrong. You can subscribe manually from here."
+      return
+    end
+
     success_url = @newsletter.redirect_after_subscribe
     create_subscriber("embed", success_url)
   end
