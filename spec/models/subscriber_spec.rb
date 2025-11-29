@@ -180,10 +180,16 @@ RSpec.describe Subscriber, type: :model do
       }.to have_enqueued_mail(SubscriptionMailer, :confirmation)
     end
 
-    it 'sends reminder email' do
+    it 'sends reminder email via SendSubscriberReminderJob' do
       expect {
         subscriber.send_reminder
-      }.to have_enqueued_mail(SubscriptionMailer, :confirmation_reminder)
+      }.to have_enqueued_job(SendSubscriberReminderJob).with(subscriber.id, kind: :manual)
+    end
+
+    it 'allows specifying the reminder kind' do
+      expect {
+        subscriber.send_reminder(kind: :automatic)
+      }.to have_enqueued_job(SendSubscriberReminderJob).with(subscriber.id, kind: :automatic)
     end
   end
 end

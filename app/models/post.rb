@@ -33,7 +33,7 @@ class Post < ApplicationRecord
 
   belongs_to :newsletter
 
-  has_many :emails, dependent: :destroy_async
+  has_many :emails, as: :emailable, dependent: :destroy_async
   has_many :email_clicks, dependent: :destroy_async
   enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 

@@ -32,10 +32,10 @@ class SendPostBatchJob < BaseSendJob
     batch_subscribers.each do |subscriber|
       response = send_email(subscriber)
 
-      Email.create!(
-        post_id: post.id,
-        subscriber_id: subscriber.id,
-        id: response.message_id
+      post.emails.create!(
+        id: response.message_id,
+        post_id: post.id, # Kept for backwards compatibility
+        subscriber_id: subscriber.id
       )
     end
   end

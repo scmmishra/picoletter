@@ -25,7 +25,7 @@ FactoryBot.define do
   end
 
   factory :email do
-    post
+    association :emailable, factory: :post
     subscriber
     sequence(:id) { |n| "message-#{n}" }  # AWS SES message ID format
     status { :sent }
@@ -33,6 +33,7 @@ FactoryBot.define do
     opened_at { nil }
     bounced_at { nil }
     complained_at { nil }
+    post_id { emailable.is_a?(Post) ? emailable.id : nil }
 
     trait :delivered do
       status { :delivered }
