@@ -8,6 +8,34 @@ RSpec.describe Public::SubscribersController, type: :controller do
     allow(Newsletter).to receive(:from_slug).and_return(newsletter)
   end
 
+  describe 'GET #embed_subscribe' do
+    context 'when embed subscribe is enabled' do
+      before do
+        allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(false)
+        allow(AppConfig).to receive(:get).with("ENABLE_BILLING", false).and_return(false)
+      end
+
+      it 'redirects to the newsletter page with a notice' do
+        get :embed_subscribe, params: { slug: newsletter.slug }
+
+        expect(response).to redirect_to(newsletter_path(newsletter.slug))
+        expect(flash[:notice]).to eq("Something went wrong. You can subscribe manually from here.")
+      end
+    end
+
+    context 'when embed subscribe is disabled' do
+      before do
+        allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(true)
+        allow(AppConfig).to receive(:get).with("ENABLE_BILLING", false).and_return(false)
+      end
+
+      it 'returns forbidden' do
+        get :embed_subscribe, params: { slug: newsletter.slug }
+        expect(response.status).to eq(403)
+      end
+    end
+  end
+
   describe 'POST #embed_subscribe' do
     context 'when embed subscribe is enabled' do
       before do
