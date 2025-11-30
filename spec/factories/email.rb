@@ -33,7 +33,6 @@ FactoryBot.define do
     opened_at { nil }
     bounced_at { nil }
     complained_at { nil }
-    post_id { emailable.is_a?(Post) ? emailable.id : nil }
 
     trait :delivered do
       status { :delivered }

@@ -1,0 +1,73 @@
+<% if @subscriber.reminders.any? %>
+  <div class="flex gap-2 font-sans text-stone-500 items-center mb-4 mt-8 text-sm">
+    <h3>Reminders Sent</h3>
+    <hr class="flex-grow">
+  </div>
+  <div class="rounded-md border border-stone-200 overflow-hidden">
+    <table class="w-full text-sm font-sans">
+      <thead class="bg-stone-50 text-stone-500 text-left">
+        <tr>
+          <th class="px-3 py-2 font-medium">Sent</th>
+          <th class="px-3 py-2 font-medium">Type</th>
+          <th class="px-3 py-2 font-medium">Status</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-stone-200">
+        <% @subscriber.reminders.order(sent_at: :desc).each do |reminder| %>
+          <% email = reminder.emails.first %>
+
+          <tr>
+            <td class="px-3 py-2 text-stone-800">
+              <% if reminder.sent_at.present? %>
+                <% datetime = newsletter_datetime(reminder.sent_at, @newsletter) %>
+                <%= datetime[:date] %>
+                <span class="text-stone-400">at</span>
+                <%= datetime[:time] %>
+              <% else %>
+                <span class="text-stone-400">Pending</span>
+              <% end %>
+            </td>
+
+            <td class="px-3 py-2">
+              <span
+                class="
+                  inline-flex items-center justify-center h-5 text-[10px] font-medium px-2
+                  uppercase tracking-widest rounded-md
+                  <%= reminder.automatic? ? 'bg-blue-100 text-blue-600' : 'bg-stone-200 text-stone-600' %>
+                "
+              >
+                <%= reminder.kind %>
+              </span>
+            </td>
+
+            <td class="px-3 py-2">
+              <% if email %>
+                <span
+                  class="
+                    inline-flex items-center justify-center h-5 text-[10px] font-medium px-2
+                    uppercase tracking-widest rounded-md
+                    <% case email.status %>
+                    <% when 'delivered' %>
+                    bg-green-100 text-green-600
+                    <% when 'bounced' %>
+                    bg-red-100 text-red-600
+                    <% when 'complained' %>
+                    bg-orange-100 text-orange-600
+                    <% else %>
+                    bg-stone-200 text-stone-600
+                    <% end %>
+                  "
+                >
+                  <%= email.status %>
+                </span>
+              <% else %>
+                <span class="text-stone-400">—</span>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
