@@ -34,32 +34,28 @@
             </td>
 
             <td class="px-3 py-2">
-              <span
-                class="
-                  inline-flex items-center justify-center h-5 text-[10px] font-medium px-2
-                  uppercase tracking-widest rounded-md
-                  <% case email.status %>
-                  <% when 'delivered' %>
-                    bg-green-100 text-green-600
-                  <% when 'bounced' %>
-                    bg-red-100 text-red-600
-                  <% when 'complained' %>
-                    bg-orange-100 text-orange-600
-                  <% else %>
-                    bg-stone-200 text-stone-600
-                  <% end %>
-                "
-              >
-                <%= email.status %>
-              </span>
               <% if email.opened_at.present? %>
+                <span class="inline-flex items-center justify-center h-5 text-[10px] font-medium px-2 uppercase tracking-widest rounded-md bg-blue-100 text-blue-600">
+                  opened
+                </span>
+              <% else %>
                 <span
                   class="
                     inline-flex items-center justify-center h-5 text-[10px] font-medium px-2
-                    uppercase tracking-widest rounded-md bg-blue-100 text-blue-600 ml-1
+                    uppercase tracking-widest rounded-md
+                    <% case email.status %>
+                    <% when 'delivered' %>
+                      bg-green-100 text-green-600
+                    <% when 'bounced' %>
+                      bg-red-100 text-red-600
+                    <% when 'complained' %>
+                      bg-orange-100 text-orange-600
+                    <% else %>
+                      bg-stone-200 text-stone-600
+                    <% end %>
                   "
                 >
-                  opened
+                  <%= email.status %>
                 </span>
               <% end %>
             </td>
