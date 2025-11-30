@@ -4,6 +4,11 @@ class SendAutomaticRemindersJob < ApplicationJob
   queue_as :default
 
   def perform
+    unless AppConfig.reminders_enabled?
+      Rails.logger.info "[SendAutomaticReminders] Reminders feature is disabled"
+      return
+    end
+
     Rails.logger.info "[SendAutomaticReminders] Starting automatic reminder processing"
 
     Newsletter.where(auto_reminder_enabled: true).find_each do |newsletter|
