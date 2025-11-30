@@ -1,0 +1,32 @@
+<main class="max-w-xl py-10 mx-auto min-h-screen">
+  <section class="mb-5">
+    <div class="text-stone-500 font-sans uppercase tracking-wider font-semibold text-xs">
+      <%= link_to "#{newsletter.title} Home",
+      :newsletter,
+      class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors" %>
+    </div>
+    <h1 class="text-2xl mt-2">
+      All posts
+    </h1>
+  </section>
+
+  <section class="space-y-2">
+    <% posts.each do |post| %>
+      <%= link_to newsletter_post_path(post_slug: post.slug, slug: newsletter.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
+        <h2 class="text-lg"><%= post.title %></h2>
+
+        <p class="text-stone-500"><%= truncate(post.content.to_plain_text, length: 100) %></p>
+
+        <div class="text-sm text-stone-500 font-sans">
+          Published on <span class="font-medium text-stone-700"><%= post.published_at.strftime("%B %e, %Y") %></span>
+        </div>
+      <% end %>
+    <% end %>
+  </section>
+
+  <footer class="max-w-3xl mx-auto mt-10">
+    <p class="text-sm text-stone-500 text-center">
+      This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+    </p>
+  </footer>
+</main>
