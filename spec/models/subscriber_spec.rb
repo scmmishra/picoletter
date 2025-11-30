@@ -81,6 +81,64 @@ RSpec.describe Subscriber, type: :model do
     end
   end
 
+  describe '.eligible_for_auto_reminder' do
+    it 'includes unverified subscribers created ~24 hours ago without reminders' do
+      eligible = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago)
+      expect(Subscriber.eligible_for_auto_reminder).to include(eligible)
+    end
+
+    it 'excludes verified subscribers' do
+      verified = create(:subscriber, newsletter: newsletter, status: :verified, created_at: 24.hours.ago)
+      expect(Subscriber.eligible_for_auto_reminder).not_to include(verified)
+    end
+
+    it 'excludes subscribers with existing reminders' do
+      with_reminder = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago)
+      create(:subscriber_reminder, subscriber: with_reminder, kind: :manual)
+      expect(Subscriber.eligible_for_auto_reminder).not_to include(with_reminder)
+    end
+
+    it 'excludes subscribers created less than 23.5 hours ago' do
+      too_recent = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 23.hours.ago)
+      expect(Subscriber.eligible_for_auto_reminder).not_to include(too_recent)
+    end
+
+    it 'excludes subscribers created more than 24.5 hours ago' do
+      too_old = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 25.hours.ago)
+      expect(Subscriber.eligible_for_auto_reminder).not_to include(too_old)
+    end
+
+    it 'includes subscribers within the 30 minute margin' do
+      within_margin = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago + 15.minutes)
+      expect(Subscriber.eligible_for_auto_reminder).to include(within_margin)
+    end
+  end
+
+  describe '#has_delivery_issues?' do
+    it 'returns true if subscriber has bounced emails' do
+      sub = create(:subscriber, newsletter: newsletter)
+      create(:email, subscriber: sub, status: :bounced)
+      expect(sub.has_delivery_issues?).to be true
+    end
+
+    it 'returns true if subscriber has complained emails' do
+      sub = create(:subscriber, newsletter: newsletter)
+      create(:email, subscriber: sub, status: :complained)
+      expect(sub.has_delivery_issues?).to be true
+    end
+
+    it 'returns false if subscriber has no delivery issues' do
+      sub = create(:subscriber, newsletter: newsletter)
+      create(:email, subscriber: sub, status: :delivered)
+      expect(sub.has_delivery_issues?).to be false
+    end
+
+    it 'returns false if subscriber has no emails' do
+      sub = create(:subscriber, newsletter: newsletter)
+      expect(sub.has_delivery_issues?).to be false
+    end
+  end
+
   describe '#verify!' do
     it 'changes status to verified and sets verified_at' do
       unverified = create(:subscriber, newsletter: newsletter, status: 'unverified')

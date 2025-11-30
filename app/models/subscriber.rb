@@ -46,6 +46,12 @@ class Subscriber < ApplicationRecord
   scope :unverified, -> { where(status: "unverified") }
   scope :unsubscribed, -> { where(status: "unsubscribed") }
   scope :subscribed, -> { verified.or(unverified) }
+  scope :eligible_for_auto_reminder, -> {
+    unverified
+      .where(created_at: (24.hours.ago - 30.minutes)..(24.hours.ago + 30.minutes))
+      .left_joins(:reminders)
+      .where(subscriber_reminders: { id: nil })
+  }
 
   enum :status, { unverified: 0, verified: 1, unsubscribed: 2 }
   enum :unsubscribe_reason, { bounced: "bounced", complained: "complained", spam: "spam" }
@@ -73,6 +79,10 @@ class Subscriber < ApplicationRecord
 
   def send_confirmation_email
     SubscriptionMailer.with(subscriber: self).confirmation.deliver_later
+  end
+
+  def has_delivery_issues?
+    emails.where(status: [ :bounced, :complained ]).exists?
   end
 
   private
