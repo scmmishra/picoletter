@@ -1,19 +1,20 @@
-<section
-  class="
-    px-3 py-2 rounded-md bg-stone-50 outline-stone-200 outline outline-1 max-w-lg
-    mt-8
-  "
->
+<section class="px-3 py-2 rounded-md bg-stone-50 outline-stone-200 outline outline-1">
   <% if @subscriber.unsubscribed? && @subscriber.unsubscribe_reason %>
     <div class="leading-6 font-normal text-stone-500 text-sm font-sans mb-2">
       This member was unsubscribed because
       <% case @subscriber.unsubscribe_reason %>
       <% when 'bounced' %>
-        <span class="font-medium text-stone-800">their email bounced twice.</span>
+        <span class="font-medium text-stone-800">
+          their email bounced twice.
+        </span>
       <% when 'complained' %>
-        <span class="font-medium text-stone-800">they complained and were automatically marked.</span>
+        <span class="font-medium text-stone-800">
+          they complained and were automatically marked.
+        </span>
       <% when 'spam' %>
-        <span class="font-medium text-stone-800">the system detected their email as spam.</span>
+        <span class="font-medium text-stone-800">
+          the system detected their email as spam.
+        </span>
       <% end %>
     </div>
   <% end %>
@@ -51,7 +52,7 @@
   </div>
 
   <% if @subscriber.analytics_data.present? %>
-    <hr class="max-w-lg my-3">
+    <hr class="my-3">
     <% @subscriber.analytics_data.each do |key, value| %>
       <% if value.present? %>
         <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
