@@ -12,13 +12,11 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  emailable_id   :bigint
-#  post_id        :bigint
 #  subscriber_id  :integer
 #
 # Indexes
 #
 #  index_emails_on_emailable_type_and_emailable_id  (emailable_type,emailable_id)
-#  index_emails_on_post_id                          (post_id)
 #  index_emails_on_subscriber_id                    (subscriber_id)
 #
 # Foreign Keys
