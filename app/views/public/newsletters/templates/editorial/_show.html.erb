@@ -2,43 +2,32 @@
 
 <main
   class="
-    <%= layout == 'horizontal' ? 'max-w-4xl' : 'max-w-lg' %> pt-20 pb-10 mx-auto md:flex md:flex-col
-    md:justify-between min-h-screen
+    max-w-xl pt-[10%] pb-10 mx-auto md:flex md:flex-col md:justify-between
+    min-h-screen
   "
 >
-  <section class="md:gap-x-8 gap-y-5 gap-6 <%= layout == 'horizontal' ? 'grid grid-cols-1 md:grid-cols-2' : 'grid grid-cols-1' %>">
-    <div class="<%= layout == 'horizontal' ? 'md:col-span-2' : '' %>">
-      <h1 class="text-3xl leading-10 text-stone-900 font-bold">
-        <%= newsletter.title %>
-      </h1>
-    </div>
+  <section class="grid grid-cols-1">
+    <h1 class="text-6xl text-balance text-stone-900 font-serif text-center">
+      <%= newsletter.title %>
+    </h1>
 
-    <div class="text-stone-700 prose">
+    <div class="text-stone-700 prose text-center text-lg mt-5">
       <%= sanitize newsletter.description_html %>
     </div>
 
-    <div>
+    <div class="mt-12">
       <%= render newsletter.template_partial("subscribe"), newsletter: newsletter, autofocus: true %>
-      <hr class="my-5">
 
-      <div class="space-y-2">
+      <div class="flex items-center gap-6 justify-center text-base mt-12">
         <% if newsletter.website.present? %>
-          <%= link_to newsletter.website, class: "text-stone-700 flex items-center gap-1 group"  do %>
+          <%= link_to newsletter.website, class: "text-stone-600 flex items-center gap-1 group"  do %>
             Visit Website
-            <%= lucide_icon(
-              "arrow-right",
-              class: "h-4 w-4 group-hover:translate-x-1 duration-200",
-            ) %>
           <% end %>
         <% end %>
 
         <% if newsletter.enable_archive %>
-          <%= link_to newsletter_all_posts_path, class: "text-stone-700 flex items-center gap-1 group" do %>
+          <%= link_to newsletter_all_posts_path, class: "text-stone-600 flex items-center gap-1 group" do %>
             View all posts
-            <%= lucide_icon(
-              "arrow-right",
-              class: "h-4 w-4 group-hover:translate-x-1 duration-200",
-            ) %>
           <% end %>
         <% end %>
       </div>

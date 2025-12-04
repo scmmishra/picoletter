@@ -1,30 +1,21 @@
 <% autofocus = local_assigns.fetch(:autofocus, false) %>
 
-<div class="p-6 pt-5 pb-7 bg-white rounded-lg shadow-without-inset mb-5">
-  <%= labeled_form_with url: subscribe_path, class: "flex flex-col gap-4", data: { turbo: false } do |form| %>
+<div class="mb-5">
+  <%= form_with url: subscribe_path, class: "flex gap-2", data: { turbo: false } do |form| %>
     <%= form.email_field :email,
                      required: true,
                      class: "input w-full",
                      autofocus: autofocus,
                      autocomplete: "email",
-                     placeholder: "you@example.com",
-                     value: params[:email],
-                     label_class: "ml-px text-stone-500" %>
-
-    <%= form.text_field :name,
-                    required: true,
-                    class: "input w-full",
-                    autocomplete: "name",
-                    placeholder: "Jake Ashby",
-                    label: "Full Name",
-                    label_class: "ml-px text-stone-500" %>
-
-    <%= hashcash_hidden_field_tag %>
+                     placeholder: "Enter your email",
+                     value: params[:email] %>
 
     <div>
       <%= form.submit "Subscribe",
                   class: "btn btn-tinted w-full",
                   style: newsletter.primary_styles %>
     </div>
+
+    <%= hashcash_hidden_field_tag %>
   <% end %>
 </div>
