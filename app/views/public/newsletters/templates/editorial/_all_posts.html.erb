@@ -31,7 +31,7 @@
           <%= truncate(post.content.to_plain_text, length: 100) %>
         </p>
 
-        <div class="text-sm text-stone-600 font-sans">
+        <div class="text-sm text-stone-600">
           Published on <%= post.published_at.strftime("%B %e, %Y") %>
         </div>
       <% end %>
