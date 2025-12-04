@@ -1,33 +1,38 @@
 <main class="max-w-xl py-10 mx-auto min-h-screen">
-  <section class="mb-5">
+  <section class="mb-12">
+    <h1 class="text-6xl font-serif">
+      All posts
+    </h1>
+
     <div
       class="
-        text-stone-500 font-sans uppercase tracking-wider font-semibold
+        text-stone-500 flex gap-6 font-sans mt-5 uppercase tracking-wider font-semibold
         text-xs
       "
     >
-      <%= link_to "#{newsletter.title} Home",
+      <%= link_to "Newsletter Home",
       :newsletter,
       class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors" %>
-    </div>
 
-    <h1 class="text-2xl mt-2">
-      All posts
-    </h1>
+      <% if newsletter.website.present? %>
+        <%= link_to newsletter.website, class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors"  do %>
+          <%= URI.parse(newsletter.website).host %>
+        <% end %>
+      <% end %>
+    </div>
   </section>
 
-  <section class="space-y-2">
-    <% posts.each do |post| %>
-      <%= link_to newsletter_post_path(post_slug: post.slug, slug: newsletter.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
-        <h2 class="text-lg"><%= post.title %></h2>
+  <section class="divide-y divide-stone-300">
+    <% posts.reorder(:published_at => :desc).each do |post| %>
+      <%= link_to newsletter_post_path(post_slug: post.slug, slug: newsletter.slug), class: "block space-y-2 py-6 first:pt-0 last:pb-0" do %>
+        <h2 class="text-lg text-stone-900 font-serif"><%= post.title %></h2>
 
-        <p class="text-stone-500">
+        <p class="text-stone-600 text-sm">
           <%= truncate(post.content.to_plain_text, length: 100) %>
         </p>
 
-        <div class="text-sm text-stone-500 font-sans">
-          Published on
-          <span class="font-medium text-stone-700"><%= post.published_at.strftime("%B %e, %Y") %></span>
+        <div class="text-sm text-stone-600 font-sans">
+          Published on <%= post.published_at.strftime("%B %e, %Y") %>
         </div>
       <% end %>
     <% end %>
