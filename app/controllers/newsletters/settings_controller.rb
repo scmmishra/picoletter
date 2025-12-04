@@ -91,7 +91,7 @@ class Newsletters::SettingsController < ApplicationController
   end
 
   def design_params
-    params.require(:newsletter).permit(:email_css, :email_footer, :font_preference, :primary_color)
+    params.require(:newsletter).permit(:email_css, :email_footer, :font_preference, :primary_color, :template)
   end
 
   def sending_params
