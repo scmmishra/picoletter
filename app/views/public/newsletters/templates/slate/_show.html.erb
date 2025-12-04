@@ -8,10 +8,14 @@
 >
   <section class="md:gap-x-8 gap-y-5 gap-6 <%= layout == 'horizontal' ? 'grid grid-cols-1 md:grid-cols-2' : 'grid grid-cols-1' %>">
     <div class="<%= layout == 'horizontal' ? 'md:col-span-2' : '' %>">
-      <h1 class="text-3xl leading-10 text-stone-900 font-bold"><%= newsletter.title %></h1>
+      <h1 class="text-3xl leading-10 text-stone-900 font-bold">
+        <%= newsletter.title %>
+      </h1>
     </div>
 
-    <div class="text-stone-700 prose"><%= sanitize newsletter.description_html %></div>
+    <div class="text-stone-700 prose">
+      <%= sanitize newsletter.description_html %>
+    </div>
 
     <div>
       <%= render newsletter.template_partial("subscribe"), newsletter: newsletter, autofocus: true %>
@@ -27,6 +31,7 @@
             ) %>
           <% end %>
         <% end %>
+
         <% if newsletter.enable_archive %>
           <%= link_to newsletter_all_posts_path, class: "text-stone-700 flex items-center gap-1 group" do %>
             View all posts
@@ -39,9 +44,11 @@
       </div>
     </div>
   </section>
+
   <footer class="max-w-3xl mx-auto mt-12">
     <p class="text-sm text-stone-500 text-center">
-      This newsletter is managed by <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+      This newsletter is managed by
+      <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
     </p>
   </footer>
 </main>
