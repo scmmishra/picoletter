@@ -41,6 +41,7 @@ class Newsletter < ApplicationRecord
   include Embeddable
   include Statusable
   include Themeable
+  include Templatable
   include Authorizable
 
   VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
@@ -113,6 +114,18 @@ class Newsletter < ApplicationRecord
   def user_role(user)
     return :owner if owner?(user)
     memberships.find_by(user: user)&.role&.to_sym
+  end
+
+  def website_host
+    return if website.blank?
+
+    URI.parse(website).host
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def website_label
+    website_host.presence || website
   end
 
   private

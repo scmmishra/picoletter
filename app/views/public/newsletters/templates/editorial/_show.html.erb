@@ -1,0 +1,43 @@
+<% layout = newsletter.description.present? && newsletter.description.length > 500 ? 'horizontal' : 'vertical' %>
+
+<main
+  class="
+    max-w-xl pt-[10%] pb-10 mx-auto md:flex md:flex-col md:justify-between
+    min-h-screen
+  "
+>
+  <section class="grid grid-cols-1">
+    <h1 class="text-6xl text-balance text-stone-900 font-serif text-center">
+      <%= newsletter.title %>
+    </h1>
+
+    <div class="text-stone-700 prose text-center text-lg mt-5">
+      <%= sanitize newsletter.description_html %>
+    </div>
+
+    <div class="mt-12">
+      <%= render newsletter.template_partial("subscribe"), newsletter: newsletter, autofocus: true %>
+
+      <div class="flex items-center gap-6 justify-center text-base mt-12">
+        <% if newsletter.website.present? %>
+          <%= link_to newsletter.website, class: "text-stone-600 flex items-center gap-1 group"  do %>
+            Visit Website
+          <% end %>
+        <% end %>
+
+        <% if newsletter.enable_archive %>
+          <%= link_to newsletter_all_posts_path, class: "text-stone-600 flex items-center gap-1 group" do %>
+            View all posts
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <footer class="max-w-3xl mx-auto mt-12">
+    <p class="text-sm text-stone-500 text-center">
+      This newsletter is managed by
+      <%= link_to "Picoletter", "/", class: "text-zinc-500 hover:underline" %>.
+    </p>
+  </footer>
+</main>

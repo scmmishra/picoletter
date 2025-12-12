@@ -1,0 +1,40 @@
+<div class="space-y-2">
+  <%= form.label :template,
+             "Template",
+             class: "ml-px text-stone-500 text-sm font-sans" %>
+
+  <div class="grid grid-cols-3 gap-4">
+    <% Templatable::TEMPLATES.each do |template_name| %>
+      <label
+        for="template-<%= template_name %>"
+        class="
+          relative cursor-pointer group block transition-transform
+          duration-150 ease-out active:scale-[0.98]
+        "
+      >
+        <%= form.radio_button :template,
+                          template_name,
+                          class: "sr-only",
+                          id: "template-#{template_name}",
+                          checked: newsletter.template_name == template_name %>
+
+        <%= image_tag "/#{template_name}-preview.avif",
+                      alt: "#{template_name.titleize} Template",
+                      class: "w-full h-auto rounded-lg overflow-hidden border-2 border-stone-200 group-has-[:checked]:border-stone-400" %>
+
+        <div class="absolute bottom-2 left-2.5 text-xs font-sans text-stone-700">
+          <%= template_name.titleize %>
+        </div>
+
+        <div
+          class="
+            absolute bottom-2 right-2 rounded-full p-1 opacity-0
+            group-has-[:checked]:opacity-100 bg-stone-800
+          "
+        >
+          <%= lucide_icon("check", class: "size-3 text-white") %>
+        </div>
+      </label>
+    <% end %>
+  </div>
+</div>
