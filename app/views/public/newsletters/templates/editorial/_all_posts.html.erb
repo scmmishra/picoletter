@@ -11,7 +11,7 @@
       "
     >
       <%= link_to "Newsletter Home",
-      :newsletter,
+      newsletter_path(slug: newsletter.slug),
       class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors" %>
 
       <% if newsletter.website.present? %>
