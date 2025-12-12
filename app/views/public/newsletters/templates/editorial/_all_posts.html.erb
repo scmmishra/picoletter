@@ -16,7 +16,7 @@
 
       <% if newsletter.website.present? %>
         <%= link_to newsletter.website, class: "text-stone-500 hover:text-stone-700 duration-200 transition-colors"  do %>
-          <%= URI.parse(newsletter.website).host %>
+          <%= newsletter.website_label %>
         <% end %>
       <% end %>
     </div>

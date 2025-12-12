@@ -116,6 +116,18 @@ class Newsletter < ApplicationRecord
     memberships.find_by(user: user)&.role&.to_sym
   end
 
+  def website_host
+    return if website.blank?
+
+    URI.parse(website).host
+  rescue URI::InvalidURIError
+    nil
+  end
+
+  def website_label
+    website_host.presence || website
+  end
+
   private
 
   def create_owner_membership
