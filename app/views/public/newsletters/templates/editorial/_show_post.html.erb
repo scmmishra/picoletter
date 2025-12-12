@@ -17,7 +17,9 @@
 
     <div class="text-sm text-stone-500 font-sans">
       Published on
-      <span class="font-medium text-stone-800"><%= post.published_at.strftime("%B %e, %Y") %></span>
+      <span class="font-medium text-stone-800">
+        <%= post.published_at.present? ? post.published_at.strftime("%B %e, %Y") : "Unpublished" %>
+      </span>
     </div>
   </section>
 
