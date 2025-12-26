@@ -7,8 +7,8 @@ class UsersController < ApplicationController
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
 
-  rate_limit to: 10, within: 5.minutes, only: :resend_verification_email
-  rate_limit to: 10, within: 3.minutes, only: :create, with: -> { redirect_to signup_path, notice: "Try again later." }
+  rate_limit to: 5, within: 5.minutes, only: :resend_verification_email
+  rate_limit to: 5, within: 3.minutes, only: :create
 
   def new
     if Current.user.present?
