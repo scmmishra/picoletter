@@ -10,6 +10,11 @@ RSpec.describe SES::TenantService do
   let(:service) { described_class.new }
 
   before do
+    # Stub AWS credentials
+    allow(AppConfig).to receive(:get!).with("AWS_ACCESS_KEY_ID").and_return("fake-key-id")
+    allow(AppConfig).to receive(:get!).with("AWS_SECRET_ACCESS_KEY").and_return("fake-secret-key")
+    allow(AppConfig).to receive(:get).with("AWS_REGION", anything).and_return(region)
+
     allow(Aws::SESV2::Client).to receive(:new).and_return(mock_ses_client)
     allow(Aws::STS::Client).to receive(:new).and_return(mock_sts_client)
     allow(mock_sts_client).to receive(:get_caller_identity).and_return(
