@@ -42,16 +42,36 @@ class Domain < ApplicationRecord
     status_success? && dkim_status_success? && spf_status_success?
   end
 
-  def register
-    public_key = ses_service.create_identity
+  def register(tenant_name: nil)
+    public_key = ses_service.create_identity(tenant_name: tenant_name)
     update(public_key: public_key, region: ses_service.region)
+
+    # Associate with tenant if provided
+    if tenant_name.present?
+      SES::TenantService.new.associate_identity(tenant_name, name)
+      self.ses_tenant_id = tenant_name
+      save! if changed?
+    end
+
     sync_attributes
   end
 
-  def register_or_sync
+  def register_or_sync(tenant_name: nil)
     if public_key.nil?
-      register
+      # New identity - create and associate
+      register(tenant_name: tenant_name)
     else
+      # Existing identity - check if tenant is newly being added
+      tenant_previously_nil = ses_tenant_id.nil?
+
+      # Store tenant ID for future operations
+      self.ses_tenant_id = tenant_name if tenant_name.present?
+
+      # Associate if tenant newly added
+      if tenant_name.present? && tenant_previously_nil
+        SES::TenantService.new.associate_identity(tenant_name, name)
+        save! if changed?
+      end
       sync_attributes
     end
   end
