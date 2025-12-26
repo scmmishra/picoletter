@@ -24,13 +24,15 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  domain_id             :string
+#  ses_tenant_id         :string
 #  user_id               :integer          not null
 #
 # Indexes
 #
-#  index_newsletters_on_settings  (settings) USING gin
-#  index_newsletters_on_slug      (slug)
-#  index_newsletters_on_user_id   (user_id)
+#  index_newsletters_on_ses_tenant_id  (ses_tenant_id)
+#  index_newsletters_on_settings       (settings) USING gin
+#  index_newsletters_on_slug           (slug)
+#  index_newsletters_on_user_id        (user_id)
 #
 # Foreign Keys
 #
