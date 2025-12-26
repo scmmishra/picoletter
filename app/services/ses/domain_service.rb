@@ -4,7 +4,7 @@ class SES::DomainService < BaseAwsService
     @domain = domain
   end
 
-  def create_identity
+  def create_identity(tenant_name: nil)
     # we generate a new key pair for each domain
     # instead of relying on AWS to generate it
     # That way we have vendor portability
@@ -21,13 +21,16 @@ class SES::DomainService < BaseAwsService
     #
     # This enhances email deliverability by proving domain ownership and
     # message authenticity to receiving email servers.
-    @ses_client.create_email_identity({
+    identity_params = {
       email_identity: @domain,
       dkim_signing_attributes: {
         domain_signing_selector: "picoletter",
         domain_signing_private_key: private_key
       }
-    })
+    }
+    identity_params[:tenant_name] = tenant_name if tenant_name.present?
+
+    @ses_client.create_email_identity(identity_params)
 
     # The Mail-From domain defines the domain used in the MAIL FROM
     # (envelope sender) during the email transmission. It serves two

@@ -24,13 +24,15 @@
 #  created_at            :datetime         not null
 #  updated_at            :datetime         not null
 #  domain_id             :string
+#  ses_tenant_id         :string
 #  user_id               :integer          not null
 #
 # Indexes
 #
-#  index_newsletters_on_settings  (settings) USING gin
-#  index_newsletters_on_slug      (slug)
-#  index_newsletters_on_user_id   (user_id)
+#  index_newsletters_on_ses_tenant_id  (ses_tenant_id)
+#  index_newsletters_on_settings       (settings) USING gin
+#  index_newsletters_on_slug           (slug)
+#  index_newsletters_on_user_id        (user_id)
 #
 # Foreign Keys
 #
@@ -52,9 +54,10 @@ class Newsletter < ApplicationRecord
 
   validates :redirect_after_confirm, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
   validates :redirect_after_subscribe, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
+  validates :ses_tenant_id, format: { with: /\A[a-z0-9-]{1,64}\z/ }, allow_nil: true
 
   belongs_to :user
-  has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
+  has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id", dependent: :destroy
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :labels, dependent: :destroy
@@ -69,6 +72,8 @@ class Newsletter < ApplicationRecord
   validates :title, presence: true
 
   after_create :create_owner_membership
+  after_create :create_ses_tenant, if: -> { AppConfig.ses_tenants_enabled? }
+  before_destroy :cleanup_ses_tenant, if: -> { ses_tenant_id.present? }
 
   attr_accessor :dkim_tokens
 
@@ -128,9 +133,46 @@ class Newsletter < ApplicationRecord
     website_host.presence || website
   end
 
+  def generate_tenant_name
+    "newsletter-#{id}-#{SecureRandom.hex(4)}"
+  end
+
   private
 
   def create_owner_membership
     memberships.create!(user: user, role: :administrator)
+  end
+
+  def create_ses_tenant
+    return if ses_tenant_id.present?
+
+    tenant_name = generate_tenant_name
+    config_set = AppConfig.get("AWS_SES_CONFIGURATION_SET")
+
+    SES::TenantService.new.create_tenant(tenant_name, config_set)
+    update_column(:ses_tenant_id, tenant_name)
+  rescue => e
+    Rails.logger.error("Failed to create tenant: #{e.message}")
+    # Non-blocking: newsletter can function without tenant
+  end
+
+  def cleanup_ses_tenant
+    tenant_service = SES::TenantService.new
+
+    # Remove domain association if exists
+    if sending_domain&.ses_tenant_id.present?
+      tenant_service.disassociate_identity(ses_tenant_id, sending_domain.name)
+    end
+
+    # Remove configuration set association if exists
+    config_set = AppConfig.get("AWS_SES_CONFIGURATION_SET")
+    if config_set.present?
+      tenant_service.disassociate_configuration_set(ses_tenant_id, config_set)
+    end
+
+    # Delete tenant
+    tenant_service.delete_tenant(ses_tenant_id)
+  rescue => e
+    Rails.logger.error("Failed to cleanup tenant: #{e.message}")
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_29_133437) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_26_081341) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -88,11 +88,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_29_133437) do
     t.bigint "newsletter_id", null: false
     t.string "public_key"
     t.string "region", default: "us-east-1"
+    t.string "ses_tenant_id"
     t.string "spf_status", default: "pending"
     t.string "status", default: "pending"
     t.datetime "updated_at", null: false
     t.index ["name"], name: "index_domains_on_name", unique: true
     t.index ["newsletter_id"], name: "index_domains_on_newsletter_id"
+    t.index ["ses_tenant_id"], name: "index_domains_on_ses_tenant_id"
     t.index ["status", "dkim_status", "spf_status"], name: "index_domains_on_status_and_dkim_status_and_spf_status"
   end
 
@@ -171,6 +173,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_29_133437) do
     t.string "reply_to"
     t.string "sending_address"
     t.string "sending_name"
+    t.string "ses_tenant_id"
     t.jsonb "settings", default: {}, null: false
     t.string "slug", null: false
     t.string "status"
@@ -180,6 +183,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_29_133437) do
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
     t.string "website"
+    t.index ["ses_tenant_id"], name: "index_newsletters_on_ses_tenant_id"
     t.index ["settings"], name: "index_newsletters_on_settings", using: :gin
     t.index ["slug"], name: "index_newsletters_on_slug"
     t.index ["user_id"], name: "index_newsletters_on_user_id"

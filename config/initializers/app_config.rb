@@ -7,6 +7,10 @@ class AppConfig
     AppConfig.get("ENABLE_REMINDERS", false)
   end
 
+  def self.ses_tenants_enabled?
+    AppConfig.get("ENABLE_SES_TENANTS", false)
+  end
+
   class << self
     def get!(env_key)
       value = ENV[env_key]

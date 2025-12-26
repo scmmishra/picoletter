@@ -60,8 +60,15 @@ class SendPostBatchJob < BaseSendJob
         "List-Unsubscribe" => "<#{unsub_email}>,<#{unsub_url}>",
         "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
         "X-Newsletter-id" => "picoletter-#{newsletter.id}-#{post.id}-#{subscriber.id}"
-      }
+      },
+      tenant_name: tenant_name_for_send
     )
+  end
+
+  def tenant_name_for_send
+    # Only use tenant when sending from verified custom domain
+    # Default domain (picoletter.com) is not associated with per-newsletter tenants
+    newsletter.ses_verified? ? newsletter.ses_tenant_id : nil
   end
 
   def ses_service

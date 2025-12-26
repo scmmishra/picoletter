@@ -15,9 +15,10 @@ class DomainSetupService
 
     ActiveRecord::Base.transaction do
       remove_current_domain if has_existing_domain?
+      ensure_newsletter_tenant
       newsletter.update(sending_address: sending_address, reply_to: reply_to, sending_name: sending_name)
       domain = Domain.find_or_create_by(name: domain_to_register, newsletter_id: newsletter.id)
-      domain.register_or_sync
+      domain.register_or_sync(tenant_name: tenant_name)
     end
   end
 
@@ -63,5 +64,23 @@ class DomainSetupService
 
   def domain_already_registered?
     !Domain.is_unique(domain_to_register, newsletter.id)
+  end
+
+  def ensure_newsletter_tenant
+    return unless AppConfig.ses_tenants_enabled?
+    return if newsletter.ses_tenant_id.present?
+
+    tenant_name = newsletter.generate_tenant_name
+    config_set = AppConfig.get("AWS_SES_CONFIGURATION_SET")
+
+    SES::TenantService.new.create_tenant(tenant_name, config_set)
+    newsletter.update_column(:ses_tenant_id, tenant_name)
+  rescue => e
+    Rails.logger.error("Failed to create tenant in DomainSetupService: #{e.message}")
+    # Non-blocking: continue with domain setup
+  end
+
+  def tenant_name
+    AppConfig.ses_tenants_enabled? ? newsletter.ses_tenant_id : nil
   end
 end
