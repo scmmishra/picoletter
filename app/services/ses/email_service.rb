@@ -33,7 +33,7 @@ class SES::EmailService < BaseAwsService
   def build_email_payload(params)
     parsed_headers = params.fetch(:headers, {}).map { |key, value| { name: key, value: value } }
 
-    {
+    payload = {
       from_email_address: params[:from],
       destination: { to_addresses: params[:to] },
       reply_to_addresses: [ params[:reply_to] ],
@@ -49,6 +49,11 @@ class SES::EmailService < BaseAwsService
       },
       configuration_set_name: configuration_set
     }
+
+    # Add tenant_name if provided
+    payload[:tenant_name] = params[:tenant_name] if params[:tenant_name].present?
+
+    payload
   end
 
   def configuration_set
