@@ -176,4 +176,92 @@ RSpec.describe DomainSetupService do
       expect(mock_ses_service).not_to have_received(:delete_identity)
     end
   end
+
+  describe "Tenant integration" do
+    let!(:user) { create(:user) }
+    let!(:newsletter) { create(:newsletter, user_id: user.id, ses_tenant_id: nil) }
+    let(:sending_params) { { reply_to: "hey@example.com", sending_address: "hey@example.com" } }
+
+    let(:mock_ses_service) { double("SES::DomainService") }
+    let(:mock_tenant_service) { double("SES::TenantService") }
+    let(:mock_identity_response) do
+      double(
+        dkim_attributes: double(status: 'SUCCESS'),
+        mail_from_attributes: double(mail_from_domain_status: 'SUCCESS'),
+        verification_status: 'SUCCESS'
+      )
+    end
+
+    before do
+      allow(SES::DomainService).to receive(:new).and_return(mock_ses_service)
+      allow(SES::TenantService).to receive(:new).and_return(mock_tenant_service)
+      allow(mock_ses_service).to receive(:create_identity).and_return('mock-public-key')
+      allow(mock_ses_service).to receive(:get_identity).and_return(mock_identity_response)
+      allow(mock_ses_service).to receive(:region).and_return('us-east-1')
+      allow(AppConfig).to receive(:get).with("AWS_SES_CONFIGURATION_SET").and_return("picoletter-config")
+    end
+
+    context "when tenants are enabled and newsletter has no tenant" do
+      before do
+        allow(AppConfig).to receive(:ses_tenants_enabled?).and_return(true)
+      end
+
+      it "creates tenant and associates domain" do
+        expect(mock_tenant_service).to receive(:create_tenant).with(
+          anything,
+          "picoletter-config"
+        )
+        expect(mock_tenant_service).to receive(:associate_identity).with(
+          anything,
+          "example.com"
+        )
+        expect(mock_ses_service).to receive(:create_identity).with(tenant_name: anything)
+
+        domain_setup = DomainSetupService.new(newsletter, sending_params)
+        domain_setup.perform
+
+        expect(newsletter.reload.ses_tenant_id).to be_present
+        expect(Domain.find_by(newsletter: newsletter).ses_tenant_id).to eq(newsletter.ses_tenant_id)
+      end
+    end
+
+    context "when tenants are enabled and newsletter has tenant" do
+      before do
+        newsletter.update!(ses_tenant_id: "newsletter-1-abc123")
+        allow(AppConfig).to receive(:ses_tenants_enabled?).and_return(true)
+      end
+
+      it "uses existing tenant and associates domain" do
+        expect(mock_tenant_service).not_to receive(:create_tenant)
+        expect(mock_tenant_service).to receive(:associate_identity).with(
+          "newsletter-1-abc123",
+          "example.com"
+        )
+        expect(mock_ses_service).to receive(:create_identity).with(tenant_name: "newsletter-1-abc123")
+
+        domain_setup = DomainSetupService.new(newsletter, sending_params)
+        domain_setup.perform
+
+        expect(Domain.find_by(newsletter: newsletter).ses_tenant_id).to eq("newsletter-1-abc123")
+      end
+    end
+
+    context "when tenants are disabled" do
+      before do
+        allow(AppConfig).to receive(:ses_tenants_enabled?).and_return(false)
+      end
+
+      it "creates domain without tenant" do
+        expect(mock_tenant_service).not_to receive(:create_tenant)
+        expect(mock_tenant_service).not_to receive(:associate_identity)
+        expect(mock_ses_service).to receive(:create_identity).with(tenant_name: nil)
+
+        domain_setup = DomainSetupService.new(newsletter, sending_params)
+        domain_setup.perform
+
+        expect(newsletter.reload.ses_tenant_id).to be_nil
+        expect(Domain.find_by(newsletter: newsletter).ses_tenant_id).to be_nil
+      end
+    end
+  end
 end
