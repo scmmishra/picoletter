@@ -119,8 +119,9 @@ gem "browser"
 gem "valid_email2"
 gem "cloudflare-rails"
 
-# to parse maxmind db
-gem "aws-sdk-rails", "~> 3"
+# AWS SES integration
+gem "aws-sdk-rails", "~> 5"
+gem "aws-actionmailer-ses"  # Provides :ses and :ses_v2 delivery methods (includes aws-sdk-sesv2)
 
 # Bot prevention
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"
