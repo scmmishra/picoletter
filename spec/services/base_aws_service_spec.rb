@@ -72,7 +72,7 @@ RSpec.describe BaseAwsService do
       # can properly inherit from BaseAwsService
       expect(SES::EmailService.new).to be_a(BaseAwsService)
       expect(SES::DomainService.new("example.com")).to be_a(BaseAwsService)
-      expect(SES::TenantService.new).to be_a(BaseAwsService)
+      # expect(SES::TenantService.new).to be_a(BaseAwsService)  # Tenant code removed
     end
   end
 

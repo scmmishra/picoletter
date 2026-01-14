@@ -17,14 +17,15 @@ RSpec.describe SES::DomainService do
       expect(public_key).to match(/^[A-Za-z0-9+\/=]+$/)
     end
 
-    it "creates identity with tenant_name parameter" do
-      # Note: In aws-sdk-sesv2 v3, tenant_name is not supported in create_email_identity
-      # This test verifies the parameter is passed through without modification
-      # If v5 changes parameter validation, this will catch it
-      expect {
-        service.create_identity(tenant_name: "newsletter-123-abc456")
-      }.to raise_error(ArgumentError, /unexpected value at params\[:tenant_name\]/)
-    end
+    # Tenant functionality removed - test no longer applicable
+    # it "creates identity with tenant_name parameter" do
+    #   # Note: In aws-sdk-sesv2 v3, tenant_name is not supported in create_email_identity
+    #   # This test verifies the parameter is passed through without modification
+    #   # If v5 changes parameter validation, this will catch it
+    #   expect {
+    #     service.create_identity(tenant_name: "newsletter-123-abc456")
+    #   }.to raise_error(ArgumentError, /unexpected value at params\[:tenant_name\]/)
+    # end
 
     it "creates identity without tenant_name parameter" do
       expect {
