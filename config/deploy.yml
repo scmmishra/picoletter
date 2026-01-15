@@ -20,17 +20,17 @@ env:
   secret:
     - SECRET_KEY_BASE
     - DATABASE_URL
-    - R2__ACCOUNT_ID
-    - R2__ACCESS_KEY
-    - R2__ACCESS_SECRET
-    - R2__BUCKET_NAME
-    - AWS_ACCESS_KEY_ID
-    - AWS_SECRET_ACCESS_KEY
-    - AWS_REGION
-    - GITHUB_CLIENT_ID
-    - GITHUB_CLIENT_SECRET
-    - GOOGLE_CLIENT_ID
-    - GOOGLE_CLIENT_SECRET
+    # - R2__ACCOUNT_ID
+    # - R2__ACCESS_KEY
+    # - R2__ACCESS_SECRET
+    # - R2__BUCKET_NAME
+    # - AWS_ACCESS_KEY_ID
+    # - AWS_SECRET_ACCESS_KEY
+    # - AWS_REGION
+    # - GITHUB_CLIENT_ID
+    # - GITHUB_CLIENT_SECRET
+    # - GOOGLE_CLIENT_ID
+    # - GOOGLE_CLIENT_SECRET
   clear:
     # Run SolidQueue jobs in the Puma process
     SOLID_QUEUE_IN_PUMA: true
