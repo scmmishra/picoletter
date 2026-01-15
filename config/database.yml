@@ -43,21 +43,9 @@ production:
     adapter: sqlite3
     database: storage/production_queue.sqlite3
     migrations_paths: db/queue_migrations
-    pool: 1
-    timeout: 10000
-    pragmas:
-      journal_mode: wal
-      busy_timeout: 10000
-      synchronous: normal
-      cache_size: 2000
+    timeout: 5000
   cache:
     adapter: sqlite3
     database: storage/production_cache.sqlite3
     migrations_paths: db/cache_migrations
-    pool: 1
-    timeout: 10000
-    pragmas:
-      journal_mode: wal
-      busy_timeout: 10000
-      synchronous: normal
-      cache_size: 2000
+    timeout: 5000
