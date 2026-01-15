@@ -15,3 +15,4 @@ env:
     RAILS_ENV: production
     SOLID_QUEUE_IN_PUMA: true
     FORCE_SSL: true
+    PICO_HOST: https://staging.picoletter.com
