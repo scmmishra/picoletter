@@ -50,4 +50,5 @@ tasks.md
 AGENTS.md
 
 # Kamal secrets (contains sensitive credentials)
-.kamal/secrets
+.kamal/secrets*
+!.kamal/secrets.sample

@@ -11,6 +11,9 @@ gem "propshaft"
 # Use pg as the database for Active Record
 gem "pg", "~> 1.5"
 
+# SQLite for SolidQueue and SolidCache in production
+gem "sqlite3"
+
 # Use PostgreSQL array for labels
 gem "acts-as-taggable-array-on"
 
