@@ -48,6 +48,7 @@ Rails.application.routes.draw do
 
   # Health check
   get "healthz" => "rails/health#show", as: :rails_health_check
+  get "up" => "rails/health#show", as: :health_check
 
   # Password token-based routes
   resources :passwords, param: :token
