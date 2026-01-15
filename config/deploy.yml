@@ -1,0 +1,56 @@
+# Kamal deployment configuration for Picoletter
+# See https://kamal-deploy.org for documentation
+
+service: picoletter
+image: picoletter
+
+# SSH configuration
+ssh:
+  user: deploy
+  keys:
+    - ~/.ssh/do-noto
+
+# Use Kamal's built-in local registry (no external registry needed)
+registry:
+  server: localhost:5555
+
+# Environment variables injected into containers
+# Secrets come from .kamal/secrets
+env:
+  secret:
+    - RAILS_MASTER_KEY
+    - DATABASE_URL
+    - R2__ACCOUNT_ID
+    - R2__ACCESS_KEY
+    - R2__ACCESS_SECRET
+    - R2__BUCKET_NAME
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_REGION
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
+  clear:
+    # Run SolidQueue jobs in the Puma process
+    SOLID_QUEUE_IN_PUMA: true
+    # Cloudflare handles SSL termination
+    FORCE_SSL: false
+
+# Kamal aliases for common operations
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole --include-password"
+
+# Persistent storage volume for Active Storage local files (if any)
+volumes:
+  - "picoletter_storage:/rails/storage"
+
+# Bridge fingerprinted assets between versions to avoid 404s during deploys
+asset_path: /rails/public/assets
+
+# Configure the image builder
+builder:
+  arch: amd64
