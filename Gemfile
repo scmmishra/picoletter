@@ -18,7 +18,7 @@ gem "acts-as-taggable-array-on"
 gem "puma", ">= 5.0"
 
 # SolidQueue
-gem "solid_queue", "~> 1.2.3"
+gem "solid_queue", "~> 1.3.0"
 gem "mission_control-jobs", "~> 1.1.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
