@@ -1,0 +1,17 @@
+# Production environment overrides for Kamal
+# Inherits from config/deploy.yml
+
+servers:
+  web:
+    - PRODUCTION_SERVER_IP  # TODO: Replace with actual production server IP
+
+# Cloudflare handles SSL, so we disable it at the proxy level
+proxy:
+  ssl: false
+  host: picoletter.com
+
+env:
+  clear:
+    RAILS_ENV: production
+    SOLID_QUEUE_IN_PUMA: true
+    FORCE_SSL: false
