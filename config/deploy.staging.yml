@@ -5,13 +5,13 @@ servers:
   web:
     - 5.161.78.78
 
-# Cloudflare handles SSL, so we disable it at the proxy level
+# Enable SSL for Cloudflare Strict mode
 proxy:
-  ssl: false
+  ssl: true
   host: staging.picoletter.com
 
 env:
   clear:
     RAILS_ENV: production
     SOLID_QUEUE_IN_PUMA: true
-    FORCE_SSL: false
+    FORCE_SSL: true
