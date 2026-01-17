@@ -48,3 +48,7 @@ spec/examples.txt
 CLAUDE.md
 tasks.md
 AGENTS.md
+
+# Kamal secrets (contains sensitive credentials)
+.kamal/secrets*
+!.kamal/secrets.example

@@ -11,14 +11,20 @@ gem "propshaft"
 # Use pg as the database for Active Record
 gem "pg", "~> 1.5"
 
+# SQLite for SolidQueue and SolidCache in production
+gem "sqlite3"
+
 # Use PostgreSQL array for labels
 gem "acts-as-taggable-array-on"
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
+# Use Thruster for HTTP/2 proxy [https://github.com/basecamp/thruster]
+gem "thruster", require: false
+
 # SolidQueue
-gem "solid_queue", "~> 1.2.3"
+gem "solid_queue", "~> 1.3.0"
 gem "mission_control-jobs", "~> 1.1.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -119,8 +125,9 @@ gem "browser"
 gem "valid_email2"
 gem "cloudflare-rails"
 
-# to parse maxmind db
-gem "aws-sdk-rails", "~> 3"
+# AWS SES integration
+gem "aws-sdk-rails", "~> 5"
+gem "aws-actionmailer-ses"  # Provides :ses and :ses_v2 delivery methods (includes aws-sdk-sesv2)
 
 # Bot prevention
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"

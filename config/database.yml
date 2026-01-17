@@ -40,10 +40,12 @@ production:
     username: picoletter
     url: <%= ENV['DATABASE_URL'] %>
   queue:
-    <<: *queue
-    database: picoletter_production_queue
-    url: <%= ENV['QUEUE_DATABASE_URL'] %>
+    adapter: sqlite3
+    database: storage/production_queue.sqlite3
+    migrations_paths: db/queue_migrations
+    timeout: 5000
   cache:
-    <<: *cache
-    database: picoletter_production_cache
-    url: <%= ENV['CACHE_DATABASE_URL'] %>
+    adapter: sqlite3
+    database: storage/production_cache.sqlite3
+    migrations_paths: db/cache_migrations
+    timeout: 5000
