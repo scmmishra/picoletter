@@ -3,16 +3,29 @@
 
 servers:
   web:
-    - 5.161.78.78
+    - YOUR_STAGING_SERVER_IP
 
-# Enable SSL for Cloudflare Strict mode
 proxy:
   ssl: true
-  host: staging.picoletter.com
+  host: staging.example.com
 
 env:
   clear:
-    RAILS_ENV: production
-    SOLID_QUEUE_IN_PUMA: true
     FORCE_SSL: true
-    PICO_HOST: https://staging.picoletter.com
+    PICO_HOST: https://staging.example.com
+    PICO_SENDING_DOMAIN: staging.example.com
+    PICO_SUPPORT_EMAIL: support@example.com
+    # AWS SES
+    AWS_REGION: us-east-1
+    AWS_SES_CONFIGURATION_SET: your-staging-config-set
+    # Cloudflare R2 (leave empty to use local storage)
+    R2__ACCOUNT_ID: ""
+    R2__BUCKET_NAME: ""
+    R2__PUBLIC_DOMAIN: ""
+    # Features
+    ENABLE_BILLING: false
+    ENABLE_SCHEDULING: true
+    # Performance
+    RAILS_MAX_THREADS: 5
+    WEB_CONCURRENCY: 2
+    JOB_CONCURRENCY: 5
