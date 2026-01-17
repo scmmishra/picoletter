@@ -76,3 +76,47 @@ Run linting:
 ```bash
 bundle exec rubocop
 ```
+
+## Deploying with Kamal
+
+Picoletter uses [Kamal](https://kamal-deploy.org) for deployment.
+
+### Prerequisites
+
+- Docker running locally
+- A server with SSH access (Ubuntu 22.04+ recommended)
+- A domain pointed to your server
+- AWS SES configured for sending emails
+- PostgreSQL database (e.g., Planetscale, Neon, or self-hosted)
+
+### Configuration
+
+1. Update `config/deploy.yml` with your SSH key path
+
+2. Update `config/deploy.staging.yml` or `config/deploy.production.yml` with your server IP, domain, and environment variables
+
+### Secrets
+
+1. Copy the example secrets file:
+   ```bash
+   cp .kamal/secrets.example .kamal/secrets.staging
+   ```
+
+2. Configure your secrets (directly or via [Bitwarden Secrets Manager](https://bitwarden.com/help/secrets-manager-cli/))
+
+Required secrets:
+- `SECRET_KEY_BASE` - Rails secret key (`bin/rails secret`)
+- `DATABASE_URL` - PostgreSQL connection string
+- `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` - AWS credentials for SES
+
+### Deploy
+
+First-time setup:
+```bash
+kamal setup -d staging
+```
+
+Subsequent deployments:
+```bash
+kamal deploy -d staging
+```
