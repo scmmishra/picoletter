@@ -3,15 +3,29 @@
 
 servers:
   web:
-    - PRODUCTION_SERVER_IP  # TODO: Replace with actual production server IP
+    - YOUR_PRODUCTION_SERVER_IP
 
-# Cloudflare handles SSL, so we disable it at the proxy level
 proxy:
-  ssl: false
-  host: picoletter.com
+  ssl: true
+  host: example.com
 
 env:
   clear:
-    RAILS_ENV: production
-    SOLID_QUEUE_IN_PUMA: true
-    FORCE_SSL: false
+    FORCE_SSL: true
+    PICO_HOST: https://example.com
+    PICO_SENDING_DOMAIN: example.com
+    PICO_SUPPORT_EMAIL: support@example.com
+    # AWS SES
+    AWS_REGION: us-east-1
+    AWS_SES_CONFIGURATION_SET: your-production-config-set
+    # Cloudflare R2
+    R2__ACCOUNT_ID: your-account-id
+    R2__BUCKET_NAME: your-bucket-name
+    R2__PUBLIC_DOMAIN: cdn.example.com
+    # Features
+    ENABLE_BILLING: true
+    ENABLE_SCHEDULING: true
+    # Performance
+    RAILS_MAX_THREADS: 5
+    WEB_CONCURRENCY: 2
+    JOB_CONCURRENCY: 10
