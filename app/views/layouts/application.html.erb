@@ -17,6 +17,9 @@
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+    <% if AppConfig.turnstile_enabled? %>
+      <%= cloudflare_turnstile_script_tag %>
+    <% end %>
     <%= yield :head %>
   </head>
 

@@ -1,13 +1,21 @@
 class Public::SubscribersController < ApplicationController
   include ActiveHashcash
+  include RailsCloudflareTurnstile
   layout "application"
 
   before_action :set_newsletter
 
-  before_action :check_hashcash, only: :public_subscribe unless Rails.env.test?
+  # Use Turnstile if configured, otherwise fallback to hashcash
+  before_action :check_hashcash, only: :public_subscribe, unless: -> { Rails.env.test? || AppConfig.turnstile_enabled? }
+  before_action :validate_cloudflare_turnstile, only: [ :public_subscribe, :embed_subscribe ], if: -> { AppConfig.turnstile_enabled? }
+
   skip_before_action :verify_authenticity_token, only: [ :embed_subscribe ]
 
   rate_limit to: 5, within: 30.minute, only: [ :embed_subscribe, :public_subscribe ]
+
+  rescue_from RailsCloudflareTurnstile::Forbidden do
+    redirect_to newsletter_path(@newsletter.slug), notice: "Bot verification failed. Please try again."
+  end
 
   def embed_subscribe
     return head :forbidden if AppConfig.get("DISABLE_EMBED_SUBSCRIBE")

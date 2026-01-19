@@ -19,7 +19,11 @@
                     label: "Full Name",
                     label_class: "ml-px text-stone-500" %>
 
-    <%= hashcash_hidden_field_tag %>
+    <% if AppConfig.turnstile_enabled? %>
+      <%= cloudflare_turnstile %>
+    <% else %>
+      <%= hashcash_hidden_field_tag %>
+    <% end %>
 
     <div>
       <%= form.submit "Subscribe",

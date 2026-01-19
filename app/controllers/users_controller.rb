@@ -1,7 +1,11 @@
 class UsersController < ApplicationController
   include ActiveHashcash
+  include RailsCloudflareTurnstile
 
-  before_action :check_hashcash, only: :create unless Rails.env.test?
+  # Use Turnstile if configured, otherwise fallback to hashcash
+  before_action :check_hashcash, only: :create, unless: -> { Rails.env.test? || AppConfig.turnstile_enabled? }
+  before_action :validate_cloudflare_turnstile, only: :create, if: -> { AppConfig.turnstile_enabled? }
+
   before_action :resume_session_if_present, only: [ :new, :show_verify ]
   before_action :ensure_authenticated, only: [ :resend_verification_email, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
@@ -9,6 +13,10 @@ class UsersController < ApplicationController
 
   rate_limit to: 5, within: 15.minutes, only: :resend_verification_email
   rate_limit to: 5, within: 60.minutes, only: :create
+
+  rescue_from RailsCloudflareTurnstile::Forbidden do
+    redirect_to signup_path, notice: "Bot verification failed. Please try again."
+  end
 
   def new
     if Current.user.present?

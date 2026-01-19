@@ -34,7 +34,11 @@
                           placeholder: "ZPR1234" %>
       <% end %>
 
-      <%= hashcash_hidden_field_tag %>
+      <% if AppConfig.turnstile_enabled? %>
+        <%= cloudflare_turnstile %>
+      <% else %>
+        <%= hashcash_hidden_field_tag %>
+      <% end %>
 
       <div class="mt-1"><%= form.submit "Start publishing", class: "btn btn-primary w-full" %></div>
     <% end %>
@@ -50,5 +54,7 @@
 
 
 <% content_for :head do %>
-  <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
+  <% unless AppConfig.turnstile_enabled? %>
+    <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
+  <% end %>
 <% end %>

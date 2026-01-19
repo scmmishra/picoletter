@@ -11,12 +11,16 @@
                      placeholder: "Enter your email",
                      value: params[:email] %>
 
+    <% if AppConfig.turnstile_enabled? %>
+      <%= cloudflare_turnstile %>
+    <% else %>
+      <%= hashcash_hidden_field_tag %>
+    <% end %>
+
     <div>
       <%= form.submit "Subscribe",
                   class: "btn btn-tinted w-full",
                   style: newsletter.primary_styles %>
     </div>
-
-    <%= hashcash_hidden_field_tag %>
   <% end %>
 </div>
