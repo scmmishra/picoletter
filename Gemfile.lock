@@ -399,6 +399,9 @@ GEM
     rails-html-sanitizer (1.6.2)
       loofah (~> 2.21)
       nokogiri (>= 1.15.7, != 1.16.7, != 1.16.6, != 1.16.5, != 1.16.4, != 1.16.3, != 1.16.2, != 1.16.1, != 1.16.0.rc1, != 1.16.0)
+    rails_cloudflare_turnstile (0.4.4)
+      faraday (>= 1.0, < 3.0)
+      rails (>= 6.0, < 8.2)
     railties (8.1.1)
       actionpack (= 8.1.1)
       activesupport (= 8.1.1)
@@ -593,6 +596,7 @@ DEPENDENCIES
   propshaft
   puma (>= 5.0)
   rails (~> 8.1.1)
+  rails_cloudflare_turnstile
   reactionview (~> 0.1.6)
   resolv
   rorvswild (>= 1.10.0)

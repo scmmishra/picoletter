@@ -124,6 +124,7 @@ gem "aws-sdk-rails", "~> 3"
 
 # Bot prevention
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"
+gem "rails_cloudflare_turnstile"
 gem "liquid"
 
 gem "reactionview", "~> 0.1.6"

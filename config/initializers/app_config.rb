@@ -7,6 +7,11 @@ class AppConfig
     AppConfig.get("ENABLE_REMINDERS", false)
   end
 
+  def self.turnstile_enabled?
+    AppConfig.get("CF_TURNSTILE_SITE_KEY").present? &&
+      AppConfig.get("CF_TURNSTILE_SECRET").present?
+  end
+
   class << self
     def get!(env_key)
       value = ENV[env_key]
