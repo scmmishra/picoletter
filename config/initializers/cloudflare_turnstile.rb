@@ -7,6 +7,8 @@ RailsCloudflareTurnstile.configure do |c|
 
   if c.enabled
     c.site_key = site_key
+    c.size = :flexible
+    c.theme = :light
     c.secret_key = secret_key
     c.fail_open = true
   end
