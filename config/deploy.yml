@@ -21,33 +21,42 @@ env:
   secret:
     # Core
     - SECRET_KEY_BASE
-    - DATABASE_URL
+    # Cloudflare R2
+    - R2__ACCESS_KEY
+    - R2__ACCESS_SECRET
+    - R2__BUCKET_NAME
+    - R2__PUBLIC_URL
+    - R2__ACCOUNT_ID
+    - R2__PUBLIC_DOMAIN
     # AWS SES
     - AWS_ACCESS_KEY_ID
     - AWS_SECRET_ACCESS_KEY
-    # Cloudflare R2 (optional)
-    - R2__ACCESS_KEY
-    - R2__ACCESS_SECRET
+    - AWS_SES_CONFIGURATION_SET
+    - AWS_ENDPOINT_URL
+    - AWS_ENDPOINT_URL_SES
+    # Picoletter config
+    - PICO_SENDING_DOMAIN
+    - SEND_POST_BATCH_SIZE
+    # API Keys
+    - ADMIN_API_KEY
+    - BILLING_API_KEY
+    # Feature flags
+    - ENABLE_BILLING
+    - ENABLE_AUTO_REMINDERS
+    - ENABLE_SCHEDULING
     # OAuth (optional)
     - GITHUB_CLIENT_ID
     - GITHUB_CLIENT_SECRET
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
-    # API Keys
-    - ADMIN_API_KEY
-    - BILLING_API_KEY
-    - INVITE_CODE
-    # Monitoring (optional)
-    - BETTERSTACK__LOGS_TOKEN
-    - RORVSWILD__API_KEY
+    # SolidQueue
+    - SOLID_QUEUE_IN_PUMA
   clear:
     # Rails
     RAILS_ENV: production
     RACK_ENV: production
     RAILS_LOG_TO_STDOUT: true
     RUBY_YJIT_ENABLE: true
-    # SolidQueue runs in Puma process
-    SOLID_QUEUE_IN_PUMA: true
 
 # Kamal aliases for common operations
 aliases:
