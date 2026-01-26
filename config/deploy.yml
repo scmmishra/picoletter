@@ -25,7 +25,6 @@ env:
     - R2__ACCESS_KEY
     - R2__ACCESS_SECRET
     - R2__BUCKET_NAME
-    - R2__PUBLIC_URL
     - R2__ACCOUNT_ID
     - R2__PUBLIC_DOMAIN
     # AWS SES
