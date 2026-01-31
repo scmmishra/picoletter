@@ -1,0 +1,74 @@
+# Environment-specific Kamal deployment configuration
+# Copy this file to deploy.staging.yml or deploy.production.yml
+# and customize the values for your environment.
+#
+# Usage:
+#   kamal deploy -d staging    # uses config/deploy.staging.yml
+#   kamal deploy -d production # uses config/deploy.production.yml
+#
+# This file inherits from config/deploy.yml
+
+# =============================================================================
+# SERVERS
+# =============================================================================
+# List your server IP addresses here
+servers:
+  web:
+    - YOUR_SERVER_IP
+    # Add more servers for horizontal scaling:
+    # - ANOTHER_SERVER_IP
+
+# =============================================================================
+# SSH CONFIGURATION
+# =============================================================================
+# Uncomment and configure if different from deploy.yml
+# ssh:
+#   user: deploy
+#   keys:
+#     - ~/.ssh/your_key
+
+# =============================================================================
+# REGISTRY (Optional)
+# =============================================================================
+# Override the registry port if needed for this environment
+# registry:
+#   server: localhost:5050
+
+# =============================================================================
+# SSL & DOMAIN
+# =============================================================================
+proxy:
+  ssl: true
+  host: your-domain.com  # e.g., staging.picoletter.com or picoletter.com
+
+# =============================================================================
+# ENVIRONMENT VARIABLES
+# =============================================================================
+env:
+  clear:
+    # --- Rails ---
+    FORCE_SSL: true
+
+    # --- Application URLs ---
+    # PICO_HOST: https://your-domain.com
+    # PICO_SENDING_DOMAIN: your-domain.com
+    # PICO_SUPPORT_EMAIL: support@your-domain.com
+
+    # --- AWS SES ---
+    AWS_REGION: us-east-1
+    AWS_SES_CONFIGURATION_SET: your-ses-config-set
+
+    # --- Cloudflare R2 Storage ---
+    # Leave empty strings to use local storage instead of R2
+    R2__ACCOUNT_ID: ""           # Your Cloudflare account ID
+    R2__BUCKET_NAME: ""          # Your R2 bucket name
+    R2__PUBLIC_DOMAIN: ""        # CDN domain, e.g., cdn.your-domain.com
+
+    # --- Feature Flags ---
+    ENABLE_BILLING: false        # Set to true for production
+    ENABLE_SCHEDULING: true
+
+    # --- Performance Tuning ---
+    RAILS_MAX_THREADS: 5         # Threads per Puma worker
+    WEB_CONCURRENCY: 2           # Number of Puma workers
+    JOB_CONCURRENCY: 5           # SolidQueue job concurrency (use 10 for production)

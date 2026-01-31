@@ -52,3 +52,7 @@ AGENTS.md
 # Kamal secrets (contains sensitive credentials)
 .kamal/secrets*
 !.kamal/secrets.example
+
+# Kamal environment-specific deploy configs (contain server IPs and settings)
+/config/deploy.staging.yml
+/config/deploy.production.yml
