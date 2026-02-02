@@ -21,6 +21,7 @@ env:
   secret:
     # Core
     - SECRET_KEY_BASE
+    - DATABASE_URL
     # Cloudflare R2
     - R2__ACCESS_KEY
     - R2__ACCESS_SECRET
@@ -56,6 +57,7 @@ env:
     RACK_ENV: production
     RAILS_LOG_TO_STDOUT: true
     RUBY_YJIT_ENABLE: true
+    SOLID_QUEUE_IN_PUMA: true
     SEND_POST_BATCH_SIZE: 100
     RAILS_MAX_THREADS: 5
     WEB_CONCURRENCY: 2
