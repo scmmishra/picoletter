@@ -202,7 +202,7 @@ end
 
 # Create email clicks for opened emails
 puts "\n-- Creating email click data"
-Email.where.not(opened_at: nil).find_each do |email|
+Email.where.not(opened_at: nil).where(emailable_type: "Post").find_each do |email|
   # Generate 0-3 clicks per opened email (some emails have no clicks, some have multiple)
   click_count = rand(4)
 
@@ -226,7 +226,7 @@ Email.where.not(opened_at: nil).find_each do |email|
 
     EmailClick.create!(
       email_id: email.id,
-      post_id: email.post_id,
+      post_id: email.emailable_id,
       link: possible_links.sample,
       timestamp: click_time
     )
