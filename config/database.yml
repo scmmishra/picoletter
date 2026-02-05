@@ -4,12 +4,14 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 queue: &queue
-  <<: *default
-  migrations_paths: db/queue_migrations
+  adapter: sqlite3
+  timeout: 5000
+  migrations_paths: db/queue_migrate
 
 cache: &cache
-  <<: *default
-  migrations_paths: db/cache_migrations
+  adapter: sqlite3
+  timeout: 5000
+  migrations_paths: db/cache_migrate
 
 development:
   primary:
@@ -17,10 +19,10 @@ development:
     database: picoletter_development
   queue:
     <<: *queue
-    database: picoletter_development_queue
+    database: storage/development_queue.sqlite3
   cache:
     <<: *cache
-    database: picoletter_development_cache
+    database: storage/development_cache.sqlite3
 
 test:
   primary:
@@ -28,10 +30,10 @@ test:
     database: picoletter_test
   queue:
     <<: *queue
-    database: picoletter_test_queue
+    database: storage/test_queue.sqlite3
   cache:
     <<: *cache
-    database: picoletter_test_cache
+    database: storage/test_cache.sqlite3
 
 production:
   primary:
@@ -40,12 +42,8 @@ production:
     username: picoletter
     url: <%= ENV['DATABASE_URL'] %>
   queue:
-    adapter: sqlite3
+    <<: *queue
     database: storage/production_queue.sqlite3
-    migrations_paths: db/queue_migrations
-    timeout: 5000
   cache:
-    adapter: sqlite3
+    <<: *cache
     database: storage/production_cache.sqlite3
-    migrations_paths: db/cache_migrations
-    timeout: 5000
