@@ -39,7 +39,7 @@ servers:
 # =============================================================================
 proxy:
   ssl: true
-  host: your-domain.com  # e.g., staging.picoletter.com or picoletter.com
+  host: your-domain.com # e.g., staging.picoletter.com or picoletter.com
 
 # =============================================================================
 # ENVIRONMENT VARIABLES
@@ -60,15 +60,47 @@ env:
 
     # --- Cloudflare R2 Storage ---
     # Leave empty strings to use local storage instead of R2
-    R2__ACCOUNT_ID: ""           # Your Cloudflare account ID
-    R2__BUCKET_NAME: ""          # Your R2 bucket name
-    R2__PUBLIC_DOMAIN: ""        # CDN domain, e.g., cdn.your-domain.com
+    R2__ACCOUNT_ID: "" # Your Cloudflare account ID
+    R2__BUCKET_NAME: "" # Your R2 bucket name
+    R2__PUBLIC_DOMAIN: "" # CDN domain, e.g., cdn.your-domain.com
 
     # --- Feature Flags ---
-    ENABLE_BILLING: false        # Set to true for production
+    ENABLE_BILLING: false # Set to true for production
     ENABLE_SCHEDULING: true
 
-    # --- Performance Tuning ---
-    RAILS_MAX_THREADS: 5         # Threads per Puma worker
-    WEB_CONCURRENCY: 2           # Number of Puma workers
-    JOB_CONCURRENCY: 5           # SolidQueue job concurrency (use 10 for production)
+    # =========================================================================
+    # PERFORMANCE TUNING
+    # =========================================================================
+    #
+    # MEMORY CALCULATION
+    # ------------------
+    # Each Puma worker uses ~150-300MB RAM. Each SolidQueue process uses ~100-200MB.
+    # Reserve ~1GB for OS, PostgreSQL connections, and headroom.
+    #
+    # Formula: (Available RAM - 1GB) / (Workers × 250MB + Job Processes × 150MB)
+    #
+    # CPU CALCULATION
+    # ---------------
+    # - WEB_CONCURRENCY: Puma workers (processes). Rule of thumb: 1 worker per core.
+    # - JOB_CONCURRENCY: SolidQueue processes. Each has 3 threads (configured in queue.yml).
+    # - Total CPU threads = (WEB_CONCURRENCY × RAILS_MAX_THREADS) + (JOB_CONCURRENCY × 3)
+    #
+    # RECOMMENDED VALUES BY VM SIZE
+    # -----------------------------
+    # | VM Size      | WEB_CONCURRENCY | RAILS_MAX_THREADS | JOB_CONCURRENCY | Total Threads |
+    # |--------------|-----------------|-------------------|-----------------|---------------|
+    # | 2 core, 4GB  | 1               | 5                 | 1               | 8             |
+    # | 4 core, 8GB  | 2               | 5                 | 2               | 16            |
+    # | 8 core, 16GB | 4               | 5                 | 3               | 29            |
+    # | 16 core, 32GB| 8               | 5                 | 4               | 52            |
+    #
+    # NOTES
+    # -----
+    # - RAILS_MAX_THREADS: Keep at 5 for most Rails apps (balances concurrency vs connection pool)
+    # - SQLite queue/cache: Keep JOB_CONCURRENCY low (2-4) to avoid write lock contention
+    # - PostgreSQL queue: Can increase JOB_CONCURRENCY more aggressively
+    # - Monitor memory usage after deploy and adjust accordingly
+    #
+    RAILS_MAX_THREADS: 5
+    WEB_CONCURRENCY: 2
+    JOB_CONCURRENCY: 2
