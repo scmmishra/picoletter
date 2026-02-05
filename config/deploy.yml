@@ -49,8 +49,6 @@ env:
     - GITHUB_CLIENT_SECRET
     - GOOGLE_CLIENT_ID
     - GOOGLE_CLIENT_SECRET
-    # SolidQueue
-    - SOLID_QUEUE_IN_PUMA
   clear:
     # Rails
     RAILS_ENV: production
@@ -61,7 +59,7 @@ env:
     SEND_POST_BATCH_SIZE: 100
     RAILS_MAX_THREADS: 5
     WEB_CONCURRENCY: 2
-    JOB_CONCURRENCY: 5
+    JOB_CONCURRENCY: 2
 
 # Kamal aliases for common operations
 aliases:
@@ -76,6 +74,12 @@ volumes:
 
 # Bridge fingerprinted assets between versions to avoid 404s during deploys
 asset_path: /rails/public/assets
+
+# Health check endpoint
+healthcheck:
+  path: /up
+  interval: 3
+  max_attempts: 10
 
 # Configure the image builder
 builder:
