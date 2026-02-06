@@ -38,11 +38,15 @@ production:
   primary:
     <<: *default
     database: picoletter_production
-    username: picoletter
-    url: <%= ENV['DATABASE_URL'] %>
+    username: <%= ENV.fetch('DB_USERNAME', 'picoletter') %>
+    password: <%= ENV['DB_PASSWORD'] %>
+    host: <%= ENV.fetch('DB_HOST', 'localhost') %>
   queue:
     <<: *queue
-    url: <%= ENV['DATABASE_URL'] %>
+    database: <%= ENV.fetch('QUEUE_DB_NAME', 'picoletter_production_queue') %>
+    username: <%= ENV.fetch('QUEUE_DB_USERNAME') { ENV.fetch('DB_USERNAME', 'picoletter') } %>
+    password: <%= ENV['QUEUE_DB_PASSWORD'] || ENV['DB_PASSWORD'] %>
+    host: <%= ENV.fetch('QUEUE_DB_HOST') { ENV.fetch('DB_HOST', 'localhost') } %>
   cache:
     <<: *cache
     database: storage/production_cache.sqlite3
