@@ -97,8 +97,8 @@ env:
     # NOTES
     # -----
     # - RAILS_MAX_THREADS: Keep at 5 for most Rails apps (balances concurrency vs connection pool)
-    # - SQLite queue/cache: Keep JOB_CONCURRENCY low (2-4) to avoid write lock contention
-    # - PostgreSQL queue: Can increase JOB_CONCURRENCY more aggressively
+    # - Queue runs on PostgreSQL (same DB as primary), so JOB_CONCURRENCY can scale freely
+    # - Cache remains on SQLite (read-heavy, no write contention)
     # - Monitor memory usage after deploy and adjust accordingly
     #
     RAILS_MAX_THREADS: 5
