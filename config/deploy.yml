@@ -4,14 +4,7 @@
 service: picoletter
 image: picoletter
 
-# SSH configuration
-ssh:
-  user: deploy
-  # Add your SSH key path here
-  # keys:
-  #   - ~/.ssh/id_rsa
-
-# Use Kamal's built-in local registry (no external registry needed)
+# Local registry (no external registry needed)
 registry:
   server: localhost:5555
 
@@ -56,10 +49,13 @@ env:
     RAILS_LOG_TO_STDOUT: true
     RUBY_YJIT_ENABLE: true
     SOLID_QUEUE_IN_PUMA: true
+    FORCE_SSL: true
     SEND_POST_BATCH_SIZE: 100
     RAILS_MAX_THREADS: 5
     WEB_CONCURRENCY: 2
     JOB_CONCURRENCY: 2
+    # AWS SES
+    AWS_REGION: us-east-1
 
 # Kamal aliases for common operations
 aliases:
@@ -68,18 +64,12 @@ aliases:
   logs: app logs -f
   dbc: app exec --interactive --reuse "bin/rails dbconsole --include-password"
 
-# Persistent storage volume for Active Storage local files and SQLite databases
+# Persistent storage volume for Active Storage local files and cache databases
 volumes:
   - "picoletter_storage:/rails/storage"
 
 # Bridge fingerprinted assets between versions to avoid 404s during deploys
 asset_path: /rails/public/assets
-
-# Health check endpoint
-healthcheck:
-  path: /up
-  interval: 3
-  max_attempts: 10
 
 # Configure the image builder
 builder:

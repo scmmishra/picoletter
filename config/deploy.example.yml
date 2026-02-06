@@ -19,22 +19,6 @@ servers:
     # - ANOTHER_SERVER_IP
 
 # =============================================================================
-# SSH CONFIGURATION
-# =============================================================================
-# Uncomment and configure if different from deploy.yml
-# ssh:
-#   user: deploy
-#   keys:
-#     - ~/.ssh/your_key
-
-# =============================================================================
-# REGISTRY (Optional)
-# =============================================================================
-# Override the registry port if needed for this environment
-# registry:
-#   server: localhost:5050
-
-# =============================================================================
 # SSL & DOMAIN
 # =============================================================================
 proxy:
@@ -42,65 +26,34 @@ proxy:
   host: your-domain.com # e.g., staging.picoletter.com or picoletter.com
 
 # =============================================================================
-# ENVIRONMENT VARIABLES
+# PERFORMANCE TUNING (override in destination file if needed)
 # =============================================================================
-env:
-  clear:
-    # --- Rails ---
-    FORCE_SSL: true
-
-    # --- Application URLs ---
-    # PICO_HOST: https://your-domain.com
-    # PICO_SENDING_DOMAIN: your-domain.com
-    # PICO_SUPPORT_EMAIL: support@your-domain.com
-
-    # --- AWS SES ---
-    AWS_REGION: us-east-1
-    AWS_SES_CONFIGURATION_SET: your-ses-config-set
-
-    # --- Cloudflare R2 Storage ---
-    # Leave empty strings to use local storage instead of R2
-    R2__ACCOUNT_ID: "" # Your Cloudflare account ID
-    R2__BUCKET_NAME: "" # Your R2 bucket name
-    R2__PUBLIC_DOMAIN: "" # CDN domain, e.g., cdn.your-domain.com
-
-    # --- Feature Flags ---
-    ENABLE_BILLING: false # Set to true for production
-    ENABLE_SCHEDULING: true
-
-    # =========================================================================
-    # PERFORMANCE TUNING
-    # =========================================================================
-    #
-    # MEMORY CALCULATION
-    # ------------------
-    # Each Puma worker uses ~150-300MB RAM. Each SolidQueue process uses ~100-200MB.
-    # Reserve ~1GB for OS, PostgreSQL connections, and headroom.
-    #
-    # Formula: (Available RAM - 1GB) / (Workers × 250MB + Job Processes × 150MB)
-    #
-    # CPU CALCULATION
-    # ---------------
-    # - WEB_CONCURRENCY: Puma workers (processes). Rule of thumb: 1 worker per core.
-    # - JOB_CONCURRENCY: SolidQueue processes. Each has 3 threads (configured in queue.yml).
-    # - Total CPU threads = (WEB_CONCURRENCY × RAILS_MAX_THREADS) + (JOB_CONCURRENCY × 3)
-    #
-    # RECOMMENDED VALUES BY VM SIZE
-    # -----------------------------
-    # | VM Size      | WEB_CONCURRENCY | RAILS_MAX_THREADS | JOB_CONCURRENCY | Total Threads |
-    # |--------------|-----------------|-------------------|-----------------|---------------|
-    # | 2 core, 4GB  | 1               | 5                 | 1               | 8             |
-    # | 4 core, 8GB  | 2               | 5                 | 2               | 16            |
-    # | 8 core, 16GB | 4               | 5                 | 3               | 29            |
-    # | 16 core, 32GB| 8               | 5                 | 4               | 52            |
-    #
-    # NOTES
-    # -----
-    # - RAILS_MAX_THREADS: Keep at 5 for most Rails apps (balances concurrency vs connection pool)
-    # - Queue runs on PostgreSQL (same DB as primary), so JOB_CONCURRENCY can scale freely
-    # - Cache remains on SQLite (read-heavy, no write contention)
-    # - Monitor memory usage after deploy and adjust accordingly
-    #
-    RAILS_MAX_THREADS: 5
-    WEB_CONCURRENCY: 2
-    JOB_CONCURRENCY: 2
+#
+# MEMORY CALCULATION
+# ------------------
+# Each Puma worker uses ~150-300MB RAM. Each SolidQueue process uses ~100-200MB.
+# Reserve ~1GB for OS, PostgreSQL connections, and headroom.
+#
+# Formula: (Available RAM - 1GB) / (Workers × 250MB + Job Processes × 150MB)
+#
+# CPU CALCULATION
+# ---------------
+# - WEB_CONCURRENCY: Puma workers (processes). Rule of thumb: 1 worker per core.
+# - JOB_CONCURRENCY: SolidQueue processes. Each has 3 threads (configured in queue.yml).
+# - Total CPU threads = (WEB_CONCURRENCY × RAILS_MAX_THREADS) + (JOB_CONCURRENCY × 3)
+#
+# RECOMMENDED VALUES BY VM SIZE
+# -----------------------------
+# | VM Size      | WEB_CONCURRENCY | RAILS_MAX_THREADS | JOB_CONCURRENCY | Total Threads |
+# |--------------|-----------------|-------------------|-----------------|---------------|
+# | 2 core, 4GB  | 1               | 5                 | 1               | 8             |
+# | 4 core, 8GB  | 2               | 5                 | 2               | 16            |
+# | 8 core, 16GB | 4               | 5                 | 3               | 29            |
+# | 16 core, 32GB| 8               | 5                 | 4               | 52            |
+#
+# NOTES
+# -----
+# - RAILS_MAX_THREADS: Keep at 5 for most Rails apps (balances concurrency vs connection pool)
+# - Queue runs on PostgreSQL (same DB as primary), so JOB_CONCURRENCY can scale freely
+# - Cache remains on SQLite (read-heavy, no write contention)
+# - Monitor memory usage after deploy and adjust accordingly
