@@ -1,0 +1,2 @@
+CREATE DATABASE picoletter_production;
+CREATE DATABASE picoletter_production_queue;

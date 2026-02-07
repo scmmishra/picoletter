@@ -14,8 +14,8 @@ env:
   secret:
     # Core
     - SECRET_KEY_BASE
-    - DB_PASSWORD
-    - QUEUE_DB_PASSWORD
+    - DATABASE_URL
+    - QUEUE_DATABASE_URL
     # Cloudflare R2
     - R2__ACCESS_KEY
     - R2__ACCESS_SECRET
