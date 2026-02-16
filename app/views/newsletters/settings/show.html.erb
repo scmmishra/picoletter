@@ -47,7 +47,7 @@
 <% end %>
 
 <% if AppConfig.sub_endpoint_allowed?(@newsletter.id) %>
-  <div class="mt-10 border-t pt-8">
+  <div class="mt-10 border-t py-8">
     <div class="max-w-lg text-stone-600 mb-6">
       <h3 class="font-medium text-lg text-stone-800 mb-2">API Token</h3>
       <p class="text-sm">
@@ -58,11 +58,17 @@
     <% token = @newsletter.api_tokens.first %>
     <% if token %>
       <div class="max-w-lg space-y-4">
-        <div class="relative">
-          <div class="flex items-center gap-2">
-            <input type="text" value="<%= token.token %>" readonly
-                   class="form-input text-sm font-mono bg-stone-50 flex-1" />
-            <%= button_to_copy_to_clipboard(token.token) %>
+        <div class="relative" data-controller="token-visibility">
+          <input type="password" value="<%= token.token %>" readonly autocomplete="off"
+                 class="input w-full text-sm font-mono pr-16"
+                 data-token-visibility-target="input">
+          <div class="absolute inset-y-0 right-0 flex items-center gap-1 pr-2">
+            <button type="button" class="uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white rounded-lg text-stone-600"
+                    data-action="token-visibility#toggle">
+              <%= lucide_icon("eye", class: "size-3 text-stone-400", data: { token_visibility_target: "showIcon" }) %>
+              <%= lucide_icon("eye-off", class: "size-3 text-stone-400 hidden", data: { token_visibility_target: "hideIcon" }) %>
+            </button>
+            <%= button_to_copy_to_clipboard(token.token) { tag.div } %>
           </div>
         </div>
         <div class="flex items-center gap-2">
