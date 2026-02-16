@@ -3,7 +3,7 @@ module SettingsHelper
     # Check authorization if newsletter is provided
     return "" if newsletter && !should_show_settings_link?(text.downcase, newsletter)
 
-    base_classes = "px-3 py-2 text-sm font-medium -mb-px border-b-2"
+    base_classes = "px-3 pb-3 text-sm font-sans -mb-px border-b-2"
     css_classes = if current_page?(path)
       "#{base_classes} text-stone-800 border-stone-800"
     else
