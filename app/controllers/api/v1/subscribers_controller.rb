@@ -14,9 +14,13 @@ class Api::V1::SubscribersController < Api::V1::BaseController
       return
     end
 
-    CreateSubscriberJob.perform_now(@newsletter.id, email, name, labels, "api", {})
+    result = CreateSubscriberJob.perform_now(@newsletter.id, email, name, labels, "api", {})
 
-    render json: { message: "Subscriber created", email: email }, status: :created
+    if result
+      render json: { message: "Subscriber created", email: email }, status: :created
+    else
+      render json: { error: "Invalid email address" }, status: :unprocessable_entity
+    end
   end
 
   private
