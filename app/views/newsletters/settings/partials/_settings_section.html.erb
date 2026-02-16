@@ -1,0 +1,6 @@
+<section>
+  <% if local_assigns[:title] %>
+    <%= render "newsletters/settings/partials/section_header", title: title, subtitle: local_assigns[:subtitle] %>
+  <% end %>
+  <%= yield %>
+</section>

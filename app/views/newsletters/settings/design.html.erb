@@ -1,8 +1,7 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<%= render "newsletters/settings/partials/section_header", title: "Design", subtitle: "Update the design of your newsletter emails and public archive page." %>
-
-<%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-5', permission: :design do |form| %>
+<%= render "newsletters/settings/partials/settings_section", title: "Design", subtitle: "Update the design of your newsletter emails and public archive page." do %>
+  <%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, permission: :design do |form| %>
   <div class="max-w-lg space-y-4">
     <%= render "newsletters/settings/partials/template_selector", form: form, newsletter: @newsletter %>
 
@@ -91,4 +90,5 @@
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
   </div>
+  <% end %>
 <% end %>

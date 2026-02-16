@@ -21,7 +21,7 @@ RSpec.describe SettingsHelper, type: :helper do
 
       expect(html).to include("Team")
       expect(html).to include("href=\"/team\"")
-      expect(html).to include("hover:text-stone-500")
+      expect(html).to include("hover:text-stone-600")
     end
 
     it "returns empty string when newsletter denies access" do

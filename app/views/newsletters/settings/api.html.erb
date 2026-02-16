@@ -1,9 +1,7 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<section>
-  <div class="mb-8">
-    <%= render "newsletters/settings/partials/section_header", title: "API Token", subtitle: "Use an API token to programmatically add subscribers to your newsletter." %>
-
+<div class="space-y-8">
+  <%= render "newsletters/settings/partials/settings_section", title: "API Token", subtitle: "Use an API token to programmatically add subscribers to your newsletter." do %>
     <% token = @newsletter.api_tokens.first %>
     <% if token %>
       <div class="max-w-lg space-y-4">
@@ -33,12 +31,10 @@
           method: :post,
           class: "btn btn-primary text-sm" %>
     <% end %>
-  </div>
+  <% end %>
 
-  <div class="border-t pt-8">
+  <%= render "newsletters/settings/partials/settings_section", title: "API Documentation" do %>
     <div class="max-w-2xl text-stone-600 text-sm space-y-6">
-      <%= render "newsletters/settings/partials/section_header", title: "API Documentation" %>
-
       <div>
         <p class="mb-2">Add a subscriber by sending a POST request with your token:</p>
         <pre class="px-3 py-2 bg-stone-50 rounded-lg text-xs font-mono overflow-x-auto border border-stone-100">curl -X POST <%= request.base_url %>/api/v1/subscribers \
@@ -56,5 +52,5 @@
         </div>
       </div>
     </div>
-  </div>
-</section>
+  <% end %>
+</div>
