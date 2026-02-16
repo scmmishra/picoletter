@@ -17,6 +17,6 @@ class Api::V1::BaseController < Api::BaseController
 
   def extract_bearer_token
     header = request.headers["Authorization"]
-    header&.match(/\ABearer\s+(.+)\z/)&.captures&.first
+    header&.match(/\ABearer (\S+)\z/)&.captures&.first
   end
 end
