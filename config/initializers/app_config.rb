@@ -7,6 +7,20 @@ class AppConfig
     AppConfig.get("ENABLE_REMINDERS", false)
   end
 
+  def self.sub_endpoint_allowed?(newsletter_id)
+    raw = get("ALLOWED_SUB_ENDPOINT", "")
+    return false if raw.blank?
+    ids = raw.to_s.split(",").map(&:strip).map(&:to_i)
+    ids.include?(newsletter_id.to_i)
+  end
+
+  def self.sub_endpoint_allowed?(newsletter_id)
+    raw = get("ALLOWED_SUB_ENDPOINT", "")
+    return false if raw.blank?
+    ids = raw.to_s.split(",").map(&:strip).map(&:to_i)
+    ids.include?(newsletter_id.to_i)
+  end
+
   class << self
     def get!(env_key)
       value = ENV[env_key]
