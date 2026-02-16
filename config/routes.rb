@@ -84,6 +84,8 @@ Rails.application.routes.draw do
         post :verify_domain, action: :verify_domain, as: :verify_domain
         get :embedding
         patch :embedding, action: :update_embedding, as: :update_embedding
+        post :generate_token
+        patch :rotate_token
       end
 
       # Nested settings controllers
@@ -133,9 +135,14 @@ Rails.application.routes.draw do
     end
   end
 
-  # Admin API routes
-  if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
-    namespace :api do
+  # Public API routes
+  namespace :api do
+    namespace :v1 do
+      resources :subscribers, only: [ :create ]
+    end
+
+    # Admin API routes
+    if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
       namespace :admin do
         post "users/update_limits", to: "users#update_limits"
         post "users/toggle_active", to: "users#toggle_active"
