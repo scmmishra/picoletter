@@ -45,3 +45,37 @@
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<% if AppConfig.sub_endpoint_allowed?(@newsletter.id) %>
+  <div class="mt-10 border-t pt-8">
+    <div class="max-w-lg text-stone-600 mb-6">
+      <h3 class="font-medium text-lg text-stone-800 mb-2">API Token</h3>
+      <p class="text-sm">
+        Use an API token to programmatically add subscribers to your newsletter via the REST API.
+      </p>
+    </div>
+
+    <% token = @newsletter.api_tokens.first %>
+    <% if token %>
+      <div class="max-w-lg space-y-4">
+        <div class="relative">
+          <div class="flex items-center gap-2">
+            <input type="text" value="<%= token.token %>" readonly
+                   class="form-input text-sm font-mono bg-stone-50 flex-1" />
+            <%= button_to_copy_to_clipboard(token.token) %>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= button_to "Rotate Token", rotate_token_settings_path(slug: @newsletter.slug, token_id: token.id),
+              method: :patch,
+              class: "btn btn-secondary text-sm",
+              data: { turbo_confirm: "Are you sure? This will invalidate the current token." } %>
+        </div>
+      </div>
+    <% else %>
+      <%= button_to "Generate API Token", generate_token_settings_path(slug: @newsletter.slug),
+          method: :post,
+          class: "btn btn-primary text-sm" %>
+    <% end %>
+  </div>
+<% end %>
