@@ -3,6 +3,7 @@
 # Table name: api_tokens
 #
 #  id            :bigint           not null, primary key
+#  expires_at    :datetime
 #  permissions   :jsonb            not null
 #  token         :string           not null
 #  created_at    :datetime         not null

@@ -71,6 +71,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_083838) do
 
   create_table "api_tokens", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.datetime "expires_at"
     t.bigint "newsletter_id", null: false
     t.jsonb "permissions", default: ["subscription"], null: false
     t.string "token", null: false

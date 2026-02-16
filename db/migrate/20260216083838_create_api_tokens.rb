@@ -4,6 +4,7 @@ class CreateApiTokens < ActiveRecord::Migration[8.1]
       t.string :token, null: false
       t.jsonb :permissions, null: false, default: [ "subscription" ]
       t.references :newsletter, null: false, foreign_key: true
+      t.datetime :expires_at
 
       t.timestamps
     end
