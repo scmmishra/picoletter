@@ -25,8 +25,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
           .with(newsletter.id, 'subscriber@example.com', 'Test User', nil, 'api', {})
 
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:created)
 
+        expect(response).to conform_schema(201)
         body = JSON.parse(response.body)
         expect(body['email']).to eq('subscriber@example.com')
       end
@@ -40,7 +40,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
           .with(newsletter.id, 'subscriber@example.com', nil, 'vip,early-access', 'api', {})
 
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:created)
+
+        expect(response).to conform_schema(201)
       end
     end
 
@@ -49,8 +50,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
 
       it 'returns 422' do
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:unprocessable_entity)
 
+        expect(response).to conform_response_schema(422)
         body = JSON.parse(response.body)
         expect(body['error']).to eq('Email is required')
       end
@@ -66,7 +67,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
 
       it 'returns 401' do
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:unauthorized)
+
+        expect(response).to conform_response_schema(401)
       end
     end
 
@@ -75,7 +77,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
 
       it 'returns 401' do
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:unauthorized)
+
+        expect(response).to conform_response_schema(401)
       end
     end
 
@@ -84,8 +87,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
 
       it 'returns 403' do
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:forbidden)
 
+        expect(response).to conform_response_schema(403)
         body = JSON.parse(response.body)
         expect(body['error']).to eq('Insufficient permissions')
       end
@@ -98,8 +101,8 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
 
       it 'returns 403' do
         post endpoint, params: params.to_json, headers: headers
-        expect(response).to have_http_status(:forbidden)
 
+        expect(response).to conform_response_schema(403)
         body = JSON.parse(response.body)
         expect(body['error']).to eq('Subscriber API is not enabled for this newsletter')
       end

@@ -37,6 +37,9 @@ end
 RSpec.configure do |config|
   config.include Helpers::Auth
 
+  path_to_openapi = Rails.root.join("docs", "openapi.yml")
+  config.include Skooma::RSpec[path_to_openapi, path_prefix: "/api/v1"], type: :request
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_paths = [
     Rails.root.join('spec/fixtures')
