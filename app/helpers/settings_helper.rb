@@ -3,10 +3,11 @@ module SettingsHelper
     # Check authorization if newsletter is provided
     return "" if newsletter && !should_show_settings_link?(text.downcase, newsletter)
 
+    base_classes = "px-3 py-2 text-sm font-medium -mb-px border-b-2"
     css_classes = if current_page?(path)
-      "text-stone-800"
+      "#{base_classes} text-stone-800 border-stone-800"
     else
-      "hover:text-stone-500"
+      "#{base_classes} text-stone-400 border-transparent hover:text-stone-600"
     end
 
     link_to text, path, class: css_classes
