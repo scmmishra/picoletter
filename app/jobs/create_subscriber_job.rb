@@ -10,17 +10,19 @@ class CreateSubscriberJob < ApplicationJob
 
     Rails.logger.info("[CreateSubscriberJob] Email verification for #{email}: #{verified}")
 
-    if verified
-      subscriber = newsletter.subscribers.find_or_initialize_by(email: email)
-      subscriber.full_name = name if name.present?
-      subscriber.labels = split_labels
-      subscriber.created_via = created_via
-      subscriber.analytics_data = analytics_data
-      subscriber.save!
-
-      subscriber.send_confirmation_email unless subscriber.verified?
-    else
+    unless verified
       Rails.logger.error("[CreateSubscriberJob] Invalid email or MX record for #{email}")
+      return false
     end
+
+    subscriber = newsletter.subscribers.find_or_initialize_by(email: email)
+    subscriber.full_name = name if name.present?
+    subscriber.labels = split_labels
+    subscriber.created_via = created_via
+    subscriber.analytics_data = analytics_data
+    subscriber.save!
+
+    subscriber.send_confirmation_email unless subscriber.verified?
+    true
   end
 end

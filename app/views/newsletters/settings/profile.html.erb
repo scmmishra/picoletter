@@ -10,16 +10,10 @@
 
 <% github_connected = Current.user.connected_services.github.any? %>
 
-<main class="max-w-lg space-y-4">
-  <section class="pb-8">
-    <h3 class="text-lg font-medium text-stone-900">Profile Information</h3>
-
-    <p class="mt-1 text-sm text-stone-500">
-      Update your account profile information.
-    </p>
-
+<div class="max-w-lg space-y-8">
+  <%= render "newsletters/settings/partials/settings_section", title: "Profile Information", subtitle: "Update your account profile information." do %>
     <%= labeled_form_with model: Current.user, url: update_profile_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
-      <div class="mt-6 space-y-4">
+      <div class="space-y-4">
         <%= form.text_field :name,
                         required: true,
                         autofocus: true %>
@@ -31,17 +25,11 @@
       </div>
       <div class="mt-5"><%= form.submit "Update Profile", class: "btn btn-primary" %></div>
     <% end %>
-  </section>
+  <% end %>
 
   <% if github_enabled || google_enabled %>
-    <section>
-      <h3 class="text-lg font-medium text-stone-900">Connected Accounts</h3>
-
-      <p class="mt-1 text-sm text-stone-500">
-        Connect your account to social logins for easier access.
-      </p>
-
-      <div class="mt-6 rounded-lg border border-neutral-200 bg-white shadow-sm">
+    <%= render "newsletters/settings/partials/settings_section", title: "Connected Accounts", subtitle: "Connect your account to social logins for easier access." do %>
+      <div class="rounded-lg border border-neutral-200 bg-white shadow-sm">
         <% if Current.user.connected_services.present? %>
           <div class="divide-y divide-neutral-100">
             <% Current.user.connected_services.each do |service| %>
@@ -123,6 +111,6 @@
           </div>
         <% end %>
       </div>
-    </section>
+    <% end %>
   <% end %>
-</main>
+</div>

@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: Picoletter API
+  version: v1
+  description: API for managing Picoletter newsletter resources.
+
+servers:
+  - url: /api/v1
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+
+    SubscriberRequest:
+      type: object
+      required:
+        - email
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+        labels:
+          type: string
+
+    SubscriberResponse:
+      type: object
+      required:
+        - message
+        - email
+      properties:
+        message:
+          type: string
+        email:
+          type: string
+
+paths:
+  /subscribers:
+    post:
+      summary: Add a subscriber
+      operationId: createSubscriber
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriberRequest"
+      responses:
+        "201":
+          description: Subscriber created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberResponse"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"

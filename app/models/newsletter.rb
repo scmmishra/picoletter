@@ -60,6 +60,7 @@ class Newsletter < ApplicationRecord
   has_many :labels, dependent: :destroy
   has_many :memberships, dependent: :destroy
   has_many :invitations, dependent: :destroy
+  has_many :api_tokens, dependent: :destroy
 
   has_many :emails, through: :posts
   has_many :members, through: :memberships, source: :user

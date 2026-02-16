@@ -1,10 +1,9 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<main class="space-y-8 max-w-lg">
+<div class="space-y-8 max-w-lg">
   <% if Current.user.subscription.present? %>
-    <section>
-      <h2 class="text-xl font-semibold text-stone-800 mb-4">Overview</h2>
-      <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg mb-5">
+    <%= render "newsletters/settings/partials/settings_section", title: "Overview" do %>
+      <div class="shadow-with-inset bg-stone-50 font-sans py-5 rounded-lg">
         <div class="px-5 mb-6">
           <%= render "newsletters/subscribers/partials/action_card", title: "Manage Plan", help_text: "Upgrade, or cancel your subscription" do %>
             <%= link_to "Manage",
@@ -37,10 +36,10 @@
           </div>
         </div>
       </div>
-    </section>
+    <% end %>
   <% else %>
-    <section>
-      <div class="shadow-with-inset bg-stone-50 font-sans px-4 pb-4 pt-3 rounded-lg mb-5">
+    <%= render "newsletters/settings/partials/settings_section" do %>
+      <div class="shadow-with-inset bg-stone-50 font-sans px-4 pb-4 pt-3 rounded-lg">
         <%= render "newsletters/subscribers/partials/action_card",
         title: "Get Started",
         help_text:
@@ -51,58 +50,47 @@
         target: "_blank",
         rel: "noopener" %>
       </div>
-    </section>
+    <% end %>
   <% end %>
 
-  <section class="mt-5">
-    <h2 class="text-xl font-semibold text-stone-800 mb-2">Usage</h2>
-
-    <p class="max-w-lg text-stone-600">
-      Your plan allows for unlimited newsletters, and the pricing is based on the total number of emails you send across
-      all of those newsletters.
-    </p>
-
+  <%= render "newsletters/settings/partials/settings_section", title: "Usage", subtitle: "Your plan allows for unlimited newsletters, and the pricing is based on the total number of emails you send across all of those newsletters." do %>
     <% if AppConfig.billing_enabled? %>
-      <div class="space-y-6 mt-6">
-        <div class="mt-8">
-          <div class="overflow-hidden border border-stone-200 rounded-lg">
-            <table class="min-w-full divide-y divide-stone-200">
-              <thead
-                class="
-                  bg-stone-50 font-sans text-xs font-normal text-stone-500 uppercase
-                  tracking-wider
-                "
-              >
-                <tr>
-                  <th scope="col" class="px-4 py-3 text-left">Newsletter</th>
-                  <th scope="col" class="px-4 py-3 text-right">Subscribers</th>
-                  <th scope="col" class="px-4 py-3 text-right">
-                    Emails This Month
-                  </th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-stone-200">
-                <% Current.user.newsletters.each do |newsletter| %>
-                  <tr>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-700">
-                      <%= newsletter.title %>
-                    </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
-                      <%= newsletter.subscribers.verified.count %>
-                    </td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
-                      <% start_date = Time.current.beginning_of_month
-                      end_date = Time.current.end_of_month
-                      email_count =
-                        newsletter.emails.where(status: :sent, created_at: start_date..end_date).count %>
-                      <%= email_count %>
-                    </td>
-                  </tr>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="overflow-hidden border border-stone-200 rounded-lg">
+        <table class="min-w-full divide-y divide-stone-200">
+          <thead
+            class="
+              bg-stone-50 font-sans text-xs font-normal text-stone-500 uppercase
+              tracking-wider
+            "
+          >
+            <tr>
+              <th scope="col" class="px-4 py-3 text-left">Newsletter</th>
+              <th scope="col" class="px-4 py-3 text-right">Subscribers</th>
+              <th scope="col" class="px-4 py-3 text-right">
+                Emails This Month
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-stone-200">
+            <% Current.user.newsletters.each do |newsletter| %>
+              <tr>
+                <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-700">
+                  <%= newsletter.title %>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
+                  <%= newsletter.subscribers.verified.count %>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
+                  <% start_date = Time.current.beginning_of_month
+                  end_date = Time.current.end_of_month
+                  email_count =
+                    newsletter.emails.where(status: :sent, created_at: start_date..end_date).count %>
+                  <%= email_count %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     <% else %>
       <div class="bg-stone-50 rounded-lg p-6 text-center">
@@ -111,11 +99,9 @@
         </p>
       </div>
     <% end %>
-  </section>
+  <% end %>
 
-  <section>
-    <h2 class="text-xl font-semibold text-stone-800 mb-4">Need help?</h2>
-
+  <%= render "newsletters/settings/partials/settings_section", title: "Need help?" do %>
     <% if AppConfig.billing_enabled? %>
       <p class="text-stone-600">
         Contact support at
@@ -127,5 +113,5 @@
         You're currently on the free plan. Contact us to learn about premium features and higher limits.
       </p>
     <% end %>
-  </section>
-</main>
+  <% end %>
+</div>

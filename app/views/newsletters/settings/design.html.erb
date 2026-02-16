@@ -1,21 +1,7 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<div
-  class="
-    flex max-w-lg gap-2 px-4 py-2 font-sans text-sm rounded-lg bg-stone-100
-    text-stone-800
-  "
->
-  <div class="w-5 pt-px text-stone-400">
-    <%= lucide_icon("info", class: "size-[18px]") %>
-  </div>
-
-  <div class="flex-grow leading-normal text-stone-500">
-    Update the design of your newsletter emails and public archive page.
-  </div>
-</div>
-
-<%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, class: 'mt-5', permission: :design do |form| %>
+<%= render "newsletters/settings/partials/settings_section", title: "Design", subtitle: "Update the design of your newsletter emails and public archive page." do %>
+  <%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, permission: :design do |form| %>
   <div class="max-w-lg space-y-4">
     <%= render "newsletters/settings/partials/template_selector", form: form, newsletter: @newsletter %>
 
@@ -104,4 +90,5 @@
   <div class="mt-5">
     <%= form.submit "Update Settings", class: "btn btn-primary" %>
   </div>
+  <% end %>
 <% end %>

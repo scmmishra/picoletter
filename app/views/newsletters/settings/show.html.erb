@@ -1,47 +1,49 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<%= labeled_form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch, permission: :general do |form| %>
-  <div class="max-w-lg space-y-4">
-    <%= form.text_field :title,
-                    required: true,
-                    autofocus: true,
-                    hint: "picoletter.com/#{@newsletter.slug}" %>
+<%= render "newsletters/settings/partials/settings_section", title: "General Settings", subtitle: "Configure your newsletter's basic information and preferences." do %>
+  <%= labeled_form_with model: @newsletter, url: settings_path(slug: @newsletter.slug), method: :patch, permission: :general do |form| %>
+    <div class="max-w-lg space-y-4">
+      <%= form.text_field :title,
+                      required: true,
+                      autofocus: true,
+                      hint: "picoletter.com/#{@newsletter.slug}" %>
 
-    <%= form.text_area :description,
-                   required: true,
-                   block: true,
-                   rows: 5,
-                   placeholder: "What is the newsletter about, write what you want your users to know",
-                   hint: 'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.' %>
+      <%= form.text_area :description,
+                     required: true,
+                     block: true,
+                     rows: 5,
+                     placeholder: "What is the newsletter about, write what you want your users to know",
+                     hint: 'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.' %>
 
-    <%= form.select :timezone,
-                TZInfo::Timezone.all_identifiers,
-                {},
-                hint: "Timezone in which scheduled posts will be sent." %>
+      <%= form.select :timezone,
+                  TZInfo::Timezone.all_identifiers,
+                  {},
+                  hint: "Timezone in which scheduled posts will be sent." %>
 
-    <%= form.url_field :website,
-                   hint: "Website that will be linked on the archive page, in case you post these elsewhere." %>
+      <%= form.url_field :website,
+                     hint: "Website that will be linked on the archive page, in case you post these elsewhere." %>
 
-    <label class="flex items-center gap-1">
-      <%= form.check_box :enable_archive %>
-
-      <%= form.label :enable_archive,
-                 "Enable Public Archive",
-                 class: "ml-px text-stone-500 text-sm font-sans" %>
-    </label>
-
-    <% if AppConfig.reminders_enabled? %>
       <label class="flex items-center gap-1">
-        <%= form.check_box :auto_reminder_enabled %>
+        <%= form.check_box :enable_archive %>
 
-        <%= form.label :auto_reminder_enabled,
-                   "Send automatic reminder to unverified subscribers",
+        <%= form.label :enable_archive,
+                   "Enable Public Archive",
                    class: "ml-px text-stone-500 text-sm font-sans" %>
       </label>
-    <% end %>
-  </div>
 
-  <div class="mt-5">
-    <%= form.submit "Update Settings", class: "btn btn-primary" %>
-  </div>
+      <% if AppConfig.reminders_enabled? %>
+        <label class="flex items-center gap-1">
+          <%= form.check_box :auto_reminder_enabled %>
+
+          <%= form.label :auto_reminder_enabled,
+                     "Send automatic reminder to unverified subscribers",
+                     class: "ml-px text-stone-500 text-sm font-sans" %>
+        </label>
+      <% end %>
+    </div>
+
+    <div class="mt-5">
+      <%= form.submit "Update Settings", class: "btn btn-primary" %>
+    </div>
+  <% end %>
 <% end %>
