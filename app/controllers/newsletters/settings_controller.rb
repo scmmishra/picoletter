@@ -53,6 +53,11 @@ class Newsletters::SettingsController < ApplicationController
   def embedding; end
 
   def generate_token
+    if @newsletter.api_tokens.exists?
+      redirect_to api_settings_url(slug: @newsletter.slug), alert: "A token already exists. Rotate it instead."
+      return
+    end
+
     @newsletter.api_tokens.create!
     redirect_to api_settings_url(slug: @newsletter.slug), notice: "API token generated."
   end
