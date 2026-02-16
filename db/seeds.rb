@@ -226,7 +226,7 @@ Email.where.not(opened_at: nil).find_each do |email|
 
     EmailClick.create!(
       email_id: email.id,
-      post_id: email.post_id,
+      post_id: email.emailable_id,
       link: possible_links.sample,
       timestamp: click_time
     )
