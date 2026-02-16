@@ -4,7 +4,7 @@ class Newsletters::SettingsController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action -> { authorize_permission!(:general, :read) }, only: [ :show ]
-  before_action -> { authorize_permission!(:general, :write) }, only: [ :update, :generate_token, :rotate_token ]
+  before_action -> { authorize_permission!(:general, :write) }, only: [ :update, :api, :generate_token, :rotate_token ]
   before_action -> { authorize_permission!(:design, :read) }, only: [ :design ]
   before_action -> { authorize_permission!(:design, :write) }, only: [ :update_design ]
   before_action -> { authorize_permission!(:sending, :read) }, only: [ :sending ]
@@ -48,17 +48,19 @@ class Newsletters::SettingsController < ApplicationController
     redirect_to sending_settings_url(slug: @newsletter.slug), notice: notice
   end
 
+  def api; end
+
   def embedding; end
 
   def generate_token
     @newsletter.api_tokens.create!
-    redirect_to settings_url(slug: @newsletter.slug), notice: "API token generated."
+    redirect_to api_settings_url(slug: @newsletter.slug), notice: "API token generated."
   end
 
   def rotate_token
     token = @newsletter.api_tokens.find(params[:token_id])
     token.regenerate!
-    redirect_to settings_url(slug: @newsletter.slug), notice: "API token rotated."
+    redirect_to api_settings_url(slug: @newsletter.slug), notice: "API token rotated."
   end
 
   def update_embedding

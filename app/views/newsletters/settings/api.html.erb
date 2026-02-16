@@ -1,0 +1,65 @@
+<%= render "newsletters/settings/partials/header" %>
+
+<section>
+  <div class="mb-8">
+    <div class="max-w-lg text-stone-600 mb-6">
+      <h3 class="font-medium text-lg text-stone-800 mb-2">API Token</h3>
+      <p class="text-sm">
+        Use an API token to programmatically add subscribers to your newsletter.
+      </p>
+    </div>
+
+    <% token = @newsletter.api_tokens.first %>
+    <% if token %>
+      <div class="max-w-lg space-y-4">
+        <div class="relative" data-controller="token-visibility">
+          <input type="password" value="<%= token.token %>" disabled readonly
+                 autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other"
+                 class="input w-full text-sm font-mono pr-16"
+                 data-token-visibility-target="input">
+          <div class="absolute inset-y-0 right-0 flex items-center gap-1 pr-2">
+            <button type="button" class="uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white rounded-lg text-stone-600"
+                    data-action="token-visibility#toggle">
+              <%= lucide_icon("eye", class: "size-3 text-stone-400", data: { token_visibility_target: "showIcon" }) %>
+              <%= lucide_icon("eye-off", class: "size-3 text-stone-400 hidden", data: { token_visibility_target: "hideIcon" }) %>
+            </button>
+            <%= button_to_copy_to_clipboard(token.token) { tag.div } %>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <%= button_to "Rotate Token", rotate_token_settings_path(slug: @newsletter.slug, token_id: token.id),
+              method: :patch,
+              class: "btn btn-secondary text-sm",
+              data: { turbo_confirm: "Are you sure? This will invalidate the current token." } %>
+        </div>
+      </div>
+    <% else %>
+      <%= button_to "Generate API Token", generate_token_settings_path(slug: @newsletter.slug),
+          method: :post,
+          class: "btn btn-primary text-sm" %>
+    <% end %>
+  </div>
+
+  <div class="border-t pt-8">
+    <div class="max-w-2xl text-stone-600 text-sm space-y-6">
+      <h3 class="font-medium text-lg text-stone-800">API Documentation</h3>
+
+      <div>
+        <p class="mb-2">Add a subscriber by sending a POST request with your token:</p>
+        <pre class="px-3 py-2 bg-stone-50 rounded-lg text-xs font-mono overflow-x-auto border border-stone-100">curl -X POST <%= request.base_url %>/api/v1/subscribers \
+  -H "Authorization: Bearer your_api_token" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "reader@example.com", "name": "Jane Doe", "labels": "vip"}'</pre>
+      </div>
+
+      <div>
+        <h4 class="font-medium text-stone-800 mb-2">Parameters</h4>
+        <div class="space-y-1">
+          <p><code class="px-1 py-0.5 bg-stone-100 rounded text-xs font-mono">email</code> <span class="text-stone-400 text-xs">(required)</span> — subscriber's email address</p>
+          <p><code class="px-1 py-0.5 bg-stone-100 rounded text-xs font-mono">name</code> <span class="text-stone-400 text-xs">(optional)</span> — subscriber's full name</p>
+          <p><code class="px-1 py-0.5 bg-stone-100 rounded text-xs font-mono">labels</code> <span class="text-stone-400 text-xs">(optional)</span> — comma-separated list of labels</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

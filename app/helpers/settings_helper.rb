@@ -28,6 +28,8 @@ module SettingsHelper
       newsletter.can_read?(:billing)
     when "embedding"
       newsletter.can_read?(:embedding)
+    when "api"
+      newsletter.can_write?(:general)
     when "profile"
       newsletter.can_read?(:profile)
     else

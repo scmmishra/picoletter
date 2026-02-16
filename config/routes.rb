@@ -84,6 +84,7 @@ Rails.application.routes.draw do
         post :verify_domain, action: :verify_domain, as: :verify_domain
         get :embedding
         patch :embedding, action: :update_embedding, as: :update_embedding
+        get :api
         post :generate_token
         patch :rotate_token
       end
