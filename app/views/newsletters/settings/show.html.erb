@@ -46,7 +46,7 @@
   </div>
 <% end %>
 
-<% if AppConfig.sub_endpoint_allowed?(@newsletter.id) %>
+<% if AppConfig.sub_endpoint_allowed?(@newsletter.id) && @newsletter.can_write?(:general) %>
   <div class="mt-10 border-t py-8">
     <div class="max-w-lg text-stone-600 mb-6">
       <h3 class="font-medium text-lg text-stone-800 mb-2">API Token</h3>
