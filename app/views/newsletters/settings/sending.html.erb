@@ -1,19 +1,6 @@
 <%= render "newsletters/settings/partials/header" %>
 
-<div
-  class="
-    flex max-w-lg gap-2 px-4 py-2 font-sans text-sm rounded-lg bg-stone-100
-    text-stone-800
-  "
->
-  <div class="w-5 pt-px text-stone-400"><%= lucide_icon("info", class: "size-[18px]") %></div>
-  <div class="flex-grow leading-normal text-stone-500">
-    You can start sending emails using your custom domain. This will help you improve your email deliverability and make
-    your emails look more professional. However you can still use the default domain
-    <span class="font-medium text-stone-600">mail.picoletter.com</span>
-    .
-  </div>
-</div>
+<%= render "newsletters/settings/partials/section_header", title: "Sending Domain", subtitle: "Configure your custom sending domain to improve deliverability. You can also use the default domain mail.picoletter.com." %>
 
 <%= labeled_form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, class: "mt-8", permission: :sending do |form| %>
   <div class="max-w-lg space-y-4">

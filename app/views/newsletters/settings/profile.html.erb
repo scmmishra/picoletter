@@ -12,11 +12,7 @@
 
 <main class="max-w-lg space-y-4">
   <section class="pb-8">
-    <h3 class="text-lg font-medium text-stone-900">Profile Information</h3>
-
-    <p class="mt-1 text-sm text-stone-500">
-      Update your account profile information.
-    </p>
+    <%= render "newsletters/settings/partials/section_header", title: "Profile Information", subtitle: "Update your account profile information." %>
 
     <%= labeled_form_with model: Current.user, url: update_profile_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
       <div class="mt-6 space-y-4">
@@ -35,11 +31,7 @@
 
   <% if github_enabled || google_enabled %>
     <section>
-      <h3 class="text-lg font-medium text-stone-900">Connected Accounts</h3>
-
-      <p class="mt-1 text-sm text-stone-500">
-        Connect your account to social logins for easier access.
-      </p>
+      <%= render "newsletters/settings/partials/section_header", title: "Connected Accounts", subtitle: "Connect your account to social logins for easier access." %>
 
       <div class="mt-6 rounded-lg border border-neutral-200 bg-white shadow-sm">
         <% if Current.user.connected_services.present? %>

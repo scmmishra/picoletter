@@ -2,12 +2,7 @@
 
 <section>
   <div class="mb-8">
-    <div class="max-w-lg text-stone-600 mb-6">
-      <h3 class="font-medium text-lg text-stone-800 mb-2">API Token</h3>
-      <p class="text-sm">
-        Use an API token to programmatically add subscribers to your newsletter.
-      </p>
-    </div>
+    <%= render "newsletters/settings/partials/section_header", title: "API Token", subtitle: "Use an API token to programmatically add subscribers to your newsletter." %>
 
     <% token = @newsletter.api_tokens.first %>
     <% if token %>
@@ -42,7 +37,7 @@
 
   <div class="border-t pt-8">
     <div class="max-w-2xl text-stone-600 text-sm space-y-6">
-      <h3 class="font-medium text-lg text-stone-800">API Documentation</h3>
+      <%= render "newsletters/settings/partials/section_header", title: "API Documentation" %>
 
       <div>
         <p class="mb-2">Add a subscriber by sending a POST request with your token:</p>
