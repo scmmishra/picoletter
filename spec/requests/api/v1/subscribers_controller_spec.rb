@@ -11,11 +11,6 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
   end
   let(:endpoint) { '/api/v1/subscribers' }
 
-  before do
-    allow(AppConfig).to receive(:sub_endpoint_allowed?).and_return(false)
-    allow(AppConfig).to receive(:sub_endpoint_allowed?).with(newsletter.id).and_return(true)
-  end
-
   describe 'POST /api/v1/subscribers' do
     let(:params) { { email: 'subscriber@example.com', name: 'Test User' } }
 
@@ -23,6 +18,7 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
       it 'creates a subscriber and returns 201' do
         expect(CreateSubscriberJob).to receive(:perform_now)
           .with(newsletter.id, 'subscriber@example.com', 'Test User', nil, 'api', {})
+          .and_return(true)
 
         post endpoint, params: params.to_json, headers: headers
 
@@ -38,6 +34,7 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
       it 'passes labels to the job' do
         expect(CreateSubscriberJob).to receive(:perform_now)
           .with(newsletter.id, 'subscriber@example.com', nil, 'vip,early-access', 'api', {})
+          .and_return(true)
 
         post endpoint, params: params.to_json, headers: headers
 
@@ -91,20 +88,6 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
         expect(response).to conform_response_schema(403)
         body = JSON.parse(response.body)
         expect(body['error']).to eq('Insufficient permissions')
-      end
-    end
-
-    context 'when feature flag is disabled for newsletter' do
-      before do
-        allow(AppConfig).to receive(:sub_endpoint_allowed?).with(newsletter.id).and_return(false)
-      end
-
-      it 'returns 403' do
-        post endpoint, params: params.to_json, headers: headers
-
-        expect(response).to conform_response_schema(403)
-        body = JSON.parse(response.body)
-        expect(body['error']).to eq('Subscriber API is not enabled for this newsletter')
       end
     end
   end
