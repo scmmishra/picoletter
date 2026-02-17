@@ -77,10 +77,10 @@
                 <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-stone-700">
                   <%= newsletter.title %>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
+                <td class="px-4 py-3 whitespace-nowrap font-sans tabular-nums text-sm text-stone-500 text-right">
                   <%= newsletter.subscribers.verified.count %>
                 </td>
-                <td class="px-4 py-3 whitespace-nowrap text-sm text-stone-500 text-right">
+                <td class="px-4 py-3 whitespace-nowrap font-sans tabular-nums text-sm text-stone-500 text-right">
                   <% start_date = Time.current.beginning_of_month
                   end_date = Time.current.end_of_month
                   email_count =
@@ -101,17 +101,6 @@
     <% end %>
   <% end %>
 
-  <%= render "newsletters/settings/partials/settings_section", title: "Need help?" do %>
-    <% if AppConfig.billing_enabled? %>
-      <p class="text-stone-600">
-        Contact support at
-        <a href="mailto:billing@picoletter.com" class="text-blue-600 hover:underline">billing@picoletter.com</a>
-        to update your plan or billing information.
-      </p>
-    <% else %>
-      <p class="text-stone-600">
-        You're currently on the free plan. Contact us to learn about premium features and higher limits.
-      </p>
-    <% end %>
+  <%= render "newsletters/settings/partials/settings_section", title: "Need help?", subtitle: "Contact support at [billing@picoletter.com](mailto:billing@picoletter.com) to update your plan or billing information." do %>
   <% end %>
 </div>

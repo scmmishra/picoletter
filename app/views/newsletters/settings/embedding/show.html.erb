@@ -18,14 +18,8 @@
     <% end %>
   <% end %>
 
-  <%= render "newsletters/settings/partials/settings_section" do %>
+  <%= render "newsletters/settings/partials/settings_section", title: "Embedding Settings", subtitle: "Below is an example of customizable HTML code for an email subscription form that you can easily integrate and style to match your site." do %>
     <div class="flex items-start justify-between mb-5">
-      <div class="max-w-lg text-stone-600">
-        <p>
-          Below is an example of customizable HTML code for an email subscription form that you can easily integrate and
-          style to match your site.
-        </p>
-      </div>
       <div>
         <form
           class="code--codeopen-form"
@@ -43,52 +37,14 @@
 
     <section class="grid grid-cols-2 gap-4">
       <div>
-        <div class="relative font-mono text-xs">
-          <div class="absolute right-2 pt-2 top-2">
-            <%= button_to_copy_to_clipboard(@newsletter.embed_form(with_name: true)) %>
-          </div>
-          <div class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100" id="form_html">
-            <pre class="px-3 py-2 text-xs fallback-code overflow-hidden"><%= @newsletter.embed_form(with_name: true) %></pre>
-          </div>
+        <div class="font-mono text-xs">
+          <%= render "shared/code_block", code: @newsletter.embed_form(with_name: true), lang: "html" %>
         </div>
         <div class="mt-2 py-3"><%= render "newsletters/settings/partials/label_instructions" %></div>
       </div>
-      <div class="relative font-mono text-xs">
-        <div class="absolute right-2 pt-2 top-2"><%= button_to_copy_to_clipboard(@newsletter.embed_form_css) %></div>
-        <div class="mt-2 rounded-lg min-h-80 outline outline-1 outline-stone-100" id="css_html">
-          <pre class="p-2 text-xs fallback-code overflow-hidden"><%= @newsletter.embed_form_css %></pre>
-        </div>
+      <div class="font-mono text-xs">
+        <%= render "shared/code_block", code: @newsletter.embed_form_css, lang: "css" %>
       </div>
     </section>
   <% end %>
 </div>
-
-<%# NOTE: The innerHTML usage below is intentional for Shiki syntax highlighting of trusted, server-rendered content %>
-<script type="module">
-  try {
-    const { codeToHtml } = await import('https://esm.sh/shiki@3.5.0')
-
-    const formCodeEl = document.getElementById('form_html')
-    const cssCodeEl = document.getElementById('css_html')
-
-    formCodeEl.innerHTML = await codeToHtml(`<%= raw @newsletter.embed_form(with_name: true) %>`, {
-      lang: 'html',
-      theme: 'github-light'
-    })
-
-    cssCodeEl.innerHTML = await codeToHtml(`<%= raw  @newsletter.embed_form_css %>`, {
-      lang: 'css',
-      theme: 'github-light'
-    })
-  } catch (error) {
-    console.error(error)
-    console.log('Shiki failed to load, using fallback rendering')
-  }
-</script>
-
-<style>
-  .shiki {
-    padding: 0.5rem 0.8rem;
-    overflow: scroll;
-  }
-</style>

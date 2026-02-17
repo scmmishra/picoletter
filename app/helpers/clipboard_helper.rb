@@ -1,6 +1,6 @@
 module ClipboardHelper
   def button_to_copy_to_clipboard(value, &block)
-    button_class = "uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white rounded-lg text-stone-600"
+    button_class = "uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white font-mono rounded-lg text-stone-600"
     button_data = {
       controller: "copy-to-clipboard",
       action: "copy-to-clipboard#copy",

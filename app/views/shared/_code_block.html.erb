@@ -1,0 +1,19 @@
+<% copy = local_assigns.fetch(:copy, true) %>
+<% icon_only = local_assigns.fetch(:icon_only, true) %>
+
+<div class="relative" data-controller="syntax-highlight"
+     data-syntax-highlight-lang-value="<%= lang %>"
+     data-syntax-highlight-code-value="<%= code %>">
+  <% if copy %>
+    <div class="absolute right-2 pt-2 top-0 z-10">
+      <% if icon_only %>
+        <%= button_to_copy_to_clipboard(code) {} %>
+      <% else %>
+        <%= button_to_copy_to_clipboard(code) %>
+      <% end %>
+    </div>
+  <% end %>
+  <div class="rounded-lg outline outline-1 outline-stone-100" data-syntax-highlight-target="container">
+    <pre class="px-3 py-2 text-xs fallback-code overflow-hidden font-mono"><%= code %></pre>
+  </div>
+</div>

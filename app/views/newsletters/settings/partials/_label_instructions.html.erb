@@ -17,16 +17,7 @@
         Add a hidden input field with the label name:
       </p>
 
-      <div class="relative">
-        <div class="absolute font-mono right-2 mt-1.5">
-          <%= button_to_copy_to_clipboard(
-            '<input type="hidden" name="labels" value="newsletter-signup">',
-          ) {} %>
-        </div>
-        <code class="block bg-stone-100 p-2 rounded text-xs">
-          &lt;input type="hidden" name="labels" value="newsletter-signup"&gt;
-        </code>
-      </div>
+      <%= render "shared/code_block", code: '<input type="hidden" name="labels" value="newsletter-signup">', lang: "html" %>
     </div>
 
     <div>
@@ -34,16 +25,7 @@
 
       <p class="font-sans mb-2">Separate multiple labels with commas:</p>
 
-      <div class="relative">
-        <div class="absolute font-mono right-2 mt-1.5">
-          <%= button_to_copy_to_clipboard(
-            '<input type="hidden" name="labels" value="newsletter,website,lead">',
-          ) {} %>
-        </div>
-        <code class="block bg-stone-100 p-2 rounded text-xs">
-          &lt;input type="hidden" name="labels" value="newsletter,website,lead"&gt;
-        </code>
-      </div>
+      <%= render "shared/code_block", code: '<input type="hidden" name="labels" value="newsletter,website,lead">', lang: "html" %>
     </div>
   </div>
 
