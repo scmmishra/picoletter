@@ -41,7 +41,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
       before do
         allow(AppConfig).to receive(:get).with("DISABLE_EMBED_SUBSCRIBE").and_return(false)
         allow(AppConfig).to receive(:get).with("ENABLE_BILLING", false).and_return(false)
-        allow(IPShieldService).to receive(:legit_ip?).and_return(true)
+
         newsletter.update(redirect_after_subscribe: nil)
       end
 
@@ -87,7 +87,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
     context 'when custom redirect URL is set' do
       before do
         allow(AppConfig).to receive(:get).with(any_args).and_return(false)
-        allow(IPShieldService).to receive(:legit_ip?).and_return(true)
+
         newsletter.update(redirect_after_subscribe: 'https://example.com/thank-you')
       end
 
@@ -107,10 +107,6 @@ RSpec.describe Public::SubscribersController, type: :controller do
   end
 
   describe 'POST #public_subscribe' do
-    before do
-      allow(IPShieldService).to receive(:legit_ip?).and_return(true)
-    end
-
     it 'creates a subscriber with labels and redirects to almost there page' do
       expect(CreateSubscriberJob).to receive(:perform_now)
         .with(newsletter.id, 'test@example.com', 'Test User', [ 'label1', 'label2' ], 'public', anything)
@@ -153,7 +149,7 @@ RSpec.describe Public::SubscribersController, type: :controller do
 
     it 'handles invalid emails' do
       allow(CreateSubscriberJob).to receive(:perform_now).and_raise(StandardError.new("Invalid email"))
-      allow(RorVsWild).to receive(:record_error)
+      allow(Rails.error).to receive(:report)
 
       post :public_subscribe, params: { slug: newsletter.slug, email: 'invalid' }
 
