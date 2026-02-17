@@ -13,7 +13,7 @@
           url: drafts_posts_path(@newsletter.slug),
           is_active: current_page?(drafts_posts_path(@newsletter.slug)),
           label: "Drafts",
-          count: @newsletter.posts.drafts.count %>
+          count: @newsletter.posts.draft.count %>
           <%= render "newsletters/partials/sidebar_link",
           url: subscribers_path(@newsletter.slug),
           is_active: current_page?(subscribers_path(@newsletter.slug)),

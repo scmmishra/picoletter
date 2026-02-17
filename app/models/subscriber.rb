@@ -40,9 +40,6 @@ class Subscriber < ApplicationRecord
   before_validation :normalize_labels
   before_save :filter_invalid_labels
 
-  scope :verified, -> { where(status: "verified") }
-  scope :unverified, -> { where(status: "unverified") }
-  scope :unsubscribed, -> { where(status: "unsubscribed") }
   scope :subscribed, -> { verified.or(unverified) }
   scope :eligible_for_auto_reminder, -> {
     unverified
