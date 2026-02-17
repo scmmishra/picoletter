@@ -1,4 +1,5 @@
 class Newsletters::SettingsController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -93,12 +94,6 @@ class Newsletters::SettingsController < ApplicationController
 
   private
 
-  def set_newsletter
-    @newsletter = Current.user.newsletters.from_slug(params[:slug])
-    return if @newsletter
-
-    redirect_to profile_settings_path, alert: "Newsletter not found."
-  end
 
   def authorize_permission!(permission, access_type = :read)
     unless @newsletter.can_access?(permission, access_type)

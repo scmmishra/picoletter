@@ -1,4 +1,5 @@
 class Newsletters::LabelsController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -36,9 +37,5 @@ class Newsletters::LabelsController < ApplicationController
 
   def label_params
     params.require(:label).permit(:name, :color, :description)
-  end
-
-  def set_newsletter
-    @newsletter = Current.user.newsletters.from_slug(params[:slug])
   end
 end

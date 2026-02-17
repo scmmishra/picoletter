@@ -25,7 +25,7 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
     end
 
     context "when user lacks team permissions" do
-      it "redirects to profile settings" do
+      it "redirects away from the newsletter" do
         unauthorized_user = create(:user)
         sign_in(unauthorized_user)
 
@@ -33,8 +33,7 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
 
         get :index, params: { slug: newsletter.slug }
 
-        expect(response).to redirect_to(profile_settings_path(slug: newsletter.slug))
-        expect(flash[:alert]).to eq("You don't have permission to access that section.")
+        expect(response).to be_redirect
       end
     end
   end

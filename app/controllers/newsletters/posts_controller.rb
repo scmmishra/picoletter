@@ -1,6 +1,8 @@
 class Newsletters::PostsController < ApplicationController
   layout "newsletters"
 
+  include NewsletterScoped
+
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_last_opened, only: [ :index ]
@@ -110,12 +112,6 @@ class Newsletters::PostsController < ApplicationController
     Rails.cache.write("last_opened_newsletter_#{Current.user.id}", @newsletter.slug)
   end
 
-  def set_newsletter
-    @newsletter ||= Current.user.newsletters.from_slug(params[:slug])
-    return if @newsletter
-
-    redirect_to_newsletter_home(notice: "You do not have access to this newsletter.")
-  end
 
   def set_post
     @post = @newsletter.posts.find(params[:id])

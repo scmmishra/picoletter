@@ -1,4 +1,5 @@
 class Newsletters::Subscribers::LabelsController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -33,9 +34,6 @@ class Newsletters::Subscribers::LabelsController < ApplicationController
 
   private
 
-  def set_newsletter
-    @newsletter = Newsletter.find_by(slug: params[:slug])
-  end
 
   def set_subscriber
     @subscriber = @newsletter.subscribers.find(params[:id])

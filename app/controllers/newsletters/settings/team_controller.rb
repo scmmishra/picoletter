@@ -1,4 +1,5 @@
 class Newsletters::Settings::TeamController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -81,15 +82,6 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   private
 
-  def set_newsletter
-    @newsletter = Current.user.newsletters.find_by(slug: params[:slug].to_s.downcase)
-
-    return if @newsletter
-
-    redirect_to profile_settings_path(slug: params[:slug]),
-                alert: "You don't have permission to access that section."
-    return
-  end
 
   def invitation_params
     params.require(:invitation).permit(:email, :role)
@@ -103,7 +95,7 @@ class Newsletters::Settings::TeamController < ApplicationController
     unless @newsletter.can_access?(permission, access_type)
       redirect_to profile_settings_path(slug: @newsletter.slug),
                   alert: "You don't have permission to access that section."
-      return
+      nil
     end
   end
 end
