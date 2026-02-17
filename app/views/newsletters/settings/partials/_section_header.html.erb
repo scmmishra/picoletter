@@ -1,6 +1,6 @@
 <div class="mb-4 max-w-lg">
   <h3 class="font-medium text-lg text-stone-800"><%= title %></h3>
   <% if local_assigns[:subtitle] %>
-    <p class="mt-1 font-sans text-sm text-stone-500"><%= subtitle %></p>
+    <p class="mt-1 font-sans text-sm text-stone-500 [&_a]:underline [&_a]:text-stone-700 [&_strong]:text-stone-700 [&_strong]:font-semibold"><%= Kramdown::Document.new(subtitle).to_html.gsub(%r{\A<p>(.*)</p>\s*\z}m, '\1').html_safe %></p>
   <% end %>
 </div>
