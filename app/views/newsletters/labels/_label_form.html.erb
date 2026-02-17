@@ -1,48 +1,26 @@
 <% is_new = label.new_record? %>
 
-<%= form_with model: label, url: is_new ? labels_path: label_path(@newsletter.slug, label.id), method: is_new ? :post : :patch, class: "flex flex-col gap-4" do |form| %>
-  <label data-controller="auto-slug">
-    <%= form.label :name, "Name", class: "block text-sm font-medium text-stone-700" %>
+<%= labeled_form_with model: label, url: is_new ? labels_path : label_path(@newsletter.slug, label.id), method: is_new ? :post : :patch, class: "flex flex-col gap-4" do |form| %>
+  <div data-controller="auto-slug">
     <%= form.text_field :name,
-                    data: {
-                      "auto-slug-target": "title",
-                    },
+                    label: "Name",
+                    data: { "auto-slug-target": "title" },
                     disabled: !is_new,
-                    class:
-                      "mt-1 block w-full disabled:bg-stone-200 px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-    <% if is_new %>
-      <p class="font-sans text-xs mt-1 text-stone-500">
-        Will be saved as:
-        <span class="text-stone-600" data-auto-slug-target="slug"></span>
-      </p>
-    <% end %>
-  </label>
+                    hint: is_new ? "Will be saved as: <span class='text-stone-600' data-auto-slug-target='slug'></span>" : nil %>
+  </div>
 
-  <label>
-    <%= form.label :description,
-               "Description",
-               data: {
-                 "auto-slug-target": "slug",
-               },
-               class: "block text-sm font-medium text-stone-700" %>
-    <%= form.text_area :description,
-                   max_length: 180,
-                   class:
-                     "mt-1 block w-full px-3 py-2 border border-stone-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
-  </label>
+  <%= form.text_area :description,
+                 label: "Description" %>
 
-  <label data-controller="color-picker" data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false' %>">
-    <%= form.label :color, "Color", class: "block text-sm font-medium text-stone-700" %>
+  <div class="space-y-1" data-controller="color-picker" data-color-picker-auto-random-value="<%= is_new ? 'true' : 'false' %>">
+    <%= form.label :color, "Color", class: "ml-px text-sm text-stone-500 font-sans" %>
     <div class="border border-stone-300 px-1 py-1 rounded-md flex items-center gap-2">
       <%= form.color_field :color,
-                       data: {
-                         "color-picker-target": "colorPicker",
-                       },
-                       class:
-                         "bg-transparent size-6 rounded-sm overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch-wrapper]:border-0" %>
+                       data: { "color-picker-target": "colorPicker" },
+                       class: "bg-transparent size-6 rounded-sm overflow-hidden [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch-wrapper]:border-0" %>
       <span data-color-picker-target="hex"></span>
     </div>
-  </label>
+  </div>
 
   <%= form.submit is_new ? "Create Label" : "Update Label",
               class: "mt-4 font-sans text-sm btn btn-primary" %>
