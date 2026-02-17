@@ -25,6 +25,8 @@ class ProcessSNSWebhookJob < ApplicationJob
     when "click"     then process_click
     when "open"      then process_open
     end
+
+    @email.emailable.clear_stats_cache if @email.emailable_type == "Post"
   end
 
   def process_subscription_confirmation

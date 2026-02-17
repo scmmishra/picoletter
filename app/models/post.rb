@@ -110,6 +110,24 @@ class Post < ApplicationRecord
   end
 
   def stats
+    if published_at.present? && published_at < 24.hours.ago
+      Rails.cache.fetch(stats_cache_key, expires_in: 6.hours) { compute_stats }
+    else
+      compute_stats
+    end
+  end
+
+  def clear_stats_cache
+    Rails.cache.delete(stats_cache_key)
+  end
+
+  private
+
+  def stats_cache_key
+    "post_#{id}_stats"
+  end
+
+  def compute_stats
     total = emails.count.to_f
     delivered = emails.delivered.count.to_f
     opened = emails.where.not(opened_at: nil).count.to_f
