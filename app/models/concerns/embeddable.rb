@@ -92,19 +92,6 @@ module Embeddable
     ERB::Util.json_escape(payload.to_json)
   end
 
-  def font_family
-    case font_preference
-    when "sans-serif"
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
-    when "serif"
-      "Georgia, ui-serif, Cambria, Times New Roman, Times, serif"
-    when "monospace"
-      "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
-    else
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
-    end
-  end
-
   private
 
   def embed_url
