@@ -104,7 +104,7 @@ gem "kramdown"
 gem "premailer-rails"
 
 # monitoring
-gem "rorvswild", ">= 1.10.0"
+gem "rorvswild", ">= 1.10.1"
 
 # production
 gem "dotenv-rails"
