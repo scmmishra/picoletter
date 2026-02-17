@@ -28,8 +28,6 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Subscriber < ApplicationRecord
-  include Statusable
-
   taggable_array :labels
 
   generates_token_for :unsubscribe

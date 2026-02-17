@@ -25,7 +25,7 @@
 #
 class Post < ApplicationRecord
   include Sluggable
-  include Statusable
+
   include Timezonable
 
   sluggable_on :title, scope: :newsletter_id

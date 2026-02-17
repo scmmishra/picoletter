@@ -39,7 +39,7 @@
 class Newsletter < ApplicationRecord
   include Sluggable
   include Embeddable
-  include Statusable
+
   include Themeable
   include Templatable
   include Authorizable
