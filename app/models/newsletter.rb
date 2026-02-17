@@ -75,7 +75,7 @@ class Newsletter < ApplicationRecord
 
   def description_html
     return "" if description.blank?
-    Kramdown::Document.new(description).to_html.html_safe
+    ActionController::Base.helpers.sanitize(Kramdown::Document.new(description).to_html)
   end
 
   def verify_custom_domain
