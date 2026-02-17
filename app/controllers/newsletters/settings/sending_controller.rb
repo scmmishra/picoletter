@@ -5,7 +5,7 @@ class Newsletters::Settings::SendingController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action -> { authorize_permission!(:sending, :read) }, only: [ :show ]
-  before_action -> { authorize_permission!(:sending, :write) }, only: [ :update, :verify_domain ]
+  before_action -> { authorize_permission!(:sending, :write) }, only: [ :update, :verify_domain, :disconnect_domain ]
 
   def show; end
 
@@ -21,6 +21,14 @@ class Newsletters::Settings::SendingController < ApplicationController
     @newsletter.verify_custom_domain
     notice = @newsletter.ses_verified? ? "Domain successfully verified." : "Waiting for domain verification."
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: notice
+  end
+
+  def disconnect_domain
+    @newsletter.disconnect_sending_domain
+    redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Sending domain disconnected successfully."
+  rescue StandardError => e
+    Rails.error.report(e, context: { newsletter_id: @newsletter.id })
+    redirect_to settings_sending_path(slug: @newsletter.slug), alert: "Failed to disconnect domain."
   end
 
   private

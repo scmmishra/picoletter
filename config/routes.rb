@@ -89,6 +89,7 @@ Rails.application.routes.draw do
         get "sending", to: "sending#show", as: :sending
         patch "sending", to: "sending#update"
         post "sending/verify_domain", to: "sending#verify_domain", as: :sending_verify_domain
+        delete "sending/domain", to: "sending#disconnect_domain", as: :sending_disconnect_domain
 
         # API
         get "api", to: "api#show", as: :api

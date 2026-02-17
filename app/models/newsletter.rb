@@ -151,6 +151,18 @@ class Newsletter < ApplicationRecord
     invitation
   end
 
+  def disconnect_sending_domain
+    return unless sending_domain.present?
+
+    sending_domain.drop_identity
+    sending_domain.destroy!
+    update!(sending_address: nil, sending_name: nil, reply_to: nil)
+  rescue Aws::SESV2::Errors::NotFoundException => e
+    Rails.logger.error("Domain not found in SES: #{e.message}, cleaning up locally")
+    sending_domain.destroy!
+    update!(sending_address: nil, sending_name: nil, reply_to: nil)
+  end
+
   def setup_sending_domain(sending_params)
     domain_name = sending_params[:sending_address].split("@").last
 
