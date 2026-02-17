@@ -73,7 +73,7 @@ RSpec.describe User, type: :model do
     describe '#send_verification_email_once' do
       it 'sends email only once within the cache period' do
         expect(Rails.cache).to receive(:fetch).with("verification_email_#{user.id}").and_return(nil)
-        expect(Rails.cache).to receive(:write).with("verification_email_#{user.id}", expires_in: 6.hours)
+        expect(Rails.cache).to receive(:write).with("verification_email_#{user.id}", true, expires_in: 6.hours)
 
         expect {
           user.send_verification_email_once

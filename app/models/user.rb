@@ -68,7 +68,7 @@ class User < ApplicationRecord
 
     if !Rails.cache.fetch(key)
       self.send_verification_email
-      Rails.cache.write(key, expires_in: 6.hours)
+      Rails.cache.write(key, true, expires_in: 6.hours)
     end
   end
 
