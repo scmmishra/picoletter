@@ -17,6 +17,9 @@ gem "acts-as-taggable-array-on"
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
+# Thruster - HTTP/2 proxy with asset caching and X-Sendfile acceleration
+gem "thruster", require: false
+
 # SolidQueue
 gem "solid_queue", "~> 1.2.3"
 gem "mission_control-jobs", "~> 1.1.0"

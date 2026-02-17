@@ -527,6 +527,8 @@ GEM
     tailwindcss-ruby (3.4.17-arm64-darwin)
     tailwindcss-ruby (3.4.17-x86_64-linux)
     thor (1.4.0)
+    thruster (0.1.18-arm64-darwin)
+    thruster (0.1.18-x86_64-linux)
     timeout (0.4.4)
     tsort (0.2.0)
     turbo-rails (2.0.16)
@@ -617,6 +619,7 @@ DEPENDENCIES
   solid_queue (~> 1.2.3)
   stimulus-rails
   tailwindcss-rails (~> 3.3.1)
+  thruster
   turbo-rails
   tzinfo-data
   valid_email2
