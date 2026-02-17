@@ -26,8 +26,7 @@ namespace :subscribers do
     puts "DRY RUN MODE - No subscribers will be unsubscribed" if dry_run
 
     newsletter.subscribers.subscribed.find_each do |subscriber|
-      ves = VerifyEmailService.new(subscriber.email)
-      unless ves.valid?
+      unless VerifyEmailService.valid?(subscriber.email)
         if dry_run
           puts "[DRY RUN] Would unsubscribe invalid email: #{subscriber.email}"
         else
@@ -115,9 +114,7 @@ namespace :subscribers do
         next
       end
 
-      email_verifier = VerifyEmailService.new(email)
-
-      unless email_verifier.verify
+      unless VerifyEmailService.valid?(email)
         counters[:invalid_email] += 1
         update_progress.call(counters[:processed])
         next

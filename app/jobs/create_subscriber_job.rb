@@ -6,7 +6,7 @@ class CreateSubscriberJob < ApplicationJob
     split_labels = labels&.split(",")&.map(&:strip) || []
 
     # Verify email and MX record
-    verified = VerifyEmailService.new(email).verify
+    verified = VerifyEmailService.valid?(email)
 
     Rails.logger.info("[CreateSubscriberJob] Email verification for #{email}: #{verified}")
 
