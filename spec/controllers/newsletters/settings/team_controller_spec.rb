@@ -29,7 +29,7 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
         unauthorized_user = create(:user)
         sign_in(unauthorized_user)
 
-        expect(TeamInvitationService).not_to receive(:new)
+        expect_any_instance_of(Newsletter).not_to receive(:invite_member)
 
         get :index, params: { slug: newsletter.slug }
 
@@ -53,31 +53,21 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
       sign_in(administrator)
     end
 
-    it "delegates to TeamInvitationService and redirects with notice" do
-      service = instance_double(TeamInvitationService)
-      invitation = instance_double(Invitation, email: "teammate@example.com")
+    it "creates an invitation and redirects with notice" do
+      mailer = double(deliver_now: true)
+      allow(InvitationMailer).to receive(:with).and_return(double(team_invitation: mailer))
 
-      expect(TeamInvitationService).to receive(:new).with(
-        newsletter: newsletter,
-        email: "teammate@example.com",
-        role: "editor",
-        invited_by: administrator
-      ).and_return(service)
-
-      expect(service).to receive(:call).and_return(invitation)
-
-      post :invite, params: invitation_params
+      expect {
+        post :invite, params: invitation_params
+      }.to change(Invitation, :count).by(1)
 
       expect(response).to redirect_to(settings_team_path(slug: newsletter.slug))
       expect(flash[:notice]).to eq("Invitation sent to teammate@example.com.")
     end
 
-    it "handles service errors gracefully" do
-      service = instance_double(TeamInvitationService)
-      error = TeamInvitationService::ValidationError.new("Something went wrong")
-
-      allow(TeamInvitationService).to receive(:new).and_return(service)
-      allow(service).to receive(:call).and_raise(error)
+    it "handles errors gracefully" do
+      allow_any_instance_of(Newsletter).to receive(:invite_member)
+        .and_raise(Newsletter::InvitationError, "Something went wrong")
 
       post :invite, params: invitation_params
 

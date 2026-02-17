@@ -14,21 +14,15 @@ class Newsletters::Settings::TeamController < ApplicationController
   end
 
   def invite
-    service = TeamInvitationService.new(
-      newsletter: @newsletter,
+    invitation = @newsletter.invite_member(
       email: invitation_params[:email],
       role: invitation_params[:role],
       invited_by: Current.user
     )
 
-    invitation = service.call
     redirect_to settings_team_path(slug: @newsletter.slug),
                 notice: "Invitation sent to #{invitation.email}."
-  rescue TeamInvitationService::AlreadyMemberError => e
-    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
-  rescue TeamInvitationService::ExistingInvitationError => e
-    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
-  rescue TeamInvitationService::ValidationError => e
+  rescue Newsletter::AlreadyMemberError, Newsletter::ExistingInvitationError, Newsletter::InvitationError => e
     redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
   end
 
