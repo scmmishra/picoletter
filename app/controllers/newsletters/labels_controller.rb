@@ -39,6 +39,6 @@ class Newsletters::LabelsController < ApplicationController
   end
 
   def set_newsletter
-    @newsletter = Newsletter.find_by(slug: params[:slug])
+    @newsletter = Current.user.newsletters.from_slug(params[:slug])
   end
 end
