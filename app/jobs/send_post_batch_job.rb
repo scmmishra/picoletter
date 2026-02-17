@@ -41,6 +41,7 @@ class SendPostBatchJob < BaseSendJob
   end
 
   def send_email(subscriber)
+    # TODO: Replace with a null SES service or Action Mailer's :test delivery method
     return { message_id: SecureRandom.uuid } if Rails.env.development?
 
     token = subscriber.generate_token_for(:unsubscribe)
