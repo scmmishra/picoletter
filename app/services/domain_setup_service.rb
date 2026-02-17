@@ -62,6 +62,6 @@ class DomainSetupService
   end
 
   def domain_already_registered?
-    !Domain.is_unique(domain_to_register, newsletter.id)
+    Domain.claimed_by_other?(domain_to_register, newsletter.id)
   end
 end
