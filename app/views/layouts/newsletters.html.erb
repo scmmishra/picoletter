@@ -39,6 +39,7 @@
         </section>
       </section>
     </main>
+    <%= render "shared/confirm_dialog" %>
   </body>
   <% if Rails.env.production? && AppConfig.get("RORVSWILD__API_KEY").present? %>
     <script src="https://cdn.rorvswild.com/agent.js"></script>
