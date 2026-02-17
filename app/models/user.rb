@@ -49,7 +49,7 @@ class User < ApplicationRecord
   end
 
   def verify!
-    self.update(verified_at: Time.now)
+    update(verified_at: Time.current)
   end
 
   def verified?
