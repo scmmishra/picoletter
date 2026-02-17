@@ -73,7 +73,7 @@ class Post < ApplicationRecord
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::UserNotActiveError unless can_send?
 
-    PostValidationService.new(self).perform unless ignore_checks
+    PostValidation.validate_links!(self) unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
   end

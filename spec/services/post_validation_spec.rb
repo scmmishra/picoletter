@@ -1,7 +1,7 @@
 require "rails_helper"
 
-RSpec.describe PostValidationService do
-  describe "#perform" do
+RSpec.describe PostValidation do
+  describe ".validate_links!" do
     context "when all links respond successfully" do
       let(:post) do
         create(:post).tap do |record|
@@ -22,9 +22,7 @@ RSpec.describe PostValidationService do
       end
 
       it "checks every link using a HEAD request and does not raise an error" do
-        service = described_class.new(post)
-
-        expect { service.perform }.not_to raise_error
+        expect { described_class.validate_links!(post) }.not_to raise_error
         expect(HTTParty).to have_received(:head).with("https://example.com/ok", follow_redirect: true)
         expect(HTTParty).to have_received(:head).with("https://example.com/also-ok", follow_redirect: true)
       end
@@ -55,9 +53,7 @@ RSpec.describe PostValidationService do
           .with("https://example.com/broken", follow_redirect: true)
           .and_return(failure_response)
 
-        service = described_class.new(post)
-
-        expect { service.perform }
+        expect { described_class.validate_links!(post) }
           .to raise_error(Exceptions::InvalidLinkError, "Invalid link found: https://example.com/broken")
       end
     end
@@ -77,9 +73,7 @@ RSpec.describe PostValidationService do
           .with("https://example.com/slow", follow_redirect: true)
           .and_raise(Net::ReadTimeout)
 
-        service = described_class.new(post)
-
-        expect { service.perform }
+        expect { described_class.validate_links!(post) }
           .to raise_error(Exceptions::InvalidLinkError, "Invalid link found: https://example.com/slow")
       end
     end
@@ -100,10 +94,8 @@ RSpec.describe PostValidationService do
           .exactly(3).times
           .and_raise(Errno::ECONNRESET)
 
-        service = described_class.new(post)
-
-        expect { service.perform }
-          .to raise_error(RuntimeError, "[PostValidationService] Too many connection resets")
+        expect { described_class.validate_links!(post) }
+          .to raise_error(RuntimeError, "[PostValidation] Too many connection resets")
       end
     end
   end
