@@ -2,28 +2,28 @@ module Billable
   extend ActiveSupport::Concern
 
   def total_subscribers_count
-    self.subscribers.verified.count
+    subscribers.verified.count
   end
 
   def emails_sent_this_month
     start_date = Time.current.beginning_of_month
     end_date = Time.current.end_of_month
-    self.emails.where(status: :sent, created_at: start_date..end_date).count
+    emails.where(status: :sent, created_at: start_date..end_date).count
   end
 
   def init_customer
     HTTParty.post("#{billing_endpoint}/init",
       headers: headers,
       body: {
-        id: self.id,
-        name: self.name,
-        email: self.email
+        id: id,
+        name: name,
+        email: email
       }.to_json
     )
   end
 
   def billing_manage_url
-    response = HTTParty.get("#{billing_endpoint}/manage/#{self.id}",
+    response = HTTParty.get("#{billing_endpoint}/manage/#{id}",
       headers: headers
     )
 
@@ -31,7 +31,7 @@ module Billable
   end
 
   def billing_checkout_url
-    response = HTTParty.get("#{billing_endpoint}/checkout/#{self.id}",
+    response = HTTParty.get("#{billing_endpoint}/checkout/#{id}",
       headers: headers
     )
 
@@ -42,7 +42,7 @@ module Billable
     HTTParty.post("#{billing_endpoint}/injest",
       headers: headers,
       body: {
-        id: self.id,
+        id: id,
         count: count
       }.to_json
     )
@@ -51,12 +51,12 @@ module Billable
   def subscribed?
     return true unless AppConfig.billing_enabled?
 
-    subscription[:status] === "active"
+    subscription[:status] == "active"
   end
 
   def subscription
-    return {} if self.additional_data.nil?
-    self.additional_data["subscription"]&.with_indifferent_access || {}
+    return {} if additional_data.nil?
+    additional_data["subscription"]&.with_indifferent_access || {}
   end
 
   private
