@@ -56,7 +56,7 @@
     <% end %>
 
     <% if @newsletter.sending_domain.present? %>
-      <%= render "newsletters/settings/partials/settings_section", title: "Domain Verification", subtitle: "Add the following DNS records to your DNS settings, to verify your domain. Verification ensures your emails are delivered properly and does not end up in spam. Please note that it can take a couple of hours for the DNS records to start reflecting." do %>
+      <%= render "newsletters/settings/partials/settings_section", title: "⚠️ Domain Verification Pending", subtitle: "Add the following DNS records to your DNS settings, to verify your domain. Verification ensures your emails are delivered properly and does not end up in spam. Please note that it can take a couple of hours for the DNS records to start reflecting." do %>
         <%= labeled_form_with model: @newsletter, url: settings_sending_verify_domain_path(slug: @newsletter.slug), method: :post do |form| %>
           <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
           <p class="mt-1 ml-1 font-sans text-xs text-stone-400">
