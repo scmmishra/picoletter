@@ -21,7 +21,7 @@
   <% end %>
 
   <% if @newsletter.sending_domain.present? %>
-    <% if @newsletter.ses_verified? or true %>
+    <% if @newsletter.ses_verified? %>
       <%= render "newsletters/settings/partials/settings_section", title: "✅ Domain is Verified", subtitle: "Your domain has been verified successfully. You can now send emails from **#{@newsletter.sending_address}**. The following are the DNS records you have added." do %>
         <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
       <% end %>
