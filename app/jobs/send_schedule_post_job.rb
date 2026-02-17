@@ -26,6 +26,6 @@ class SendSchedulePostJob < ApplicationJob
   def posts_to_send
     # 1 minute before and after current time to handle job timing variations
     # Atomic claiming prevents duplicates across multiple job runs
-    Post.drafts.where(scheduled_at: 1.minute.ago..1.minute.from_now)
+    Post.draft.where(scheduled_at: 1.minute.ago..1.minute.from_now)
   end
 end

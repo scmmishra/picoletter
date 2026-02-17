@@ -37,7 +37,6 @@ class Post < ApplicationRecord
   has_many :email_clicks, dependent: :destroy_async
   enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 
-  scope :drafts, -> { draft }
   scope :drafts_and_processing, -> { where(status: %w[draft processing]) }
 
   def self.slug_uniqueness_scope
