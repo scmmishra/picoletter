@@ -83,26 +83,13 @@ module Embeddable
 
   def codepen_payload
     payload = {
-      "title" => "#{self.title} - Picoletter Embed Form",
+      "title" => "#{title} - Picoletter Embed Form",
       "private" => true,
-      "html" => self.embed_form(with_name: true),
-      "css" => self.embed_form_css
+      "html" => embed_form(with_name: true),
+      "css" => embed_form_css
     }
 
     ERB::Util.json_escape(payload.to_json)
-  end
-
-  def font_family
-    case font_preference
-    when "sans-serif"
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
-    when "serif"
-      "Georgia, ui-serif, Cambria, Times New Roman, Times, serif"
-    when "monospace"
-      "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace"
-    else
-      "SF Pro Display,-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif"
-    end
   end
 
   private

@@ -45,18 +45,18 @@ class User < ApplicationRecord
   after_create_commit :perform_after_create
 
   def super?
-    self.is_superadmin
+    is_superadmin
   end
 
   def verify!
-    self.update(verified_at: Time.now)
+    update(verified_at: Time.current)
   end
 
   def verified?
     verification_enabled = AppConfig.get("VERIFY_SIGNUPS", true)
     return true unless verification_enabled
 
-    self.verified_at.present?
+    verified_at.present?
   end
 
   def send_verification_email
@@ -64,11 +64,11 @@ class User < ApplicationRecord
   end
 
   def send_verification_email_once
-    key = "verification_email_#{self.id}"
+    key = "verification_email_#{id}"
 
     if !Rails.cache.fetch(key)
-      self.send_verification_email
-      Rails.cache.write(key, expires_in: 6.hours)
+      send_verification_email
+      Rails.cache.write(key, true, expires_in: 6.hours)
     end
   end
 
@@ -80,10 +80,10 @@ class User < ApplicationRecord
   private
 
   def perform_after_create
-    response = self.init_customer if AppConfig.billing_enabled?
+    response = init_customer if AppConfig.billing_enabled?
   rescue StandardError => e
-    RorVsWild.record_error(e, context: { user: self.id, response: response })
-    Rails.logger.error("Error creating customer for user #{self.id} with #{e.message}")
+    Rails.error.report(e, context: { user: id, response: response })
+    Rails.logger.error("Error creating customer for user #{id} with #{e.message}")
   end
 
   def activate_user

@@ -25,7 +25,7 @@
 #
 class Post < ApplicationRecord
   include Sluggable
-  include Statusable
+
   include Timezonable
 
   sluggable_on :title, scope: :newsletter_id
@@ -37,11 +37,7 @@ class Post < ApplicationRecord
   has_many :email_clicks, dependent: :destroy_async
   enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
 
-  scope :published, -> { where(status: "published") }
-  scope :drafts, -> { where(status: "draft") }
-  scope :processing, -> { where(status: "processing") }
   scope :drafts_and_processing, -> { where(status: %w[draft processing]) }
-  scope :archived, -> { where(status: "archived") }
 
   def self.slug_uniqueness_scope
     { scope: :newsletter_id }
@@ -73,7 +69,7 @@ class Post < ApplicationRecord
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::UserNotActiveError unless can_send?
 
-    PostValidationService.new(self).perform unless ignore_checks
+    PostValidation.validate_links!(self) unless ignore_checks
     SendPostJob.perform_later(self.id)
     publish
   end
@@ -97,7 +93,7 @@ class Post < ApplicationRecord
   rescue ActiveRecord::RecordNotFound
     nil
   rescue StandardError => e
-    RorVsWild.record_error(e, context: { post: post_id })
+    Rails.error.report(e, context: { post: post_id })
     nil
   end
 
@@ -110,6 +106,24 @@ class Post < ApplicationRecord
   end
 
   def stats
+    if published_at.present? && published_at < 24.hours.ago
+      Rails.cache.fetch(stats_cache_key, expires_in: 6.hours) { compute_stats }
+    else
+      compute_stats
+    end
+  end
+
+  def clear_stats_cache
+    Rails.cache.delete(stats_cache_key)
+  end
+
+  private
+
+  def stats_cache_key
+    "post_#{id}_stats"
+  end
+
+  def compute_stats
     total = emails.count.to_f
     delivered = emails.delivered.count.to_f
     opened = emails.where.not(opened_at: nil).count.to_f

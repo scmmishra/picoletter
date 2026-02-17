@@ -1,10 +1,10 @@
 <nav class="flex items-center gap-1 mb-6 -mx-5 px-2 border-b border-stone-200">
   <%= settings_nav_link "General", settings_path(slug: @newsletter.slug), @newsletter %>
-  <%= settings_nav_link "Profile", profile_settings_path(slug: @newsletter.slug), @newsletter %>
-  <%= settings_nav_link "Sending Domain", sending_settings_path(slug: @newsletter.slug), @newsletter %>
-  <%= settings_nav_link "Design", design_settings_path(slug: @newsletter.slug), @newsletter %>
-  <%= settings_nav_link "Embedding", embedding_settings_path(slug: @newsletter.slug), @newsletter %>
-  <%= settings_nav_link "API", api_settings_path(slug: @newsletter.slug), @newsletter %>
+  <%= settings_nav_link "Profile", settings_profile_path(slug: @newsletter.slug), @newsletter %>
+  <%= settings_nav_link "Sending Domain", settings_sending_path(slug: @newsletter.slug), @newsletter %>
+  <%= settings_nav_link "Design", settings_design_path(slug: @newsletter.slug), @newsletter %>
+  <%= settings_nav_link "Embedding", settings_embedding_path(slug: @newsletter.slug), @newsletter %>
+  <%= settings_nav_link "API", settings_api_path(slug: @newsletter.slug), @newsletter %>
   <%= settings_nav_link "Team", settings_team_path(slug: @newsletter.slug), @newsletter %>
   <% if AppConfig.get("ENABLE_BILLING", false) %>
     <%= settings_nav_link "Usage & Billing", settings_billing_path(slug: @newsletter.slug), @newsletter %>

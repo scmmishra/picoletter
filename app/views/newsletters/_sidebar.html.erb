@@ -13,7 +13,7 @@
           url: drafts_posts_path(@newsletter.slug),
           is_active: current_page?(drafts_posts_path(@newsletter.slug)),
           label: "Drafts",
-          count: @newsletter.posts.drafts.count %>
+          count: @newsletter.posts.draft.count %>
           <%= render "newsletters/partials/sidebar_link",
           url: subscribers_path(@newsletter.slug),
           is_active: current_page?(subscribers_path(@newsletter.slug)),
@@ -23,7 +23,7 @@
           url: labels_path(@newsletter.slug),
           is_active: current_page?(labels_path(@newsletter.slug)),
           label: "Labels" %>
-          <% settings_url = @newsletter.can_read?(:general) ? settings_path(@newsletter.slug) : profile_settings_path(@newsletter.slug) %>
+          <% settings_url = @newsletter.can_read?(:general) ? settings_path(@newsletter.slug) : settings_profile_path(@newsletter.slug) %>
           <%= render "newsletters/partials/sidebar_link",
           url: settings_url,
           is_active: current_page?(settings_url),

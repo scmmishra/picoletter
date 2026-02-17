@@ -12,7 +12,7 @@ class VerifyDNSRecordsJob < ApplicationJob
   end
 
   def notify_dns_records_broken(domain)
-    Rails.logger.info "[VerifyDNSRecordsJob] Notifying broken DNS records for #{domain.domain}"
+    Rails.logger.info "[VerifyDNSRecordsJob] Notifying broken DNS records for #{domain.name}"
     NewsletterMailer.with(domain: domain).broken_dns_records.deliver_now
   end
 end

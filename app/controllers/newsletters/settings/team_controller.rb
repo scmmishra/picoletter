@@ -1,4 +1,5 @@
 class Newsletters::Settings::TeamController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -13,21 +14,15 @@ class Newsletters::Settings::TeamController < ApplicationController
   end
 
   def invite
-    service = TeamInvitationService.new(
-      newsletter: @newsletter,
+    invitation = @newsletter.invite_member(
       email: invitation_params[:email],
       role: invitation_params[:role],
       invited_by: Current.user
     )
 
-    invitation = service.call
     redirect_to settings_team_path(slug: @newsletter.slug),
                 notice: "Invitation sent to #{invitation.email}."
-  rescue TeamInvitationService::AlreadyMemberError => e
-    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
-  rescue TeamInvitationService::ExistingInvitationError => e
-    redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
-  rescue TeamInvitationService::ValidationError => e
+  rescue Newsletter::AlreadyMemberError, Newsletter::ExistingInvitationError, Newsletter::InvitationError => e
     redirect_to settings_team_path(slug: @newsletter.slug), alert: e.message
   end
 
@@ -81,15 +76,6 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   private
 
-  def set_newsletter
-    @newsletter = Current.user.newsletters.find_by(slug: params[:slug].to_s.downcase)
-
-    return if @newsletter
-
-    redirect_to profile_settings_path(slug: params[:slug]),
-                alert: "You don't have permission to access that section."
-    return
-  end
 
   def invitation_params
     params.require(:invitation).permit(:email, :role)
@@ -97,13 +83,5 @@ class Newsletters::Settings::TeamController < ApplicationController
 
   def role_params
     params.require(:membership).permit(:role)
-  end
-
-  def authorize_permission!(permission, access_type = :read)
-    unless @newsletter.can_access?(permission, access_type)
-      redirect_to profile_settings_path(slug: @newsletter.slug),
-                  alert: "You don't have permission to access that section."
-      return
-    end
   end
 end

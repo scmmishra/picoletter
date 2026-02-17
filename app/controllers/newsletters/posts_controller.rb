@@ -1,6 +1,8 @@
 class Newsletters::PostsController < ApplicationController
   layout "newsletters"
 
+  include NewsletterScoped
+
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_last_opened, only: [ :index ]
@@ -57,7 +59,7 @@ class Newsletters::PostsController < ApplicationController
     @post.schedule(utc_schedule)
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
   rescue => e
-    RorVsWild.record_error(e, context: { params: post_params, param_tz: post_params[:timezone], tz: ActiveSupport::TimeZone[post_params[:timezone]], n_tz: @post.newsletter.timezone })
+    Rails.error.report(e, context: { params: post_params, param_tz: post_params[:timezone], tz: ActiveSupport::TimeZone[post_params[:timezone]], n_tz: @post.newsletter.timezone })
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Something went wrong while publishing the post"
   end
 
@@ -88,7 +90,7 @@ class Newsletters::PostsController < ApplicationController
     flash[:has_link_error] = true
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "We found invalid links in your post."
   rescue StandardError => e
-    RorVsWild.record_error(e)
+    Rails.error.report(e)
     Rails.logger.error("Error sending post: #{e.message}")
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: e.message
   end
@@ -110,12 +112,6 @@ class Newsletters::PostsController < ApplicationController
     Rails.cache.write("last_opened_newsletter_#{Current.user.id}", @newsletter.slug)
   end
 
-  def set_newsletter
-    @newsletter ||= Current.user.newsletters.from_slug(params[:slug])
-    return if @newsletter
-
-    redirect_to_newsletter_home(notice: "You do not have access to this newsletter.")
-  end
 
   def set_post
     @post = @newsletter.posts.find(params[:id])

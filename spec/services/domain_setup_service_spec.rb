@@ -1,30 +1,28 @@
 require 'rails_helper'
 
-RSpec.describe DomainSetupService do
-  describe "Registring an invalid domain" do
+RSpec.describe Newsletter, "#setup_sending_domain" do
+  describe "registering an invalid domain" do
     let!(:newsletter) { create(:newsletter) }
 
-    it "throws an error" do
+    it "raises an error" do
       sending_params = { reply_to: "reply_to@invalid", sending_address: "sending_address@invalid" }
-      domain_setup = DomainSetupService.new(newsletter, sending_params)
-      expect { domain_setup.perform }.to raise_error("Domain name invalid")
+      expect { newsletter.setup_sending_domain(sending_params) }.to raise_error(Newsletter::InvalidDomainError, "Domain name invalid")
     end
   end
 
-  describe "Registring already registered domain" do
+  describe "registering already registered domain" do
     let!(:user) { create(:user) }
     let!(:newsletter) { create(:newsletter, user_id: user.id) }
     let!(:another_newsletter) { create(:newsletter, user_id: user.id) }
-    let!(:domain) { create(:domain, name: 'example.com',  newsletter_id: another_newsletter.id, status: "success", dkim_status: "success", spf_status: "success") }
+    let!(:domain) { create(:domain, name: 'example.com', newsletter_id: another_newsletter.id, status: "success", dkim_status: "success", spf_status: "success") }
     let(:sending_params) { { reply_to: "test@example.com", sending_address: "test@example.com" } }
 
-    it 'throws an error' do
-      domain_setup = DomainSetupService.new(newsletter, sending_params)
-      expect { domain_setup.perform }.to raise_error("Domain already in use")
+    it 'raises an error' do
+      expect { newsletter.setup_sending_domain(sending_params) }.to raise_error(Newsletter::DomainClaimedError, "Domain already in use")
     end
   end
 
-  describe "Fresh domain setup" do
+  describe "fresh domain setup" do
     let!(:user) { create(:user, email: 'fresh-service@example.com') }
     let!(:newsletter) { create(:newsletter, slug: 'fresh-newsletter', user_id: user.id) }
     let(:sending_params) { { reply_to: "hey@example.com", sending_address: "hey@example.com" } }
@@ -46,26 +44,21 @@ RSpec.describe DomainSetupService do
     end
 
     it 'creates a new identity and syncs the status' do
-      domain_setup = DomainSetupService.new(newsletter, sending_params)
-      domain_setup.perform
+      newsletter.setup_sending_domain(sending_params)
 
-      # Check that the newsletter was updated
       expect(newsletter.reload.reply_to).to eq('hey@example.com')
       expect(newsletter.sending_address).to eq('hey@example.com')
 
-      # Check that the domain was created
       domain = Domain.find_by(newsletter: newsletter)
       expect(domain).to be_present
       expect(domain.name).to eq('example.com')
       expect(domain.public_key).to eq('mock-public-key')
       expect(domain.region).to eq('us-east-1')
 
-      # Check domain status
       expect(domain.status).to eq('success')
       expect(domain.dkim_status).to eq('success')
       expect(domain.spf_status).to eq('success')
 
-      # Verify SES service calls
       expect(mock_ses_service).to have_received(:create_identity)
       expect(mock_ses_service).to have_received(:get_identity)
     end
@@ -76,10 +69,8 @@ RSpec.describe DomainSetupService do
       end
 
       it 'rolls back the transaction' do
-        domain_setup = DomainSetupService.new(newsletter, sending_params)
-
         expect {
-          domain_setup.perform
+          newsletter.setup_sending_domain(sending_params)
         }.to raise_error(StandardError, "AWS SES Error")
 
         expect(Domain.find_by(newsletter: newsletter)).to be_nil
@@ -88,7 +79,7 @@ RSpec.describe DomainSetupService do
     end
   end
 
-  describe "Has existing domain" do
+  describe "has existing domain" do
     let!(:user) { create(:user) }
     let!(:newsletter) { create(:newsletter, user_id: user.id) }
     let!(:existing_domain) { create(:domain, name: 'existing.com', newsletter_id: newsletter.id, status: "success", dkim_status: "success", spf_status: "success") }
@@ -112,29 +103,24 @@ RSpec.describe DomainSetupService do
     end
 
     it 'removes the existing domain and sets up the new one' do
-      domain_setup = DomainSetupService.new(newsletter, sending_params)
-      domain_setup.perform
+      newsletter.setup_sending_domain(sending_params)
 
-      # Verify old domain was removed
       expect { existing_domain.reload }.to raise_error(ActiveRecord::RecordNotFound)
 
-      # Check that the newsletter was updated
       expect(newsletter.reload.reply_to).to eq('test@new.com')
       expect(newsletter.sending_address).to eq('test@new.com')
 
-      # Check that the new domain was created
       new_domain = Domain.find_by(name: 'new.com')
       expect(new_domain).to be_present
       expect(new_domain.public_key).to eq('mock-public-key')
       expect(new_domain.status).to eq('success')
 
-      # Verify SES service calls
       expect(mock_ses_service).to have_received(:delete_identity)
       expect(mock_ses_service).to have_received(:create_identity)
     end
   end
 
-  describe "Re-registring same domain" do
+  describe "re-registering same domain" do
     let!(:user) { create(:user) }
     let!(:newsletter) { create(:newsletter, user_id: user.id) }
     let!(:existing_domain) { create(:domain, name: 'example.com', public_key: 'mock-key', newsletter_id: newsletter.id, status: "success", dkim_status: "success", spf_status: "success") }
@@ -157,20 +143,16 @@ RSpec.describe DomainSetupService do
     end
 
     it 'only updates newsletter details without changing domain' do
-      domain_setup = DomainSetupService.new(newsletter, sending_params)
-      domain_setup.perform
+      newsletter.setup_sending_domain(sending_params)
 
-      # Check that the newsletter was updated
       expect(newsletter.reload.reply_to).to eq('test@example.com')
       expect(newsletter.sending_address).to eq('test@example.com')
 
-      # Verify domain remains unchanged
       existing_domain.reload
       expect(existing_domain.status).to eq('success')
       expect(existing_domain.dkim_status).to eq('success')
       expect(existing_domain.spf_status).to eq('success')
 
-      # Verify SES service calls
       expect(mock_ses_service).to have_received(:get_identity)
       expect(mock_ses_service).not_to have_received(:create_identity)
       expect(mock_ses_service).not_to have_received(:delete_identity)

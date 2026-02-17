@@ -6,7 +6,7 @@ class ProcessSNSWebhookJob < ApplicationJob
     # https://docs.aws.amazon.com/ses/latest/dg/event-publishing-retrieving-sns-examples.html
     @payload = payload.with_indifferent_access
 
-    if @payload[:Type] === "SubscriptionConfirmation"
+    if @payload[:Type] == "SubscriptionConfirmation"
       process_subscription_confirmation
       return
     end
@@ -16,10 +16,17 @@ class ProcessSNSWebhookJob < ApplicationJob
     return unless @email.present?
 
     event_name = @message[:eventType].underscore
-    if self.respond_to?("process_#{event_name}")
-      Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{@email.id}"
-      send("process_#{event_name}")
+    Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{@email.id}"
+
+    case event_name
+    when "bounce"    then process_bounce
+    when "complaint" then process_complaint
+    when "delivery"  then process_delivery
+    when "click"     then process_click
+    when "open"      then process_open
     end
+
+    @email.emailable.clear_stats_cache if @email.emailable_type == "Post"
   end
 
   def process_subscription_confirmation

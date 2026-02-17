@@ -69,12 +69,9 @@ RSpec.describe EmailInformationService do
     end
   end
 
-  describe "#providers" do
-    let(:service) { described_class.new("user@gmail.com") }
-
+  describe "PROVIDERS constant" do
     it "loads providers from YAML file" do
-      allow(File).to receive(:read).and_call_original
-      providers = service.providers
+      providers = described_class::PROVIDERS
       expect(providers).to be_an(Array)
       expect(providers).not_to be_empty
       expect(providers.first).to have_key("name")
@@ -82,11 +79,7 @@ RSpec.describe EmailInformationService do
   end
 
   describe "actual providers.yml validation" do
-    let(:service) { described_class.new("test@example.com") }
-    let(:actual_providers) do
-      allow(File).to receive(:read).and_call_original
-      service.providers
-    end
+    let(:actual_providers) { described_class::PROVIDERS }
 
     it "contains valid YAML data" do
       expect { actual_providers }.not_to raise_error

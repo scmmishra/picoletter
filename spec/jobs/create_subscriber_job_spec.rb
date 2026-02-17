@@ -7,10 +7,7 @@ RSpec.describe CreateSubscriberJob, type: :job do
   let(:labels) { 'label1,label2' }
   let(:created_via) { 'form' }
   let(:analytics_data) { { 'referrer' => 'homepage' } }
-  let(:verify_service) { instance_double(VerifyEmailService) }
-
   before do
-    allow(VerifyEmailService).to receive(:new).with(email).and_return(verify_service)
     allow(Rails.logger).to receive(:info)
     allow(Rails.logger).to receive(:error)
 
@@ -23,7 +20,7 @@ RSpec.describe CreateSubscriberJob, type: :job do
   describe '#perform' do
     context 'when email verification is successful' do
       before do
-        allow(verify_service).to receive(:verify).and_return(true)
+        allow(VerifyEmailService).to receive(:valid?).with(email).and_return(true)
       end
 
       context 'when subscriber does not exist' do
@@ -106,7 +103,7 @@ RSpec.describe CreateSubscriberJob, type: :job do
 
     context 'when email verification fails' do
       before do
-        allow(verify_service).to receive(:verify).and_return(false)
+        allow(VerifyEmailService).to receive(:valid?).with(email).and_return(false)
       end
 
       it 'does not create a subscriber' do

@@ -12,7 +12,7 @@
 
 <div class="max-w-lg space-y-8">
   <%= render "newsletters/settings/partials/settings_section", title: "Profile Information", subtitle: "Update your account profile information." do %>
-    <%= labeled_form_with model: Current.user, url: update_profile_settings_path(slug: @newsletter.slug), method: :patch do |form| %>
+    <%= labeled_form_with model: Current.user, url: settings_profile_path(slug: @newsletter.slug), method: :patch do |form| %>
       <div class="space-y-4">
         <%= form.text_field :name,
                         required: true,
@@ -44,7 +44,7 @@
                     </p>
                   </div>
                 </div>
-                <%= button_to destroy_connected_service_settings_path(slug: @newsletter.slug, id: service), method: :delete, class: "btn btn-sm btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300", form: { data: { turbo_confirm: "Are you sure you want to disconnect this account?" } } do %>
+                <%= button_to settings_profile_connected_service_path(slug: @newsletter.slug, id: service), method: :delete, class: "btn btn-sm btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300", form: { data: { turbo_confirm: "Are you sure you want to disconnect this account?" } } do %>
                   Disconnect
                 <% end %>
               </div>

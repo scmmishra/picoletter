@@ -24,8 +24,6 @@
 #  fk_rails_...  (subscriber_id => subscribers.id)
 #
 class Email < ApplicationRecord
-  include Statusable
-
   belongs_to :emailable, polymorphic: true
   has_many :clicks, class_name: "EmailClick", dependent: :destroy
   belongs_to :subscriber, optional: true

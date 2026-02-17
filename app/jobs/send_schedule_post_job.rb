@@ -16,7 +16,7 @@ class SendSchedulePostJob < ApplicationJob
         SendPostJob.perform_later(post.id)
         # Note: Status will be set to "published" by SendPostBatchJob when all batches complete
       rescue StandardError => e
-        RorVsWild.record_error(e, context: { post: post_id })
+        Rails.error.report(e, context: { post: post_id })
         Rails.logger.error "[SendScheduledPost] Error sending post #{post.title}: #{e.message}"
         post.update(status: "draft")
       end
@@ -26,6 +26,6 @@ class SendSchedulePostJob < ApplicationJob
   def posts_to_send
     # 1 minute before and after current time to handle job timing variations
     # Atomic claiming prevents duplicates across multiple job runs
-    Post.drafts.where(scheduled_at: 1.minute.ago..1.minute.from_now)
+    Post.draft.where(scheduled_at: 1.minute.ago..1.minute.from_now)
   end
 end

@@ -20,14 +20,14 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <%= button_to "Rotate Token", rotate_token_settings_path(slug: @newsletter.slug, token_id: token.id),
+          <%= button_to "Rotate Token", settings_api_rotate_token_path(slug: @newsletter.slug, token_id: token.id),
               method: :patch,
               class: "btn btn-secondary text-sm",
               data: { turbo_confirm: "Are you sure? This will invalidate the current token." } %>
         </div>
       </div>
     <% else %>
-      <%= button_to "Generate API Token", generate_token_settings_path(slug: @newsletter.slug),
+      <%= button_to "Generate API Token", settings_api_generate_token_path(slug: @newsletter.slug),
           method: :post,
           class: "btn btn-primary text-sm" %>
     <% end %>

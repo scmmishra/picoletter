@@ -88,21 +88,15 @@ class Public::SubscribersController < ApplicationController
     # if request has a cloudflare `CF-IPCountry` header, add it to the analytics data
     analytics_data[:country_code] = request.headers["CF-IPCountry"] if request.headers["CF-IPCountry"].present?
 
-    legit_ip = IPShieldService.legit_ip?(request.remote_ip)
-
-    if legit_ip
-      CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], params[:labels], source, analytics_data)
-      if success_url.present?
-        redirect_to success_url, allow_other_host: true
-      else
-        redirect_to almost_there_path(@newsletter.slug, email: params[:email])
-      end
+    CreateSubscriberJob.perform_now(@newsletter.id, params[:email], params[:name], params[:labels], source, analytics_data)
+    if success_url.present?
+      redirect_to success_url, allow_other_host: true
     else
-      redirect_to newsletter_path(@newsletter.slug), notice: "Our system detected some issues with your request. Please try again."
+      redirect_to almost_there_path(@newsletter.slug, email: params[:email])
     end
   rescue => e
     Rails.logger.error(e)
-    RorVsWild.record_error(e, context: { email: params[:email], name: params[:name], source: source })
+    Rails.error.report(e, context: { email: params[:email], name: params[:name], source: source })
     redirect_to newsletter_path(@newsletter.slug), notice: "Seems like you entered an invalid email. Please try again."
   end
 

@@ -2,7 +2,7 @@
 
 <div class="space-y-8">
   <%= render "newsletters/settings/partials/settings_section", title: "Redirect Settings", subtitle: "Optionally configure where users should be redirected after subscribing or confirming their email address." do %>
-    <%= labeled_form_with model: @newsletter, url: embedding_settings_path(slug: @newsletter.slug), method: :patch, class: "max-w-lg space-y-4", permission: :embedding do |form| %>
+    <%= labeled_form_with model: @newsletter, url: settings_embedding_path(slug: @newsletter.slug), method: :patch, class: "max-w-lg space-y-4", permission: :embedding do |form| %>
       <%= form.url_field :redirect_after_subscribe,
                      placeholder: "https://example.com/thank-you",
                      label: "After Subscribe URL",

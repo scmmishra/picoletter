@@ -28,8 +28,6 @@
 #  fk_rails_...  (newsletter_id => newsletters.id)
 #
 class Subscriber < ApplicationRecord
-  include Statusable
-
   taggable_array :labels
 
   generates_token_for :unsubscribe
@@ -42,9 +40,6 @@ class Subscriber < ApplicationRecord
   before_validation :normalize_labels
   before_save :filter_invalid_labels
 
-  scope :verified, -> { where(status: "verified") }
-  scope :unverified, -> { where(status: "unverified") }
-  scope :unsubscribed, -> { where(status: "unsubscribed") }
   scope :subscribed, -> { verified.or(unverified) }
   scope :eligible_for_auto_reminder, -> {
     unverified

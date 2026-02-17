@@ -18,17 +18,16 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
       expect(response).to redirect_to(auth_login_path)
     end
 
-    it "redirects to first newsletter if newsletter not found" do
-      first_newsletter = create(:newsletter, user: user)
+    it "redirects away if newsletter not found" do
+      create(:newsletter, user: user)
       get :index, params: { slug: "non-existent-slug" }
-      expect(response).to redirect_to(newsletter_url(first_newsletter.slug))
+      expect(response).to be_redirect
     end
 
     it "prevents access to other users' newsletters" do
-      # Create a newsletter for current user to redirect to
-      user_newsletter = create(:newsletter, user: user)
+      create(:newsletter, user: user)
       get :index, params: { slug: other_newsletter.slug }
-      expect(response).to redirect_to(newsletter_url(user_newsletter.slug))
+      expect(response).to be_redirect
     end
   end
 

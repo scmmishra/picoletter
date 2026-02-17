@@ -37,9 +37,15 @@
 #  fk_rails_...  (user_id => users.id)
 #
 class Newsletter < ApplicationRecord
+  class AlreadyMemberError < StandardError; end
+  class ExistingInvitationError < StandardError; end
+  class InvitationError < StandardError; end
+  class InvalidDomainError < StandardError; end
+  class DomainClaimedError < StandardError; end
+
   include Sluggable
   include Embeddable
-  include Statusable
+
   include Themeable
   include Templatable
   include Authorizable
@@ -75,7 +81,7 @@ class Newsletter < ApplicationRecord
 
   def description_html
     return "" if description.blank?
-    Kramdown::Document.new(description).to_html.html_safe
+    ActionController::Base.helpers.sanitize(Kramdown::Document.new(description).to_html)
   end
 
   def verify_custom_domain
@@ -87,7 +93,7 @@ class Newsletter < ApplicationRecord
   end
 
   def footer_html
-    Kramdown::Document.new(self.email_footer || "").to_html
+    Kramdown::Document.new(email_footer || "").to_html
   end
 
   def sending_from
@@ -105,7 +111,7 @@ class Newsletter < ApplicationRecord
   end
 
   def owner?(user)
-    self.user_id == user.id
+    user_id == user.id
   end
 
   def member?(user)
@@ -129,7 +135,51 @@ class Newsletter < ApplicationRecord
     website_host.presence || website
   end
 
+  def invite_member(email:, role:, invited_by:)
+    normalized = email.to_s.strip.downcase
+
+    raise AlreadyMemberError, "#{email} is already a member of this newsletter." if memberships.joins(:user).where("LOWER(users.email) = ?", normalized).exists?
+    raise ExistingInvitationError, "An invitation has already been sent to #{email}." if invitations.pending.for_email(normalized).exists?
+
+    invitation = invitations.build(email: normalized, role: role, invited_by: invited_by)
+
+    unless invitation.save
+      raise InvitationError, "Failed to send invitation: #{invitation.errors.full_messages.join(', ')}"
+    end
+
+    InvitationMailer.with(invitation: invitation).team_invitation.deliver_now
+    invitation
+  end
+
+  def setup_sending_domain(sending_params)
+    domain_name = sending_params[:sending_address].split("@").last
+
+    raise InvalidDomainError, "Domain name invalid" unless valid_domain_name?(domain_name)
+    raise DomainClaimedError, "Domain already in use" if Domain.claimed_by_other?(domain_name, id)
+
+    ActiveRecord::Base.transaction do
+      remove_current_sending_domain(domain_name) if sending_domain.present? && sending_domain.name != domain_name
+      update!(sending_address: sending_params[:sending_address], reply_to: sending_params[:reply_to], sending_name: sending_params[:sending_name])
+      domain = Domain.find_or_create_by(name: domain_name, newsletter_id: id)
+      domain.register_or_sync
+    end
+  end
+
   private
+
+  def valid_domain_name?(domain_name)
+    domain_name.present? && domain_name.include?(".") && !domain_name.include?("@") && !domain_name.start_with?(".") && !domain_name.end_with?(".")
+  end
+
+  def remove_current_sending_domain(new_domain_name)
+    sending_domain.drop_identity
+  rescue Aws::SESV2::Errors::NotFoundException => e
+    Rails.logger.error("Domain not found in SES: #{e.message}, deleting from DB anyway")
+  rescue StandardError => e
+    Rails.error.report(e, context: { newsletter_id: id, existing_domain: sending_domain.name, new_domain: new_domain_name })
+  ensure
+    sending_domain.destroy!
+  end
 
   def create_owner_membership
     memberships.create!(user: user, role: :administrator)

@@ -1,4 +1,5 @@
 class Newsletters::Settings::BillingController < ApplicationController
+  include NewsletterScoped
   layout "newsletters"
 
   before_action :ensure_authenticated
@@ -18,15 +19,4 @@ class Newsletters::Settings::BillingController < ApplicationController
   end
 
   private
-
-  def set_newsletter
-    @newsletter = Newsletter.find_by(slug: params[:slug])
-  end
-
-  def authorize_permission!(permission, access_type = :read)
-    unless @newsletter.can_access?(permission, access_type)
-      redirect_to profile_settings_path(slug: @newsletter.slug), 
-                  alert: "You don't have permission to access that section."
-    end
-  end
 end

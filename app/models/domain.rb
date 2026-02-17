@@ -58,15 +58,13 @@ class Domain < ApplicationRecord
     ses_service.delete_identity
   end
 
-  def self.is_unique(name, newsletter_id)
-    Domain.where(
-      name: name,
-    )
-    .where.not(newsletter_id: newsletter_id)
-    .where(
-      "(status = ? OR dkim_status = ? OR spf_status = ?)",
-      "success", "success", "success"
-    ).empty?
+  def self.claimed_by_other?(name, newsletter_id)
+    where(name: name)
+      .where.not(newsletter_id: newsletter_id)
+      .where(
+        "(status = ? OR dkim_status = ? OR spf_status = ?)",
+        "success", "success", "success"
+      ).exists?
   end
 
   def verify
