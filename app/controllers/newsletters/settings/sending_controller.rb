@@ -10,7 +10,7 @@ class Newsletters::Settings::SendingController < ApplicationController
   def show; end
 
   def update
-    DomainSetupService.new(@newsletter, sending_params).perform
+    @newsletter.setup_sending_domain(sending_params)
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Settings successfully updated."
   rescue StandardError => e
     Rails.error.report(e, context: { params: sending_params, newsletter_id: @newsletter.id })
