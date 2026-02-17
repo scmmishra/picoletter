@@ -1,7 +1,7 @@
 <%= render "newsletters/settings/partials/header" %>
 
 <%= render "newsletters/settings/partials/settings_section", title: "Design", subtitle: "Update the design of your newsletter emails and public archive page." do %>
-  <%= labeled_form_with model: @newsletter, url: update_design_settings_path(slug: @newsletter.slug), method: :patch, permission: :design do |form| %>
+  <%= labeled_form_with model: @newsletter, url: settings_design_path(slug: @newsletter.slug), method: :patch, permission: :design do |form| %>
   <div class="max-w-lg space-y-4">
     <%= render "newsletters/settings/partials/template_selector", form: form, newsletter: @newsletter %>
 

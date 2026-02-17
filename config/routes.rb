@@ -73,26 +73,33 @@ Rails.application.routes.draw do
       get "new", to: "posts#new", as: :new_post
       post "new", to: "posts#create", as: :create_post
 
-      resource :settings, only: [ :show, :update ], path: "settings" do
-        get :profile
-        patch :profile, action: :update_profile, as: :update_profile
-        delete "connected_services/:id", action: :destroy_connected_service, as: :destroy_connected_service
-        get :design
-        patch :design, action: :update_design, as: :update_design
-        get :sending
-        patch :sending, action: :update_sending, as: :update_sending
-        post :verify_domain, action: :verify_domain, as: :verify_domain
-        get :embedding
-        patch :embedding, action: :update_embedding, as: :update_embedding
-        get :api
-        post :generate_token
-        patch :rotate_token
-      end
+      resource :settings, only: [ :show, :update ], path: "settings"
 
-      # Nested settings controllers
       namespace :settings, path: "settings" do
+        # Profile
+        get "profile", to: "profile#show", as: :profile
+        patch "profile", to: "profile#update"
+        delete "profile/connected_services/:id", to: "profile#destroy_connected_service", as: :profile_connected_service
+
+        # Design
+        get "design", to: "design#show", as: :design
+        patch "design", to: "design#update"
+
+        # Sending
+        get "sending", to: "sending#show", as: :sending
+        patch "sending", to: "sending#update"
+        post "sending/verify_domain", to: "sending#verify_domain", as: :sending_verify_domain
+
+        # API
+        get "api", to: "api#show", as: :api
+        post "api/generate_token", to: "api#generate_token", as: :api_generate_token
+        patch "api/rotate_token", to: "api#rotate_token", as: :api_rotate_token
+
+        # Embedding
+        get "embedding", to: "embedding#show", as: :embedding
+        patch "embedding", to: "embedding#update"
+
         if AppConfig.get("ENABLE_BILLING", false) || Rails.env.test?
-          # Route maintains the same URL pattern (/app/:slug/settings/billing) but maps to the new controller
           get "billing", to: "billing#show", as: :billing
           get "billing/checkout", to: "billing#checkout", as: :billing_checkout
           get "billing/manage", to: "billing#manage", as: :billing_manage

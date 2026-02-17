@@ -90,7 +90,7 @@ RSpec.describe Newsletters::Settings::TeamController, type: :controller do
 
       post :invite, params: invitation_params
 
-      expect(response).to redirect_to(profile_settings_path(slug: newsletter.slug))
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
       expect(flash[:alert]).to eq("You don't have permission to access that section.")
     end
   end

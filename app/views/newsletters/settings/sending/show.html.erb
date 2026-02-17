@@ -2,7 +2,7 @@
 
 <div class="space-y-8">
   <%= render "newsletters/settings/partials/settings_section", title: "Sending Domain", subtitle: "Configure your custom sending domain to improve deliverability. You can also use the default domain mail.picoletter.com." do %>
-    <%= labeled_form_with model: @newsletter, url: update_sending_settings_path(slug: @newsletter.slug), method: :patch, permission: :sending do |form| %>
+    <%= labeled_form_with model: @newsletter, url: settings_sending_path(slug: @newsletter.slug), method: :patch, permission: :sending do |form| %>
       <div class="max-w-lg space-y-4">
         <%= form.text_field :sending_name,
                         placeholder: "Shivam from Picoletter",
@@ -35,7 +35,7 @@
       <% end %>
     <% else %>
       <%= render "newsletters/settings/partials/settings_section" do %>
-        <%= labeled_form_with model: @newsletter, url: verify_domain_settings_path(slug: @newsletter.slug), method: :post do |form| %>
+        <%= labeled_form_with model: @newsletter, url: settings_sending_verify_domain_path(slug: @newsletter.slug), method: :post do |form| %>
           <div class="max-w-lg">
             <h3 class="text-lg font-medium text-stone-800">
               Domain Verificaiton Pending
