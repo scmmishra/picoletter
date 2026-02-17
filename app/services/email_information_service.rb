@@ -22,6 +22,6 @@ class EmailInformationService
     @search
       .gsub("%{sender}", CGI.escapeURIComponent(sender.to_s))
       .gsub("%{email}", CGI.escapeURIComponent(@email.to_s))
-      .gsub("%{timestamp}", (Time.now.to_i - 3600).to_s)
+      .gsub("%{timestamp}", (Time.current.to_i - 3600).to_s)
   end
 end
