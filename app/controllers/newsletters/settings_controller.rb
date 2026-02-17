@@ -95,12 +95,6 @@ class Newsletters::SettingsController < ApplicationController
   private
 
 
-  def authorize_permission!(permission, access_type = :read)
-    unless @newsletter.can_access?(permission, access_type)
-      redirect_to profile_settings_path(slug: @newsletter.slug),
-                  alert: "You don't have permission to access that section."
-    end
-  end
 
   def newsletter_params
     params.require(:newsletter).permit(:title, :description, :timezone, :website, :enable_archive, :auto_reminder_enabled)
