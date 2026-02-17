@@ -27,7 +27,7 @@ class SendAutomaticRemindersJob < ApplicationJob
       Rails.logger.info "[SendAutomaticReminders] Sending reminder to subscriber #{subscriber.id} for newsletter #{newsletter.id}"
       subscriber.send_reminder(kind: :automatic)
     rescue StandardError => e
-      RorVsWild.record_error(e, context: { subscriber_id: subscriber.id, newsletter_id: newsletter.id })
+      Rails.error.report(e, context: { subscriber_id: subscriber.id, newsletter_id: newsletter.id })
       Rails.logger.error "[SendAutomaticReminders] Error for subscriber #{subscriber.id}: #{e.message}"
     end
   end

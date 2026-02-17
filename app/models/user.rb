@@ -82,7 +82,7 @@ class User < ApplicationRecord
   def perform_after_create
     response = self.init_customer if AppConfig.billing_enabled?
   rescue StandardError => e
-    RorVsWild.record_error(e, context: { user: self.id, response: response })
+    Rails.error.report(e, context: { user: self.id, response: response })
     Rails.logger.error("Error creating customer for user #{self.id} with #{e.message}")
   end
 
