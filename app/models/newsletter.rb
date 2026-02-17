@@ -87,7 +87,7 @@ class Newsletter < ApplicationRecord
   end
 
   def footer_html
-    Kramdown::Document.new(self.email_footer || "").to_html
+    Kramdown::Document.new(email_footer || "").to_html
   end
 
   def sending_from
@@ -105,7 +105,7 @@ class Newsletter < ApplicationRecord
   end
 
   def owner?(user)
-    self.user_id == user.id
+    user_id == user.id
   end
 
   def member?(user)
