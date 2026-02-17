@@ -3,12 +3,11 @@ module Themeable
 
   ThemeConfig = Struct.new(:name, :primary, :text_on_primary, :primary_hover, keyword_init: true)
 
+  THEME_CONFIGS = YAML.load_file(Rails.root.join("config", "colors.yml")).map { |item| ThemeConfig.new(item) }.freeze
+
   included do
-    # add a class method to get the theme config
     def self.theme_config
-      # load colors from conifg/colors.yml
-      data = YAML.load_file(Rails.root.join("config", "colors.yml"))
-      data.map { |item| ThemeConfig.new(item) }
+      THEME_CONFIGS
     end
   end
 
