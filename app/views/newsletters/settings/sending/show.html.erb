@@ -1,40 +1,86 @@
 <%= render "newsletters/settings/partials/header" %>
 
 <div class="space-y-8">
-  <%= render "newsletters/settings/partials/settings_section", title: "Sending Domain", subtitle: "Configure your custom sending domain to improve deliverability. You can also use the default domain mail.picoletter.com." do %>
-    <%= labeled_form_with model: @newsletter, url: settings_sending_path(slug: @newsletter.slug), method: :patch, permission: :sending do |form| %>
-      <div class="max-w-lg space-y-4">
-        <%= form.text_field :sending_name,
-                        placeholder: "Shivam from Picoletter",
-                        label: "Sending From" %>
-
-        <%= form.text_field :sending_address,
-                        placeholder: "updates@picoletter.com",
-                        label: "Sending Address" %>
-
-        <%= form.text_field :reply_to,
-                        placeholder: "hey@picoletter.com",
-                        label: "Reply To" %>
-      </div>
-      <div class="mt-5"><%= form.submit "Update Settings", class: "btn btn-primary" %></div>
+  <% if @newsletter.sending_domain.blank? %>
+    <%# No domain connected — show connect form %>
+    <%= render "newsletters/settings/partials/settings_section", title: "Connect Domain", subtitle: "Connect a custom sending domain to improve deliverability. You can also use the default domain mail.picoletter.com." do %>
+      <%= form_with url: settings_sending_connect_domain_path(slug: @newsletter.slug), method: :post do |form| %>
+        <div class="max-w-lg space-y-4">
+          <div>
+            <label for="domain" class="block text-sm font-medium text-stone-700 mb-1">Domain Name</label>
+            <input type="text" name="domain" id="domain" placeholder="example.com" autocomplete="off" required
+                   class="block w-full rounded-md border-stone-300 shadow-sm focus:border-stone-500 focus:ring-stone-500">
+          </div>
+        </div>
+        <div class="mt-5">
+          <%= form.submit "Connect Domain", class: "btn btn-primary" %>
+        </div>
+      <% end %>
     <% end %>
-  <% end %>
+  <% else %>
+    <%# Domain exists — show sender identity first, then domain status %>
 
-  <% if @newsletter.sending_domain.present? %>
+    <%# Sender Identity section %>
+    <%= render "newsletters/settings/partials/settings_section", title: "Sender Identity", subtitle: "Configure the name and address that recipients see when they receive your newsletter." do %>
+      <%= labeled_form_with model: @newsletter, url: settings_sending_path(slug: @newsletter.slug), method: :patch, permission: :sending do |form| %>
+        <div class="max-w-lg space-y-4">
+          <%= form.text_field :sending_name,
+                          placeholder: "Shivam from Picoletter",
+                          label: "Sending Name" %>
+
+          <div class="space-y-1">
+            <label for="newsletter_sending_address" class="ml-px text-sm text-stone-500 font-sans">Sending Address</label>
+            <input type="text" name="newsletter[sending_address]" id="newsletter_sending_address"
+                   value="<%= @newsletter.sending_address || "@#{@newsletter.sending_domain.name}" %>"
+                   class="input w-full"
+                   autocomplete="off"
+                   data-controller="domain-suffix"
+                   data-domain-suffix-suffix-value="@<%= @newsletter.sending_domain.name %>">
+          </div>
+
+          <%= form.text_field :reply_to,
+                          placeholder: "hey@picoletter.com",
+                          hint: "Optional. If set, replies from subscribers will go to this address instead of the sending address.",
+                          label: "Reply To" %>
+        </div>
+        <div class="mt-5">
+          <%= form.submit "Update Settings", class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    <% end %>
+
+    <%# Domain section %>
     <% if @newsletter.ses_verified? %>
-      <%= render "newsletters/settings/partials/settings_section", title: "✅ Domain is Verified", subtitle: "Your domain has been verified successfully. You can now send emails from **#{@newsletter.sending_address}**. The following are the DNS records you have added." do %>
+      <%= render "newsletters/settings/partials/settings_section", title: "✅ Domain Verified", subtitle: "Your domain **#{@newsletter.sending_domain.name}** has been verified successfully." do %>
         <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
+        <div class="mt-5">
+          <%= button_to settings_sending_disconnect_domain_path(slug: @newsletter.slug),
+              method: :delete,
+              class: "btn btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300",
+              data: { turbo_confirm: "Are you sure you want to disconnect this domain? Your newsletter will revert to using the default picoletter.com sending address.", turbo_confirm_text: @newsletter.sending_domain.name } do %>
+            Disconnect Domain
+          <% end %>
+        </div>
       <% end %>
     <% else %>
-      <%= render "newsletters/settings/partials/settings_section", title: "Domain Verification", subtitle: "Add the following DNS records to your DNS settings, to verify your domain. Verification ensures your emails are delivered properly and does not end up in spam. Please note that it can can take a couple of hours for the DNS records to start reflecting." do %>
+      <%= render "newsletters/settings/partials/settings_section", title: "⚠️ Domain Verification Pending", subtitle: "Add the following DNS records to verify **#{@newsletter.sending_domain.name}**. It can take a couple of hours for DNS changes to propagate." do %>
         <%= labeled_form_with model: @newsletter, url: settings_sending_verify_domain_path(slug: @newsletter.slug), method: :post do |form| %>
           <%= render "newsletters/settings/partials/dns_records", newsletter: @newsletter %>
           <p class="mt-1 ml-1 font-sans text-xs text-stone-400">
             In case you're facing any trouble, you can drop us an email, and we will help you set it up.
           </p>
-
-          <div class="mt-4"><%= form.submit "Verify DNS Records", class: "btn btn-secondary" %></div>
         <% end %>
+        <div class="mt-4 flex items-center gap-3">
+          <%= form_with url: settings_sending_verify_domain_path(slug: @newsletter.slug), method: :post, class: "inline" do |f| %>
+            <%= f.submit "Verify DNS Records", class: "btn btn-secondary" %>
+          <% end %>
+          <%= button_to settings_sending_disconnect_domain_path(slug: @newsletter.slug),
+              method: :delete,
+              class: "btn btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300",
+              data: { turbo_confirm: "Are you sure you want to disconnect this domain? Your newsletter will revert to using the default picoletter.com sending address.", turbo_confirm_text: @newsletter.sending_domain.name } do %>
+            Disconnect Domain
+          <% end %>
+        </div>
       <% end %>
     <% end %>
   <% end %>
