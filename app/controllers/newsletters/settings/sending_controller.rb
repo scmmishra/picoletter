@@ -18,10 +18,11 @@ class Newsletters::Settings::SendingController < ApplicationController
   end
 
   def update
-    sending_address = "#{params[:newsletter][:sending_local]}@#{@newsletter.sending_domain.name}"
+    validate_sending_address!
+
     @newsletter.update!(
       sending_name: params[:newsletter][:sending_name],
-      sending_address: sending_address,
+      sending_address: params[:newsletter][:sending_address],
       reply_to: params[:newsletter][:reply_to]
     )
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Settings successfully updated."
@@ -34,6 +35,19 @@ class Newsletters::Settings::SendingController < ApplicationController
     @newsletter.verify_custom_domain
     notice = @newsletter.ses_verified? ? "Domain successfully verified." : "Waiting for domain verification."
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: notice
+  end
+
+  private
+
+  def validate_sending_address!
+    address = params[:newsletter][:sending_address].to_s
+    domain = @newsletter.sending_domain
+
+    raise "No sending domain connected." unless domain.present?
+
+    local, domain_part = address.split("@", 2)
+    raise "Sending address must be a valid email." if local.blank? || domain_part.blank?
+    raise "Sending address must use your connected domain #{domain.name}." unless domain_part == domain.name
   end
 
   def disconnect_domain

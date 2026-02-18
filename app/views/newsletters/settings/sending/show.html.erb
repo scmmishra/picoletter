@@ -29,15 +29,12 @@
                           label: "Sending Name" %>
 
           <div class="space-y-1">
-            <label for="newsletter_sending_local" class="ml-px text-sm text-stone-500 font-sans">Sending Address</label>
-            <div class="relative">
-              <input type="text" name="newsletter[sending_local]" id="newsletter_sending_local"
-                     value="<%= @newsletter.sending_address&.split('@')&.first %>"
-                     placeholder="updates"
-                     class="input w-full"
-                     style="padding-right: <%= (@newsletter.sending_domain.name.length + 1) * 0.6 + 1 %>em">
-              <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-4 text-stone-400">@<%= @newsletter.sending_domain.name %></span>
-            </div>
+            <label for="newsletter_sending_address" class="ml-px text-sm text-stone-500 font-sans">Sending Address</label>
+            <input type="text" name="newsletter[sending_address]" id="newsletter_sending_address"
+                   value="<%= @newsletter.sending_address || "@#{@newsletter.sending_domain.name}" %>"
+                   class="input w-full"
+                   data-controller="domain-suffix"
+                   data-domain-suffix-suffix-value="@<%= @newsletter.sending_domain.name %>">
           </div>
 
           <%= form.text_field :reply_to,
