@@ -33,12 +33,14 @@
             <input type="text" name="newsletter[sending_address]" id="newsletter_sending_address"
                    value="<%= @newsletter.sending_address || "@#{@newsletter.sending_domain.name}" %>"
                    class="input w-full"
+                   autocomplete="off"
                    data-controller="domain-suffix"
                    data-domain-suffix-suffix-value="@<%= @newsletter.sending_domain.name %>">
           </div>
 
           <%= form.text_field :reply_to,
                           placeholder: "hey@picoletter.com",
+                          hint: "Optional. If set, replies from subscribers will go to this address instead of the sending address.",
                           label: "Reply To" %>
         </div>
         <div class="mt-5">
@@ -67,16 +69,18 @@
           <p class="mt-1 ml-1 font-sans text-xs text-stone-400">
             In case you're facing any trouble, you can drop us an email, and we will help you set it up.
           </p>
-          <div class="mt-4 flex items-center gap-3">
-            <%= form.submit "Verify DNS Records", class: "btn btn-secondary" %>
-            <%= button_to settings_sending_disconnect_domain_path(slug: @newsletter.slug),
-                method: :delete,
-                class: "btn btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300",
-                data: { turbo_confirm: "Are you sure you want to disconnect this domain? Your newsletter will revert to using the default picoletter.com sending address.", turbo_confirm_text: @newsletter.sending_domain.name } do %>
-              Disconnect Domain
-            <% end %>
-          </div>
         <% end %>
+        <div class="mt-4 flex items-center gap-3">
+          <%= form_with url: settings_sending_verify_domain_path(slug: @newsletter.slug), method: :post, class: "inline" do |f| %>
+            <%= f.submit "Verify DNS Records", class: "btn btn-secondary" %>
+          <% end %>
+          <%= button_to settings_sending_disconnect_domain_path(slug: @newsletter.slug),
+              method: :delete,
+              class: "btn btn-outline text-red-600 hover:bg-red-50 hover:text-red-700 border-red-200 hover:border-red-300",
+              data: { turbo_confirm: "Are you sure you want to disconnect this domain? Your newsletter will revert to using the default picoletter.com sending address.", turbo_confirm_text: @newsletter.sending_domain.name } do %>
+            Disconnect Domain
+          <% end %>
+        </div>
       <% end %>
     <% end %>
   <% end %>
