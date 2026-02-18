@@ -163,17 +163,14 @@ class Newsletter < ApplicationRecord
     update!(sending_address: nil, sending_name: nil, reply_to: nil)
   end
 
-  def setup_sending_domain(sending_params)
-    domain_name = sending_params[:sending_address].split("@").last
-
+  def connect_sending_domain(domain_name)
     raise InvalidDomainError, "Domain name invalid" unless valid_domain_name?(domain_name)
     raise DomainClaimedError, "Domain already in use" if Domain.claimed_by_other?(domain_name, id)
+    raise InvalidDomainError, "A domain is already connected. Disconnect it first." if sending_domain.present?
 
     ActiveRecord::Base.transaction do
-      remove_current_sending_domain(domain_name) if sending_domain.present? && sending_domain.name != domain_name
-      update!(sending_address: sending_params[:sending_address], reply_to: sending_params[:reply_to], sending_name: sending_params[:sending_name])
-      domain = Domain.find_or_create_by(name: domain_name, newsletter_id: id)
-      domain.register_or_sync
+      domain = Domain.create!(name: domain_name, newsletter_id: id)
+      domain.register
     end
   end
 
@@ -181,16 +178,6 @@ class Newsletter < ApplicationRecord
 
   def valid_domain_name?(domain_name)
     domain_name.present? && domain_name.include?(".") && !domain_name.include?("@") && !domain_name.start_with?(".") && !domain_name.end_with?(".")
-  end
-
-  def remove_current_sending_domain(new_domain_name)
-    sending_domain.drop_identity
-  rescue Aws::SESV2::Errors::NotFoundException => e
-    Rails.logger.error("Domain not found in SES: #{e.message}, deleting from DB anyway")
-  rescue StandardError => e
-    Rails.error.report(e, context: { newsletter_id: id, existing_domain: sending_domain.name, new_domain: new_domain_name })
-  ensure
-    sending_domain.destroy!
   end
 
   def create_owner_membership

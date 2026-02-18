@@ -5,15 +5,28 @@ class Newsletters::Settings::SendingController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action -> { authorize_permission!(:sending, :read) }, only: [ :show ]
-  before_action -> { authorize_permission!(:sending, :write) }, only: [ :update, :verify_domain, :disconnect_domain ]
+  before_action -> { authorize_permission!(:sending, :write) }, only: [ :update, :connect_domain, :verify_domain, :disconnect_domain ]
 
   def show; end
 
+  def connect_domain
+    @newsletter.connect_sending_domain(params[:domain])
+    redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Domain connected. Please add the DNS records below to verify it."
+  rescue StandardError => e
+    Rails.error.report(e, context: { domain: params[:domain], newsletter_id: @newsletter.id })
+    redirect_to settings_sending_path(slug: @newsletter.slug), alert: e.message
+  end
+
   def update
-    @newsletter.setup_sending_domain(sending_params)
+    sending_address = "#{params[:newsletter][:sending_local]}@#{@newsletter.sending_domain.name}"
+    @newsletter.update!(
+      sending_name: params[:newsletter][:sending_name],
+      sending_address: sending_address,
+      reply_to: params[:newsletter][:reply_to]
+    )
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Settings successfully updated."
   rescue StandardError => e
-    Rails.error.report(e, context: { params: sending_params, newsletter_id: @newsletter.id })
+    Rails.error.report(e, context: { params: params, newsletter_id: @newsletter.id })
     redirect_to settings_sending_path(slug: @newsletter.slug), alert: e.message
   end
 
@@ -29,11 +42,5 @@ class Newsletters::Settings::SendingController < ApplicationController
   rescue StandardError => e
     Rails.error.report(e, context: { newsletter_id: @newsletter.id })
     redirect_to settings_sending_path(slug: @newsletter.slug), alert: "Failed to disconnect domain."
-  end
-
-  private
-
-  def sending_params
-    params.require(:newsletter).permit(:reply_to, :sending_address, :sending_name)
   end
 end
