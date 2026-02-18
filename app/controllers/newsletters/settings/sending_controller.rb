@@ -37,6 +37,14 @@ class Newsletters::Settings::SendingController < ApplicationController
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: notice
   end
 
+  def disconnect_domain
+    @newsletter.disconnect_sending_domain
+    redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Sending domain disconnected successfully."
+  rescue StandardError => e
+    Rails.error.report(e, context: { newsletter_id: @newsletter.id })
+    redirect_to settings_sending_path(slug: @newsletter.slug), alert: "Failed to disconnect domain."
+  end
+
   private
 
   def validate_sending_address!
@@ -48,13 +56,5 @@ class Newsletters::Settings::SendingController < ApplicationController
     local, domain_part = address.split("@", 2)
     raise "Sending address must be a valid email." if local.blank? || domain_part.blank?
     raise "Sending address must use your connected domain #{domain.name}." unless domain_part == domain.name
-  end
-
-  def disconnect_domain
-    @newsletter.disconnect_sending_domain
-    redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Sending domain disconnected successfully."
-  rescue StandardError => e
-    Rails.error.report(e, context: { newsletter_id: @newsletter.id })
-    redirect_to settings_sending_path(slug: @newsletter.slug), alert: "Failed to disconnect domain."
   end
 end
