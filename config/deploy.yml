@@ -1,0 +1,79 @@
+service: picoletter
+image: picoletter
+
+servers:
+  web:
+    hosts:
+      - <%= ENV['SERVER_IP'] %>
+
+proxy:
+  ssl: true
+  host: <%= ENV['APP_DOMAIN'] %>
+
+registry:
+  server: <%= ENV.fetch('REGISTRY_SERVER', 'localhost:5555') %>
+  username: <%= ENV.fetch('REGISTRY_USERNAME', '') %>
+  password: <%= ENV.fetch('REGISTRY_PASSWORD', '') %>
+
+builder:
+  arch: amd64
+
+ssh:
+  user: deploy
+
+env:
+  clear:
+    RAILS_ENV: production
+    RAILS_LOG_TO_STDOUT: true
+    RUBY_YJIT_ENABLE: true
+    SOLID_QUEUE_IN_PUMA: true
+    WEB_CONCURRENCY: 2
+    RAILS_MAX_THREADS: 5
+    JOB_CONCURRENCY: 2
+    SEND_POST_BATCH_SIZE: 100
+  secret:
+    - SECRET_KEY_BASE
+    - DATABASE_URL
+    - QUEUE_DATABASE_URL
+    - CACHE_DATABASE_URL
+    # App
+    - PICO_HOST
+    - PICO_SENDING_DOMAIN
+    - PICO_SUPPORT_EMAIL
+    - ADMIN_API_KEY
+    - BILLING_API_KEY
+    - INVITE_CODE
+    # AWS SES
+    - AWS_ACCESS_KEY_ID
+    - AWS_SECRET_ACCESS_KEY
+    - AWS_REGION
+    - AWS_SES_CONFIGURATION_SET
+    # Cloudflare R2
+    - R2__ACCESS_KEY
+    - R2__ACCESS_SECRET
+    - R2__BUCKET_NAME
+    - R2__ACCOUNT_ID
+    - R2__PUBLIC_DOMAIN
+    # OAuth
+    - GITHUB_CLIENT_ID
+    - GITHUB_CLIENT_SECRET
+    - GOOGLE_CLIENT_ID
+    - GOOGLE_CLIENT_SECRET
+    # Monitoring (optional)
+    - RORVSWILD__API_KEY
+    - BETTERSTACK__LOGS_TOKEN
+    # Feature flags
+    - ENABLE_BILLING
+    - ENABLE_AUTO_REMINDERS
+    - ENABLE_SCHEDULING
+
+volumes:
+  - "picoletter_storage:/rails/storage"
+
+asset_path: /rails/public/assets
+
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f
+  dbc: app exec --interactive --reuse "bin/rails dbconsole"

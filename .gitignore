@@ -48,3 +48,7 @@ spec/examples.txt
 CLAUDE.md
 tasks.md
 AGENTS.md
+
+# Kamal secrets (keep example)
+.kamal/secrets
+!.kamal/secrets.example
