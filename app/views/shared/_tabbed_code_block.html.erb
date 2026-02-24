@@ -1,0 +1,25 @@
+<%# samples: [{ label: "cURL", lang: "bash", code: "..." }, ...] %>
+<div data-controller="tabbed-code"
+     data-tabbed-code-samples-value="<%= samples.to_json %>">
+  <div class="rounded-lg outline outline-1 outline-stone-200">
+    <div class="flex items-center px-3 py-1.5 border-b border-stone-200 bg-stone-50 rounded-t-lg">
+      <div class="flex gap-1">
+        <% samples.each_with_index do |sample, i| %>
+          <button data-tabbed-code-target="tab"
+                  data-action="tabbed-code#switchTab"
+                  class="px-2 py-0.5 text-xs font-sans font-medium rounded transition-colors <%= i == 0 ? 'bg-stone-200 text-stone-800' : 'text-stone-400' %> hover:text-stone-700">
+            <%= sample[:label] %>
+          </button>
+        <% end %>
+      </div>
+      <div class="ml-auto">
+        <div data-tabbed-code-target="copy">
+          <%= button_to_copy_to_clipboard(samples.first[:code]) {} %>
+        </div>
+      </div>
+    </div>
+    <div data-tabbed-code-target="container">
+      <pre class="px-3 py-2 text-xs fallback-code overflow-hidden font-mono"><%= samples.first[:code] %></pre>
+    </div>
+  </div>
+</div>

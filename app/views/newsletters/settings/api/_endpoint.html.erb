@@ -7,7 +7,7 @@
   <div data-collapsible-target="content">
     <div class="p-4 pt-2 text-stone-600 text-sm space-y-6">
       <div>
-        <%= render "shared/code_block", code: code, lang: "bash", icon_only: true %>
+        <%= render "shared/tabbed_code_block", samples: samples %>
       </div>
 
       <% if local_assigns[:params] %>
