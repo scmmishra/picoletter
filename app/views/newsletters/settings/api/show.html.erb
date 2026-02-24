@@ -50,7 +50,8 @@
               { name: "email", required: true, description: "subscriber's email address" },
               { name: "name", required: false, description: "subscriber's full name" },
               { name: "labels", required: false, description: "comma-separated list of labels" }
-            ] %>
+            ],
+            response: "{\n  \"message\": \"Subscriber created\",\n  \"email\": \"reader@example.com\"\n}" %>
 
       <%= render "newsletters/settings/api/endpoint",
             title: "Subscriber Counts",
