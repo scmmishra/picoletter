@@ -2,10 +2,10 @@
 
 ReActionView.configure do |config|
   # Intercept .html.erb templates and process them with `Herb::Engine` for enhanced features
-  config.intercept_erb = Rails.env.development?
+  # config.intercept_erb = Rails.env.development?
 
   # Enable debug mode in development (adds debug attributes to HTML)
-  config.debug_mode = Rails.env.development?
+  # config.debug_mode = Rails.env.development?
 
   # Add custom transform visitors to process templates before compilation
   # config.transform_visitors = [

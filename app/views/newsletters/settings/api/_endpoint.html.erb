@@ -1,0 +1,36 @@
+<div data-controller="collapsible" class="border border-stone-200 rounded-lg">
+  <button data-action="collapsible#toggle" class="flex items-center gap-2 w-full px-4 py-3 text-left text-sm font-sans font-medium text-stone-700 hover:text-stone-900">
+    <%= lucide_icon("chevron-right", class: "size-3.5 text-stone-400", data: { collapsible_target: "icon" }) %>
+    <span><%= title %></span>
+    <code class="ml-auto text-xs font-mono text-stone-400"><%= method %> <%= path %></code>
+  </button>
+  <div data-collapsible-target="content">
+    <div class="p-4 pt-2 text-stone-600 text-sm space-y-6">
+      <div>
+        <%= render "shared/code_block", code: code, lang: "bash", icon_only: true %>
+      </div>
+
+      <% if local_assigns[:params] %>
+        <div>
+          <h4 class="font-sans font-medium text-stone-800 mb-2">Parameters</h4>
+          <div class="space-y-1 font-sans text-xs">
+            <% params.each do |param| %>
+              <p>
+                <code class="px-1 py-0.5 bg-stone-100 rounded font-mono"><%= param[:name] %></code>
+                <span class="text-stone-400">(<%= param[:required] ? "required" : "optional" %>)</span>
+                — <%= param[:description] %>
+              </p>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if local_assigns[:response] %>
+        <div>
+          <h4 class="font-sans font-medium text-stone-800 mb-2">Response</h4>
+          <%= render "shared/code_block", code: response, lang: "json", copy: false %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
