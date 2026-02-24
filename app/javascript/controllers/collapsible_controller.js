@@ -1,10 +1,13 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["content", "button"]
+  static targets = ["content", "icon", "button"]
+  static values = {
+    expandedText: String,
+    collapsedText: String,
+  }
 
   connect() {
-    // Set up CSS for smooth height animation using interpolate-size
     this.contentTarget.style.transition = "height 0.3s ease";
     this.contentTarget.style.interpolateSize = "allow-keywords";
     this.contentTarget.style.overflow = "hidden";
@@ -12,18 +15,16 @@ export default class extends Controller {
   }
 
   toggle() {
-    const content = this.contentTarget;
-    const button = this.buttonTarget;
+    const isCollapsed = this.contentTarget.style.height === "0" || this.contentTarget.style.height === "0px";
+    this.contentTarget.style.height = isCollapsed ? "auto" : "0";
 
-    if (content.style.height === "0" || content.style.height === "0px") {
-      // Expand to auto height
-      content.style.height = "auto";
-      button.textContent = "Show less";
-    } else {
-      // Collapse to 0
-      const count = content.querySelectorAll(".flex.justify-between").length;
-      content.style.height = "0";
-      button.textContent = `Show ${count} more links`;
+    if (this.hasIconTarget) {
+      this.iconTarget.style.transition = "transform 0.2s ease";
+      this.iconTarget.style.transform = isCollapsed ? "rotate(90deg)" : "rotate(0deg)";
+    }
+
+    if (this.hasButtonTarget) {
+      this.buttonTarget.textContent = isCollapsed ? this.expandedTextValue : this.collapsedTextValue;
     }
   }
 }

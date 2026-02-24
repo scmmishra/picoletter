@@ -1,5 +1,8 @@
 <% if post.email_clicks.any? %>
-  <div class="mt-6 mb-1" data-controller="collapsible">
+  <% sorted_links = post.email_clicks.group(:link).count.sort_by(&:last).reverse %>
+  <div class="mt-6 mb-1" data-controller="collapsible"
+       data-collapsible-expanded-text-value="Show less"
+       data-collapsible-collapsed-text-value="Show <%= sorted_links.length - 5 %> more links">
     <h4 class="text-sm font-sans text-stone-600 mb-3">Top Clicked Links</h4>
     <div class="space-y-2 py-2 px-3 bg-white rounded border">
       <div class="flex justify-between items-center font-sans">
@@ -11,7 +14,6 @@
         </div>
       </div>
 
-      <% sorted_links = post.email_clicks.group(:link).count.sort_by(&:last).reverse %>
       <% sorted_links.first(5).each do |link, count| %>
         <div class="flex justify-between items-center font-sans">
           <div class="flex-1 min-w-0">

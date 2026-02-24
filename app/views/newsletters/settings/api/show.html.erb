@@ -34,19 +34,49 @@
   <% end %>
 
   <%= render "newsletters/settings/partials/settings_section", title: "API Documentation" do %>
-    <div class="max-w-2xl text-stone-600 text-sm space-y-6">
-      <div>
-        <p class="mb-2 font-sans">Add a subscriber by sending a POST request with your token:</p>
-        <% curl_code = "curl -X POST #{request.base_url}/api/v1/subscribers \\\n  -H \"Authorization: Bearer your_api_token\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\": \"reader@example.com\", \"name\": \"Jane Doe\", \"labels\": \"vip\"}'" %>
-        <%= render "shared/code_block", code: curl_code, lang: "bash", icon_only: false %>
+    <div class="space-y-3 max-w-lg">
+      <div data-controller="collapsible" class="border border-stone-200 rounded-lg">
+        <button data-action="collapsible#toggle" class="flex items-center gap-2 w-full px-4 py-3 text-left text-sm font-sans font-medium text-stone-700 hover:text-stone-900">
+          <%= lucide_icon("chevron-right", class: "size-3.5 text-stone-400", data: { collapsible_target: "icon" }) %>
+          <span>Add Subscriber</span>
+          <code class="ml-auto text-xs font-mono text-stone-400">POST /api/v1/subscribers</code>
+        </button>
+        <div data-collapsible-target="content">
+          <div class="p-4 pt-2 text-stone-600 text-sm space-y-6">
+            <div>
+              <% curl_code = "curl -X POST #{request.base_url}/api/v1/subscribers \\\n  -H \"Authorization: Bearer your_api_token\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\": \"reader@example.com\", \"name\": \"Jane Doe\", \"labels\": \"vip\"}'" %>
+              <%= render "shared/code_block", code: curl_code, lang: "bash", icon_only: true %>
+            </div>
+            <div>
+              <h4 class="font-medium text-stone-800 mb-2">Parameters</h4>
+              <div class="space-y-1 font-sans text-xs">
+                <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">email</code> <span class="text-stone-400">(required)</span> — subscriber's email address</p>
+                <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">name</code> <span class="text-stone-400">(optional)</span> — subscriber's full name</p>
+                <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">labels</code> <span class="text-stone-400">(optional)</span> — comma-separated list of labels</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div>
-        <h4 class="font-medium text-stone-800 mb-2">Parameters</h4>
-        <div class="space-y-1 font-sans text-xs">
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">email</code> <span class="text-stone-400">(required)</span> — subscriber's email address</p>
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">name</code> <span class="text-stone-400">(optional)</span> — subscriber's full name</p>
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">labels</code> <span class="text-stone-400">(optional)</span> — comma-separated list of labels</p>
+      <div data-controller="collapsible" class="border border-stone-200 rounded-lg">
+        <button data-action="collapsible#toggle" class="flex items-center gap-2 w-full px-4 py-3 text-left text-sm font-sans font-medium text-stone-700 hover:text-stone-900">
+          <%= lucide_icon("chevron-right", class: "size-3.5 text-stone-400", data: { collapsible_target: "icon" }) %>
+          <span>Subscriber Counts</span>
+          <code class="ml-auto text-xs font-mono text-stone-400">GET /api/v1/subscribers/counts</code>
+        </button>
+        <div data-collapsible-target="content">
+          <div class="p-4 pt-2 text-stone-600 text-sm space-y-6">
+            <div>
+              <% counts_curl = "curl #{request.base_url}/api/v1/subscribers/counts \\\n  -H \"Authorization: Bearer your_api_token\"" %>
+              <%= render "shared/code_block", code: counts_curl, lang: "bash", icon_only: true %>
+            </div>
+            <div>
+              <h4 class="font-medium text-stone-800 mb-2">Response</h4>
+              <% counts_response = "{\n  \"total\": 150,\n  \"verified\": 120,\n  \"unverified\": 25,\n  \"unsubscribed\": 5\n}" %>
+              <%= render "shared/code_block", code: counts_response, lang: "json", copy: false %>
+            </div>
+          </div>
         </div>
       </div>
     </div>
