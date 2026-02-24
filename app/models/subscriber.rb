@@ -37,6 +37,8 @@ class Subscriber < ApplicationRecord
   has_many :emails, dependent: :destroy
   has_many :reminders, class_name: "SubscriberReminder", dependent: :destroy
 
+  after_commit :invalidate_counts_cache
+
   before_validation :normalize_labels
   before_save :filter_invalid_labels
 
@@ -81,6 +83,10 @@ class Subscriber < ApplicationRecord
   end
 
   private
+
+  def invalidate_counts_cache
+    Rails.cache.delete("newsletter/#{newsletter_id}/subscriber_counts")
+  end
 
   def normalize_labels
     self.labels = labels.compact.map(&:downcase).uniq if labels.present?

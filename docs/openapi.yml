@@ -45,6 +45,23 @@ components:
         email:
           type: string
 
+    SubscriberCounts:
+      type: object
+      required:
+        - total
+        - verified
+        - unverified
+        - unsubscribed
+      properties:
+        total:
+          type: integer
+        verified:
+          type: integer
+        unverified:
+          type: integer
+        unsubscribed:
+          type: integer
+
 paths:
   /subscribers:
     post:
@@ -79,6 +96,26 @@ paths:
                 $ref: "#/components/schemas/Error"
         "422":
           description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /subscribers/counts:
+    get:
+      summary: Get subscriber counts
+      operationId: getSubscriberCounts
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Subscriber counts by status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberCounts"
+        "401":
+          description: Unauthorized
           content:
             application/json:
               schema:

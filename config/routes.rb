@@ -148,7 +148,11 @@ Rails.application.routes.draw do
   # Public API routes
   namespace :api do
     namespace :v1 do
-      resources :subscribers, only: [ :create ]
+      resources :subscribers, only: [ :create ] do
+        collection do
+          get :counts
+        end
+      end
     end
 
     # Admin API routes

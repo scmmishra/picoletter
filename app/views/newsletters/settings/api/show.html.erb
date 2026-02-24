@@ -34,21 +34,36 @@
   <% end %>
 
   <%= render "newsletters/settings/partials/settings_section", title: "API Documentation" do %>
-    <div class="max-w-2xl text-stone-600 text-sm space-y-6">
-      <div>
-        <p class="mb-2 font-sans">Add a subscriber by sending a POST request with your token:</p>
-        <% curl_code = "curl -X POST #{request.base_url}/api/v1/subscribers \\\n  -H \"Authorization: Bearer your_api_token\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\": \"reader@example.com\", \"name\": \"Jane Doe\", \"labels\": \"vip\"}'" %>
-        <%= render "shared/code_block", code: curl_code, lang: "bash", icon_only: false %>
-      </div>
+    <div class="space-y-3 max-w-lg">
+      <% base = request.base_url %>
+      <%= render "newsletters/settings/api/endpoint",
+            title: "Add Subscriber",
+            method: "POST",
+            path: "/api/v1/subscribers",
+            samples: [
+              { label: "cURL", lang: "bash", code: "curl -X POST #{base}/api/v1/subscribers \\\n  -H \"Authorization: Bearer your_api_token\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\"email\": \"reader@example.com\", \"name\": \"Jane Doe\", \"labels\": \"vip\"}'" },
+              { label: "Python", lang: "python", code: "import requests\n\nresponse = requests.post(\n    \"#{base}/api/v1/subscribers\",\n    headers={\"Authorization\": \"Bearer your_api_token\"},\n    json={\"email\": \"reader@example.com\", \"name\": \"Jane Doe\", \"labels\": \"vip\"}\n)\nprint(response.json())" },
+              { label: "Ruby", lang: "ruby", code: "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"#{base}/api/v1/subscribers\")\nhttp = Net::HTTP.new(uri.host, uri.port)\nhttp.use_ssl = true\n\nrequest = Net::HTTP::Post.new(uri)\nrequest[\"Authorization\"] = \"Bearer your_api_token\"\nrequest[\"Content-Type\"] = \"application/json\"\nrequest.body = { email: \"reader@example.com\", name: \"Jane Doe\", labels: \"vip\" }.to_json\n\nresponse = http.request(request)\nputs response.body" },
+              { label: "Go", lang: "go", code: "package main\n\nimport (\n\t\"bytes\"\n\t\"encoding/json\"\n\t\"fmt\"\n\t\"io\"\n\t\"net/http\"\n)\n\nfunc main() {\n\tbody, _ := json.Marshal(map[string]string{\n\t\t\"email\": \"reader@example.com\",\n\t\t\"name\":  \"Jane Doe\",\n\t\t\"labels\": \"vip\",\n\t})\n\n\treq, _ := http.NewRequest(\"POST\", \"#{base}/api/v1/subscribers\", bytes.NewBuffer(body))\n\treq.Header.Set(\"Authorization\", \"Bearer your_api_token\")\n\treq.Header.Set(\"Content-Type\", \"application/json\")\n\n\tresp, _ := http.DefaultClient.Do(req)\n\tdefer resp.Body.Close()\n\tout, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(out))\n}" }
+            ],
+            params: [
+              { name: "email", required: true, description: "subscriber's email address" },
+              { name: "name", required: false, description: "subscriber's full name" },
+              { name: "labels", required: false, description: "comma-separated list of labels" }
+            ],
+            response: "{\n  \"message\": \"Subscriber created\",\n  \"email\": \"reader@example.com\"\n}" %>
 
-      <div>
-        <h4 class="font-medium text-stone-800 mb-2">Parameters</h4>
-        <div class="space-y-1 font-sans text-xs">
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">email</code> <span class="text-stone-400">(required)</span> — subscriber's email address</p>
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">name</code> <span class="text-stone-400">(optional)</span> — subscriber's full name</p>
-          <p><code class="px-1 py-0.5 bg-stone-100 rounded font-mono">labels</code> <span class="text-stone-400">(optional)</span> — comma-separated list of labels</p>
-        </div>
-      </div>
+      <%= render "newsletters/settings/api/endpoint",
+            title: "Subscriber Counts",
+            method: "GET",
+            path: "/api/v1/subscribers/counts",
+            samples: [
+              { label: "cURL", lang: "bash", code: "curl #{base}/api/v1/subscribers/counts \\\n  -H \"Authorization: Bearer your_api_token\"" },
+              { label: "Python", lang: "python", code: "import requests\n\nresponse = requests.get(\n    \"#{base}/api/v1/subscribers/counts\",\n    headers={\"Authorization\": \"Bearer your_api_token\"}\n)\nprint(response.json())" },
+              { label: "Ruby", lang: "ruby", code: "require \"net/http\"\nrequire \"json\"\n\nuri = URI(\"#{base}/api/v1/subscribers/counts\")\nrequest = Net::HTTP::Get.new(uri)\nrequest[\"Authorization\"] = \"Bearer your_api_token\"\n\nresponse = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|\n  http.request(request)\nend\nputs response.body" },
+              { label: "Go", lang: "go", code: "package main\n\nimport (\n\t\"fmt\"\n\t\"io\"\n\t\"net/http\"\n)\n\nfunc main() {\n\treq, _ := http.NewRequest(\"GET\", \"#{base}/api/v1/subscribers/counts\", nil)\n\treq.Header.Set(\"Authorization\", \"Bearer your_api_token\")\n\n\tresp, _ := http.DefaultClient.Do(req)\n\tdefer resp.Body.Close()\n\tout, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(out))\n}" }
+            ],
+            response: "{\n  \"total\": 150,\n  \"verified\": 120,\n  \"unverified\": 25,\n  \"unsubscribed\": 5\n}" %>
     </div>
   <% end %>
 </div>
