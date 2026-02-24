@@ -23,14 +23,17 @@ class Api::V1::SubscribersController < Api::V1::BaseController
   end
 
   def counts
-    subscribers = @newsletter.subscribers
+    counts = Rails.cache.fetch("newsletter/#{@newsletter.id}/subscriber_counts") do
+      subscribers = @newsletter.subscribers
+      {
+        total: subscribers.count,
+        verified: subscribers.verified.count,
+        unverified: subscribers.unverified.count,
+        unsubscribed: subscribers.unsubscribed.count
+      }
+    end
 
-    render json: {
-      total: subscribers.count,
-      verified: subscribers.verified.count,
-      unverified: subscribers.unverified.count,
-      unsubscribed: subscribers.unsubscribed.count
-    }
+    render json: counts
   end
 
   private
