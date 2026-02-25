@@ -35,6 +35,16 @@ class Newsletters::SubscribersController < ApplicationController
   end
 
   def send_reminder
+    unless @subscriber.unverified?
+      redirect_to subscriber_url(@newsletter.slug, @subscriber.id), alert: "Reminders can only be sent to unverified subscribers."
+      return
+    end
+
+    if @subscriber.reminder_cooldown_active?
+      redirect_to subscriber_url(@newsletter.slug, @subscriber.id), alert: "A reminder was already sent recently. Please wait 24 hours between reminders."
+      return
+    end
+
     @subscriber.send_reminder
     redirect_to subscriber_url(@newsletter.slug, @subscriber.id), notice: "Reminder sent."
   end

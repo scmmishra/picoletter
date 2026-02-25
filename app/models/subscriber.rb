@@ -45,7 +45,7 @@ class Subscriber < ApplicationRecord
   scope :subscribed, -> { verified.or(unverified) }
   scope :eligible_for_auto_reminder, -> {
     unverified
-      .where(created_at: (24.hours.ago - 30.minutes)..(24.hours.ago + 30.minutes))
+      .where(created_at: (24.hours.ago - 45.minutes)..(24.hours.ago + 45.minutes))
       .left_joins(:reminders)
       .where(subscriber_reminders: { id: nil })
   }
@@ -68,6 +68,10 @@ class Subscriber < ApplicationRecord
 
   def unsubscribe_with_reason!(reason)
     update(status: "unsubscribed", unsubscribed_at: Time.current, unsubscribe_reason: reason)
+  end
+
+  def reminder_cooldown_active?
+    reminders.where("sent_at > ?", 24.hours.ago).exists?
   end
 
   def send_reminder(kind: :manual)

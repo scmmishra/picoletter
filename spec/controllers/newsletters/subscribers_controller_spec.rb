@@ -256,6 +256,45 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
       expect(response).to redirect_to(subscriber_url(newsletter.slug, subscriber.id))
       expect(flash[:notice]).to eq("Reminder sent.")
     end
+
+    context "when subscriber is verified" do
+      let(:verified_subscriber) { create(:subscriber, newsletter: newsletter, status: :verified) }
+
+      it "redirects with alert and does not send reminder" do
+        expect_any_instance_of(Subscriber).not_to receive(:send_reminder)
+
+        patch :send_reminder, params: { slug: newsletter.slug, id: verified_subscriber.id }
+
+        expect(response).to redirect_to(subscriber_url(newsletter.slug, verified_subscriber.id))
+        expect(flash[:alert]).to eq("Reminders can only be sent to unverified subscribers.")
+      end
+    end
+
+    context "when subscriber is unsubscribed" do
+      let(:unsubscribed_subscriber) { create(:subscriber, :unsubscribed, newsletter: newsletter) }
+
+      it "redirects with alert and does not send reminder" do
+        expect_any_instance_of(Subscriber).not_to receive(:send_reminder)
+
+        patch :send_reminder, params: { slug: newsletter.slug, id: unsubscribed_subscriber.id }
+
+        expect(response).to redirect_to(subscriber_url(newsletter.slug, unsubscribed_subscriber.id))
+        expect(flash[:alert]).to eq("Reminders can only be sent to unverified subscribers.")
+      end
+    end
+
+    context "when reminder cooldown is active" do
+      it "redirects with alert and does not send reminder" do
+        create(:subscriber_reminder, subscriber: subscriber, kind: :manual, sent_at: 12.hours.ago)
+
+        expect_any_instance_of(Subscriber).not_to receive(:send_reminder)
+
+        patch :send_reminder, params: { slug: newsletter.slug, id: subscriber.id }
+
+        expect(response).to redirect_to(subscriber_url(newsletter.slug, subscriber.id))
+        expect(flash[:alert]).to include("Please wait 24 hours")
+      end
+    end
   end
 
   describe "error handling" do

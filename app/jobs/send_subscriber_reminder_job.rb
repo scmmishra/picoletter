@@ -23,6 +23,9 @@ class SendSubscriberReminderJob < ApplicationJob
       id: response.message_id,
       subscriber: @subscriber
     )
+  rescue StandardError => e
+    Rails.error.report(e, context: { subscriber_id: subscriber_id, kind: kind }, handled: false)
+    raise
   end
 
   private

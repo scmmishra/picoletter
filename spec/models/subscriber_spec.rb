@@ -98,18 +98,18 @@ RSpec.describe Subscriber, type: :model do
       expect(Subscriber.eligible_for_auto_reminder).not_to include(with_reminder)
     end
 
-    it 'excludes subscribers created less than 23.5 hours ago' do
+    it 'excludes subscribers created less than 23h15m ago' do
       too_recent = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 23.hours.ago)
       expect(Subscriber.eligible_for_auto_reminder).not_to include(too_recent)
     end
 
-    it 'excludes subscribers created more than 24.5 hours ago' do
+    it 'excludes subscribers created more than 24h45m ago' do
       too_old = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 25.hours.ago)
       expect(Subscriber.eligible_for_auto_reminder).not_to include(too_old)
     end
 
-    it 'includes subscribers within the 30 minute margin' do
-      within_margin = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago + 15.minutes)
+    it 'includes subscribers within the 45 minute margin' do
+      within_margin = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago + 30.minutes)
       expect(Subscriber.eligible_for_auto_reminder).to include(within_margin)
     end
   end
@@ -228,6 +228,25 @@ RSpec.describe Subscriber, type: :model do
       # But we can verify we can find by token
       found = Subscriber.find_by_token_for(:confirmation, token)
       expect(found).to eq(subscriber)
+    end
+  end
+
+  describe '#reminder_cooldown_active?' do
+    it 'returns true if a reminder was sent within the last 24 hours' do
+      sub = create(:subscriber, newsletter: newsletter, status: :unverified)
+      create(:subscriber_reminder, subscriber: sub, kind: :manual, sent_at: 12.hours.ago)
+      expect(sub.reminder_cooldown_active?).to be true
+    end
+
+    it 'returns false if no reminders have been sent' do
+      sub = create(:subscriber, newsletter: newsletter, status: :unverified)
+      expect(sub.reminder_cooldown_active?).to be false
+    end
+
+    it 'returns false if the last reminder was sent more than 24 hours ago' do
+      sub = create(:subscriber, newsletter: newsletter, status: :unverified)
+      create(:subscriber_reminder, subscriber: sub, kind: :manual, sent_at: 25.hours.ago)
+      expect(sub.reminder_cooldown_active?).to be false
     end
   end
 

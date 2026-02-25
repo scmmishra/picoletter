@@ -52,5 +52,18 @@ RSpec.describe SendSubscriberReminderJob, type: :job do
         )
       )
     end
+
+    it 'reports and re-raises errors from SES' do
+      allow(ses_service).to receive(:send).and_raise(StandardError.new("SES failure"))
+
+      expect(Rails.error).to receive(:report).with(
+        an_instance_of(StandardError),
+        hash_including(context: hash_including(subscriber_id: subscriber.id, kind: :manual), handled: false)
+      )
+
+      expect {
+        described_class.perform_now(subscriber.id, kind: :manual)
+      }.to raise_error(StandardError, "SES failure")
+    end
   end
 end
