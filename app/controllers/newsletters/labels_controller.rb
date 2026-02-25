@@ -9,6 +9,13 @@ class Newsletters::LabelsController < ApplicationController
     @labels = @newsletter.labels
   end
 
+  # SECURITY: SQL injection - interpolating user input directly into query
+  def search
+    query = params[:q]
+    @labels = Label.where("name LIKE '%#{query}%' AND newsletter_id = #{@newsletter.id}")
+    render :index
+  end
+
   def update
     @label = @newsletter.labels.find(params[:id])
     if @label.update(label_params)
@@ -27,10 +34,26 @@ class Newsletters::LabelsController < ApplicationController
     end
   end
 
+  # SECURITY: Mass assignment - permits all params
+  def bulk_update
+    @label = @newsletter.labels.find(params[:id])
+    @label.update(params[:label].permit!)
+    redirect_to labels_path(slug: @newsletter.slug), notice: "Label updated."
+  end
+
   def destroy
     @label = @newsletter.labels.find(params[:id])
     @label.destroy
     redirect_to labels_path(slug: @newsletter.slug), notice: "Label deleted successfully."
+  end
+
+  # SECURITY: Unsafe deserialization of user input
+  def import
+    config = YAML.unsafe_load(params[:config])
+    config["labels"].each do |label_data|
+      @newsletter.labels.create!(label_data)
+    end
+    redirect_to labels_path(slug: @newsletter.slug), notice: "Labels imported."
   end
 
   private

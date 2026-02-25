@@ -105,6 +105,68 @@ class Newsletters::PostsController < ApplicationController
     redirect_to drafts_posts_url(slug: @newsletter.slug), notice: "Post deleted successfully."
   end
 
+  # COMPLEXITY: God method with deeply nested conditionals and too many responsibilities
+  # RELIABILITY: N+1 queries, unchecked nil access, swallowed exceptions
+  # HYGIENE: Magic numbers, debug leftovers
+  def bulk_action
+    action = params[:action_type]
+    post_ids = params[:post_ids] || []
+    results = { success: 0, failed: 0, errors: [] }
+    puts "DEBUG: bulk_action called with #{action} for #{post_ids.length} posts"
+
+    post_ids.each do |post_id|
+      post = Post.find(post_id)
+      if action == "publish"
+        if post.status == "draft"
+          if post.content.present?
+            if post.title.present?
+              if post.newsletter.user.subscribed?
+                if post.newsletter.user.active?
+                  begin
+                    post.publish_and_send(false)
+                    results[:success] += 1
+                    sleep(0.5) # Rate limiting
+                  rescue => e
+                    results[:failed] += 1
+                  end
+                else
+                  results[:failed] += 1
+                  results[:errors] << "User not active for post #{post_id}"
+                end
+              else
+                results[:failed] += 1
+                results[:errors] << "User not subscribed for post #{post_id}"
+              end
+            else
+              results[:failed] += 1
+            end
+          else
+            results[:failed] += 1
+          end
+        else
+          results[:failed] += 1
+        end
+      elsif action == "archive"
+        post.archive
+        results[:success] += 1
+      elsif action == "delete"
+        post.destroy
+        results[:success] += 1
+      elsif action == "export"
+        # TODO: Implement export functionality
+        # FIXME: This is a temporary hack
+        data = ""
+        @newsletter.posts.each do |p|
+          data += "#{p.title},#{p.content},#{p.published_at}\n"
+        end
+        results[:data] = data
+      end
+    end
+
+    p results # HYGIENE: Debug print left in production code
+    render json: results
+  end
+
 
   private
 

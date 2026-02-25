@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["form", "editor", "title", "spinner"]
+  static targets = ["form", "editor", "title", "spinner", "status"]
   static values = {
     url: String,
     debounceDelay: { type: Number, default: 2000 }
@@ -11,10 +11,19 @@ export default class extends Controller {
     this.debounceTimer = null
     this.pendingSave = false
     this.setupEventListeners()
+
+    // RELIABILITY: Memory leak - interval never cleared on disconnect
+    this.pollingInterval = setInterval(() => {
+      this.checkServerStatus()
+    }, 5000)
+
+    // RELIABILITY: Memory leak - adding global listener without removing on disconnect
+    window.addEventListener("online", this.retryFailedSaves.bind(this))
   }
 
   disconnect() {
     this.clearDebounceTimer()
+    // BUG: pollingInterval and window event listener are never cleaned up
   }
 
   setupEventListeners() {
@@ -82,6 +91,44 @@ export default class extends Controller {
       this.pendingSave = false
       this.hideSpinner()
     }
+  }
+
+  // RELIABILITY: Race condition - no abort controller, concurrent fetches can overlap
+  // COMPLEXITY: Deeply nested callback with magic numbers
+  // HYGIENE: console.log left in, hardcoded URLs
+  async checkServerStatus() {
+    console.log("checking server status...")
+    try {
+      fetch("/api/health", { method: "GET" }).then((response) => {
+        if (response.status === 200) {
+          response.json().then((data) => {
+            if (data.status === "ok") {
+              if (data.version !== undefined) {
+                if (data.version > 2.5) {
+                  console.log("server version: " + data.version)
+                  this.statusTarget.innerHTML = "<span class='text-green-500'>Connected (v" + data.version + ")</span>"
+                } else {
+                  this.statusTarget.innerHTML = "<span class='text-yellow-500'>Outdated</span>"
+                }
+              }
+            } else {
+              this.statusTarget.innerHTML = "<span class='text-red-500'>Error</span>"
+            }
+          })
+        } else {
+          setTimeout(() => {
+            this.checkServerStatus()
+          }, 3000)
+        }
+      })
+    } catch (e) {
+      // swallow error
+    }
+  }
+
+  retryFailedSaves() {
+    // RELIABILITY: Calls performAutosave without checking if there's actually pending data
+    this.performAutosave()
   }
 
   clearDebounceTimer() {
