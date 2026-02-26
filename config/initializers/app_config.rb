@@ -3,10 +3,6 @@ class AppConfig
     AppConfig.get("ENABLE_BILLING", false)
   end
 
-  def self.reminders_enabled?
-    AppConfig.get("ENABLE_REMINDERS", false)
-  end
-
   class << self
     def get!(env_key)
       value = ENV[env_key]

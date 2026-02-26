@@ -4,25 +4,7 @@ RSpec.describe SendAutomaticRemindersJob, type: :job do
   let(:user) { create(:user) }
   let(:newsletter) { create(:newsletter, user: user, auto_reminder_enabled: true) }
 
-  before do
-    allow(AppConfig).to receive(:reminders_enabled?).and_return(true)
-  end
-
   describe '#perform' do
-    context 'when ENABLE_REMINDERS is false' do
-      before do
-        allow(AppConfig).to receive(:reminders_enabled?).and_return(false)
-      end
-
-      it 'does not process any reminders' do
-        create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago)
-
-        expect {
-          described_class.perform_now
-        }.not_to have_enqueued_job(SendSubscriberReminderJob)
-      end
-    end
-
     context 'when auto_reminder_enabled is true' do
       it 'sends reminders to eligible subscribers' do
         eligible = create(:subscriber, newsletter: newsletter, status: :unverified, created_at: 24.hours.ago)

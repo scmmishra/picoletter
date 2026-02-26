@@ -31,15 +31,13 @@
                    class: "ml-px text-stone-500 text-sm font-sans" %>
       </label>
 
-      <% if AppConfig.reminders_enabled? %>
-        <label class="flex items-center gap-1">
-          <%= form.check_box :auto_reminder_enabled %>
+      <label class="flex items-center gap-1">
+        <%= form.check_box :auto_reminder_enabled %>
 
-          <%= form.label :auto_reminder_enabled,
-                     "Send automatic reminder to unverified subscribers",
-                     class: "ml-px text-stone-500 text-sm font-sans" %>
-        </label>
-      <% end %>
+        <%= form.label :auto_reminder_enabled,
+                   "Send automatic reminder to unverified subscribers",
+                   class: "ml-px text-stone-500 text-sm font-sans" %>
+      </label>
     </div>
 
     <div class="mt-5">
