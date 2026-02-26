@@ -8,11 +8,15 @@ class Newsletters::SubscribersController < ApplicationController
 
 
   def index
-    status = params[:status] || "verified"
+    list_subscribers("verified")
+  end
 
-    @pagy, @subscribers = pagy(@newsletter.subscribers
-      .order(created_at: :desc)
-      .where(status: status), limit: 30)
+  def unverified
+    list_subscribers("unverified")
+  end
+
+  def unsubscribed
+    list_subscribers("unsubscribed")
   end
 
   def show
@@ -50,6 +54,14 @@ class Newsletters::SubscribersController < ApplicationController
   end
 
   private
+
+  def list_subscribers(status)
+    @status = status
+    @pagy, @subscribers = pagy(@newsletter.subscribers
+      .order(created_at: :desc)
+      .where(status: status), limit: 30)
+    render :index
+  end
 
   def set_subscriber
     @subscriber = @newsletter.subscribers.find(params[:id])
