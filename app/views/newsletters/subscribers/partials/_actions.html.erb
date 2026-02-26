@@ -13,7 +13,7 @@
   <% if @subscriber.reminder_cooldown_active? %>
     <%= render "newsletters/subscribers/partials/action_card", title: "Resend Confirmation", help_text: "A reminder was already sent in the last 24 hours." do %>
       <button disabled class="btn w-full btn-primary text-sm opacity-50 cursor-not-allowed">
-        Reminder Sent Recently
+        Sent Recently
       </button>
     <% end %>
   <% else %>
