@@ -18,7 +18,9 @@ export default class extends Controller {
   }
 
   setupEventListeners() {
-    // Listen for Trix editor changes
+    // Listen for Lexxy editor changes (and keep Trix fallback for compatibility)
+    this.editorTarget.addEventListener("lexxy:change", this.handleEditorChange.bind(this))
+    this.editorTarget.addEventListener("lexxy:blur", this.handleEditorBlur.bind(this))
     this.editorTarget.addEventListener("trix-change", this.handleEditorChange.bind(this))
     this.editorTarget.addEventListener("trix-blur", this.handleEditorBlur.bind(this))
 

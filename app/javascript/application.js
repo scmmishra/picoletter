@@ -3,5 +3,4 @@ import "@hotwired/turbo-rails"
 import "turbo_confirm"
 import "controllers"
 
-import "trix"
-import "@rails/actiontext"
+import "lexxy"

@@ -5,6 +5,12 @@ GIT
     active_hashcash (0.4.0)
       rails (>= 5.2.0)
 
+PATH
+  remote: ../lexxy
+  specs:
+    lexxy (0.7.6.beta)
+      rails (>= 8.0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -591,6 +597,7 @@ DEPENDENCIES
   importmap-rails
   kramdown
   letter_opener
+  lexxy!
   liquid
   logtail-rails (~> 0.2.7)
   lucide-rails (~> 0.7.1)
