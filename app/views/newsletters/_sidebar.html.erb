@@ -16,7 +16,7 @@
           count: @newsletter.posts.draft.count %>
           <%= render "newsletters/partials/sidebar_link",
           url: subscribers_path(@newsletter.slug),
-          is_active: current_page?(subscribers_path(@newsletter.slug)),
+          is_active: controller_name == "subscribers",
           label: "Subscribers",
           count: @newsletter.subscribers.verified.count %>
           <%= render "newsletters/partials/sidebar_link",

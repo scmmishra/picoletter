@@ -119,6 +119,8 @@ Rails.application.routes.draw do
 
       resources :subscribers, only: [ :index, :show ], path: "subscribers" do
         collection do
+          get "unverified", to: "subscribers#unverified", as: :unverified
+          get "unsubscribed", to: "subscribers#unsubscribed", as: :unsubscribed
           get ":id", to: "subscribers#show", as: :show
           patch ":id", to: "subscribers#update", as: :update
           delete ":id", to: "subscribers#destroy", as: :destroy

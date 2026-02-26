@@ -9,21 +9,21 @@
 </div>
 
 <div class="grid gap-2 mt-5 md:grid-cols-3">
-  <%= link_to subscribers_path(@newsletter.slug), class: "px-4 py-2 space-y-2 rounded-md #{params['status'] == 'verified' || params['status'].nil? ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
+  <%= link_to subscribers_path(@newsletter.slug), class: "px-4 py-2 space-y-2 rounded-md #{@status == 'verified' ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
     <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">
       Verified Subscribers
     </div>
     <div class="text-3xl font-medium text-stone-900"><%= @newsletter.subscribers.verified.count %></div>
   <% end %>
 
-  <%= link_to subscribers_path(@newsletter.slug, status: :unverified), class: "px-4 py-2 space-y-2 rounded-md #{params['status'] == 'unverified' ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
+  <%= link_to unverified_subscribers_path(@newsletter.slug), class: "px-4 py-2 space-y-2 rounded-md #{@status == 'unverified' ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
     <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">
       Unverified Subscribers
     </div>
     <div class="text-3xl font-medium text-stone-900"><%= @newsletter.subscribers.unverified.count %></div>
   <% end %>
 
-  <%= link_to subscribers_path(@newsletter.slug, status: :unsubscribed), class: "px-4 py-2 space-y-2 rounded-md #{params['status'] == 'unsubscribed' ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
+  <%= link_to unsubscribed_subscribers_path(@newsletter.slug), class: "px-4 py-2 space-y-2 rounded-md #{@status == 'unsubscribed' ? 'bg-stone-100 shadow-sm' : 'opacity-80'}" do %>
     <div class="font-sans text-xs font-medium tracking-widest uppercase text-stone-500">
       Unsubscribed
     </div>
@@ -52,12 +52,12 @@
       </div>
 
       <div class="col-span-2 text-right">
-        <% if params['status'] == 'unsubscribed' %>
+        <% if @status == 'unsubscribed' %>
           Unsubscribed on
-        <% elsif params['status'] == 'verified' || params['status'].nil? %>
-          Verified on
-        <% elsif params['status'] == 'unverified' %>
+        <% elsif @status == 'unverified' %>
           Signed up on
+        <% else %>
+          Verified on
         <% end %>
       </div>
 
