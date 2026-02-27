@@ -52,14 +52,12 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def schedule
-    scheduled_at = post_params[:scheduled_at]
-    timezone = post_params[:timezone] || @post.newsletter.timezone
-    utc_schedule = ActiveSupport::TimeZone[timezone].parse(scheduled_at).utc
+    utc_schedule = parse_utc_schedule(schedule_params[:scheduled_at_epoch_ms])
 
     @post.schedule(utc_schedule)
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Post was successfully scheduled."
   rescue => e
-    Rails.error.report(e, context: { params: post_params, param_tz: post_params[:timezone], tz: ActiveSupport::TimeZone[post_params[:timezone]], n_tz: @post.newsletter.timezone })
+    Rails.error.report(e, context: { params: params[:post] })
     redirect_to edit_post_url(slug: @newsletter.slug, id: @post.id), notice: "Something went wrong while publishing the post"
   end
 
@@ -118,6 +116,17 @@ class Newsletters::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :content, :scheduled_at, :timezone)
+    params.require(:post).permit(:title, :content)
+  end
+
+  def schedule_params
+    params.require(:post).permit(:scheduled_at_epoch_ms)
+  end
+
+  def parse_utc_schedule(epoch_ms_value)
+    raise ArgumentError, "scheduled_at_epoch_ms is required" if epoch_ms_value.blank?
+
+    epoch_ms = Integer(epoch_ms_value, 10)
+    Time.at(epoch_ms / 1000.0).utc
   end
 end
