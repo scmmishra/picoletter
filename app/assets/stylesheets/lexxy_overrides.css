@@ -57,16 +57,23 @@
 
 .post-rich-content :where(lexxy-editor, .lexxy-content) {
   --lexxy-font-base: var(--post-font-family, inherit);
+  --lexxy-color-link: var(--post-content-accent);
   font-family: var(--post-font-family, inherit);
 }
 
-.post-rich-content :where(a) {
+.post-rich-content .lexxy-content a,
+.post-rich-content .lexxy-editor__content a {
   color: var(--post-content-accent);
 }
 
 /* Keep code blocks visually containerized in post preview/editor for consistency with email output. */
-.post-rich-content :where(.lexxy-content pre, .lexxy-editor__content pre) {
-  background-color: rgb(248 250 252);
+.post-rich-content :where(
+  .lexxy-content pre,
+  .lexxy-content code[data-language],
+  .lexxy-editor__content pre,
+  .lexxy-editor__content code[data-language]
+) {
+  background-color: rgb(250 250 249);
   border: 1px solid rgb(231 229 228);
   border-radius: var(--lexxy-radius);
   padding: 0.75rem;
@@ -105,15 +112,27 @@ lexxy-table-tools .lexxy-table-control summary {
 }
 
 /* Expand Lexxy horizontal divider to full content width and mute the stroke color. */
+.lexxy-content .horizontal-divider,
+.lexxy-editor__content .horizontal-divider {
+  margin: 1rem 0;
+  padding: 0;
+}
+
 .lexxy-content .horizontal-divider hr,
 .lexxy-editor__content .horizontal-divider hr {
   inline-size: 100%;
+  margin: 0;
+  border: 0;
   border-block-end-color: rgb(214 211 209);
 }
 
 /* Keep plain markdown `<hr>` elements on the same muted divider color. */
 .lexxy-content hr,
 .lexxy-editor__content hr {
+  margin: 1rem 0;
+  border: 0;
+  border-block-end-style: solid;
+  border-block-end-width: 1px;
   border-block-end-color: rgb(214 211 209);
 }
 

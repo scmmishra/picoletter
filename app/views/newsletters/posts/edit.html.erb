@@ -22,7 +22,7 @@
     class="
       max-w-2xl mx-auto mt-5 post-rich-content relative
     "
-    style="--post-font-family: <%= @newsletter.font_family %>;"
+    style="--post-font-family: <%= @newsletter.font_family %>; --post-content-accent: <%= @newsletter.primary_color %>; --pl-primary-color: <%= @newsletter.primary_color %>;"
   >
     <%= form.rich_text_area :content, data: { autosave_target: "editor" } %>
     <div
