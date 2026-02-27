@@ -7,22 +7,22 @@
     Schedule it to automatically send it later. You can disable this later.
   </p>
 
-  <%= form_with model: post, url: schedule_post_path(slug: post.newsletter.slug, id: post.id), class: "mt-4", method: :post do |form| %>
-    <div class="hidden space-y-1">
-      <%= form.text_field :timezone,
-                      class: "input w-full",
-                      data: {
-                        controller: "auto-timezone",
-                      } %>
-    </div>
+  <%= form_with model: post, url: schedule_post_path(slug: post.newsletter.slug, id: post.id), class: "mt-4", method: :post,
+                data: { controller: "utc-time", action: "submit->utc-time#syncEpoch" } do |form| %>
+    <%= hidden_field_tag "post[scheduled_at_epoch_ms]", "", data: { utc_time_target: "epochInput" } %>
     <div class="flex w-full gap-2 mt-1">
       <div class="flex-grow">
-        <%= form.label :scheduled_at,
+        <%= form.label :scheduled_at_local,
                    "Send at",
                    class: "block text-sm font-medium text-stone-700 sr-only" %>
         <%= form.datetime_field :scheduled_at,
+                            name: nil,
                             required: true,
-                            class: "input w-full font-sans" %>
+                            class: "input w-full font-sans",
+                            data: {
+                              utc_time_target: "localInput",
+                              action: "input->utc-time#syncEpoch change->utc-time#syncEpoch"
+                            } %>
       </div>
       <div class="flex-shrink-0"><%= form.submit "Schedule for later", class: "btn btn-primary" %></div>
     </div>

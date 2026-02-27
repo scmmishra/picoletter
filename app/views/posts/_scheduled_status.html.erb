@@ -11,12 +11,18 @@
           bg-stone-600 py-1 text-center text-[11px] leading-none font-bold text-white
           uppercase tracking-wide
         "
+        data-controller="utc-time"
+        data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+        data-utc-time-format-value="month"
       >
-        <%= post.scheduled_at_tz.strftime("%b") %>
+        <%= post.scheduled_at.utc.strftime("%b") %>
       </div>
       <div class="flex flex-grow items-center justify-center w-full text-center bg-white">
-        <div class="text-xl font-sans font-bold leading-none text-stone-800 tabular-nums">
-          <%= post.scheduled_at_tz.strftime("%-d") %>
+        <div class="text-xl font-sans font-bold leading-none text-stone-800 tabular-nums"
+             data-controller="utc-time"
+             data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+             data-utc-time-format-value="day">
+          <%= post.scheduled_at.utc.strftime("%-d") %>
         </div>
       </div>
     </div>
@@ -39,13 +45,19 @@
     <div class="flex gap-5">
       <div class="flex items-center gap-2 text-stone-500">
         <%= lucide_icon("calendar", class: "size-4 text-stone-500") %>
-        <span class="font-medium text-stone-800"><%= post.scheduled_at_tz.strftime("%A, %B %e, %Y") %></span>
+        <span class="font-medium text-stone-800"
+              data-controller="utc-time"
+              data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+              data-utc-time-format-value="date"><%= post.scheduled_at.utc.strftime("%A, %B %e, %Y UTC") %></span>
       </div>
 
       <div class="flex items-center gap-2 text-stone-500">
         <%= lucide_icon("clock-2", class: "size-4 text-stone-500") %>
-        <span class="font-medium text-stone-800"><%= post.scheduled_at_tz.strftime("%H:%M %p") %></span>
-        <span class="text-stone-500">(<%= post.scheduled_at_tz.zone %>)</span>
+        <span class="font-medium text-stone-800"
+              data-controller="utc-time"
+              data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+              data-utc-time-format-value="time"
+              data-utc-time-options-value='{"timeZoneName":"short"}'><%= post.scheduled_at.utc.strftime("%H:%M UTC") %></span>
       </div>
     </div>
 
