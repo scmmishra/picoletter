@@ -1,0 +1,158 @@
+/* Base Lexxy color/radius tokens tuned to match Picoletter's stone palette. */
+:root {
+  --lexxy-color-ink: rgb(41 37 36);
+  --lexxy-color-ink-medium: rgb(87 83 78);
+  --lexxy-color-ink-light: rgb(168 162 158);
+  --lexxy-color-ink-lighter: rgb(231 229 228);
+  --lexxy-color-ink-lightest: rgb(250 250 249);
+  --lexxy-color-accent-dark: rgb(87 83 78);
+  --lexxy-color-accent-medium: rgb(168 162 158);
+  --lexxy-color-accent-light: rgb(231 229 228);
+  --lexxy-color-accent-lightest: rgb(245 245 244);
+  --lexxy-color-link: var(--pl-primary-color, rgb(87 83 78));
+  --lexxy-focus-ring-color: rgb(87 83 78);
+  --lexxy-radius: 0.5rem;
+}
+
+/* Shrink editor chrome padding and toolbar button footprint to reduce visual bulk. */
+:where(lexxy-editor) {
+  --lexxy-editor-padding: 0.5rem;
+  --lexxy-toolbar-button-size: 1.75rem;
+}
+
+/* Make toolbar icons/text slightly smaller than Lexxy defaults. */
+:where(lexxy-toolbar) {
+  --lexxy-toolbar-icon-size: 0.95rem;
+  font-size: 0.875rem;
+}
+
+/* Keep code language picker compact and use a dark chevron for this light-themed app. */
+:where(lexxy-code-language-picker) select {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23000'/%3E%3C/svg%3E");
+  block-size: 1.35lh;
+  font-size: 0.75rem;
+  margin: 0.35ch 0.35ch 0 -0.35ch;
+  padding: 0 1.8ch 0 0.8ch;
+}
+
+/* Prevent OS dark-mode preference from forcing a white chevron in a light UI. */
+@media (prefers-color-scheme: dark) {
+  :where(lexxy-code-language-picker) select {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='m12 19.5c-.7 0-1.3-.3-1.7-.8l-9.8-11.1c-.7-.8-.6-1.9.2-2.6.8-.6 1.9-.6 2.5.2l8.6 9.8c0 .1.2.1.4 0l8.6-9.8c.7-.8 1.8-.9 2.6-.2s.9 1.8.2 2.6l-9.8 11.1c-.4.5-1.1.8-1.7.8z' fill='%23000'/%3E%3C/svg%3E");
+  }
+}
+
+/* Tailwind Typography adds backticks via pseudo-elements; disable that for Lexxy-rendered code. */
+.lexxy-content :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::before,
+.lexxy-content :where(code):not(:where([class~="not-prose"], [class~="not-prose"] *))::after {
+  content: "";
+}
+
+/* Style post editor/rendered content without Tailwind Typography (`prose`). */
+.post-rich-content {
+  --post-content-accent: var(--pl-primary-color, rgb(17 17 17));
+  color: var(--lexxy-color-ink);
+  font-family: var(--post-font-family, inherit);
+}
+
+.post-rich-content :where(lexxy-editor, .lexxy-content) {
+  --lexxy-font-base: var(--post-font-family, inherit);
+  --lexxy-color-link: var(--post-content-accent);
+  font-family: var(--post-font-family, inherit);
+}
+
+.post-rich-content .lexxy-content a,
+.post-rich-content .lexxy-editor__content a {
+  color: var(--post-content-accent);
+}
+
+/* Keep code blocks visually containerized in post preview/editor for consistency with email output. */
+.post-rich-content :where(
+  .lexxy-content pre,
+  .lexxy-content code[data-language],
+  .lexxy-editor__content pre,
+  .lexxy-editor__content code[data-language]
+) {
+  background-color: rgb(250 250 249);
+  border: 1px solid rgb(231 229 228);
+  border-radius: var(--lexxy-radius);
+  padding: 0.75rem;
+}
+
+/* Avoid extra whitespace at the top of editor/rendered content. */
+:where(.lexxy-editor__content > :first-child),
+.lexxy-content > :first-child {
+  margin-top: 0;
+  margin-block-start: 0;
+}
+
+/* Keep Lexxy table controls aligned with app UI typography. */
+:where(.lexxy-table-control),
+:where(.lexxy-table-control__more-menu-details) {
+  font-family: Inter Variable, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+}
+
+/* Keep table tool buttons and their containers on the same radius scale. */
+:where(lexxy-table-tools) {
+  --table-tools-radius: var(--lexxy-radius);
+}
+
+/* Set a known container padding so inner/outer radius math aligns visually. */
+lexxy-table-tools .lexxy-table-control {
+  --table-control-padding: 2px;
+  border-radius: var(--table-tools-radius);
+  padding: var(--table-control-padding);
+}
+
+/* Make inner controls follow the outer rounded shape without corner mismatch. */
+lexxy-table-tools .lexxy-table-control button,
+lexxy-table-tools .lexxy-table-control summary {
+  border-radius: calc(var(--table-tools-radius) - var(--table-control-padding));
+}
+
+/* Expand Lexxy horizontal divider to full content width and mute the stroke color. */
+.lexxy-content .horizontal-divider,
+.lexxy-editor__content .horizontal-divider {
+  margin: 1rem 0;
+  padding: 0;
+}
+
+.lexxy-content .horizontal-divider hr,
+.lexxy-editor__content .horizontal-divider hr {
+  inline-size: 100%;
+  margin: 0;
+  border: 0;
+  border-block-end-color: rgb(214 211 209);
+}
+
+/* Keep plain markdown `<hr>` elements on the same muted divider color. */
+.lexxy-content hr,
+.lexxy-editor__content hr {
+  margin: 1rem 0;
+  border: 0;
+  border-block-end-style: solid;
+  border-block-end-width: 1px;
+  border-block-end-color: rgb(214 211 209);
+}
+
+/* Avoid extra paragraph spacing inside table cells. */
+.lexxy-content table :is(th, td) p,
+.lexxy-editor__content table :is(th, td) p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Remove paragraph top/bottom margins inside blockquotes. */
+.lexxy-content blockquote p,
+.lexxy-editor__content blockquote p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Remove side table margins that can cause horizontal overflow/scroll. */
+.lexxy-content table,
+.lexxy-editor__content table {
+  inline-size: 100%;
+  margin: 0;
+}

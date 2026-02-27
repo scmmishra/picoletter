@@ -23,8 +23,8 @@
     </div>
   </section>
 
-  <article class="prose prose-a:text-[var(--pl-primary-color)]">
-    <h1 class="text-3xl"><%= post.title %></h1>
+  <article class="post-rich-content" style="--post-font-family: <%= newsletter.font_family %>; --post-content-accent: <%= newsletter.primary_color %>; --pl-primary-color: <%= newsletter.primary_color %>;">
+    <h1 class="text-3xl mb-5"><%= post.title %></h1>
     <%= post.content %>
   </article>
 

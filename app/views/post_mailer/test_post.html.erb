@@ -2,12 +2,14 @@
 
 <html lang="en">
   <head>
+    <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
+    <% accent_color = email_css_color(@newsletter&.primary_color.presence, fallback: "#111111") %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
     <style>
       body {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
@@ -20,17 +22,136 @@
         display: block;
       }
       p, div {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         margin-bottom: 14px;
       }
-      a {
-        color: <%= @newsletter.primary_color %>;
+      .content {
+        --highlight-1: rgb(136, 118, 38);
+        --highlight-2: rgb(185, 94, 6);
+        --highlight-3: rgb(207, 0, 0);
+        --highlight-4: rgb(216, 28, 170);
+        --highlight-5: rgb(144, 19, 254);
+        --highlight-6: rgb(5, 98, 185);
+        --highlight-7: rgb(17, 138, 15);
+        --highlight-8: rgb(148, 82, 22);
+        --highlight-9: rgb(102, 102, 102);
+        --highlight-bg-1: rgba(229, 223, 6, 0.3);
+        --highlight-bg-2: rgba(255, 185, 87, 0.3);
+        --highlight-bg-3: rgba(255, 118, 118, 0.3);
+        --highlight-bg-4: rgba(248, 137, 216, 0.3);
+        --highlight-bg-5: rgba(190, 165, 255, 0.3);
+        --highlight-bg-6: rgba(124, 192, 252, 0.3);
+        --highlight-bg-7: rgba(140, 255, 129, 0.3);
+        --highlight-bg-8: rgba(221, 170, 123, 0.3);
+        --highlight-bg-9: rgba(200, 200, 200, 0.3);
+        font-family: <%= font_family %>;
+      }
+      .content *:not(pre):not(code):not(pre *):not(code *) {
+        font-family: <%= font_family %> !important;
+      }
+      .content code,
+      .content pre,
+      .content kbd,
+      .content samp {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !important;
+      }
+      /* Render code blocks as clear containers instead of plain inline-looking text. */
+      .content pre,
+      .content pre[data-language] {
+        background-color: #fafaf9;
+        border: 1px solid #e7e5e4;
+        border-radius: 8px;
+        margin: 0 0 14px;
+        overflow-x: auto;
+        padding: 10px 12px;
+        white-space: pre;
+      }
+      /* Keep inline code subtle while still visually distinct from body text. */
+      .content code {
+        background-color: #fafaf9;
+        border-radius: 4px;
+        padding: 0 4px;
+      }
+      /* Rouge's inline token backgrounds look patchy in emails; keep only text colors. */
+      .content pre span[style*="background-color"] {
+        background-color: transparent !important;
+      }
+      .content a {
+        color: <%= accent_color %>;
         text-decoration: underline;
       }
+      /* Keep list spacing predictable in email clients and preserve nesting indentation. */
+      .content ol,
+      .content ul {
+        margin: 0 0 14px 1.5em;
+        padding: 0;
+      }
+      /* Lexxy uses marker-less nested wrapper list items; avoid duplicate bullets/numbers. */
+      .content li.lexxy-nested-listitem {
+        list-style-type: none;
+      }
+      .content li.lexxy-nested-listitem > ol,
+      .content li.lexxy-nested-listitem > ul {
+        margin-bottom: 0;
+      }
+      /* Recreate the expected quote appearance with a leading border. */
+      .content blockquote {
+        border-left: 4px solid #d6d3d1;
+        margin: 14px 0;
+        padding: 8px 12px;
+        font-style: italic;
+      }
+      /* Remove paragraph spacing noise inside quotes and table cells. */
+      .content blockquote p,
+      .content td p,
+      .content th p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .content blockquote p:last-child {
+        margin-bottom: 0;
+      }
+      /* Add explicit table styles because email rendering does not load Lexxy stylesheet. */
+      .content figure.lexxy-content__table-wrapper {
+        margin: 14px 0;
+        overflow-x: auto;
+      }
+      .content table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        margin: 0;
+      }
+      .content th,
+      .content td {
+        border: 1px solid #e7e5e4;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .content th.lexxy-content__table-cell--header {
+        background-color: #fafaf9;
+        font-weight: 700;
+      }
+      /* Use a softer divider tone so horizontal rules are present but not visually loud. */
+      .content .horizontal-divider {
+        margin: 0;
+        padding: 16px 0 8px;
+      }
+      .content .horizontal-divider hr {
+        border: 0;
+        border-bottom: 1px solid #d6d3d1;
+        width: 100%;
+        margin: 0;
+      }
+      .content hr {
+        border: 0;
+        border-bottom: 1px solid #d6d3d1;
+      }
       .btn a {
-        background-color: <%= @newsletter.theme.primary %>;
-        color: <%= @newsletter.theme.text_on_primary %>;
+        background-color: <%= accent_color %>;
+        color: #ffffff;
         padding: 8px 16px;
         text-decoration: none;
         border-radius: 8px;
@@ -38,8 +159,8 @@
         font-weight: bold;
       }
       .btn-primary a:hover {
-        background-color: <%= @newsletter.theme.primary_hover %>;
-        border-color: <%= @newsletter.theme.primary_hover %>;
+        background-color: #27272a;
+        border-color: #27272a;
       }
       figure {
         margin: 1em 0;
@@ -55,7 +176,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="content"><%= @post.content %></div>
+      <div class="content" style="font-family: <%= font_family %>;"><%= highlight_email_code_blocks(@post.content.to_s, accent_color: accent_color) %></div>
       <div class="footer">
         <p><%= sanitize @newsletter.footer_html %></p>
         <p>

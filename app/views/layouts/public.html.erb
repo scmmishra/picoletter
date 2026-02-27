@@ -12,11 +12,15 @@
     <%= csp_meta_tag %>
     <%= stylesheet_link_tag "tailwind", "data-turbo-track": "reload" %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "lexxy", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "lexxy_overrides", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "hashcash", "data-turbo-track": "reload", defer: true %>
     <style>
       :root {
-        <%= @newsletter.primary_styles %>;
+        --pl-primary-color: <%= @newsletter.theme.primary %>;
+        --pl-primary-text-color: <%= @newsletter.theme.text_on_primary %>;
+        --pl-primary-hover-color: <%= @newsletter.theme.primary_hover %>;
       }
     </style>
   </head>

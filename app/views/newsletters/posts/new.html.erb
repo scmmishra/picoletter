@@ -9,9 +9,9 @@
 
   <div
     class="
-      max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl
-      prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
+      max-w-2xl mx-auto mt-5 post-rich-content
     "
+    style="--post-font-family: <%= @newsletter.font_family %>; --post-content-accent: <%= @newsletter.primary_color %>; --pl-primary-color: <%= @newsletter.primary_color %>;"
   >
     <%= form.rich_text_area :content %>
   </div>

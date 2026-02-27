@@ -2,12 +2,13 @@
 
 <html lang="en">
   <head>
+    <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
     <style>
       body {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
@@ -20,7 +21,7 @@
         display: block;
       }
       p {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         margin-bottom: 14px;
       }
