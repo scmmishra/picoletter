@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
+    <% accent_color = "#111111" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
@@ -55,13 +56,82 @@
       .content samp {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !important;
       }
-      a {
-        color: <%= @newsletter.primary_color %>;
+      /* Keep content links on the chosen accent instead of newsletter theme colors. */
+      .content a {
+        color: <%= accent_color %> !important;
         text-decoration: underline;
       }
+      /* Keep list spacing predictable in email clients and preserve nesting indentation. */
+      .content ol,
+      .content ul {
+        margin: 0 0 14px 1.5em;
+        padding: 0;
+      }
+      /* Lexxy uses marker-less nested wrapper list items; avoid duplicate bullets/numbers. */
+      .content li.lexxy-nested-listitem {
+        list-style-type: none;
+      }
+      .content li.lexxy-nested-listitem > ol,
+      .content li.lexxy-nested-listitem > ul {
+        margin-bottom: 0;
+      }
+      /* Recreate the expected quote appearance with a leading border. */
+      .content blockquote {
+        border-left: 4px solid #d6d3d1;
+        margin: 14px 0;
+        padding: 8px 12px;
+        font-style: italic;
+      }
+      /* Remove paragraph spacing noise inside quotes and table cells. */
+      .content blockquote p,
+      .content td p,
+      .content th p {
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+      .content blockquote p:last-child {
+        margin-bottom: 0;
+      }
+      /* Add explicit table styles because email rendering does not load Lexxy stylesheet. */
+      .content figure.lexxy-content__table-wrapper {
+        margin: 14px 0;
+        overflow-x: auto;
+      }
+      .content table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        margin: 0;
+      }
+      .content th,
+      .content td {
+        border: 1px solid #e7e5e4;
+        padding: 8px;
+        text-align: left;
+        vertical-align: top;
+      }
+      .content th.lexxy-content__table-cell--header {
+        background-color: #fafaf9;
+        font-weight: 700;
+      }
+      /* Use a softer divider tone so horizontal rules are present but not visually loud. */
+      .content .horizontal-divider {
+        margin: 0;
+        padding: 16px 0 8px;
+      }
+      .content .horizontal-divider hr {
+        border: 0;
+        border-bottom: 1px solid #d6d3d1;
+        width: 100%;
+        margin: 0;
+      }
+      .content hr {
+        border: 0;
+        border-bottom: 1px solid #d6d3d1;
+      }
       .btn a {
-        background-color: <%= @newsletter.theme.primary %>;
-        color: <%= @newsletter.theme.text_on_primary %>;
+        background-color: <%= accent_color %>;
+        color: #ffffff;
         padding: 8px 16px;
         text-decoration: none;
         border-radius: 8px;
@@ -69,8 +139,8 @@
         font-weight: bold;
       }
       .btn-primary a:hover {
-        background-color: <%= @newsletter.theme.primary_hover %>;
-        border-color: <%= @newsletter.theme.primary_hover %>;
+        background-color: #27272a;
+        border-color: #27272a;
       }
       figure {
         margin: 1em 0;

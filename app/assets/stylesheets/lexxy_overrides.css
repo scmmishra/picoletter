@@ -96,10 +96,17 @@ lexxy-table-tools .lexxy-table-control summary {
   border-radius: calc(var(--table-tools-radius) - var(--table-control-padding));
 }
 
-/* Expand Lexxy horizontal divider to full content width. */
+/* Expand Lexxy horizontal divider to full content width and mute the stroke color. */
 .lexxy-content .horizontal-divider hr,
 .lexxy-editor__content .horizontal-divider hr {
   inline-size: 100%;
+  border-block-end-color: rgb(214 211 209);
+}
+
+/* Keep plain markdown `<hr>` elements on the same muted divider color. */
+.lexxy-content hr,
+.lexxy-editor__content hr {
+  border-block-end-color: rgb(214 211 209);
 }
 
 /* Avoid extra paragraph spacing inside table cells. */
