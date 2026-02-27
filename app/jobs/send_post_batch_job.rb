@@ -31,10 +31,10 @@ class SendPostBatchJob < BaseSendJob
   def send_batch(batch_subscribers)
     batch_subscribers.each do |subscriber|
       response = send_email(subscriber)
+      message_id = extract_message_id(response)
 
       post.emails.create!(
-        id: response.message_id,
-        post_id: post.id, # Kept for backwards compatibility
+        id: message_id,
         subscriber_id: subscriber.id
       )
     end
@@ -75,5 +75,11 @@ class SendPostBatchJob < BaseSendJob
 
   def unsubscribe_url(token, slug)
     Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token)
+  end
+
+  def extract_message_id(response)
+    return response.message_id if response.respond_to?(:message_id)
+
+    response[:message_id] || response["message_id"]
   end
 end
