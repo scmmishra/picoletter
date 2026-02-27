@@ -48,17 +48,27 @@
   content: "";
 }
 
+/* Style post editor/rendered content without Tailwind Typography (`prose`). */
+.post-rich-content {
+  --post-content-accent: rgb(17 17 17);
+  color: var(--lexxy-color-ink);
+  font-family: var(--post-font-family, inherit);
+}
+
+.post-rich-content :where(lexxy-editor, .lexxy-content) {
+  --lexxy-font-base: var(--post-font-family, inherit);
+  font-family: var(--post-font-family, inherit);
+}
+
+.post-rich-content :where(a) {
+  color: var(--post-content-accent);
+}
+
 /* Avoid extra whitespace at the top of editor/rendered content. */
 :where(.lexxy-editor__content > :first-child),
 .lexxy-content > :first-child {
   margin-top: 0;
   margin-block-start: 0;
-}
-
-/* Override Tailwind Typography's `.prose` first paragraph top margin in Lexxy regions. */
-.prose .lexxy-editor__content > :first-child,
-.prose .lexxy-content > :first-child {
-  margin-top: 0;
 }
 
 /* Keep Lexxy table controls aligned with app UI typography. */
@@ -94,27 +104,21 @@ lexxy-table-tools .lexxy-table-control summary {
 
 /* Avoid extra paragraph spacing inside table cells. */
 .lexxy-content table :is(th, td) p,
-.lexxy-editor__content table :is(th, td) p,
-.prose .lexxy-content table :is(th, td) p,
-.prose .lexxy-editor__content table :is(th, td) p {
+.lexxy-editor__content table :is(th, td) p {
   margin-top: 0;
   margin-bottom: 0;
 }
 
 /* Remove paragraph top/bottom margins inside blockquotes. */
 .lexxy-content blockquote p,
-.lexxy-editor__content blockquote p,
-.prose .lexxy-content blockquote p,
-.prose .lexxy-editor__content blockquote p {
+.lexxy-editor__content blockquote p {
   margin-top: 0;
   margin-bottom: 0;
 }
 
 /* Remove side table margins that can cause horizontal overflow/scroll. */
 .lexxy-content table,
-.lexxy-editor__content table,
-.prose .lexxy-content table,
-.prose .lexxy-editor__content table {
+.lexxy-editor__content table {
   inline-size: 100%;
   margin: 0;
 }

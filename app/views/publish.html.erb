@@ -2,12 +2,13 @@
 
 <html lang="en">
   <head>
+    <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
     <style>
       body {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
@@ -20,9 +21,39 @@
         display: block;
       }
       p, div {
-        font-family: <%= @newsletter.font_family %>;
+        font-family: <%= font_family %>;
         font-size: 14px;
         margin-bottom: 14px;
+      }
+      .content {
+        --highlight-1: rgb(136, 118, 38);
+        --highlight-2: rgb(185, 94, 6);
+        --highlight-3: rgb(207, 0, 0);
+        --highlight-4: rgb(216, 28, 170);
+        --highlight-5: rgb(144, 19, 254);
+        --highlight-6: rgb(5, 98, 185);
+        --highlight-7: rgb(17, 138, 15);
+        --highlight-8: rgb(148, 82, 22);
+        --highlight-9: rgb(102, 102, 102);
+        --highlight-bg-1: rgba(229, 223, 6, 0.3);
+        --highlight-bg-2: rgba(255, 185, 87, 0.3);
+        --highlight-bg-3: rgba(255, 118, 118, 0.3);
+        --highlight-bg-4: rgba(248, 137, 216, 0.3);
+        --highlight-bg-5: rgba(190, 165, 255, 0.3);
+        --highlight-bg-6: rgba(124, 192, 252, 0.3);
+        --highlight-bg-7: rgba(140, 255, 129, 0.3);
+        --highlight-bg-8: rgba(221, 170, 123, 0.3);
+        --highlight-bg-9: rgba(200, 200, 200, 0.3);
+        font-family: <%= font_family %>;
+      }
+      .content * {
+        font-family: <%= font_family %> !important;
+      }
+      .content code,
+      .content pre,
+      .content kbd,
+      .content samp {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !important;
       }
       a {
         color: <%= @newsletter.primary_color %>;
@@ -55,7 +86,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="content"><%= @post.content %></div>
+      <div class="content" style="font-family: <%= font_family %>;"><%= @post.content %></div>
       <div class="footer">
         <p><%= sanitize @newsletter.footer_html %></p>
         <p>

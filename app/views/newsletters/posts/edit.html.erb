@@ -20,9 +20,9 @@
 
   <div
     class="
-      max-w-2xl mx-auto mt-5 prose prose-h1:text-2xl relative
-      prose-headings:text-newsletter-primary prose-a:text-newsletter-primary
+      max-w-2xl mx-auto mt-5 post-rich-content relative
     "
+    style="--post-font-family: <%= @newsletter.font_family %>;"
   >
     <%= form.rich_text_area :content, data: { autosave_target: "editor" } %>
     <div

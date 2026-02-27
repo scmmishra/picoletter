@@ -2,12 +2,17 @@
 
 <html lang="en">
   <head>
+    <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
+    <% primary_color = @newsletter&.primary_color || "#09090B" %>
+    <% button_bg = @newsletter&.theme&.primary || "#09090B" %>
+    <% button_text = @newsletter&.theme&.text_on_primary || "#FFFFFF" %>
+    <% button_hover = @newsletter&.theme&.primary_hover || "#27272A" %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
     <style>
       body {
-        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
+        font-family: <%= font_family %>;
         font-size: 14px;
         line-height: 1.4;
         margin: 0;
@@ -20,17 +25,17 @@
         display: block;
       }
       p {
-        font-family: 'SF Pro Display',-apple-system,BlinkMacSystemFont,Helvetica Neue,sans-serif;
+        font-family: <%= font_family %>;
         font-size: 14px;
         margin-bottom: 14px;
       }
       a {
-        color: '#09090B';
+        color: <%= primary_color %>;
         text-decoration: underline;
       }
       .btn a {
-        background-color: '#09090B';
-        color: '@FFFFFF';
+        background-color: <%= button_bg %>;
+        color: <%= button_text %>;
         padding: 8px 16px;
         text-decoration: none;
         border-radius: 8px;
@@ -38,8 +43,8 @@
         font-weight: bold;
       }
       .btn-primary a:hover {
-        background-color: '#27272A';
-        border-color: '#27272A';
+        background-color: <%= button_hover %>;
+        border-color: <%= button_hover %>;
       }
     </style>
   </head>
