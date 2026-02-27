@@ -40,8 +40,6 @@ module ApplicationHelper
       )
     end
 
-    return fragment.to_html.html_safe unless rouge_available?
-
     formatter = Rouge::Formatters::HTMLInline.new(Rouge::Themes::Github.new)
 
     fragment.css("pre[data-language]").each do |pre_node|
@@ -60,15 +58,6 @@ module ApplicationHelper
   end
 
   private
-
-  def rouge_available?
-    return true if defined?(Rouge)
-
-    require "rouge"
-    true
-  rescue LoadError
-    false
-  end
 
   def extract_code_text(pre_node)
     code_fragment = Nokogiri::HTML::DocumentFragment.parse(pre_node.inner_html.to_s)
