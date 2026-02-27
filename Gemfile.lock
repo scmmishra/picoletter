@@ -439,6 +439,7 @@ GEM
     resolv (0.6.2)
     rexml (3.4.2)
     rorvswild (1.10.1)
+    rouge (4.7.0)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
     rspec-expectations (3.13.5)
@@ -616,6 +617,7 @@ DEPENDENCIES
   reactionview
   resolv
   rorvswild (>= 1.10.1)
+  rouge
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
   selenium-webdriver

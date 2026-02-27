@@ -100,6 +100,7 @@ gem "pagy"
 
 # HTML parsing
 gem "nokogiri"
+gem "rouge"
 
 # Markdown
 gem "kramdown"

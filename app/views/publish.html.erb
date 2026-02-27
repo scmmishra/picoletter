@@ -47,7 +47,7 @@
         --highlight-bg-9: rgba(200, 200, 200, 0.3);
         font-family: <%= font_family %>;
       }
-      .content * {
+      .content *:not(pre):not(code):not(pre *):not(code *) {
         font-family: <%= font_family %> !important;
       }
       .content code,
@@ -55,6 +55,27 @@
       .content kbd,
       .content samp {
         font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !important;
+      }
+      /* Render code blocks as clear containers instead of plain inline-looking text. */
+      .content pre,
+      .content pre[data-language] {
+        background-color: #f8fafc;
+        border: 1px solid #e7e5e4;
+        border-radius: 8px;
+        margin: 0 0 14px;
+        overflow-x: auto;
+        padding: 10px 12px;
+        white-space: pre;
+      }
+      /* Keep inline code subtle while still visually distinct from body text. */
+      .content code {
+        background-color: #f8fafc;
+        border-radius: 4px;
+        padding: 0 4px;
+      }
+      /* Rouge's inline token backgrounds look patchy in emails; keep only text colors. */
+      .content pre span[style*="background-color"] {
+        background-color: transparent !important;
       }
       /* Keep content links on the chosen accent instead of newsletter theme colors. */
       .content a {
@@ -156,7 +177,7 @@
   </head>
   <body>
     <div class="container">
-      <div class="content" style="font-family: <%= font_family %>;"><%= @post.content %></div>
+      <div class="content" style="font-family: <%= font_family %>;"><%= highlight_email_code_blocks(@post.content.to_s) %></div>
       <div class="footer">
         <p><%= sanitize @newsletter.footer_html %></p>
         <p>
