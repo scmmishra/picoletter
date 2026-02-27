@@ -4,10 +4,7 @@ export default class extends Controller {
   static targets = ["localInput", "epochInput"];
   static values = {
     epochMs: Number,
-    format: { type: String, default: "datetime" },
-    options: { type: String, default: "" },
-    locale: String,
-    zoneClass: { type: String, default: "text-stone-500" }
+    format: { type: String, default: "datetime" }
   };
 
   connect() {
@@ -41,24 +38,14 @@ export default class extends Controller {
     const date = new Date(this.epochMsValue);
     if (Number.isNaN(date.getTime())) return;
 
-    const customOptions = this.parsedCustomOptions();
-    const formatOptions = this.defaultFormatOptions();
-    if (this.hasGranularDateTimeOptions(customOptions)) {
-      delete formatOptions.dateStyle;
-      delete formatOptions.timeStyle;
-    }
+    const options = this.defaultFormatOptions();
 
-    const options = {
-      ...formatOptions,
-      ...customOptions
-    };
-
-    if (this.shouldRenderMutedZone(options)) {
-      this.renderWithMutedZone(date, options);
+    if (options.timeZoneName) {
+      this.renderWithParts(date, options);
       return;
     }
 
-    this.element.textContent = this.formatWithFallback(date, options);
+    this.element.textContent = this.formatDate(date, options);
   }
 
   defaultFormatOptions() {
@@ -70,52 +57,18 @@ export default class extends Controller {
       case "date":
         return { dateStyle: "long" };
       case "time":
-        return { hour: "numeric", minute: "2-digit", hour12: true };
+        return { hour: "numeric", minute: "2-digit", hour12: true, timeZoneName: "shortOffset" };
       case "datetime":
       default:
         return { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true };
     }
   }
 
-  parsedCustomOptions() {
-    if (!this.optionsValue) return {};
-
-    try {
-      return JSON.parse(this.optionsValue);
-    } catch (error) {
-      return {};
-    }
-  }
-
-  localeOrUndefined() {
-    return this.hasLocaleValue ? this.localeValue : undefined;
-  }
-
-  hasGranularDateTimeOptions(options) {
-    return [
-      "weekday",
-      "era",
-      "year",
-      "month",
-      "day",
-      "dayPeriod",
-      "hour",
-      "minute",
-      "second",
-      "fractionalSecondDigits",
-      "timeZoneName"
-    ].some((key) => Object.prototype.hasOwnProperty.call(options, key));
-  }
-
-  shouldRenderMutedZone(options) {
-    return Object.prototype.hasOwnProperty.call(options, "timeZoneName");
-  }
-
-  renderWithMutedZone(date, options) {
-    const formattedParts = this.formatPartsWithFallback(date, options);
+  renderWithParts(date, options) {
+    const formattedParts = this.formatParts(date, options);
 
     if (!formattedParts) {
-      this.element.textContent = this.formatWithFallback(date, options);
+      this.element.textContent = this.formatDate(date, options);
       return;
     }
 
@@ -124,7 +77,7 @@ export default class extends Controller {
     formattedParts.forEach((part) => {
       if (part.type === "timeZoneName") {
         const zoneNode = document.createElement("span");
-        zoneNode.className = this.zoneClassValue;
+        zoneNode.className = "text-stone-500";
         zoneNode.textContent = part.value;
         this.element.appendChild(zoneNode);
       } else {
@@ -133,29 +86,29 @@ export default class extends Controller {
     });
   }
 
-  formatWithFallback(date, options) {
+  formatDate(date, options) {
     try {
-      return new Intl.DateTimeFormat(this.localeOrUndefined(), options).format(date);
+      return new Intl.DateTimeFormat(undefined, options).format(date);
     } catch (error) {
-      if (!Object.prototype.hasOwnProperty.call(options, "timeZoneName")) {
+      if (!options.timeZoneName) {
         return date.toISOString();
       }
 
       const fallbackOptions = { ...options };
       delete fallbackOptions.timeZoneName;
-      return new Intl.DateTimeFormat(this.localeOrUndefined(), fallbackOptions).format(date);
+      return new Intl.DateTimeFormat(undefined, fallbackOptions).format(date);
     }
   }
 
-  formatPartsWithFallback(date, options) {
+  formatParts(date, options) {
     try {
-      return new Intl.DateTimeFormat(this.localeOrUndefined(), options).formatToParts(date);
+      return new Intl.DateTimeFormat(undefined, options).formatToParts(date);
     } catch (error) {
-      if (!Object.prototype.hasOwnProperty.call(options, "timeZoneName")) return null;
+      if (!options.timeZoneName) return null;
 
       const fallbackOptions = { ...options };
       delete fallbackOptions.timeZoneName;
-      return new Intl.DateTimeFormat(this.localeOrUndefined(), fallbackOptions).formatToParts(date);
+      return new Intl.DateTimeFormat(undefined, fallbackOptions).formatToParts(date);
     }
   }
 }

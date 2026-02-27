@@ -53,11 +53,10 @@
 
       <div class="flex items-center gap-2 text-stone-500">
         <%= lucide_icon("clock-2", class: "size-4 text-stone-500") %>
-        <span class="font-medium text-stone-800"
+        <span class="uppercase font-medium text-stone-800"
               data-controller="utc-time"
               data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
-              data-utc-time-format-value="time"
-              data-utc-time-options-value='{"timeZoneName":"shortOffset"}'><%= post.scheduled_at.utc.strftime("%I:%M %p UTC") %></span>
+              data-utc-time-format-value="time"><%= post.scheduled_at.utc.strftime("%I:%M %p UTC") %></span>
       </div>
     </div>
 
