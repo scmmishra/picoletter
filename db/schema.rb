@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_16_083838) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_27_183000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -186,7 +186,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_16_083838) do
     t.string "slug", null: false
     t.string "status"
     t.string "template"
-    t.string "timezone", default: "UTC", null: false
     t.string "title"
     t.datetime "updated_at", null: false
     t.integer "user_id", null: false
