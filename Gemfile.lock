@@ -5,6 +5,13 @@ GIT
     active_hashcash (0.4.0)
       rails (>= 5.2.0)
 
+GIT
+  remote: https://github.com/basecamp/lexxy.git
+  revision: def7301c7352e4dd17e3292da85e5d3dd1919cd1
+  specs:
+    lexxy (0.7.6.beta)
+      rails (>= 8.0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -250,8 +257,6 @@ GEM
       logger (~> 1.6)
     letter_opener (1.10.0)
       launchy (>= 2.2, < 4)
-    lexxy (0.7.6.beta)
-      rails (>= 8.0.2)
     lint_roller (1.1.0)
     liquid (5.8.7)
       bigdecimal
@@ -594,7 +599,7 @@ DEPENDENCIES
   importmap-rails
   kramdown
   letter_opener
-  lexxy
+  lexxy!
   liquid
   logtail-rails (~> 0.2.7)
   lucide-rails (~> 0.7.1)
