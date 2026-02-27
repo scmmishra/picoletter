@@ -12,15 +12,31 @@ module ApplicationHelper
     form_with(**options, &block)
   end
 
+  # Premailer can emit escaped hash colors (`\000023`) when inlining CSS.
+  # Normalize hex colors to rgb() for cleaner email inline style output.
+  def email_css_color(color, fallback: "#111111")
+    value = color.to_s.strip
+    value = fallback if value.blank?
+
+    return value unless value.match?(/\A#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})\z/)
+
+    hex = value.delete_prefix("#")
+    hex = hex.chars.map { |char| "#{char}#{char}" }.join if hex.length == 3
+    red, green, blue = hex.scan(/../).map { |pair| pair.to_i(16) }
+    "rgb(#{red}, #{green}, #{blue})"
+  end
+
   def highlight_email_code_blocks(content, accent_color: nil)
     return content if content.blank?
     fragment = Nokogiri::HTML::DocumentFragment.parse(content.to_s)
-    accent = accent_color.presence || "#111111"
+    link_color = accent_color.presence || "#111111"
 
+    # Keep link color inline to avoid Premailer escaping stylesheet colors as
+    # CSS code points (for example `#` -> `\000023`) in generated HTML.
     fragment.css("a").each do |anchor_node|
       anchor_node["style"] = append_inline_style(
         anchor_node["style"],
-        "color: #{accent} !important; text-decoration: underline;"
+        "color: #{link_color}; text-decoration: underline;"
       )
     end
 

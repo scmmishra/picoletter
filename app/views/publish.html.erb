@@ -3,7 +3,7 @@
 <html lang="en">
   <head>
     <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
-    <% accent_color = @newsletter&.primary_color.presence || "#111111" %>
+    <% accent_color = email_css_color(@newsletter&.primary_color.presence, fallback: "#111111") %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
@@ -78,6 +78,7 @@
         background-color: transparent !important;
       }
       .content a {
+        color: <%= accent_color %>;
         text-decoration: underline;
       }
       /* Keep list spacing predictable in email clients and preserve nesting indentation. */

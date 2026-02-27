@@ -3,10 +3,10 @@
 <html lang="en">
   <head>
     <% font_family = @newsletter&.font_preference.presence || "sans-serif" %>
-    <% primary_color = @newsletter&.primary_color || "#09090B" %>
-    <% button_bg = @newsletter&.theme&.primary || "#09090B" %>
-    <% button_text = @newsletter&.theme&.text_on_primary || "#FFFFFF" %>
-    <% button_hover = @newsletter&.theme&.primary_hover || "#27272A" %>
+    <% primary_color = email_css_color(@newsletter&.primary_color, fallback: "#09090B") %>
+    <% button_bg = email_css_color(@newsletter&.theme&.primary, fallback: "#09090B") %>
+    <% button_text = email_css_color(@newsletter&.theme&.text_on_primary, fallback: "#FFFFFF") %>
+    <% button_hover = email_css_color(@newsletter&.theme&.primary_hover, fallback: "#27272A") %>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <%= yield :head %>
