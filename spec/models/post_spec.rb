@@ -147,4 +147,29 @@ RSpec.describe Post, type: :model do
       expect(post.reload.status).to eq("draft")
     end
   end
+
+  describe "#publish_and_send" do
+    before do
+      allow(PostValidation).to receive(:validate_links!).and_return(true)
+    end
+
+    it "moves draft posts to processing and enqueues sending" do
+      expect(SendPostJob).to receive(:perform_later).with(post.id)
+
+      expect {
+        post.publish_and_send
+      }.to change { post.reload.status }.from("draft").to("processing")
+
+      expect(post.reload.published_at).to be_nil
+    end
+
+    it "does not enqueue when post is not draft" do
+      post.update!(status: "published", published_at: Time.current)
+      expect(SendPostJob).not_to receive(:perform_later)
+
+      post.publish_and_send
+
+      expect(post.reload.status).to eq("published")
+    end
+  end
 end

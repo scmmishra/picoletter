@@ -63,14 +63,14 @@ class Post < ApplicationRecord
   end
 
   def publish_and_send(ignore_checks = false)
-    return unless status == "draft"
+    return unless draft?
 
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::UserNotActiveError unless can_send?
 
     PostValidation.validate_links!(self) unless ignore_checks
+    update!(status: "processing")
     SendPostJob.perform_later(self.id)
-    publish
   end
 
   def can_send?

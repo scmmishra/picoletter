@@ -6,6 +6,8 @@ class SendPostJob < BaseSendJob
 
   def perform(post_id)
     setup_post(post_id)
+    return unless post.processing?
+
     prepare_post_for_sending
     dispatch_to_subscribers
   end
@@ -18,18 +20,20 @@ class SendPostJob < BaseSendJob
   end
 
   def prepare_post_for_sending
-    mark_as_processing
+    if total_batches.zero?
+      post.publish
+      return
+    end
+
+    Rails.cache.write(cache_key(post.id, "batches_remaining"), total_batches)
   end
 
   def dispatch_to_subscribers
+    return if total_batches.zero?
+
     newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch|
       SendPostBatchJob.perform_later(post.id, batch)
     end
-  end
-
-  def mark_as_processing
-    post.update(status: :processing)
-    Rails.cache.write(cache_key(post.id, "batches_remaining"), total_batches)
   end
 
   def total_batches
