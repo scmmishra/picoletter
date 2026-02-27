@@ -15,11 +15,6 @@
                      placeholder: "What is the newsletter about, write what you want your users to know",
                      hint: 'Supports <a class="underline hover:text-stone-500" target="blank" href="https://www.markdownguide.org/basic-syntax/">markdown</a>.' %>
 
-      <%= form.select :timezone,
-                  TZInfo::Timezone.all_identifiers,
-                  {},
-                  hint: "Timezone in which scheduled posts will be sent." %>
-
       <%= form.url_field :website,
                      hint: "Website that will be linked on the archive page, in case you post these elsewhere." %>
 

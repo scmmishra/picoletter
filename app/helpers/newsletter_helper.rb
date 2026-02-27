@@ -1,11 +1,11 @@
 module NewsletterHelper
-  def newsletter_datetime(datetime, newsletter)
+  def newsletter_datetime(datetime, _newsletter = nil)
     return { date: "", time: "" } unless datetime
 
-    in_zone = datetime.in_time_zone(newsletter.timezone)
+    in_utc = datetime.utc
     {
-      date: in_zone.strftime("%B %d, %Y"),
-      time: in_zone.strftime("%I:%M %p")
+      date: in_utc.strftime("%B %d, %Y"),
+      time: in_utc.strftime("%I:%M %p UTC")
     }
   end
 end

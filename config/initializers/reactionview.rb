@@ -5,7 +5,7 @@ ReActionView.configure do |config|
   config.intercept_erb = Rails.env.development?
 
   # Enable debug mode in development (adds debug attributes to HTML)
-  config.debug_mode = Rails.env.development?
+  config.debug_mode = false
 
   # Add custom transform visitors to process templates before compilation
   # config.transform_visitors = [

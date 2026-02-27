@@ -9,9 +9,15 @@
       <b class="font-medium text-stone-700"><%= post.published_on_date %></b>
     <% elsif post.scheduled_at.present? %>
       Scheduled for
-      <span class="font-medium text-stone-800"><%= post.scheduled_at.strftime("%B %e, %Y") %></span>
+      <span class="font-medium text-stone-800"
+            data-controller="utc-time"
+            data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+            data-utc-time-format-value="date"><%= post.scheduled_at.utc.strftime("%B %e, %Y UTC") %></span>
       at
-      <span class="font-medium text-stone-800"><%= post.scheduled_at.strftime("%H:%M %p") %></span>
+      <span class="uppercase font-medium text-stone-800"
+            data-controller="utc-time"
+            data-utc-time-epoch-ms-value="<%= post.scheduled_at.to_i * 1000 %>"
+            data-utc-time-format-value="time"><%= post.scheduled_at.utc.strftime("%I:%M %p UTC") %></span>
     <% else %>
       <span class="text-stone-500">—</span>
     <% end %>

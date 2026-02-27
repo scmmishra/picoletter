@@ -21,34 +21,58 @@
 
   <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
     <% if @subscriber.unsubscribed? %>
-      <% datetime = newsletter_datetime(@subscriber.unsubscribed_at, @newsletter) %>
       <span class="font-normal text-stone-500">Unsubscribed on</span>
-      <%= datetime[:date] %>
+      <span
+        data-controller="utc-time"
+        data-utc-time-epoch-ms-value="<%= (@subscriber.unsubscribed_at.to_f * 1000).to_i %>"
+        data-utc-time-format-value="date"
+      ><%= @subscriber.unsubscribed_at.utc.strftime("%B %d, %Y UTC") %></span>
       <span class="font-normal text-stone-500">at</span>
-      <%= datetime[:time] %>
+      <span
+        class="uppercase"
+        data-controller="utc-time"
+        data-utc-time-epoch-ms-value="<%= (@subscriber.unsubscribed_at.to_f * 1000).to_i %>"
+        data-utc-time-format-value="time"
+      ><%= @subscriber.unsubscribed_at.utc.strftime("%I:%M %p UTC") %></span>
     <% end %>
   </div>
 
   <% if @subscriber.verified? %>
     <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
-      <% datetime = newsletter_datetime(@subscriber.verified_at, @newsletter) %>
       <span class="font-normal text-stone-500">Verified on</span>
 
-      <%= datetime[:date] %>
+      <span
+        data-controller="utc-time"
+        data-utc-time-epoch-ms-value="<%= (@subscriber.verified_at.to_f * 1000).to_i %>"
+        data-utc-time-format-value="date"
+      ><%= @subscriber.verified_at.utc.strftime("%B %d, %Y UTC") %></span>
       <span class="font-normal text-stone-500">at</span>
 
-      <%= datetime[:time] %>
+      <span
+        class="uppercase"
+        data-controller="utc-time"
+        data-utc-time-epoch-ms-value="<%= (@subscriber.verified_at.to_f * 1000).to_i %>"
+        data-utc-time-format-value="time"
+      ><%= @subscriber.verified_at.utc.strftime("%I:%M %p UTC") %></span>
     </div>
   <% end %>
 
   <div class="leading-6 text-stone-800 font-medium text-sm font-sans">
-    <% datetime = newsletter_datetime(@subscriber.created_at, @newsletter) %>
     <span class="font-normal text-stone-500">Created on</span>
 
-    <%= datetime[:date] %>
+    <span
+      data-controller="utc-time"
+      data-utc-time-epoch-ms-value="<%= (@subscriber.created_at.to_f * 1000).to_i %>"
+      data-utc-time-format-value="date"
+    ><%= @subscriber.created_at.utc.strftime("%B %d, %Y UTC") %></span>
     <span class="font-normal text-stone-500">at</span>
 
-    <%= datetime[:time] %>
+    <span
+      class="uppercase"
+      data-controller="utc-time"
+      data-utc-time-epoch-ms-value="<%= (@subscriber.created_at.to_f * 1000).to_i %>"
+      data-utc-time-format-value="time"
+    ><%= @subscriber.created_at.utc.strftime("%I:%M %p UTC") %></span>
   </div>
 
   <% if @subscriber.analytics_data.present? %>

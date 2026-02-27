@@ -6,7 +6,6 @@ FactoryBot.define do
     sending_address { Faker::Internet.email }
     status { nil }
     template { nil }
-    timezone { "UTC" }
     title { Faker::Company.name }
     website { nil }
 
