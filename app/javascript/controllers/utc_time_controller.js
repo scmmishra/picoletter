@@ -6,7 +6,8 @@ export default class extends Controller {
     epochMs: Number,
     format: { type: String, default: "datetime" },
     options: { type: String, default: "" },
-    locale: String
+    locale: String,
+    zoneClass: { type: String, default: "text-stone-500" }
   };
 
   connect() {
@@ -51,6 +52,11 @@ export default class extends Controller {
       ...formatOptions,
       ...customOptions
     };
+
+    if (this.shouldRenderMutedZone(options)) {
+      this.renderWithMutedZone(date, options);
+      return;
+    }
 
     this.element.textContent = this.formatWithFallback(date, options);
   }
@@ -101,6 +107,32 @@ export default class extends Controller {
     ].some((key) => Object.prototype.hasOwnProperty.call(options, key));
   }
 
+  shouldRenderMutedZone(options) {
+    return Object.prototype.hasOwnProperty.call(options, "timeZoneName");
+  }
+
+  renderWithMutedZone(date, options) {
+    const formattedParts = this.formatPartsWithFallback(date, options);
+
+    if (!formattedParts) {
+      this.element.textContent = this.formatWithFallback(date, options);
+      return;
+    }
+
+    this.element.replaceChildren();
+
+    formattedParts.forEach((part) => {
+      if (part.type === "timeZoneName") {
+        const zoneNode = document.createElement("span");
+        zoneNode.className = this.zoneClassValue;
+        zoneNode.textContent = part.value;
+        this.element.appendChild(zoneNode);
+      } else {
+        this.element.appendChild(document.createTextNode(part.value));
+      }
+    });
+  }
+
   formatWithFallback(date, options) {
     try {
       return new Intl.DateTimeFormat(this.localeOrUndefined(), options).format(date);
@@ -112,6 +144,18 @@ export default class extends Controller {
       const fallbackOptions = { ...options };
       delete fallbackOptions.timeZoneName;
       return new Intl.DateTimeFormat(this.localeOrUndefined(), fallbackOptions).format(date);
+    }
+  }
+
+  formatPartsWithFallback(date, options) {
+    try {
+      return new Intl.DateTimeFormat(this.localeOrUndefined(), options).formatToParts(date);
+    } catch (error) {
+      if (!Object.prototype.hasOwnProperty.call(options, "timeZoneName")) return null;
+
+      const fallbackOptions = { ...options };
+      delete fallbackOptions.timeZoneName;
+      return new Intl.DateTimeFormat(this.localeOrUndefined(), fallbackOptions).formatToParts(date);
     }
   }
 }
