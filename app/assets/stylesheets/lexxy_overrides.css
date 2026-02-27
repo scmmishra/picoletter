@@ -50,7 +50,7 @@
 
 /* Style post editor/rendered content without Tailwind Typography (`prose`). */
 .post-rich-content {
-  --post-content-accent: rgb(17 17 17);
+  --post-content-accent: var(--pl-primary-color, rgb(17 17 17));
   color: var(--lexxy-color-ink);
   font-family: var(--post-font-family, inherit);
 }
