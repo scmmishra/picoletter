@@ -31,12 +31,16 @@ class SendPostJob < BaseSendJob
   def dispatch_to_subscribers
     return if total_batches.zero?
 
-    newsletter.subscribers.verified.find_in_batches(batch_size: BATCH_SIZE) do |batch|
-      SendPostBatchJob.perform_later(post.id, batch)
+    verified_subscribers.in_batches(of: BATCH_SIZE) do |batch_scope|
+      SendPostBatchJob.perform_later(post.id, batch_scope.pluck(:id))
     end
   end
 
   def total_batches
-    (newsletter.subscribers.verified.count.to_f / BATCH_SIZE).ceil
+    (verified_subscribers.count.to_f / BATCH_SIZE).ceil
+  end
+
+  def verified_subscribers
+    @verified_subscribers ||= newsletter.subscribers.verified
   end
 end

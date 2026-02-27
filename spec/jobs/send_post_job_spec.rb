@@ -33,12 +33,14 @@ RSpec.describe SendPostJob, type: :job do
 
     it "queues batch jobs for verified subscribers" do
       post = create(:post, newsletter: newsletter, status: "processing")
-      create_list(:subscriber, 2, newsletter: newsletter, status: :verified)
+      subscriber_ids = create_list(:subscriber, 2, newsletter: newsletter, status: :verified).map(&:id)
 
       described_class.new.perform(post.id)
 
       expect(post.reload.status).to eq("processing")
       expect(SendPostBatchJob).to have_been_enqueued
+      batch_job_payload = ActiveJob::Base.queue_adapter.enqueued_jobs.find { |job| job[:job] == SendPostBatchJob }
+      expect(batch_job_payload[:args]).to eq([ post.id, subscriber_ids ])
     end
   end
 end
