@@ -15,9 +15,10 @@
 #
 # Indexes
 #
-#  index_posts_on_newsletter_id           (newsletter_id)
-#  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
-#  index_posts_on_slug                    (slug)
+#  index_posts_on_newsletter_id            (newsletter_id)
+#  index_posts_on_newsletter_id_and_slug   (newsletter_id,slug) UNIQUE
+#  index_posts_on_slug                     (slug)
+#  index_posts_on_status_and_scheduled_at  (status,scheduled_at)
 #
 # Foreign Keys
 #
