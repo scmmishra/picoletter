@@ -17,7 +17,7 @@
   </section>
 
   <section class="space-y-2">
-    <% posts.each do |post| %>
+    <% posts.reorder(:published_at => :desc).each do |post| %>
       <%= link_to newsletter_post_path(post_slug: post.slug, slug: newsletter.slug), class: "block px-5 py-4 bg-white rounded-md shadow-without-inset hover:-translate-y-0.5 duration-150 space-y-2" do %>
         <h2 class="text-lg"><%= post.title %></h2>
 
