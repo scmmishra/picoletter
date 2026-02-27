@@ -47,12 +47,12 @@ export default class extends Controller {
       delete formatOptions.timeStyle;
     }
 
-    const formatter = new Intl.DateTimeFormat(this.localeOrUndefined(), {
+    const options = {
       ...formatOptions,
       ...customOptions
-    });
+    };
 
-    this.element.textContent = formatter.format(date);
+    this.element.textContent = this.formatWithFallback(date, options);
   }
 
   defaultFormatOptions() {
@@ -64,10 +64,10 @@ export default class extends Controller {
       case "date":
         return { dateStyle: "long" };
       case "time":
-        return { hour: "numeric", minute: "2-digit" };
+        return { hour: "numeric", minute: "2-digit", hour12: true };
       case "datetime":
       default:
-        return { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" };
+        return { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit", hour12: true };
     }
   }
 
@@ -99,5 +99,19 @@ export default class extends Controller {
       "fractionalSecondDigits",
       "timeZoneName"
     ].some((key) => Object.prototype.hasOwnProperty.call(options, key));
+  }
+
+  formatWithFallback(date, options) {
+    try {
+      return new Intl.DateTimeFormat(this.localeOrUndefined(), options).format(date);
+    } catch (error) {
+      if (!Object.prototype.hasOwnProperty.call(options, "timeZoneName")) {
+        return date.toISOString();
+      }
+
+      const fallbackOptions = { ...options };
+      delete fallbackOptions.timeZoneName;
+      return new Intl.DateTimeFormat(this.localeOrUndefined(), fallbackOptions).format(date);
+    }
   }
 }
