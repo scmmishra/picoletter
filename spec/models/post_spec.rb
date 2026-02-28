@@ -15,9 +15,10 @@
 #
 # Indexes
 #
-#  index_posts_on_newsletter_id           (newsletter_id)
-#  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
-#  index_posts_on_slug                    (slug)
+#  index_posts_on_newsletter_id            (newsletter_id)
+#  index_posts_on_newsletter_id_and_slug   (newsletter_id,slug) UNIQUE
+#  index_posts_on_slug                     (slug)
+#  index_posts_on_status_and_scheduled_at  (status,scheduled_at)
 #
 # Foreign Keys
 #
@@ -143,6 +144,41 @@ RSpec.describe Post, type: :model do
       claimed_post = Post.claim_for_processing(post.id)
 
       expect(claimed_post).to be_nil
+      expect(post.reload.status).to eq("draft")
+    end
+  end
+
+  describe "#publish_and_send" do
+    before do
+      allow(PostValidation).to receive(:validate_links!).and_return(true)
+    end
+
+    it "moves draft posts to processing and enqueues sending" do
+      expect(SendPostJob).to receive(:perform_later).with(post.id)
+
+      expect {
+        post.publish_and_send
+      }.to change { post.reload.status }.from("draft").to("processing")
+
+      expect(post.reload.published_at).to be_nil
+    end
+
+    it "does not enqueue when post is not draft" do
+      post.update!(status: "published", published_at: Time.current)
+      expect(SendPostJob).not_to receive(:perform_later)
+
+      post.publish_and_send
+
+      expect(post.reload.status).to eq("published")
+    end
+
+    it "reverts to draft when enqueueing send job fails" do
+      allow(SendPostJob).to receive(:perform_later).and_raise(StandardError, "queue down")
+
+      expect {
+        post.publish_and_send
+      }.to raise_error(StandardError, "queue down")
+
       expect(post.reload.status).to eq("draft")
     end
   end

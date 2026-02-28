@@ -3,6 +3,14 @@ class WebhookController < ApplicationController
 
   def sns
     payload = JSON.parse(request.body.read)
+    verifier = SNSMessageVerifier.new(payload)
+
+    unless verifier.authentic?
+      Rails.logger.warn("[WebhookController] Rejected SNS webhook with invalid signature")
+      head :unauthorized
+      return
+    end
+
     ProcessSNSWebhookJob.perform_later(payload)
 
     head :no_content
