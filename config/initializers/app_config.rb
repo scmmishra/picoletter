@@ -6,14 +6,14 @@ class AppConfig
   class << self
     def get!(env_key)
       value = ENV[env_key]
-      raise KeyError, "Environment variable '#{env_key}' is not set" if value.nil?
+      raise KeyError, "Environment variable '#{env_key}' is not set" if value.nil? || value.empty?
 
       parse_value(value)
     end
 
     def get(env_key, default_value = nil)
       value = ENV[env_key]
-      return default_value if value.nil?
+      return default_value if value.nil? || value.empty?
 
       parse_value(value)
     end

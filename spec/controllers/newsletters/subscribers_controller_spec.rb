@@ -5,6 +5,8 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
   let(:newsletter) { create(:newsletter, user: user) }
   let(:other_user) { create(:user) }
   let(:other_newsletter) { create(:newsletter, user: other_user) }
+  let(:editor) { create(:user) }
+  let!(:editor_membership) { create(:membership, newsletter: newsletter, user: editor, role: :editor) }
 
   before do
     sign_in(user)
@@ -28,6 +30,57 @@ RSpec.describe Newsletters::SubscribersController, type: :controller do
       create(:newsletter, user: user)
       get :index, params: { slug: other_newsletter.slug }
       expect(response).to be_redirect
+    end
+  end
+
+  describe "role-based permissions" do
+    let!(:subscriber) { create(:subscriber, newsletter: newsletter, status: :unverified) }
+
+    before do
+      sign_in(editor)
+    end
+
+    it "allows editors to view subscribers" do
+      get :show, params: { slug: newsletter.slug, id: subscriber.id }
+
+      expect(response).to have_http_status(:success)
+    end
+
+    it "prevents editors from updating subscribers" do
+      patch :update, params: {
+        slug: newsletter.slug,
+        id: subscriber.id,
+        subscriber: { full_name: "Unauthorized Edit" }
+      }
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
+      expect(subscriber.reload.full_name).not_to eq("Unauthorized Edit")
+    end
+
+    it "prevents editors from deleting subscribers" do
+      expect {
+        delete :destroy, params: { slug: newsletter.slug, id: subscriber.id }
+      }.not_to change(Subscriber, :count)
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
+    end
+
+    it "prevents editors from unsubscribing subscribers" do
+      patch :unsubscribe, params: { slug: newsletter.slug, id: subscriber.id }
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
+      expect(subscriber.reload.status).to eq("unverified")
+    end
+
+    it "prevents editors from sending reminders" do
+      patch :send_reminder, params: { slug: newsletter.slug, id: subscriber.id }
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
+      expect(subscriber.reload.reminders.count).to eq(0)
     end
   end
 

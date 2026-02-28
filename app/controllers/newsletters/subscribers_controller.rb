@@ -5,7 +5,8 @@ class Newsletters::SubscribersController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_subscriber, only: [ :show, :update, :destroy, :unsubscribe, :send_reminder ]
-
+  before_action -> { authorize_permission!(:subscribers, :read) }, only: [ :index, :unverified, :unsubscribed, :show ]
+  before_action -> { authorize_permission!(:subscribers, :write) }, only: [ :update, :destroy, :unsubscribe, :send_reminder ]
 
   def index
     list_subscribers("verified")

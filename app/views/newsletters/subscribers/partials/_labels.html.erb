@@ -1,6 +1,7 @@
 <div id="subscriber-labels-list" class="flex gap-2 flex-wrap">
   <% subscriber ||= @subscriber %>
   <% newsletter ||= @newsletter %>
+  <% can_manage_subscribers = newsletter.can_write?(:subscribers) %>
 
   <div id="labels-tag-list" class="flex flex-wrap gap-2">
     <% subscriber.labels.each do |label_name| %>
@@ -16,39 +17,43 @@
         >
           <div class="size-3.5 rounded" style="background-color: <%= label.color %>"></div>
           <span><%= label.name %></span>
-          <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name),
-                method: :delete,
-                class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
-                form: { data: { turbo: true } } do %>
-            <%= lucide_icon("x", class: "size-3") %>
+          <% if can_manage_subscribers %>
+            <%= button_to remove_label_subscribers_path(newsletter.slug, subscriber.id, label.name),
+                  method: :delete,
+                  class: "ml-1 text-stone-400 hover:text-stone-700 bg-transparent border-0",
+                  form: { data: { turbo: true } } do %>
+              <%= lucide_icon("x", class: "size-3") %>
+            <% end %>
           <% end %>
         </span>
       <% end %>
     <% end %>
   </div>
 
-  <div class="inline-flex relative" data-controller="dropdown">
-    <button
-      class="
-        inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
-        text-stone-700 gap-2 font-sans border border-dashed border-stone-300
-      "
-      data-action="dropdown#toggle click@window->dropdown#hide"
-    >
-      <%= lucide_icon("plus", class: "size-3 text-stone-500") %> Add Label
-    </button>
-    <div class="absolute top-8 w-64 mt-2 hidden z-10" data-dropdown-target="menu">
-      <div
+  <% if can_manage_subscribers %>
+    <div class="inline-flex relative" data-controller="dropdown">
+      <button
         class="
-          py-1 px-1 bg-white shadow-lg rounded-lg outline outline-1 outline-stone-200
-          w-full min-h-12 gap-1
+          inline-flex items-center justify-center px-2 py-1 text-sm rounded-md
+          text-stone-700 gap-2 font-sans border border-dashed border-stone-300
         "
+        data-action="dropdown#toggle click@window->dropdown#hide"
       >
-        <% newsletter.labels.each do |label| %>
-          <% already_added = subscriber.labels.include?(label.name) %>
-          <%= render "newsletters/subscribers/partials/label_dropdown_item", label: label, subscriber: subscriber, newsletter: newsletter, already_added: already_added %>
-        <% end %>
+        <%= lucide_icon("plus", class: "size-3 text-stone-500") %> Add Label
+      </button>
+      <div class="absolute top-8 w-64 mt-2 hidden z-10" data-dropdown-target="menu">
+        <div
+          class="
+            py-1 px-1 bg-white shadow-lg rounded-lg outline outline-1 outline-stone-200
+            w-full min-h-12 gap-1
+          "
+        >
+          <% newsletter.labels.each do |label| %>
+            <% already_added = subscriber.labels.include?(label.name) %>
+            <%= render "newsletters/subscribers/partials/label_dropdown_item", label: label, subscriber: subscriber, newsletter: newsletter, already_added: already_added %>
+          <% end %>
+        </div>
       </div>
     </div>
-  </div>
+  <% end %>
 </div>

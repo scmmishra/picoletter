@@ -7,7 +7,7 @@ class Api::V1::BaseController < Api::BaseController
     token = extract_bearer_token
     @api_token = ApiToken.find_by(token: token)
 
-    unless @api_token
+    unless @api_token && !@api_token.expired?
       render json: { error: "Unauthorized" }, status: :unauthorized
       return
     end

@@ -5,6 +5,7 @@ class Newsletters::Subscribers::LabelsController < ApplicationController
   before_action :ensure_authenticated
   before_action :set_newsletter
   before_action :set_subscriber
+  before_action -> { authorize_permission!(:subscribers, :write) }
 
   def add
     @label = @newsletter.labels.find_by(name: params[:label_name])
