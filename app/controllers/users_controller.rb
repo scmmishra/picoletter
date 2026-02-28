@@ -36,8 +36,22 @@ class UsersController < ApplicationController
   def confirm_verification
     token = params[:token]
     user = User.find_by_token_for!(:verification, token)
+    current_session = find_session_by_cookie
+    if current_session.present? && current_session.user_id != user.id
+      cookies.delete(:session_token)
+      Current.user = nil
+      redirect_to auth_login_path, alert: "Something went wrong. Clear cookies and try again."
+      return
+    end
+
     user.verify!
-    start_new_session_for user
+
+    if current_session.present?
+      Current.user = current_session.user
+    else
+      start_new_session_for user
+    end
+
     redirect_to_newsletter_home notice: "Email verification successful."
   rescue => error
     if Current.user.present?
