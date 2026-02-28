@@ -9,13 +9,17 @@ class Newsletters::Settings::ApiController < ApplicationController
   def show; end
 
   def generate_token
-    if @newsletter.api_tokens.exists?
-      redirect_to settings_api_path(slug: @newsletter.slug), alert: "A token already exists. Rotate it instead."
-      return
+    token = nil
+
+    @newsletter.with_lock do
+      token = @newsletter.api_tokens.first_or_create!
     end
 
-    @newsletter.api_tokens.create!
-    redirect_to settings_api_path(slug: @newsletter.slug), notice: "API token generated."
+    if token.previously_new_record?
+      redirect_to settings_api_path(slug: @newsletter.slug), notice: "API token generated."
+    else
+      redirect_to settings_api_path(slug: @newsletter.slug), alert: "A token already exists. Rotate it instead."
+    end
   end
 
   def rotate_token
