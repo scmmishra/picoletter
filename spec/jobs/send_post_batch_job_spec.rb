@@ -44,4 +44,45 @@ RSpec.describe SendPostBatchJob, type: :job do
       expect(Email.find("legacy-message-id-1").subscriber).to eq(subscriber)
     end
   end
+
+  describe "HTML rendering" do
+    it "inlines critical publish styles for email clients" do
+      post.update!(
+        content: <<~HTML
+          <figure class="lexxy-content__table-wrapper">
+            <table>
+              <tbody>
+                <tr>
+                  <th class="lexxy-content__table-cell--header"><p>Feature</p></th>
+                  <td><p>Value</p></td>
+                </tr>
+              </tbody>
+            </table>
+          </figure>
+          <pre data-language="plain">hello</pre>
+        HTML
+      )
+
+      html = described_class.new.send(:render_html_content, post, newsletter)
+      document = Nokogiri::HTML.parse(html)
+
+      container = document.at_css("div.container")
+      expect(container).to be_present
+      expect(container["style"]).to include("max-width: 600px")
+
+      table = document.at_css("div.content table")
+      expect(table).to be_present
+      expect(table["style"]).to include("border-collapse: collapse")
+
+      header_cell = document.at_css("div.content th.lexxy-content__table-cell--header")
+      expect(header_cell).to be_present
+      expect(header_cell["style"]).to include("font-weight: 700")
+      expect(header_cell["style"]).to include("border: 1px solid #e7e5e4")
+
+      code_block = document.at_css("div.content pre[data-language]")
+      expect(code_block).to be_present
+      expect(code_block["style"]).to include("border: 1px solid #e7e5e4")
+      expect(code_block["style"]).to include("background-color: #fafaf9")
+    end
+  end
 end
