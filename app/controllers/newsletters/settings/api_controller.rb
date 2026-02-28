@@ -9,11 +9,7 @@ class Newsletters::Settings::ApiController < ApplicationController
   def show; end
 
   def generate_token
-    token = nil
-
-    @newsletter.with_lock do
-      token = @newsletter.api_tokens.first_or_create!
-    end
+    token = @newsletter.with_lock { @newsletter.api_tokens.first_or_create! }
 
     if token.previously_new_record?
       redirect_to settings_api_path(slug: @newsletter.slug), notice: "API token generated."

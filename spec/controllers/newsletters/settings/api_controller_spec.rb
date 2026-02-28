@@ -28,4 +28,19 @@ RSpec.describe Newsletters::Settings::ApiController, type: :controller do
       expect(flash[:alert]).to eq("A token already exists. Rotate it instead.")
     end
   end
+
+  describe "PATCH #rotate_token" do
+    let!(:token) { create(:api_token, newsletter: newsletter) }
+
+    it "regenerates the selected token" do
+      previous_value = token.token
+
+      patch :rotate_token, params: { slug: newsletter.slug, token_id: token.id }
+
+      expect(response).to redirect_to(settings_api_path(slug: newsletter.slug))
+      expect(flash[:notice]).to eq("API token rotated.")
+      expect(token.reload.token).not_to eq(previous_value)
+      expect(token.token).to start_with("pcltr_")
+    end
+  end
 end
