@@ -8,13 +8,27 @@ RSpec.describe ProcessSNSWebhookJob, type: :job do
       let(:payload) do
         {
           Type: 'SubscriptionConfirmation',
-          SubscribeURL: 'https://sns.example.com/confirm'
+          SubscribeURL: 'https://sns.us-east-1.amazonaws.com/?Action=ConfirmSubscription&Token=token&TopicArn=arn:aws:sns:us-east-1:123456789012:test'
         }
       end
 
       it 'calls process_subscription_confirmation' do
         expect(HTTParty).to receive(:get).with(payload[:SubscribeURL])
         described_class.perform_now(payload)
+      end
+
+      context 'with an invalid SubscribeURL' do
+        let(:payload) do
+          {
+            Type: 'SubscriptionConfirmation',
+            SubscribeURL: 'http://169.254.169.254/latest/meta-data/iam/security-credentials/'
+          }
+        end
+
+        it 'does not perform the confirmation request' do
+          expect(HTTParty).not_to receive(:get)
+          described_class.perform_now(payload)
+        end
       end
     end
 

@@ -31,7 +31,12 @@ class ProcessSNSWebhookJob < ApplicationJob
 
   def process_subscription_confirmation
     data = @payload[:SubscribeURL]
-    response = HTTParty.get(data)
+    unless SNSMessageVerifier.valid_subscription_confirmation_url?(data)
+      Rails.logger.warn("[ProcessSNSWebhookJob] Ignored invalid SNS SubscribeURL")
+      return
+    end
+
+    HTTParty.get(data)
   end
 
   def process_bounce
