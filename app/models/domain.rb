@@ -7,7 +7,7 @@
 #  dmarc_added   :boolean          default(FALSE)
 #  error_message :string
 #  name          :string
-#  public_key    :string
+#  public_key    :text
 #  region        :string           default("us-east-1")
 #  spf_status    :string           default("pending")
 #  status        :string           default("pending")
@@ -70,6 +70,15 @@ class Domain < ApplicationRecord
   def verify
     sync_attributes
     verified?
+  end
+
+  def dkim_dns_value
+    return if public_key.blank?
+
+    value = "p=#{public_key}"
+    return value if value.length <= 255
+
+    value.scan(/.{1,255}/).map { |chunk| %("#{chunk}") }.join(" ")
   end
 
   private

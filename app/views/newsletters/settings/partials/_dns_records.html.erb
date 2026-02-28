@@ -40,7 +40,7 @@
     record: {
       "type" => "TXT",
       "name" => "picoletter._domainkey.#{newsletter.sending_domain.name}",
-      "value" => "p=#{newsletter.sending_domain.public_key}",
+      "value" => newsletter.sending_domain.dkim_dns_value,
       "ttl" => "Auto",
       "priority" => "",
       "status" => newsletter.sending_domain.dkim_status,
