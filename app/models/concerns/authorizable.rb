@@ -26,6 +26,10 @@ module Authorizable
       read: [ :owner, :administrator, :editor ],
       write: [ :owner, :administrator ]
     },
+    subscribers: {
+      read: [ :owner, :administrator, :editor ],
+      write: [ :owner, :administrator ]
+    },
     team: {
       read: [ :owner, :administrator, :editor ],
       write: [ :owner, :administrator ]
