@@ -71,6 +71,10 @@ class Post < ApplicationRecord
     PostValidation.validate_links!(self) unless ignore_checks
     update!(status: "processing")
     SendPostJob.perform_later(self.id)
+  rescue StandardError
+    # If enqueue fails after we flip to processing, revert so publish can be retried.
+    update_column(:status, "draft") if processing?
+    raise
   end
 
   def can_send?

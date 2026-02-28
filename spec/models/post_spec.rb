@@ -171,5 +171,15 @@ RSpec.describe Post, type: :model do
 
       expect(post.reload.status).to eq("published")
     end
+
+    it "reverts to draft when enqueueing send job fails" do
+      allow(SendPostJob).to receive(:perform_later).and_raise(StandardError, "queue down")
+
+      expect {
+        post.publish_and_send
+      }.to raise_error(StandardError, "queue down")
+
+      expect(post.reload.status).to eq("draft")
+    end
   end
 end
