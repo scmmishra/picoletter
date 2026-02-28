@@ -20,23 +20,24 @@ RSpec.describe SendSchedulePostJob, type: :job do
       expect(SendPostJob).to have_been_enqueued.with(post.id)
     end
 
-    it "ignores posts that are not scheduled for the current time window" do
-      # Post scheduled outside the time window
-      past_post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 5.minutes.ago)
+    it "processes due posts and ignores future posts" do
+      due_post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 5.minutes.ago)
       future_post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 5.minutes.from_now)
-
-      expect { SendSchedulePostJob.new.perform }.not_to change { [ past_post.reload.status, future_post.reload.status ] }
-    end
-
-    it "processes posts within the 2-minute time window" do
-      # Posts within ±1 minute should be processed
-      post1 = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 30.seconds.ago)
-      post2 = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 30.seconds.from_now)
 
       SendSchedulePostJob.new.perform
 
-      expect(post1.reload.status).to eq("processing")
-      expect(post2.reload.status).to eq("processing")
+      expect(due_post.reload.status).to eq("processing")
+      expect(future_post.reload.status).to eq("draft")
+    end
+
+    it "catches up overdue drafts even after long delays" do
+      overdue_post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 2.days.ago)
+      future_post = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 1.hour.from_now)
+
+      SendSchedulePostJob.new.perform
+
+      expect(overdue_post.reload.status).to eq("processing")
+      expect(future_post.reload.status).to eq("draft")
     end
 
     describe "concurrent execution" do
@@ -176,16 +177,17 @@ RSpec.describe SendSchedulePostJob, type: :job do
       end
     end
 
-    describe "time window accuracy" do
-      it "uses exactly ±1 minute time window" do
-        # Posts right at the boundary
-        post_in_range = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 59.seconds.ago)
-        post_out_of_range = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 61.seconds.ago)
+    describe "due-time selection" do
+      it "processes posts scheduled at or before now" do
+        due_now = create(:post, newsletter: newsletter, status: "draft", scheduled_at: Time.current)
+        due_past = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 61.seconds.ago)
+        future = create(:post, newsletter: newsletter, status: "draft", scheduled_at: 61.seconds.from_now)
 
         SendSchedulePostJob.new.perform
 
-        expect(post_in_range.reload.status).to eq("processing")
-        expect(post_out_of_range.reload.status).to eq("draft")
+        expect(due_now.reload.status).to eq("processing")
+        expect(due_past.reload.status).to eq("processing")
+        expect(future.reload.status).to eq("draft")
       end
     end
   end
