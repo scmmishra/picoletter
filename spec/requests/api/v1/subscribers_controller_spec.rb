@@ -69,6 +69,18 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
       end
     end
 
+    context 'with expired token' do
+      let(:api_token) { create(:api_token, newsletter: newsletter, expires_at: 1.day.ago) }
+
+      it 'returns 401' do
+        post endpoint, params: params.to_json, headers: headers
+
+        expect(response).to conform_response_schema(401)
+        body = JSON.parse(response.body)
+        expect(body['error']).to eq('Unauthorized')
+      end
+    end
+
     context 'without authorization header' do
       let(:headers) { { 'Content-Type' => 'application/json' } }
 
@@ -126,6 +138,18 @@ RSpec.describe Api::V1::SubscribersController, type: :request do
         get counts_endpoint, headers: headers
 
         expect(response).to conform_response_schema(401)
+      end
+    end
+
+    context 'with expired token' do
+      let(:api_token) { create(:api_token, newsletter: newsletter, expires_at: 1.day.ago) }
+
+      it 'returns 401' do
+        get counts_endpoint, headers: headers
+
+        expect(response).to conform_response_schema(401)
+        body = JSON.parse(response.body)
+        expect(body['error']).to eq('Unauthorized')
       end
     end
   end
