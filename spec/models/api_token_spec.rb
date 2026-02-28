@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_api_tokens_on_newsletter_id  (newsletter_id)
+#  index_api_tokens_on_newsletter_id  (newsletter_id) UNIQUE
 #  index_api_tokens_on_token          (token) UNIQUE
 #
 # Foreign Keys
@@ -42,6 +42,18 @@ RSpec.describe ApiToken, type: :model do
     it 'does not overwrite an explicitly set token' do
       token = create(:api_token, token: 'pcltr_custom_token')
       expect(token.token).to eq('pcltr_custom_token')
+    end
+  end
+
+  describe 'single-token invariant' do
+    it 'allows only one token per newsletter' do
+      newsletter = create(:newsletter)
+      create(:api_token, newsletter: newsletter)
+
+      duplicate_token = build(:api_token, newsletter: newsletter)
+
+      expect(duplicate_token).not_to be_valid
+      expect(duplicate_token.errors[:newsletter_id]).to include('has already been taken')
     end
   end
 
