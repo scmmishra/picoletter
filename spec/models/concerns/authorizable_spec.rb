@@ -24,6 +24,7 @@ RSpec.describe Authorizable, type: :concern do
         expect(newsletter.can_access?(:billing)).to be true
         expect(newsletter.can_access?(:profile)).to be true
         expect(newsletter.can_access?(:embedding)).to be true
+        expect(newsletter.can_access?(:subscribers)).to be true
       end
     end
 
@@ -37,6 +38,7 @@ RSpec.describe Authorizable, type: :concern do
         expect(newsletter.can_access?(:billing)).to be false
         expect(newsletter.can_access?(:profile)).to be true
         expect(newsletter.can_access?(:embedding)).to be true
+        expect(newsletter.can_access?(:subscribers)).to be true
       end
     end
 
@@ -50,6 +52,7 @@ RSpec.describe Authorizable, type: :concern do
         expect(newsletter.can_access?(:billing)).to be false
         expect(newsletter.can_access?(:profile)).to be true
         expect(newsletter.can_access?(:embedding)).to be true
+        expect(newsletter.can_access?(:subscribers)).to be true
       end
     end
 
@@ -63,6 +66,7 @@ RSpec.describe Authorizable, type: :concern do
         expect(newsletter.can_access?(:billing)).to be false
         expect(newsletter.can_access?(:profile)).to be false
         expect(newsletter.can_access?(:embedding)).to be false
+        expect(newsletter.can_access?(:subscribers)).to be false
       end
     end
 
@@ -111,6 +115,24 @@ RSpec.describe Authorizable, type: :concern do
 
         allow(Current).to receive(:user).and_return(non_member)
         expect(newsletter.can_write?(:team)).to be false
+      end
+    end
+
+    context 'subscribers section' do
+      it 'allows owner and administrator to manage subscribers' do
+        allow(Current).to receive(:user).and_return(owner)
+        expect(newsletter.can_write?(:subscribers)).to be true
+
+        allow(Current).to receive(:user).and_return(admin_user)
+        expect(newsletter.can_write?(:subscribers)).to be true
+      end
+
+      it 'denies editors and non members' do
+        allow(Current).to receive(:user).and_return(editor_user)
+        expect(newsletter.can_write?(:subscribers)).to be false
+
+        allow(Current).to receive(:user).and_return(non_member)
+        expect(newsletter.can_write?(:subscribers)).to be false
       end
     end
   end

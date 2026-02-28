@@ -2,9 +2,11 @@ require 'rails_helper'
 
 RSpec.describe Newsletters::Subscribers::LabelsController, type: :controller do
   let(:user) { create(:user) }
+  let(:editor) { create(:user) }
   let(:newsletter) { create(:newsletter, user: user) }
   let(:subscriber) { create(:subscriber, newsletter: newsletter, labels: []) }
   let(:label) { create(:label, newsletter: newsletter, name: "test-label") }
+  let!(:editor_membership) { create(:membership, newsletter: newsletter, user: editor, role: :editor) }
 
   before do
     sign_in(user)
@@ -93,6 +95,32 @@ RSpec.describe Newsletters::Subscribers::LabelsController, type: :controller do
 
       delete :remove, params: { slug: newsletter.slug, id: subscriber.id, label_name: label.name }, format: :turbo_stream
       expect(response).to redirect_to("/auth/login")
+    end
+  end
+
+  describe "authorization" do
+    before do
+      sign_in(editor)
+    end
+
+    it "prevents editors from adding labels" do
+      expect {
+        post :add, params: { slug: newsletter.slug, id: subscriber.id, label_name: label.name }, format: :turbo_stream
+      }.not_to change { subscriber.reload.labels.count }
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
+    end
+
+    it "prevents editors from removing labels" do
+      subscriber.update!(labels: [ label.name ])
+
+      expect {
+        delete :remove, params: { slug: newsletter.slug, id: subscriber.id, label_name: label.name }, format: :turbo_stream
+      }.not_to change { subscriber.reload.labels.count }
+
+      expect(response).to redirect_to(settings_profile_path(slug: newsletter.slug))
+      expect(flash[:alert]).to eq("You don't have permission to access that section.")
     end
   end
 end
