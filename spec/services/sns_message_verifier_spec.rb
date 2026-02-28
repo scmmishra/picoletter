@@ -38,7 +38,7 @@ RSpec.describe SNSMessageVerifier do
         "arn:aws:sns:us-east-1:123456789012:test",
         "Type",
         "Notification"
-      ].join("\n")
+      ].join("\n") + "\n"
     end
     let(:signature) { Base64.strict_encode64(private_key.sign(OpenSSL::Digest::SHA256.new, string_to_sign)) }
     let(:payload) { base_payload.merge('Signature' => signature) }

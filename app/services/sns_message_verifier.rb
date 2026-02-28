@@ -106,7 +106,7 @@ class SNSMessageVerifier
       signed_fragments << "#{key}\n#{value}"
     end
 
-    fragments.join("\n")
+    "#{fragments.join("\n")}\n"
   end
 
   def self.parse_https_uri(url)
