@@ -154,6 +154,32 @@ RSpec.describe UsersController, type: :controller do
         get :confirm_verification, params: { token: "valid_token" }
         expect(response).to redirect_to(new_newsletter_path)
       end
+
+      it "creates a new session when no user is logged in" do
+        expect {
+          get :confirm_verification, params: { token: "valid_token" }
+        }.to change(Session, :count).by(1)
+
+        new_session = Session.find_by(token: cookies.signed[:session_token])
+        expect(new_session.user_id).to eq(user.id)
+      end
+
+      it "rejects cross-session verification, clears cookie, and shows an error" do
+        other_user = create(:user, :verified)
+        other_session = other_user.sessions.create!
+        cookies.signed[:session_token] = { value: other_session.token, httponly: true, same_site: :lax }
+        unverified_user = create(:user, verified_at: nil)
+        allow(User).to receive(:find_by_token_for!).and_return(unverified_user)
+
+        expect {
+          get :confirm_verification, params: { token: "valid_token" }
+        }.not_to change(Session, :count)
+
+        expect(unverified_user.reload.verified_at).to be_nil
+        expect(cookies.signed[:session_token]).to be_nil
+        expect(response).to redirect_to(auth_login_path)
+        expect(flash[:alert]).to eq("Something went wrong. Clear cookies and try again.")
+      end
     end
 
     context "with invalid token" do
