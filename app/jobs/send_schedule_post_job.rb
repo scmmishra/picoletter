@@ -1,5 +1,3 @@
-# This job is triggered every 1 minute and it looks ahead 2 minutes to find any posts that are scheduled to be published in the next 2 minutes.
-# This difference in time is to ensure that the job has enough time to process the posts before they are published.
 class SendSchedulePostJob < ApplicationJob
   queue_as :default
 
@@ -24,8 +22,7 @@ class SendSchedulePostJob < ApplicationJob
   end
 
   def posts_to_send
-    # 1 minute before and after current time to handle job timing variations
-    # Atomic claiming prevents duplicates across multiple job runs
-    Post.draft.where(scheduled_at: 1.minute.ago..1.minute.from_now)
+    # Always pick all due drafts so delayed job runs can catch up.
+    Post.draft.where(scheduled_at: ..Time.current)
   end
 end
