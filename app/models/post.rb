@@ -15,9 +15,10 @@
 #
 # Indexes
 #
-#  index_posts_on_newsletter_id           (newsletter_id)
-#  index_posts_on_newsletter_id_and_slug  (newsletter_id,slug) UNIQUE
-#  index_posts_on_slug                    (slug)
+#  index_posts_on_newsletter_id            (newsletter_id)
+#  index_posts_on_newsletter_id_and_slug   (newsletter_id,slug) UNIQUE
+#  index_posts_on_slug                     (slug)
+#  index_posts_on_status_and_scheduled_at  (status,scheduled_at)
 #
 # Foreign Keys
 #
@@ -62,14 +63,18 @@ class Post < ApplicationRecord
   end
 
   def publish_and_send(ignore_checks = false)
-    return unless status == "draft"
+    return unless draft?
 
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::UserNotActiveError unless can_send?
 
     PostValidation.validate_links!(self) unless ignore_checks
+    update!(status: "processing")
     SendPostJob.perform_later(self.id)
-    publish
+  rescue StandardError
+    # If enqueue fails after we flip to processing, revert so publish can be retried.
+    update_column(:status, "draft") if processing?
+    raise
   end
 
   def can_send?

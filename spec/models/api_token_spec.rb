@@ -70,4 +70,28 @@ RSpec.describe ApiToken, type: :model do
       expect(token.token).to start_with('pcltr_')
     end
   end
+
+  describe '#expired?' do
+    subject(:expired?) { token.expired? }
+
+    let(:token) { build(:api_token, expires_at: expires_at) }
+
+    context 'when expires_at is nil' do
+      let(:expires_at) { nil }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when expires_at is in the future' do
+      let(:expires_at) { 1.day.from_now }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when expires_at is in the past' do
+      let(:expires_at) { 1.day.ago }
+
+      it { is_expected.to be true }
+    end
+  end
 end

@@ -5,9 +5,9 @@ class SendPostBatchJob < BaseSendJob
 
   UNSUBSCRIBE_PLACEHOLDER = "{{unsubscribe_link}}"
 
-  def perform(post_id, batch_subscribers)
+  def perform(post_id, batch_subscriber_ids)
     initialize_post(post_id)
-    send_batch(batch_subscribers)
+    send_batch(batch_subscriber_ids)
   end
 
   private
@@ -28,8 +28,8 @@ class SendPostBatchJob < BaseSendJob
     end
   end
 
-  def send_batch(batch_subscribers)
-    batch_subscribers.each do |subscriber|
+  def send_batch(batch_subscriber_ids)
+    subscribers_for_batch(batch_subscriber_ids).each do |subscriber|
       response = send_email(subscriber)
       message_id = extract_message_id(response)
 
@@ -38,6 +38,14 @@ class SendPostBatchJob < BaseSendJob
         subscriber_id: subscriber.id
       )
     end
+  end
+
+  def subscribers_for_batch(batch_subscriber_ids)
+    subscriber_ids = Array(batch_subscriber_ids).map { |entry| entry.respond_to?(:id) ? entry.id : entry }.compact
+    return [] if subscriber_ids.empty?
+
+    subscribers_by_id = newsletter.subscribers.verified.where(id: subscriber_ids).index_by(&:id)
+    subscriber_ids.filter_map { |subscriber_id| subscribers_by_id[subscriber_id.to_i] }
   end
 
   def send_email(subscriber)

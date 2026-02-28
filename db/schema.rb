@@ -208,6 +208,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_28_132000) do
     t.index ["newsletter_id", "slug"], name: "index_posts_on_newsletter_id_and_slug", unique: true
     t.index ["newsletter_id"], name: "index_posts_on_newsletter_id"
     t.index ["slug"], name: "index_posts_on_slug"
+    t.index ["status", "scheduled_at"], name: "index_posts_on_status_and_scheduled_at"
   end
 
   create_table "publishing_domains", force: :cascade do |t|
