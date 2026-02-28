@@ -2,29 +2,37 @@
 
 <div class="space-y-8">
   <%= render "newsletters/settings/partials/settings_section", title: "API Token", subtitle: "Use an API token to programmatically add subscribers to your newsletter." do %>
-    <% token = @newsletter.api_tokens.first %>
-    <% if token %>
+    <% tokens = @newsletter.api_tokens.order(:id).to_a %>
+    <% if tokens.any? %>
       <div class="max-w-lg space-y-4">
-        <div class="relative" data-controller="token-visibility">
-          <input type="password" value="<%= token.token %>" disabled readonly
-                 autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other"
-                 class="input w-full text-sm font-mono pr-16"
-                 data-token-visibility-target="input">
-          <div class="absolute inset-y-0 right-0 flex items-center gap-1 pr-2">
-            <button type="button" class="uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white rounded-lg text-stone-600"
-                    data-action="token-visibility#toggle">
-              <%= lucide_icon("eye", class: "size-3 text-stone-400", data: { token_visibility_target: "showIcon" }) %>
-              <%= lucide_icon("eye-off", class: "size-3 text-stone-400 hidden", data: { token_visibility_target: "hideIcon" }) %>
-            </button>
-            <%= button_to_copy_to_clipboard(token.token) { tag.div } %>
+        <% if tokens.many? %>
+          <p class="text-xs text-amber-700">Multiple tokens were found for this newsletter. Rotate each token to invalidate all leaked credentials.</p>
+        <% end %>
+
+        <% tokens.each do |token| %>
+          <div class="space-y-2">
+            <div class="relative" data-controller="token-visibility">
+              <input type="password" value="<%= token.token %>" disabled readonly
+                     autocomplete="off" data-1p-ignore data-lpignore="true" data-form-type="other"
+                     class="input w-full text-sm font-mono pr-16"
+                     data-token-visibility-target="input">
+              <div class="absolute inset-y-0 right-0 flex items-center gap-1 pr-2">
+                <button type="button" class="uppercase text-xs px-1 py-0.5 border border-stone-200 bg-white rounded-lg text-stone-600"
+                        data-action="token-visibility#toggle">
+                  <%= lucide_icon("eye", class: "size-3 text-stone-400", data: { token_visibility_target: "showIcon" }) %>
+                  <%= lucide_icon("eye-off", class: "size-3 text-stone-400 hidden", data: { token_visibility_target: "hideIcon" }) %>
+                </button>
+                <%= button_to_copy_to_clipboard(token.token) { tag.div } %>
+              </div>
+            </div>
+            <div class="flex items-center gap-2">
+              <%= button_to "Rotate Token", settings_api_rotate_token_path(slug: @newsletter.slug, token_id: token.id),
+                  method: :patch,
+                  class: "btn btn-secondary text-sm",
+                  data: { turbo_confirm: "Are you sure? This will invalidate the current token." } %>
+            </div>
           </div>
-        </div>
-        <div class="flex items-center gap-2">
-          <%= button_to "Rotate Token", settings_api_rotate_token_path(slug: @newsletter.slug, token_id: token.id),
-              method: :patch,
-              class: "btn btn-secondary text-sm",
-              data: { turbo_confirm: "Are you sure? This will invalidate the current token." } %>
-        </div>
+        <% end %>
       </div>
     <% else %>
       <%= button_to "Generate API Token", settings_api_generate_token_path(slug: @newsletter.slug),
