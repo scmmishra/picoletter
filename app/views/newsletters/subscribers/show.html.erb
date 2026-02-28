@@ -43,6 +43,8 @@
   </h2>
 </div>
 
+<% can_manage_subscribers = @newsletter.can_write?(:subscribers) %>
+
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 pb-16">
   <%# Left Column: Manage %>
   <div>
@@ -70,8 +72,9 @@
         <%= form.text_field :full_name,
                         autocomplete: false,
                         required: true,
-                        class: "input w-full",
-                        autofocus: true %>
+                        disabled: !can_manage_subscribers,
+                        class: "input w-full #{'bg-stone-200 text-stone-600' unless can_manage_subscribers}",
+                        autofocus: can_manage_subscribers %>
       </label>
 
       <label class="block space-y-1">
@@ -79,10 +82,15 @@
                    "Editor notes",
                    class: "ml-px text-stone-500 text-sm font-sans" %>
 
-        <%= form.text_area :notes, rows: 5, class: "input w-full" %>
+        <%= form.text_area :notes,
+                       rows: 5,
+                       disabled: !can_manage_subscribers,
+                       class: "input w-full #{'bg-stone-200 text-stone-600' unless can_manage_subscribers}" %>
       </label>
 
-      <%= form.submit "Update Subscriber", class: "btn btn-primary" %>
+      <% if can_manage_subscribers %>
+        <%= form.submit "Update Subscriber", class: "btn btn-primary" %>
+      <% end %>
     <% end %>
 
     <div class="flex gap-2 font-sans text-stone-500 items-center my-8 text-sm">
@@ -94,14 +102,16 @@
       <%= render "newsletters/subscribers/partials/labels" %>
     </section>
 
-    <div class="flex gap-2 font-sans text-stone-500 items-center my-8 text-sm">
-      <h3>Actions</h3>
-      <hr class="flex-grow">
-    </div>
+    <% if can_manage_subscribers %>
+      <div class="flex gap-2 font-sans text-stone-500 items-center my-8 text-sm">
+        <h3>Actions</h3>
+        <hr class="flex-grow">
+      </div>
 
-    <section class="grid gap-6">
-      <%= render "newsletters/subscribers/partials/actions" %>
-    </section>
+      <section class="grid gap-6">
+        <%= render "newsletters/subscribers/partials/actions" %>
+      </section>
+    <% end %>
   </div>
 
   <%# Right Column: History/Metadata %>
