@@ -34,6 +34,10 @@ class ApiToken < ApplicationRecord
     update!(token: self.class.generate_token_value)
   end
 
+  def expired?
+    expires_at.present? && expires_at <= Time.current
+  end
+
   private
 
   def generate_token
