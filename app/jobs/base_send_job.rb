@@ -22,11 +22,13 @@ class BaseSendJob < ApplicationJob
   end
 
   def render_html_content(post, newsletter)
-    ApplicationController.render(
+    html = ApplicationController.render(
       template: "publish",
       assigns: { post: post, newsletter: newsletter },
       layout: false
     )
+
+    inline_email_styles(html)
   end
 
   def render_text_content(post, newsletter)
@@ -36,5 +38,18 @@ class BaseSendJob < ApplicationJob
       layout: false,
       formats: [ :text ]
     )
+  end
+
+  def inline_email_styles(html)
+    Premailer.new(
+      html,
+      with_html_string: true,
+      preserve_styles: false,
+      remove_ids: false,
+      remove_classes: false
+    ).to_inline_css
+  rescue StandardError => error
+    Rails.logger.warn("Premailer inline CSS failed for post email: #{error.class} - #{error.message}")
+    html
   end
 end
