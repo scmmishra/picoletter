@@ -12,7 +12,7 @@
 #
 # Indexes
 #
-#  index_api_tokens_on_newsletter_id  (newsletter_id) UNIQUE
+#  index_api_tokens_on_newsletter_id  (newsletter_id)
 #  index_api_tokens_on_token          (token) UNIQUE
 #
 # Foreign Keys
@@ -23,7 +23,6 @@ class ApiToken < ApplicationRecord
   belongs_to :newsletter
 
   validates :token, presence: true, uniqueness: true
-  validates :newsletter_id, uniqueness: true
 
   before_validation :generate_token, on: :create
 

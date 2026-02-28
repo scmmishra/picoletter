@@ -1,15 +1,9 @@
 class EnforceSingleApiTokenPerNewsletter < ActiveRecord::Migration[8.1]
   def up
     deduplicate_api_tokens
-
-    remove_index :api_tokens, name: "index_api_tokens_on_newsletter_id"
-    add_index :api_tokens, :newsletter_id, unique: true, name: "index_api_tokens_on_newsletter_id"
   end
 
-  def down
-    remove_index :api_tokens, name: "index_api_tokens_on_newsletter_id"
-    add_index :api_tokens, :newsletter_id, name: "index_api_tokens_on_newsletter_id"
-  end
+  def down; end
 
   private
 
