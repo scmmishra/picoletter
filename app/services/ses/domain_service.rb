@@ -9,6 +9,7 @@ class SES::DomainService < BaseAwsService
     # instead of relying on AWS to generate it
     # That way we have vendor portability
     private_key, public_key = generate_key_pair
+    identity_created = false
 
     # Email identity creation in Amazon SES enables domain-based authentication
     # through DomainKeys Identified Mail (DKIM). DKIM allows receiving email
@@ -21,13 +22,14 @@ class SES::DomainService < BaseAwsService
     #
     # This enhances email deliverability by proving domain ownership and
     # message authenticity to receiving email servers.
-    @ses_client.create_email_identity({
+    @ses_client.create_email_identity(
       email_identity: @domain,
       dkim_signing_attributes: {
         domain_signing_selector: "picoletter",
         domain_signing_private_key: private_key
       }
-    })
+    )
+    identity_created = true
 
     # The Mail-From domain defines the domain used in the MAIL FROM
     # (envelope sender) during the email transmission. It serves two
@@ -43,12 +45,15 @@ class SES::DomainService < BaseAwsService
     # In Amazon SES, the custom MAIL FROM domain allows you to control
     # this value, which can improve deliverability and enhance your
     # domain's email reputation.
-    @ses_client.put_email_identity_mail_from_attributes({
+    @ses_client.put_email_identity_mail_from_attributes(
       email_identity: @domain,
       mail_from_domain: "mail.#{@domain}"
-    })
+    )
 
     public_key
+  rescue StandardError
+    cleanup_partial_identity_setup if identity_created
+    raise
   end
 
   def get_identity
@@ -64,6 +69,14 @@ class SES::DomainService < BaseAwsService
   end
 
   private
+
+  def cleanup_partial_identity_setup
+    delete_identity
+  rescue Aws::SESV2::Errors::NotFoundException
+    nil
+  rescue StandardError => e
+    Rails.error.report(e, context: { domain: @domain })
+  end
 
   def generate_key_pair
     key = OpenSSL::PKey::RSA.new(1024)
