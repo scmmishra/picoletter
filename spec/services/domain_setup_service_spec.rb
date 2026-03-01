@@ -21,8 +21,8 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
   end
 
   describe "fresh domain setup" do
-    let!(:user) { create(:user, email: 'fresh-service@example.com') }
-    let!(:newsletter) { create(:newsletter, slug: 'fresh-newsletter', user_id: user.id) }
+    let!(:user) { create(:user, name: "Fresh Service", email: 'fresh-service@example.com') }
+    let!(:newsletter) { create(:newsletter, slug: 'fresh-newsletter', sending_address: "fresh-newsletter@mail.picoletter.com", user_id: user.id) }
 
     let(:mock_ses_service) { double("SES::DomainService") }
     let(:mock_identity_response) do
@@ -38,10 +38,11 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
       allow(mock_ses_service).to receive(:create_identity).and_return('mock-public-key')
       allow(mock_ses_service).to receive(:get_identity).and_return(mock_identity_response)
       allow(mock_ses_service).to receive(:region).and_return('us-east-1')
+      allow(mock_ses_service).to receive(:delete_identity)
     end
 
     it 'creates a new identity and syncs the status' do
-      newsletter.connect_sending_domain("example.com")
+      newsletter.connect_sending_domain("Example.com")
 
       domain = Domain.find_by(newsletter: newsletter)
       expect(domain).to be_present
@@ -52,9 +53,48 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
       expect(domain.status).to eq('success')
       expect(domain.dkim_status).to eq('success')
       expect(domain.spf_status).to eq('success')
+      expect(newsletter.reload.sending_address).to eq("fresh-newsletter@example.com")
 
       expect(mock_ses_service).to have_received(:create_identity)
       expect(mock_ses_service).to have_received(:get_identity)
+    end
+
+    context "when existing sending address is blank" do
+      let!(:newsletter) { create(:newsletter, slug: "fresh-newsletter", sending_address: nil, user_id: user.id) }
+
+      it "uses the user's first name for sending address local-part" do
+        newsletter.connect_sending_domain("example.com")
+
+        expect(newsletter.reload.sending_address).to eq("fresh@example.com")
+      end
+
+      it "does not leave sending_address blank when updated later" do
+        newsletter.connect_sending_domain("example.com")
+
+        newsletter.update!(sending_address: nil)
+        expect(newsletter.reload.sending_address).to eq("fresh@example.com")
+      end
+    end
+
+    context "when existing sending address already uses the connected domain" do
+      let!(:newsletter) { create(:newsletter, slug: "fresh-newsletter", sending_address: "Fresh+tag@Example.com", user_id: user.id) }
+
+      it "keeps the sending address unchanged" do
+        newsletter.connect_sending_domain("example.com")
+
+        expect(newsletter.reload.sending_address).to eq("Fresh+tag@Example.com")
+      end
+    end
+
+    context "when user first name cannot be normalized" do
+      let!(:user) { create(:user, name: "!!!", email: "symbols-only@example.com") }
+      let!(:newsletter) { create(:newsletter, slug: "fresh-newsletter", sending_address: nil, user_id: user.id) }
+
+      it "falls back to newsletter slug" do
+        newsletter.connect_sending_domain("example.com")
+
+        expect(newsletter.reload.sending_address).to eq("fresh-newsletter@example.com")
+      end
     end
 
     context "when SES service fails" do
@@ -67,6 +107,22 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
           newsletter.connect_sending_domain("example.com")
         }.to raise_error(StandardError, "AWS SES Error")
 
+        expect(Domain.find_by(newsletter: newsletter)).to be_nil
+      end
+    end
+
+    context "when local updates fail after SES identity registration" do
+      before do
+        allow(newsletter).to receive(:update!).and_raise(StandardError.new("DB write failed"))
+      end
+
+      it "cleans up SES identity and rolls back domain setup" do
+        expect {
+          newsletter.connect_sending_domain("example.com")
+        }.to raise_error(StandardError, "DB write failed")
+
+        expect(mock_ses_service).to have_received(:create_identity)
+        expect(mock_ses_service).to have_received(:delete_identity)
         expect(Domain.find_by(newsletter: newsletter)).to be_nil
       end
     end

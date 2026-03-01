@@ -18,7 +18,7 @@
 # Indexes
 #
 #  index_domains_on_name                                   (name) UNIQUE
-#  index_domains_on_newsletter_id                          (newsletter_id)
+#  index_domains_on_newsletter_id                          (newsletter_id) UNIQUE
 #  index_domains_on_status_and_dkim_status_and_spf_status  (status,dkim_status,spf_status)
 #
 # Foreign Keys

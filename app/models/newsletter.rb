@@ -50,6 +50,7 @@ class Newsletter < ApplicationRecord
   include Authorizable
 
   VALID_URL_REGEX = URI::DEFAULT_PARSER.make_regexp(%w[http https])
+  DOMAIN_NAME_REGEX = /\A[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?)+\z/i
 
   store_accessor :settings, :redirect_after_confirm, :redirect_after_subscribe
 
@@ -57,6 +58,7 @@ class Newsletter < ApplicationRecord
 
   validates :redirect_after_confirm, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
   validates :redirect_after_subscribe, format: { with: VALID_URL_REGEX, message: "must be a valid http or https URL" }, allow_blank: true
+  validates :sending_address, presence: true, if: :sending_domain_connected?
 
   belongs_to :user
   has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
@@ -75,6 +77,7 @@ class Newsletter < ApplicationRecord
   validates :title, presence: true
 
   after_create :create_owner_membership
+  before_validation :ensure_sending_address_for_connected_domain
 
   attr_accessor :dkim_tokens
 
@@ -163,23 +166,74 @@ class Newsletter < ApplicationRecord
   end
 
   def connect_sending_domain(domain_name)
-    raise InvalidDomainError, "Domain name invalid" unless valid_domain_name?(domain_name)
-    raise DomainClaimedError, "Domain already in use" if Domain.claimed_by_other?(domain_name, id)
-    raise InvalidDomainError, "A domain is already connected. Disconnect it first." if sending_domain.present?
+    normalized_domain_name = domain_name.to_s.strip.downcase
 
+    raise InvalidDomainError, "Domain name invalid" unless valid_domain_name?(normalized_domain_name)
+    raise DomainClaimedError, "Domain already in use" if Domain.claimed_by_other?(normalized_domain_name, id)
+    raise InvalidDomainError, "A domain is already connected. Disconnect it first." if Domain.exists?(newsletter_id: id)
+
+    domain = nil
     ActiveRecord::Base.transaction do
-      domain = Domain.create!(name: domain_name, newsletter_id: id)
+      domain = create_sending_domain!(name: normalized_domain_name)
       domain.register
+      update!(sending_address: sender_address_for(normalized_domain_name))
     end
+  rescue ActiveRecord::RecordNotUnique
+    raise InvalidDomainError, "A domain is already connected. Disconnect it first." if Domain.exists?(newsletter_id: id)
+    raise DomainClaimedError, "Domain already in use"
+  rescue StandardError
+    cleanup_registered_identity(domain)
+    raise
   end
 
   private
 
   def valid_domain_name?(domain_name)
-    domain_name.present? && domain_name.include?(".") && !domain_name.include?("@") && !domain_name.start_with?(".") && !domain_name.end_with?(".")
+    domain_name.present? && domain_name.match?(DOMAIN_NAME_REGEX)
+  end
+
+  def sender_address_for(domain_name)
+    current_address = sending_address.to_s.strip
+    existing_local_part, existing_domain_part = current_address.split("@", 2)
+
+    if current_address.present? && existing_local_part.present? && existing_domain_part.present? && existing_domain_part.casecmp?(domain_name)
+      return current_address
+    end
+
+    local_part = existing_local_part.to_s.strip.presence || generated_sender_local_part
+    "#{local_part}@#{domain_name}"
+  end
+
+  def generated_sender_local_part
+    preferred_name = user.name.to_s.split.first
+    raw_local_part = preferred_name.presence || slug.presence || "newsletter-#{id}"
+    normalized_local_part = I18n.transliterate(raw_local_part).downcase.gsub(/[^a-z0-9]+/, "-").gsub(/\A-+|-+\z/, "")
+
+    normalized_local_part.presence || slug.presence || "newsletter-#{id}"
+  end
+
+  def cleanup_registered_identity(domain)
+    return if domain.blank?
+
+    domain.drop_identity
+  rescue Aws::SESV2::Errors::NotFoundException
+    nil
+  rescue StandardError => e
+    Rails.error.report(e, context: { newsletter_id: id, domain: domain.name })
   end
 
   def create_owner_membership
     memberships.create!(user: user, role: :administrator)
+  end
+
+  def sending_domain_connected?
+    sending_domain.present?
+  end
+
+  def ensure_sending_address_for_connected_domain
+    return unless sending_domain_connected?
+    return if sending_address.present?
+
+    self.sending_address = sender_address_for(sending_domain.name)
   end
 end

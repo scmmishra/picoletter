@@ -18,7 +18,7 @@
 # Indexes
 #
 #  index_domains_on_name                                   (name) UNIQUE
-#  index_domains_on_newsletter_id                          (newsletter_id)
+#  index_domains_on_newsletter_id                          (newsletter_id) UNIQUE
 #  index_domains_on_status_and_dkim_status_and_spf_status  (status,dkim_status,spf_status)
 #
 # Foreign Keys
@@ -59,7 +59,7 @@ class Domain < ApplicationRecord
   end
 
   def self.claimed_by_other?(name, newsletter_id)
-    where(name: name)
+    where("LOWER(name) = ?", name.to_s.downcase)
       .where.not(newsletter_id: newsletter_id)
       .where(
         "(status = ? OR dkim_status = ? OR spf_status = ?)",
