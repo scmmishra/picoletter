@@ -64,12 +64,16 @@
     @apply shadow-none pointer-events-none bg-none opacity-65;
   }
 
-  .sidebar-warning-card {
+  .sidebar-callout {
+    @apply bg-white shadow-with-inset rounded-lg;
+  }
+
+  .sidebar-callout--warning {
     @apply relative overflow-hidden border rounded-lg shadow-with-inset;
     @apply bg-amber-50 border-amber-200 text-amber-900;
   }
 
-  .sidebar-warning-card::before {
+  .sidebar-callout--warning::before {
     content: "";
     position: absolute;
     inset: 0;
@@ -79,11 +83,11 @@
         -45deg,
         rgba(120, 53, 15, 0.18) 0 10px,
         rgba(245, 158, 11, 0.24) 10px 20px
-      );
+    );
     pointer-events: none;
   }
 
-  .sidebar-warning-card::after {
+  .sidebar-callout--warning::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -91,7 +95,7 @@
     pointer-events: none;
   }
 
-  .sidebar-warning-card > * {
+  .sidebar-callout--warning > * {
     position: relative;
     z-index: 1;
   }
