@@ -64,6 +64,38 @@
     @apply shadow-none pointer-events-none bg-none opacity-65;
   }
 
+  .sidebar-warning-card {
+    @apply relative overflow-hidden border rounded-lg shadow-with-inset;
+    @apply bg-amber-50 border-amber-200 text-amber-900;
+  }
+
+  .sidebar-warning-card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(245, 158, 11, 0.16), rgba(245, 158, 11, 0.08) 60%, rgba(245, 158, 11, 0)),
+      repeating-linear-gradient(
+        -45deg,
+        rgba(120, 53, 15, 0.18) 0 10px,
+        rgba(245, 158, 11, 0.24) 10px 20px
+      );
+    pointer-events: none;
+  }
+
+  .sidebar-warning-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(255, 251, 235, 0), rgba(255, 251, 235, 0.82) 70%, rgba(255, 251, 235, 1));
+    pointer-events: none;
+  }
+
+  .sidebar-warning-card > * {
+    position: relative;
+    z-index: 1;
+  }
+
   /* Pagy pagination styling with Tailwind */
   .pagy {
     @apply flex space-x-1 font-sans text-sm text-stone-500;

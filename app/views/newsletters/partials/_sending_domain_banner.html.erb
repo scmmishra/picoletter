@@ -1,0 +1,26 @@
+<% if @newsletter.can_read?(:sending) %>
+  <% title = nil %>
+  <% description = nil %>
+
+  <% if @newsletter.sending_domain.blank? %>
+    <% title = "Set up a custom sending domain" %>
+    <% description = "You're currently using the default sender domain. A custom domain improves sender trust and deliverability." %>
+  <% elsif !@newsletter.ses_verified? %>
+    <% title = "Finish domain setup" %>
+    <% description = "#{@newsletter.sending_domain.name} is connected, but DNS verification is still pending." %>
+  <% end %>
+
+  <% if title.present? %>
+    <div class="sidebar-warning-card block p-3 mb-3">
+      <h4 class="font-medium mb-2 text-amber-900">
+        <%= title %>
+      </h4>
+      <p class="mt-1 text-amber-800">
+        <%= description %>
+      </p>
+      <%= link_to "Open settings",
+      settings_sending_path(slug: @newsletter.slug),
+      class: "btn btn-sm w-full btn-warning mt-4" %>
+    </div>
+  <% end %>
+<% end %>
