@@ -58,9 +58,11 @@ export default class extends Controller {
     const suffix = this.suffixValue;
     let value = this.element.value;
 
-    // Strip suffix if present, then re-append
+    // Strip suffix if present, otherwise keep only the local-part.
     if (value.endsWith(suffix)) {
       value = value.slice(0, -suffix.length);
+    } else if (value.includes("@")) {
+      value = value.split("@", 1)[0];
     }
 
     // Remove any @ the user might type

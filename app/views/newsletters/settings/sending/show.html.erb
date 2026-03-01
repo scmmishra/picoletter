@@ -31,7 +31,7 @@
           <div class="space-y-1">
             <label for="newsletter_sending_address" class="ml-px text-sm text-stone-500 font-sans">Sending Address</label>
             <input type="text" name="newsletter[sending_address]" id="newsletter_sending_address"
-                   value="<%= @newsletter.sending_address || "@#{@newsletter.sending_domain.name}" %>"
+                   value="<%= @newsletter.sending_address.presence || "#{@newsletter.slug}@#{@newsletter.sending_domain.name}" %>"
                    class="input w-full"
                    autocomplete="off"
                    data-controller="domain-suffix"
