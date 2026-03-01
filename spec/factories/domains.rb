@@ -7,7 +7,7 @@
 #  dmarc_added   :boolean          default(FALSE)
 #  error_message :string
 #  name          :string
-#  public_key    :string
+#  public_key    :text
 #  region        :string           default("us-east-1")
 #  spf_status    :string           default("pending")
 #  status        :string           default("pending")

@@ -1,4 +1,7 @@
 class SES::DomainService < BaseAwsService
+  DKIM_SELECTOR = "picoletter".freeze
+  DKIM_RSA_KEY_SIZE = 2048
+
   def initialize(domain)
     super()
     @domain = domain
@@ -25,7 +28,7 @@ class SES::DomainService < BaseAwsService
     @ses_client.create_email_identity(
       email_identity: @domain,
       dkim_signing_attributes: {
-        domain_signing_selector: "picoletter",
+        domain_signing_selector: DKIM_SELECTOR,
         domain_signing_private_key: private_key
       }
     )
@@ -79,7 +82,7 @@ class SES::DomainService < BaseAwsService
   end
 
   def generate_key_pair
-    key = OpenSSL::PKey::RSA.new(1024)
+    key = OpenSSL::PKey::RSA.new(DKIM_RSA_KEY_SIZE)
 
     private_key = key.to_pem
     public_key = key.public_key.to_pem

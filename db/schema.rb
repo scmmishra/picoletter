@@ -97,7 +97,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_01_090000) do
     t.string "error_message"
     t.string "name"
     t.bigint "newsletter_id", null: false
-    t.string "public_key"
+    t.text "public_key"
     t.string "region", default: "us-east-1"
     t.string "spf_status", default: "pending"
     t.string "status", default: "pending"
