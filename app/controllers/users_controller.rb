@@ -1,11 +1,13 @@
 class UsersController < ApplicationController
   include ActiveHashcash
+  include TurnstileProtected
 
   before_action :check_hashcash, only: :create unless Rails.env.test?
   before_action :resume_session_if_present, only: [ :new, :show_verify ]
   before_action :ensure_authenticated, only: [ :resend_verification_email, :show_verify ]
   before_action :set_require_invite_code, only: [ :new, :create ]
   before_action :check_invite_code, only: [ :create ]
+  protect_with_turnstile only: :create
 
   rate_limit to: 5, within: 15.minutes, only: :resend_verification_email
   rate_limit to: 5, within: 60.minutes, only: :create
@@ -62,7 +64,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params.except(:invite_code))
+    @user ||= User.new(user_params.except(:invite_code))
 
     if @user.save
       start_new_session_for @user
@@ -89,6 +91,10 @@ class UsersController < ApplicationController
 
   def set_require_invite_code
     @require_invite = AppConfig.get("INVITE_CODE").present?
+  end
+
+  def turnstile_failure_redirect_path
+    signup_path
   end
 
   def user_params
