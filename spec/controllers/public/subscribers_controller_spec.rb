@@ -189,6 +189,15 @@ RSpec.describe Public::SubscribersController, type: :controller do
   end
 
   describe 'GET #unsubscribe' do
+    it 'skips CSRF verification for one-click unsubscribe POST requests' do
+      callback = described_class._process_action_callbacks.find { |cb| cb.filter == :verify_authenticity_token }
+      skipped_actions = callback.instance_variable_get(:@unless)
+        .flat_map { |condition| condition.instance_variable_get(:@actions).to_a }
+        .map(&:to_sym)
+
+      expect(skipped_actions).to include(:unsubscribe)
+    end
+
     it 'unsubscribes a subscriber with valid token' do
       token = subscriber.generate_token_for(:unsubscribe)
       get :unsubscribe, params: { slug: newsletter.slug, token: token }
