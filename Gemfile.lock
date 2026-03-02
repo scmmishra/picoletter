@@ -439,7 +439,7 @@ GEM
       io-console (~> 0.5)
     resolv (0.6.2)
     rexml (3.4.2)
-    rorvswild (1.10.1)
+    rorvswild (1.11.0)
     rouge (4.7.0)
     rspec-core (3.13.5)
       rspec-support (~> 3.13.0)
@@ -617,7 +617,7 @@ DEPENDENCIES
   rails (~> 8.1.1)
   reactionview
   resolv
-  rorvswild (>= 1.10.1)
+  rorvswild (>= 1.11.0)
   rouge
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase

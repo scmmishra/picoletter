@@ -66,8 +66,9 @@ class SendPostBatchJob < BaseSendJob
       html: html,
       text: text,
       headers: {
-        "List-Unsubscribe" => "<#{unsub_email}>,<#{unsub_url}>",
+        "List-Unsubscribe" => "<#{unsub_url}>,<#{unsub_email}>",
         "List-Unsubscribe-Post" => "List-Unsubscribe=One-Click",
+        "List-ID" => list_id,
         "X-Newsletter-id" => "picoletter-#{newsletter.id}-#{post.id}-#{subscriber.id}"
       }
     )
@@ -83,6 +84,15 @@ class SendPostBatchJob < BaseSendJob
 
   def unsubscribe_url(token, slug)
     Rails.application.routes.url_helpers.unsubscribe_url(slug: slug, token: token)
+  end
+
+  def list_id
+    # Use a stable RFC 2919-compatible identifier so mailbox providers can classify list traffic.
+    "<newsletter-#{newsletter.id}.#{list_id_domain}>"
+  end
+
+  def list_id_domain
+    newsletter.sending_from.split("@").last
   end
 
   def extract_message_id(response)
