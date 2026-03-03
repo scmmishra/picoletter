@@ -152,15 +152,6 @@ GEM
     browser (6.2.0)
     builder (3.3.0)
     byebug (11.1.3)
-    capybara (3.40.0)
-      addressable
-      matrix
-      mini_mime (>= 0.1.3)
-      nokogiri (~> 1.11)
-      rack (>= 1.6.0)
-      rack-test (>= 0.6.3)
-      regexp_parser (>= 1.5, < 3.0)
-      xpath (~> 3.2)
     childprocess (5.1.0)
       logger (~> 1.5)
     cloudflare-rails (7.0.0)
@@ -288,7 +279,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.1.0)
-    matrix (0.4.3)
     mini_magick (5.3.0)
       logger
     mini_mime (1.1.5)
@@ -494,14 +484,7 @@ GEM
     ruby-vips (2.2.4)
       ffi (~> 1.12)
       logger
-    rubyzip (2.4.1)
     securerandom (0.4.1)
-    selenium-webdriver (4.34.0)
-      base64 (~> 0.2)
-      logger (~> 1.4)
-      rexml (~> 3.2, >= 3.2.5)
-      rubyzip (>= 1.2.2, < 3.0)
-      websocket (~> 1.0)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
     simplecov (0.22.0)
@@ -564,13 +547,10 @@ GEM
       actionview (>= 8.0.0)
       bindex (>= 0.4.0)
       railties (>= 8.0.0)
-    websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xpath (3.2.0)
-      nokogiri (~> 1.8)
     zeitwerk (2.7.5)
 
 PLATFORMS
@@ -589,7 +569,6 @@ DEPENDENCIES
   bootsnap
   browser
   byebug (~> 11.1)
-  capybara
   cloudflare-rails
   debug
   dotenv-rails
@@ -625,7 +604,6 @@ DEPENDENCIES
   rouge
   rspec-rails (~> 6.1.0)
   rubocop-rails-omakase
-  selenium-webdriver
   shoulda-matchers
   simplecov
   skooma

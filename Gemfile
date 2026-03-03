@@ -89,12 +89,6 @@ group :development do
   gem "hotwire-spark"
 end
 
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
-end
-
 gem "tailwindcss-rails", "~> 3.3.1"
 gem "pagy"
 
