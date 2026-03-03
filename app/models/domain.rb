@@ -42,8 +42,7 @@ class Domain < ApplicationRecord
 
   def register
     public_key = ses_service.create_identity
-    update(public_key: public_key, region: ses_service.region)
-    sync_attributes
+    persist_registration!(public_key)
   end
 
   def register_or_sync
@@ -83,9 +82,25 @@ class Domain < ApplicationRecord
 
   private
 
+  def persist_registration!(public_key)
+    update!(public_key: public_key, region: ses_service.region)
+    sync_attributes
+  rescue StandardError
+    cleanup_partial_registration
+    raise
+  end
+
+  def cleanup_partial_registration
+    drop_identity
+  rescue Aws::SESV2::Errors::NotFoundException
+    nil
+  rescue StandardError => e
+    Rails.error.report(e, context: { domain: name, newsletter_id: newsletter_id })
+  end
+
   def sync_attributes
     identity = ses_service.get_identity
-    update(
+    update!(
       dkim_status: identity.dkim_attributes.status.downcase,
       spf_status: identity.mail_from_attributes.mail_from_domain_status.downcase,
       status: identity.verification_status.downcase

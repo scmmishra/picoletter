@@ -108,6 +108,23 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
         }.to raise_error(StandardError, "AWS SES Error")
 
         expect(Domain.find_by(newsletter: newsletter)).to be_nil
+        expect(mock_ses_service).not_to have_received(:delete_identity)
+      end
+    end
+
+    context "when identity sync fails after registration" do
+      before do
+        allow(mock_ses_service).to receive(:get_identity).and_raise(StandardError.new("Identity sync failed"))
+      end
+
+      it "cleans up SES identity and rolls back domain setup" do
+        expect {
+          newsletter.connect_sending_domain("example.com")
+        }.to raise_error(StandardError, "Identity sync failed")
+
+        expect(mock_ses_service).to have_received(:create_identity)
+        expect(mock_ses_service).to have_received(:delete_identity)
+        expect(Domain.find_by(newsletter: newsletter)).to be_nil
       end
     end
 
