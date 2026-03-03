@@ -1,0 +1,25 @@
+<% if @newsletter.can_read?(:sending) %>
+  <% title = nil %>
+  <% description = nil %>
+  <% button_text = nil %>
+
+  <% if @newsletter.sending_domain.blank? %>
+    <% title = "Set up a custom sending domain" %>
+    <% description = "You're currently using the default sender domain. A custom domain improves sender trust and deliverability." %>
+    <% button_text = "Add Domain" %>
+  <% elsif !@newsletter.ses_verified? %>
+    <% title = "Finish domain setup" %>
+    <% description = "#{@newsletter.sending_domain.name} is connected, but DNS verification is still pending." %>
+    <% button_text = "Finish Setup" %>
+  <% end %>
+
+  <% if title.present? %>
+    <%= render "newsletters/partials/sidebar_callout",
+    variant: :warning,
+    title: title,
+    description: description,
+    button_text: button_text,
+    button_path: settings_sending_path(slug: @newsletter.slug),
+    button_style: "btn-warning" %>
+  <% end %>
+<% end %>

@@ -34,15 +34,12 @@
     <nav class="text-stone-500 justify-self-end -mx-1.5">
       <% pending_invitation = latest_pending_invitation_for_current_user %>
       <% if pending_invitation.present? %>
-        <%= link_to invitation_path(token: pending_invitation.token), class: "block bg-white shadow-with-inset p-3 rounded-lg mb-3 group" do %>
-          <p class="font-medium mb-2 text-stone-900">
-            You have a pending invitation for <%= pending_invitation.newsletter.title %>
-          </p>
-          <div class="mt-2 flex items-center justify-between gap-3 text-sm text-stone-700">
-            <span>Click here to review</span>
-          </div>
-        <% end %>
+        <%= render "newsletters/partials/sidebar_callout",
+        title: "You have a pending invitation for #{pending_invitation.newsletter.title}",
+        description: "Click here to review",
+        card_path: invitation_path(token: pending_invitation.token) %>
       <% end %>
+      <%= render "newsletters/partials/sending_domain_banner" %>
       <%= render "newsletters/partials/billing_banner" %>
       <ul class="grid gap-1">
         <%= render "newsletters/partials/sidebar_link",

@@ -1,0 +1,37 @@
+<% variant = local_assigns.fetch(:variant, :default).to_sym %>
+<% title = local_assigns.fetch(:title) %>
+<% descriptions = Array(local_assigns[:description]).compact %>
+<% button_text = local_assigns[:button_text] %>
+<% button_path = local_assigns[:button_path] %>
+<% button_style = local_assigns.fetch(:button_style, "btn-primary") %>
+<% card_path = local_assigns[:card_path] %>
+
+<% title_classes = variant == :warning ? "text-amber-900" : "text-stone-900" %>
+<% description_classes = variant == :warning ? "text-amber-800" : "text-stone-700" %>
+
+<% container_classes = [ "sidebar-callout", "block", "p-3", "mb-3" ] %>
+<% container_classes << "sidebar-callout--warning" if variant == :warning %>
+<% container_classes << "group" if card_path.present? %>
+
+<% content = capture do %>
+  <h4 class="font-medium mb-2 <%= title_classes %>"><%= title %></h4>
+  <% descriptions.each do |line| %>
+    <p class="mt-1 <%= description_classes %>"><%= line %></p>
+  <% end %>
+
+  <% if button_text.present? && button_path.present? %>
+    <%= link_to button_text,
+    button_path,
+    class: "btn btn-sm w-full #{button_style} mt-4" %>
+  <% end %>
+<% end %>
+
+<% if card_path.present? %>
+  <%= link_to card_path, class: container_classes.join(" ") do %>
+    <%= content %>
+  <% end %>
+<% else %>
+  <div class="<%= container_classes.join(" ") %>">
+    <%= content %>
+  </div>
+<% end %>
