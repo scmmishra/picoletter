@@ -229,6 +229,7 @@ RSpec.describe Newsletter, type: :model do
         reply_to: "reply@example.com"
       )
       create(:domain, newsletter: newsletter, name: "example.com")
+      newsletter.reload
 
       allow(newsletter.sending_domain).to receive(:drop_identity)
 
