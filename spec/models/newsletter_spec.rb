@@ -218,4 +218,27 @@ RSpec.describe Newsletter, type: :model do
       end
     end
   end
+
+  describe "#disconnect_sending_domain" do
+    it "clears sender identity fields when the domain is disconnected" do
+      newsletter = create(
+        :newsletter,
+        user: user,
+        sending_address: "author@example.com",
+        sending_name: "Author",
+        reply_to: "reply@example.com"
+      )
+      create(:domain, newsletter: newsletter, name: "example.com")
+
+      allow(newsletter.sending_domain).to receive(:drop_identity)
+
+      newsletter.disconnect_sending_domain
+      newsletter.reload
+
+      expect(newsletter.sending_domain).to be_nil
+      expect(newsletter.sending_address).to be_nil
+      expect(newsletter.sending_name).to be_nil
+      expect(newsletter.reply_to).to be_nil
+    end
+  end
 end

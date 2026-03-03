@@ -227,7 +227,8 @@ class Newsletter < ApplicationRecord
   end
 
   def sending_domain_connected?
-    sending_domain.present?
+    domain = sending_domain
+    domain.present? && !domain.destroyed?
   end
 
   def ensure_sending_address_for_connected_domain
