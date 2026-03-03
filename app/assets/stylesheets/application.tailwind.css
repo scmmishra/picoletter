@@ -64,6 +64,15 @@
     @apply shadow-none pointer-events-none bg-none opacity-65;
   }
 
+  .callout-stack-deck {
+    display: grid;
+  }
+
+  .callout-stack-deck > * {
+    grid-area: 1 / 1;
+    margin-bottom: 0;
+  }
+
   .sidebar-callout {
     @apply bg-white shadow-with-inset rounded-lg;
   }

@@ -32,16 +32,28 @@
       </nav>
     </div>
     <nav class="text-stone-500 justify-self-end -mx-1.5">
-      <% pending_invitation = latest_pending_invitation_for_current_user %>
-      <% if pending_invitation.present? %>
-        <%= render "newsletters/partials/sidebar_callout",
-        title: "Invitation pending",
-        description: "Join #{pending_invitation.newsletter.title} as a collaborator.",
-        button_text: "View invitation",
-        button_path: invitation_path(token: pending_invitation.token) %>
-      <% end %>
-      <%= render "newsletters/partials/sending_domain_banner" %>
-      <%= render "newsletters/partials/billing_banner" %>
+      <div data-controller="callout-stack" class="mb-3">
+        <div data-callout-stack-target="nav" class="hidden flex items-center justify-end gap-0.5 mb-1 text-stone-400">
+          <button type="button" data-action="callout-stack#prev" class="hover:text-stone-600 transition-colors p-0.5 rounded hover:bg-stone-100">
+            <%= lucide_icon("chevron-left", class: "size-3") %>
+          </button>
+          <button type="button" data-action="callout-stack#next" class="hover:text-stone-600 transition-colors p-0.5 rounded hover:bg-stone-100">
+            <%= lucide_icon("chevron-right", class: "size-3") %>
+          </button>
+        </div>
+        <div class="callout-stack-deck" data-callout-stack-target="deck">
+          <% pending_invitation = latest_pending_invitation_for_current_user %>
+          <% if pending_invitation.present? %>
+            <%= render "newsletters/partials/sidebar_callout",
+            title: "Invitation pending",
+            description: "Join #{pending_invitation.newsletter.title} as a collaborator.",
+            button_text: "View invitation",
+            button_path: invitation_path(token: pending_invitation.token) %>
+          <% end %>
+          <%= render "newsletters/partials/sending_domain_banner" %>
+          <%= render "newsletters/partials/billing_banner" %>
+        </div>
+      </div>
       <ul class="grid gap-1">
         <%= render "newsletters/partials/sidebar_link",
         url: newsletter_path(slug: @newsletter.slug),

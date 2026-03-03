@@ -27,11 +27,11 @@
 <% end %>
 
 <% if card_path.present? %>
-  <%= link_to card_path, class: container_classes.join(" ") do %>
+  <%= link_to card_path, class: container_classes.join(" "), data: { callout_stack_target: "card" } do %>
     <%= content %>
   <% end %>
 <% else %>
-  <div class="<%= container_classes.join(" ") %>">
+  <div class="<%= container_classes.join(" ") %>" data-callout-stack-target="card">
     <%= content %>
   </div>
 <% end %>
