@@ -10,12 +10,28 @@ class ProcessSNSWebhookJob < ApplicationJob
       process_subscription_confirmation
       return
     end
+    unless @payload[:Type] == "Notification"
+      Rails.logger.info("[ProcessSNSWebhookJob] Ignored SNS payload with unsupported type #{@payload[:Type].inspect}")
+      return
+    end
 
-    @message = JSON.parse(@payload[:Message]).with_indifferent_access
-    @email = Email.find_by(id: @message[:mail][:messageId])
+    @message = parse_notification_message(@payload[:Message])
+    return unless @message.present?
+
+    message_id = @message.dig(:mail, :messageId)
+    if message_id.blank?
+      Rails.logger.info("[ProcessSNSWebhookJob] Ignored SNS notification without mail.messageId")
+      return
+    end
+
+    @email = Email.find_by(id: message_id)
     return unless @email.present?
 
-    event_name = @message[:eventType].underscore
+    event_name = @message[:eventType].to_s.underscore
+    if event_name.blank?
+      Rails.logger.info("[ProcessSNSWebhookJob] Ignored SNS notification without eventType")
+      return
+    end
     Rails.logger.info "[ProcessSNSWebhookJob] Processing #{event_name} event for email #{@email.id}"
 
     case event_name
@@ -27,6 +43,17 @@ class ProcessSNSWebhookJob < ApplicationJob
     end
 
     @email.emailable.clear_stats_cache if @email.emailable_type == "Post"
+  end
+
+  def parse_notification_message(message)
+    parsed_message = JSON.parse(message.to_s)
+    return parsed_message.with_indifferent_access if parsed_message.is_a?(Hash)
+
+    Rails.logger.info("[ProcessSNSWebhookJob] Ignored SNS notification with non-object Message payload")
+    nil
+  rescue JSON::ParserError
+    Rails.logger.info("[ProcessSNSWebhookJob] Ignored SNS notification with non-JSON Message payload")
+    nil
   end
 
   def process_subscription_confirmation

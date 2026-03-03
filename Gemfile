@@ -109,7 +109,7 @@ gem "kramdown"
 gem "premailer-rails"
 
 # monitoring
-gem "rorvswild", ">= 1.10.1"
+gem "rorvswild", ">= 1.11.0"
 
 # production
 gem "dotenv-rails"
@@ -130,6 +130,7 @@ gem "aws-sdk-rails", "~> 3"
 
 # Bot prevention
 gem "active_hashcash", github: "BaseSecrete/active_hashcash"
+gem "rails_cloudflare_turnstile"
 gem "liquid"
 
 gem "reactionview"

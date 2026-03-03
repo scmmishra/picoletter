@@ -45,6 +45,33 @@ RSpec.describe SendPostBatchJob, type: :job do
     end
   end
 
+  describe "unsubscribe headers" do
+    it "puts the one-click URL first and includes a List-ID header" do
+      job = described_class.new
+      placeholder = described_class::UNSUBSCRIBE_PLACEHOLDER
+      allow(job).to receive(:rendered_html_content).and_return("<p>Click #{placeholder}</p>")
+      allow(job).to receive(:rendered_text_content).and_return("Click #{placeholder}")
+
+      ses_service = instance_double(SES::EmailService)
+      allow(SES::EmailService).to receive(:new).and_return(ses_service)
+      allow(ses_service).to receive(:send).and_return(double(message_id: "ses-message-id-2"))
+
+      job.perform(post.id, [ subscriber.id ])
+
+      expect(ses_service).to have_received(:send) do |params|
+        headers = params.fetch(:headers)
+        unsubscribe_parts = headers.fetch("List-Unsubscribe").split(",")
+        expected_list_id = "<newsletter-#{newsletter.id}.#{newsletter.sending_from.split('@').last}>"
+
+        expect(unsubscribe_parts.first).to include("/#{newsletter.slug}/unsubscribe?token=")
+        expect(unsubscribe_parts.first).to start_with("<http")
+        expect(unsubscribe_parts.last).to start_with("<mailto:")
+        expect(headers["List-Unsubscribe-Post"]).to eq("List-Unsubscribe=One-Click")
+        expect(headers["List-ID"]).to eq(expected_list_id)
+      end
+    end
+  end
+
   describe "HTML rendering" do
     it "inlines critical publish styles for email clients" do
       post.update!(

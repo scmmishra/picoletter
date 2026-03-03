@@ -163,6 +163,21 @@ RSpec.describe ProcessSNSWebhookJob, type: :job do
       end
     end
 
+    context 'when receiving a non-JSON notification message' do
+      let(:payload) do
+        {
+          Type: 'Notification',
+          Message: 'Successfully validated SNS topic for Amazon SES event publishing.'
+        }
+      end
+
+      it 'ignores the notification without raising' do
+        expect {
+          described_class.perform_now(payload)
+        }.not_to raise_error
+      end
+    end
+
     context 'when email is not found' do
       let(:payload) do
         {

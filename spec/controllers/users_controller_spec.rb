@@ -6,6 +6,8 @@ RSpec.describe UsersController, type: :controller do
 
   before do
     allow(AppConfig).to receive(:get).and_call_original
+    allow(AppConfig).to receive(:get).with("CF__TURNSTILE_SITE_KEY").and_return(nil)
+    allow(AppConfig).to receive(:get).with("CF__TURNSTILE_SECRET").and_return(nil)
   end
 
   describe "GET #new" do
@@ -63,6 +65,34 @@ RSpec.describe UsersController, type: :controller do
           post :create, params: valid_params
           expect(cookies.signed[:session_token]).to be_present
         end
+      end
+
+      context "when turnstile is enabled" do
+        before do
+          allow(AppConfig).to receive(:get).with("INVITE_CODE").and_return(nil)
+          allow(AppConfig).to receive(:get).with("VERIFY_SIGNUPS", true).and_return(true)
+          allow(AppConfig).to receive(:get).with("CF__TURNSTILE_SITE_KEY").and_return("site-key")
+          allow(AppConfig).to receive(:get).with("CF__TURNSTILE_SECRET").and_return("secret-key")
+        end
+
+        it "creates a new user when turnstile verification succeeds" do
+          expect(controller).to receive(:validate_cloudflare_turnstile).and_return(true)
+
+          expect {
+            post :create, params: valid_params
+          }.to change(User, :count).by(1)
+        end
+
+        it "rejects signup when turnstile verification fails" do
+          expect(controller).to receive(:validate_cloudflare_turnstile).and_raise(RailsCloudflareTurnstile::Forbidden)
+
+          expect {
+            post :create, params: valid_params
+          }.not_to change(User, :count)
+          expect(response).to redirect_to(signup_path)
+          expect(flash[:notice]).to eq("Please complete the security check and try again.")
+        end
+
       end
 
       context "when invite code is required" do
