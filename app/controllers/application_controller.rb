@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
   helper_method :latest_pending_invitation_for_current_user
   def ensure_authenticated
     session = find_session_by_cookie
