@@ -105,15 +105,15 @@
     @apply flex space-x-1 font-sans text-sm text-stone-500;
   }
 
-  .pagy a:not(.gap) {
+  .pagy a:not([role="separator"]) {
     @apply inline-block h-8 px-2 leading-8 text-center rounded-md min-w-8 bg-stone-100 hover:bg-stone-200;
   }
 
-  .pagy a.current {
+  .pagy a[aria-current="page"] {
     @apply text-white bg-stone-800;
   }
 
-  .pagy .gap {
+  .pagy a[role="separator"] {
     @apply inline-block h-8 px-2 leading-8 text-center rounded-md min-w-8 text-stone-500;
   }
 

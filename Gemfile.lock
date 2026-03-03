@@ -339,7 +339,10 @@ GEM
     omniauth-rails_csrf_protection (2.0.1)
       actionpack (>= 4.2)
       omniauth (~> 2.0)
-    pagy (9.3.5)
+    pagy (43.3.1)
+      json
+      uri
+      yaml
     parallel (1.27.0)
     parser (3.3.9.0)
       ast (~> 2.4.1)
@@ -551,6 +554,7 @@ GEM
       base64
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yaml (0.4.0)
     zeitwerk (2.7.5)
 
 PLATFORMS

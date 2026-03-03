@@ -70,5 +70,5 @@
     as: :subscriber,
     cached: true %>
   </section>
-  <div class="flex items-center justify-end mt-4"><%== pagy_nav @pagy, id: "pagy-nav", aria_label: "Pagination" %></div>
+  <div class="flex items-center justify-end mt-4"><%== @pagy.series_nav(id: "pagy-nav", aria_label: "Pagination") %></div>
 <% end %>
