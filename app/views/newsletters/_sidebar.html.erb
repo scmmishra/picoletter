@@ -35,9 +35,10 @@
       <% pending_invitation = latest_pending_invitation_for_current_user %>
       <% if pending_invitation.present? %>
         <%= render "newsletters/partials/sidebar_callout",
-        title: "You have a pending invitation for #{pending_invitation.newsletter.title}",
-        description: "Click here to review",
-        card_path: invitation_path(token: pending_invitation.token) %>
+        title: "Invitation pending",
+        description: "Join #{pending_invitation.newsletter.title} as a collaborator.",
+        button_text: "View invitation",
+        button_path: invitation_path(token: pending_invitation.token) %>
       <% end %>
       <%= render "newsletters/partials/sending_domain_banner" %>
       <%= render "newsletters/partials/billing_banner" %>

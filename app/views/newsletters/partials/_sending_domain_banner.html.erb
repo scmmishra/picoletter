@@ -5,7 +5,7 @@
 
   <% if @newsletter.sending_domain.blank? %>
     <% title = "Set up a custom sending domain" %>
-    <% description = "You're currently using the default sender domain. A custom domain improves sender trust and deliverability." %>
+    <% description = "Your own domain means better inbox placement and sender reputation." %>
     <% button_text = "Add Domain" %>
   <% elsif !@newsletter.ses_verified? %>
     <% title = "Finish domain setup" %>
