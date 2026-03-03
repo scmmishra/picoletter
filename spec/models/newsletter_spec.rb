@@ -241,5 +241,16 @@ RSpec.describe Newsletter, type: :model do
       expect(newsletter.sending_name).to be_nil
       expect(newsletter.reply_to).to be_nil
     end
+
+    it "treats a destroyed cached domain as disconnected" do
+      newsletter = create(:newsletter, user: user, sending_address: "author@example.com")
+      create(:domain, newsletter: newsletter, name: "example.com")
+      newsletter.reload
+
+      cached_domain = newsletter.sending_domain
+      cached_domain.destroy!
+
+      expect(newsletter.send(:sending_domain_connected?)).to be(false)
+    end
   end
 end

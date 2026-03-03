@@ -133,14 +133,32 @@ RSpec.describe Newsletter, "#connect_sending_domain" do
         allow(newsletter).to receive(:update!).and_raise(StandardError.new("DB write failed"))
       end
 
-      it "cleans up SES identity and rolls back domain setup" do
+      it "keeps domain setup and does not delete SES identity" do
         expect {
           newsletter.connect_sending_domain("example.com")
-        }.to raise_error(StandardError, "DB write failed")
+        }.not_to raise_error
 
         expect(mock_ses_service).to have_received(:create_identity)
-        expect(mock_ses_service).to have_received(:delete_identity)
-        expect(Domain.find_by(newsletter: newsletter)).to be_nil
+        expect(mock_ses_service).not_to have_received(:delete_identity)
+        expect(Domain.find_by(newsletter: newsletter)).to be_present
+      end
+    end
+
+    context "when sending address update is invalid" do
+      before do
+        invalid_newsletter = newsletter.dup
+        invalid_newsletter.errors.add(:title, "can't be blank")
+        allow(newsletter).to receive(:update!).and_raise(ActiveRecord::RecordInvalid.new(invalid_newsletter))
+      end
+
+      it "keeps domain registration and does not delete SES identity" do
+        expect {
+          newsletter.connect_sending_domain("example.com")
+        }.not_to raise_error
+
+        expect(mock_ses_service).to have_received(:create_identity)
+        expect(mock_ses_service).not_to have_received(:delete_identity)
+        expect(Domain.find_by(newsletter: newsletter)).to be_present
       end
     end
   end

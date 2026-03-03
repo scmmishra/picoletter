@@ -172,18 +172,15 @@ class Newsletter < ApplicationRecord
     raise DomainClaimedError, "Domain already in use" if Domain.claimed_by_other?(normalized_domain_name, id)
     raise InvalidDomainError, "A domain is already connected. Disconnect it first." if Domain.exists?(newsletter_id: id)
 
-    domain = nil
     ActiveRecord::Base.transaction do
       domain = create_sending_domain!(name: normalized_domain_name)
       domain.register
-      update!(sending_address: sender_address_for(normalized_domain_name))
     end
+
+    persist_sending_address_after_domain_registration!(normalized_domain_name)
   rescue ActiveRecord::RecordNotUnique
     raise InvalidDomainError, "A domain is already connected. Disconnect it first." if Domain.exists?(newsletter_id: id)
     raise DomainClaimedError, "Domain already in use"
-  rescue StandardError
-    cleanup_registered_identity(domain)
-    raise
   end
 
   private
@@ -212,14 +209,13 @@ class Newsletter < ApplicationRecord
     normalized_local_part.presence || slug.presence || "newsletter-#{id}"
   end
 
-  def cleanup_registered_identity(domain)
-    return if domain.blank?
-
-    domain.drop_identity
-  rescue Aws::SESV2::Errors::NotFoundException
-    nil
+  def persist_sending_address_after_domain_registration!(normalized_domain_name)
+    update!(sending_address: sender_address_for(normalized_domain_name))
   rescue StandardError => e
-    Rails.error.report(e, context: { newsletter_id: id, domain: domain.name })
+    Rails.error.report(
+      e,
+      context: { newsletter_id: id, domain: normalized_domain_name }
+    )
   end
 
   def create_owner_membership
