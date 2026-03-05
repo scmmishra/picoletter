@@ -230,6 +230,21 @@ paths:
                 params={"status": "verified", "label": "vip", "page": 1, "per_page": 30},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            uri.query = URI.encode_www_form(status: "verified", label: "vip", page: 1, per_page: 30)
+
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Paginated subscribers
@@ -305,6 +320,21 @@ paths:
                 json={"email": "reader@example.com", "name": "Jane Doe", "labels": "vip"},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Post.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+            request["Content-Type"] = "application/json"
+            request.body = { email: "reader@example.com", name: "Jane Doe", labels: "vip" }.to_json
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "201":
           description: Subscriber created
@@ -364,6 +394,21 @@ paths:
                 params={"email": "reader@example.com"},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            uri.query = URI.encode_www_form(email: "reader@example.com")
+
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Subscriber found
@@ -439,6 +484,19 @@ paths:
                 headers={"Authorization": "Bearer your_api_token"},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Subscriber details
@@ -516,6 +574,21 @@ paths:
                 json={"full_name": "Jane Doe", "notes": "Core customer segment", "labels": ["vip"]},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Patch.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+            request["Content-Type"] = "application/json"
+            request.body = { full_name: "Jane Doe", notes: "Core customer segment", labels: ["vip"] }.to_json
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Subscriber updated
@@ -590,6 +663,18 @@ paths:
                 headers={"Authorization": "Bearer your_api_token"},
             )
             print(response.status_code)
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Delete.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.code
       responses:
         "204":
           description: Subscriber deleted
@@ -634,6 +719,19 @@ paths:
                 headers={"Authorization": "Bearer your_api_token"},
             )
             print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Subscriber counts by status
