@@ -2,69 +2,74 @@ source "https://rubygems.org"
 
 ruby "3.4.4"
 
-# Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
+# Framework and app server
 gem "rails", "~> 8.1.1"
 gem "lexxy", github: "basecamp/lexxy"
-
-# The modern asset pipeline for Rails [https://github.com/rails/propshaft]
-gem "propshaft"
-
-# Use pg as the database for Active Record
-gem "pg", "~> 1.5"
-
-# Use PostgreSQL array for labels
-gem "acts-as-taggable-array-on"
-
-# Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 
-# Thruster - HTTP/2 proxy with asset caching and X-Sendfile acceleration
-gem "thruster", require: false
+# Database
+gem "pg", "~> 1.5"
+gem "acts-as-taggable-array-on"
 
-# SolidQueue
+# Asset pipeline and frontend
+gem "propshaft"
+gem "importmap-rails"
+gem "turbo-rails"
+gem "stimulus-rails"
+gem "tailwindcss-rails", "~> 3.3.1"
+
+# Background jobs and caching
+gem "thruster", require: false
 gem "solid_queue", "~> 1.2.3"
 gem "mission_control-jobs", "~> 1.1.0"
+gem "solid_cache", "~> 1.0.8"
 
-# Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
-gem "importmap-rails"
-
-# Hotwire"s SPA-like page accelerator [https://turbo.hotwired.dev]
-gem "turbo-rails"
-
-# Hotwire"s modest JavaScript framework [https://stimulus.hotwired.dev]
-gem "stimulus-rails"
-
-# Build JSON APIs with ease [https://github.com/rails/jbuilder]
-# gem "jbuilder"
-
-# Use Redis adapter to run Action Cable in production
-# gem "redis", ">= 4.0.1"
-
-# Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
-# gem "kredis"
-
-# Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
+# Authentication
 gem "bcrypt", "~> 3.1.7"
-
-# OmniAuth for social login
 gem "omniauth"
 gem "omniauth-rails_csrf_protection"
 gem "omniauth-github", "~> 2.0.0"
 gem "omniauth-google-oauth2"
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem "tzinfo-data"
+# Content and rendering
+gem "pagy"
+gem "nokogiri"
+gem "rouge"
+gem "kramdown"
+gem "premailer-rails"
+gem "liquid"
+gem "lucide-rails", "~> 0.7.1"
+gem "reactionview"
 
-# Reduces boot times through caching; required in config/boot.rb
-gem "bootsnap", require: false
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+# Integrations and utilities
+gem "aws-sdk-rails", "~> 3"
 gem "aws-sdk-s3", require: false
+gem "httparty"
+gem "browser"
+gem "valid_email2"
+gem "cloudflare-rails"
 gem "resolv"
 
+# Bot protection
+gem "active_hashcash", github: "BaseSecrete/active_hashcash"
+gem "rails_cloudflare_turnstile"
+
+# Active Storage variants
+gem "image_processing", "~> 1.2"
+
+# Platform and boot performance
+gem "tzinfo-data", platforms: %i[windows jruby]
+gem "bootsnap", require: false
+
+# Optional JSON APIs
+# gem "jbuilder"
+
+# Optional Redis-backed features
+# gem "redis", ">= 4.0.1"
+# gem "kredis"
+
 group :development, :test do
-  # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
+  # Debugger and test helpers
   gem "debug", platforms: %i[mri windows]
   gem "rspec-rails", "~> 6.1.0"
   gem "byebug", "~> 11.1"
@@ -73,15 +78,12 @@ group :development, :test do
   gem "shoulda-matchers"
   gem "simplecov"
   gem "skooma"
+  gem "dotenv-rails"
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  # Developer tooling
   gem "web-console"
-
-  # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
-  # gem "spring"
-
   gem "rubocop-rails-omakase", require: false
   gem "annotaterb"
   gem "letter_opener"
@@ -89,42 +91,12 @@ group :development do
   gem "hotwire-spark"
 end
 
-gem "tailwindcss-rails", "~> 3.3.1"
-gem "pagy"
+group :development, :production do
+  # Monitoring
+  gem "rorvswild", ">= 1.11.0"
+end
 
-# HTML parsing
-gem "nokogiri"
-gem "rouge"
-
-# Markdown
-gem "kramdown"
-
-# For handling email styles
-gem "premailer-rails"
-
-# monitoring
-gem "rorvswild", ">= 1.11.0"
-
-# production
-gem "dotenv-rails"
-
-gem "lucide-rails", "~> 0.7.1"
-gem "logtail-rails", "~> 0.2.7"
-gem "solid_cache", "~> 1.0.8"
-
-gem "httparty"
-
-# this will detect bots
-gem "browser"
-gem "valid_email2"
-gem "cloudflare-rails"
-
-# to parse maxmind db
-gem "aws-sdk-rails", "~> 3"
-
-# Bot prevention
-gem "active_hashcash", github: "BaseSecrete/active_hashcash"
-gem "rails_cloudflare_turnstile"
-gem "liquid"
-
-gem "reactionview"
+group :production do
+  # Log shipping
+  gem "logtail-rails", "~> 0.2.7"
+end
