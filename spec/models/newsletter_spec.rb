@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: newsletters
+# Database name: primary
 #
 #  id                    :bigint           not null, primary key
 #  auto_reminder_enabled :boolean          default(TRUE), not null

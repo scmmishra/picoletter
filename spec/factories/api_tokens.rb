@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: api_tokens
+# Database name: primary
 #
 #  id            :bigint           not null, primary key
 #  expires_at    :datetime

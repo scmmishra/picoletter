@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: labels
+# Database name: primary
 #
 #  id            :bigint           not null, primary key
 #  color         :string           default("#6B7280"), not null

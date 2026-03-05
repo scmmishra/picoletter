@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: connected_services
+# Database name: primary
 #
 #  id         :bigint           not null, primary key
 #  provider   :string           not null

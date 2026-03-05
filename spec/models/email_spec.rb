@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: emails
+# Database name: primary
 #
 #  id             :string           not null, primary key
 #  bounced_at     :datetime
