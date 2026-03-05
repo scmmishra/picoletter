@@ -44,6 +44,7 @@ RSpec.describe Newsletter, type: :model do
 
   describe "validations" do
     it { should belong_to(:user) }
+    it { should have_one(:ses_tenant).dependent(:destroy) }
     it { should have_many(:subscribers) }
     it { should have_many(:posts) }
     it { should have_many(:labels) }
@@ -252,6 +253,22 @@ RSpec.describe Newsletter, type: :model do
       cached_domain.destroy!
 
       expect(newsletter.send(:sending_domain_connected?)).to be(false)
+    end
+
+    it "disassociates custom identity from tenant before disconnecting domain" do
+      newsletter = create(:newsletter, user: user, sending_address: "author@example.com")
+      create(:domain, newsletter: newsletter, name: "example.com")
+      create(:ses_tenant, newsletter: newsletter, status: :ready)
+      newsletter.reload
+
+      tenant_service = instance_double(SES::TenantService)
+      allow(SES::TenantService).to receive(:new).with(newsletter: newsletter).and_return(tenant_service)
+      allow(tenant_service).to receive(:disassociate_custom_identity!)
+      allow(newsletter.sending_domain).to receive(:drop_identity)
+
+      newsletter.disconnect_sending_domain
+
+      expect(tenant_service).to have_received(:disassociate_custom_identity!)
     end
   end
 end
