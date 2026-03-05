@@ -6,7 +6,9 @@ class Newsletters::Settings::ApiController < ApplicationController
   before_action :set_newsletter
   before_action -> { authorize_permission!(:general, :write) }
 
-  def show; end
+  def show
+    @api_endpoints = Api::Documentation.endpoints(base_url: request.base_url)
+  end
 
   def generate_token
     token = @newsletter.with_lock { @newsletter.api_tokens.first_or_create! }
