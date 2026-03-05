@@ -35,9 +35,9 @@ class Post < ApplicationRecord
 
   has_many :emails, as: :emailable, dependent: :destroy_async
   has_many :email_clicks, dependent: :destroy_async
-  enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing" }
+  enum :status, { draft: "draft", published: "published", archived: "archived", processing: "processing", failed: "failed" }
 
-  scope :drafts_and_processing, -> { where(status: %w[draft processing]) }
+  scope :drafts_and_processing, -> { where(status: %w[draft processing failed]) }
 
   def self.slug_uniqueness_scope
     { scope: :newsletter_id }
@@ -64,7 +64,7 @@ class Post < ApplicationRecord
   end
 
   def publish_and_send(ignore_checks = false)
-    return unless draft?
+    return unless draft? || failed?
 
     raise Exceptions::SubscriptionError unless newsletter.user.subscribed?
     raise Exceptions::UserNotActiveError unless can_send?
@@ -76,6 +76,10 @@ class Post < ApplicationRecord
     # If enqueue fails after we flip to processing, revert so publish can be retried.
     update_column(:status, "draft") if processing?
     raise
+  end
+
+  def fail_sending!
+    update!(status: "failed") unless failed?
   end
 
   def can_send?

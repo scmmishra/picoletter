@@ -70,7 +70,7 @@ class Newsletters::PostsController < ApplicationController
     no_verify = params[:no_verify] == "true"
 
     @post.with_lock do
-      unless @post.draft?
+      unless @post.draft? || @post.failed?
         redirect_to post_url(slug: @newsletter.slug, id: @post.id),
                    notice: "Post already published." and return
       end

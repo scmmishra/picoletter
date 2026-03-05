@@ -7,11 +7,12 @@ class SendSubscriberReminderJob < ApplicationJob
 
     confirmation_url = generate_confirmation_url
     subject = "Reminder: Confirm your subscription to #{@newsletter.title}"
+    tenant_name = SES::TenantPreflightService.new(@newsletter).ensure_ready!
 
     html_content = render_html(confirmation_url)
     text_content = render_text(confirmation_url)
 
-    response = send_email(subject, html_content, text_content)
+    response = send_email(subject, html_content, text_content, tenant_name)
 
     reminder = @subscriber.reminders.create!(
       kind: kind,
@@ -53,11 +54,12 @@ class SendSubscriberReminderJob < ApplicationJob
     )
   end
 
-  def send_email(subject, html_content, text_content)
+  def send_email(subject, html_content, text_content, tenant_name)
     ses_service = SES::EmailService.new
     ses_service.send(
       to: [ @subscriber.email ],
       from: @newsletter.full_sending_address,
+      tenant_name: tenant_name,
       reply_to: @newsletter.reply_to.presence || @newsletter.user.email,
       subject: subject,
       html: html_content,
