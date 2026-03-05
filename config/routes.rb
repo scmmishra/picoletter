@@ -150,8 +150,9 @@ Rails.application.routes.draw do
   # Public API routes
   namespace :api do
     namespace :v1 do
-      resources :subscribers, only: [ :create ] do
+      resources :subscribers, only: [ :index, :create, :show, :update, :destroy ], constraints: { id: /\d+/ } do
         collection do
+          get :lookup
           get :counts
         end
       end

@@ -22,6 +22,59 @@ components:
         error:
           type: string
 
+    Subscriber:
+      type: object
+      required:
+        - id
+        - email
+        - labels
+        - status
+        - created_at
+        - updated_at
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        full_name:
+          type:
+            - string
+            - "null"
+        notes:
+          type:
+            - string
+            - "null"
+        labels:
+          type: array
+          items:
+            type: string
+        status:
+          type: string
+          enum:
+            - verified
+            - unverified
+            - unsubscribed
+        created_via:
+          type:
+            - string
+            - "null"
+        verified_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        unsubscribed_at:
+          type:
+            - string
+            - "null"
+          format: date-time
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
     SubscriberRequest:
       type: object
       required:
@@ -29,10 +82,29 @@ components:
       properties:
         email:
           type: string
+          description: Subscriber's email address.
         name:
           type: string
+          description: Subscriber's full name.
         labels:
           type: string
+          description: Comma-separated labels to assign at creation time.
+
+    SubscriberUpdateRequest:
+      type: object
+      minProperties: 1
+      properties:
+        full_name:
+          type: string
+          description: Subscriber's full name.
+        notes:
+          type: string
+          description: Internal notes for this subscriber.
+        labels:
+          type: array
+          description: Complete list of labels for this subscriber.
+          items:
+            type: string
 
     SubscriberResponse:
       type: object
@@ -44,6 +116,44 @@ components:
           type: string
         email:
           type: string
+
+    PaginationMeta:
+      type: object
+      required:
+        - page
+        - per_page
+        - total
+        - total_pages
+      properties:
+        page:
+          type: integer
+        per_page:
+          type: integer
+        total:
+          type: integer
+        total_pages:
+          type: integer
+
+    SubscriberSingleResponse:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          $ref: "#/components/schemas/Subscriber"
+
+    SubscriberListResponse:
+      type: object
+      required:
+        - data
+        - meta
+      properties:
+        data:
+          type: array
+          items:
+            $ref: "#/components/schemas/Subscriber"
+        meta:
+          $ref: "#/components/schemas/PaginationMeta"
 
     SubscriberCounts:
       type: object
@@ -64,24 +174,103 @@ components:
 
 paths:
   /subscribers:
-    post:
-      summary: Add a subscriber
-      operationId: createSubscriber
+    get:
+      summary: List subscribers
+      operationId: listSubscribers
       security:
         - bearerAuth: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SubscriberRequest"
+      parameters:
+        - in: query
+          name: status
+          required: false
+          description: Filter by subscriber status.
+          schema:
+            type: string
+            enum:
+              - verified
+              - unverified
+              - unsubscribed
+        - in: query
+          name: label
+          required: false
+          description: Filter by label name.
+          schema:
+            type: string
+        - in: query
+          name: page
+          required: false
+          description: Pagination page number.
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - in: query
+          name: per_page
+          required: false
+          description: Number of records per page.
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 30
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl "{{URL}}?status=verified&label=vip&page=1&per_page=30" \
+              -H "Authorization: Bearer your_api_token"
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.get(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+                params={"status": "verified", "label": "vip", "page": 1, "per_page": 30},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            uri.query = URI.encode_www_form(status: "verified", label: "vip", page: 1, per_page: 30)
+
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
-        "201":
-          description: Subscriber created
+        "200":
+          description: Paginated subscribers
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/SubscriberResponse"
+                $ref: "#/components/schemas/SubscriberListResponse"
+              example:
+                data:
+                  - id: 19
+                    email: reader@example.com
+                    full_name: Jane Doe
+                    notes: Core customer segment
+                    labels:
+                      - vip
+                    status: verified
+                    created_via: api
+                    verified_at: "2026-03-05T07:10:00Z"
+                    unsubscribed_at: null
+                    created_at: "2026-03-05T07:00:00Z"
+                    updated_at: "2026-03-05T07:10:00Z"
+                meta:
+                  page: 1
+                  per_page: 30
+                  total: 1
+                  total_pages: 1
         "401":
           description: Unauthorized
           content:
@@ -101,12 +290,448 @@ paths:
               schema:
                 $ref: "#/components/schemas/Error"
 
+    post:
+      summary: Add a subscriber
+      operationId: createSubscriber
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriberRequest"
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl -X POST "{{URL}}" \
+              -H "Authorization: Bearer your_api_token" \
+              -H "Content-Type: application/json" \
+              -d '{"email":"reader@example.com","name":"Jane Doe","labels":"vip"}'
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.post(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+                json={"email": "reader@example.com", "name": "Jane Doe", "labels": "vip"},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Post.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+            request["Content-Type"] = "application/json"
+            request.body = { email: "reader@example.com", name: "Jane Doe", labels: "vip" }.to_json
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
+      responses:
+        "201":
+          description: Subscriber created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberResponse"
+              example:
+                message: Subscriber created
+                email: reader@example.com
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /subscribers/lookup:
+    get:
+      summary: Find subscriber by email
+      operationId: lookupSubscriber
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: email
+          required: true
+          description: Subscriber email to search for.
+          schema:
+            type: string
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl "{{URL}}?email=reader%40example.com" \
+              -H "Authorization: Bearer your_api_token"
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.get(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+                params={"email": "reader@example.com"},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            uri.query = URI.encode_www_form(email: "reader@example.com")
+
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
+      responses:
+        "200":
+          description: Subscriber found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberSingleResponse"
+              example:
+                data:
+                  id: 19
+                  email: reader@example.com
+                  full_name: Jane Doe
+                  notes: Core customer segment
+                  labels:
+                    - vip
+                  status: verified
+                  created_via: api
+                  verified_at: "2026-03-05T07:10:00Z"
+                  unsubscribed_at: null
+                  created_at: "2026-03-05T07:00:00Z"
+                  updated_at: "2026-03-05T07:10:00Z"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Subscriber not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /subscribers/{id}:
+    get:
+      summary: Get a subscriber by ID
+      operationId: getSubscriber
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Subscriber ID.
+          schema:
+            type: integer
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl "{{URL}}" \
+              -H "Authorization: Bearer your_api_token"
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.get(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
+      responses:
+        "200":
+          description: Subscriber details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberSingleResponse"
+              example:
+                data:
+                  id: 19
+                  email: reader@example.com
+                  full_name: Jane Doe
+                  notes: Core customer segment
+                  labels:
+                    - vip
+                  status: verified
+                  created_via: api
+                  verified_at: "2026-03-05T07:10:00Z"
+                  unsubscribed_at: null
+                  created_at: "2026-03-05T07:00:00Z"
+                  updated_at: "2026-03-05T07:10:00Z"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Subscriber not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    patch:
+      summary: Update a subscriber
+      operationId: updateSubscriber
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Subscriber ID.
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SubscriberUpdateRequest"
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl -X PATCH "{{URL}}" \
+              -H "Authorization: Bearer your_api_token" \
+              -H "Content-Type: application/json" \
+              -d '{"full_name":"Jane Doe","notes":"Core customer segment","labels":["vip"]}'
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.patch(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+                json={"full_name": "Jane Doe", "notes": "Core customer segment", "labels": ["vip"]},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Patch.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+            request["Content-Type"] = "application/json"
+            request.body = { full_name: "Jane Doe", notes: "Core customer segment", labels: ["vip"] }.to_json
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
+      responses:
+        "200":
+          description: Subscriber updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SubscriberSingleResponse"
+              example:
+                data:
+                  id: 19
+                  email: reader@example.com
+                  full_name: Jane Doe
+                  notes: Core customer segment
+                  labels:
+                    - vip
+                  status: verified
+                  created_via: api
+                  verified_at: "2026-03-05T07:10:00Z"
+                  unsubscribed_at: null
+                  created_at: "2026-03-05T07:00:00Z"
+                  updated_at: "2026-03-05T07:15:00Z"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Subscriber not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Validation error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+    delete:
+      summary: Delete a subscriber
+      operationId: deleteSubscriber
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: Subscriber ID.
+          schema:
+            type: integer
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl -X DELETE "{{URL}}" \
+              -H "Authorization: Bearer your_api_token"
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.delete(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+            )
+            print(response.status_code)
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Delete.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.code
+      responses:
+        "204":
+          description: Subscriber deleted
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Subscriber not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
   /subscribers/counts:
     get:
       summary: Get subscriber counts
       operationId: getSubscriberCounts
       security:
         - bearerAuth: []
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl "{{URL}}" \
+              -H "Authorization: Bearer your_api_token"
+        - lang: python
+          label: Python
+          source: |
+            import requests
+
+            response = requests.get(
+                "{{URL}}",
+                headers={"Authorization": "Bearer your_api_token"},
+            )
+            print(response.json())
+        - lang: ruby
+          label: Ruby
+          source: |
+            require "net/http"
+            require "uri"
+            require "json"
+
+            uri = URI("{{URL}}")
+            request = Net::HTTP::Get.new(uri)
+            request["Authorization"] = "Bearer your_api_token"
+
+            response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == "https") { |http| http.request(request) }
+            puts response.body
       responses:
         "200":
           description: Subscriber counts by status
@@ -114,8 +739,19 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/SubscriberCounts"
+              example:
+                total: 150
+                verified: 120
+                unverified: 25
+                unsubscribed: 5
         "401":
           description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "403":
+          description: Forbidden
           content:
             application/json:
               schema:
