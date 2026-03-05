@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: subscribers
+# Database name: primary
 #
 #  id                 :bigint           not null, primary key
 #  analytics_data     :jsonb

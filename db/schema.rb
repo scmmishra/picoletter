@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_03_103000) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_05_111808) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -229,6 +229,21 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_103000) do
     t.index ["newsletter_id"], name: "index_publishing_domains_on_newsletter_id", unique: true
   end
 
+  create_table "ses_tenants", force: :cascade do |t|
+    t.string "arn"
+    t.datetime "created_at", null: false
+    t.datetime "last_checked_at"
+    t.text "last_error"
+    t.datetime "last_synced_at"
+    t.string "name", null: false
+    t.bigint "newsletter_id", null: false
+    t.datetime "ready_at"
+    t.string "status", default: "pending", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_ses_tenants_on_name", unique: true
+    t.index ["newsletter_id"], name: "index_ses_tenants_on_newsletter_id", unique: true
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.boolean "active"
     t.datetime "created_at", null: false
@@ -309,6 +324,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_03_103000) do
   add_foreign_key "memberships", "users"
   add_foreign_key "newsletters", "users"
   add_foreign_key "posts", "newsletters"
+  add_foreign_key "ses_tenants", "newsletters"
   add_foreign_key "sessions", "users"
   add_foreign_key "subscriber_reminders", "subscribers"
   add_foreign_key "subscribers", "newsletters"

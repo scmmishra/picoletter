@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: email_clicks
+# Database name: primary
 #
 #  id        :bigint           not null, primary key
 #  link      :string

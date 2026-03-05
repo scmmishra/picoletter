@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: newsletters
+# Database name: primary
 #
 #  id                    :bigint           not null, primary key
 #  auto_reminder_enabled :boolean          default(TRUE), not null
@@ -62,6 +63,7 @@ class Newsletter < ApplicationRecord
 
   belongs_to :user
   has_one :sending_domain, class_name: "Domain", foreign_key: "newsletter_id"
+  has_one :ses_tenant, class_name: "SESTenant", dependent: :destroy
   has_many :subscribers, dependent: :destroy
   has_many :posts, dependent: :destroy
   has_many :labels, dependent: :destroy
@@ -112,6 +114,13 @@ class Newsletter < ApplicationRecord
     "#{sending_name || title} <#{sending_from}>"
   end
 
+  def ses_tenant_name_for_send
+    return if ses_tenant.blank?
+    return unless ses_tenant.usable_for_send?
+
+    ses_tenant.name
+  end
+
   def owner?(user)
     user_id == user.id
   end
@@ -155,6 +164,10 @@ class Newsletter < ApplicationRecord
 
   def disconnect_sending_domain
     return unless sending_domain.present?
+
+    if ses_tenant&.name.present?
+      SES::TenantService.new(newsletter: self).disassociate_custom_identity!
+    end
 
     sending_domain.drop_identity
     sending_domain.destroy!

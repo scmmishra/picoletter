@@ -11,6 +11,7 @@ class Newsletters::Settings::SendingController < ApplicationController
 
   def connect_domain
     @newsletter.connect_sending_domain(params[:domain])
+    SyncSESTenantJob.perform_later(@newsletter.id)
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: "Domain connected. Please add the DNS records below to verify it."
   rescue StandardError => e
     Rails.error.report(e, context: { domain: params[:domain], newsletter_id: @newsletter.id })
@@ -33,6 +34,7 @@ class Newsletters::Settings::SendingController < ApplicationController
 
   def verify_domain
     @newsletter.verify_custom_domain
+    SyncSESTenantJob.perform_later(@newsletter.id)
     notice = @newsletter.ses_verified? ? "Domain successfully verified." : "Waiting for domain verification."
     redirect_to settings_sending_path(slug: @newsletter.slug), notice: notice
   end

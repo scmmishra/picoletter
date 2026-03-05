@@ -24,6 +24,7 @@ class SendAdhocEmailService
   end
 
   def send_emails(dry_run: false)
+    tenant_name = resolve_tenant_name unless dry_run
     csv_data = parse_csv
 
     if dry_run
@@ -57,7 +58,7 @@ class SendAdhocEmailService
         end
 
         html_content = render_html_content(row)
-        send_individual_email(email, html_content)
+        send_individual_email(email, html_content, tenant_name)
         @sent_emails << { email: email, data: row.to_h }
       rescue => e
         @errors << { row: index + 1, email: row[:email] || "unknown", error: e.message, data: row.to_h }
@@ -86,16 +87,21 @@ class SendAdhocEmailService
     template.render(render_data)
   end
 
-  def send_individual_email(email, html_content)
+  def send_individual_email(email, html_content, tenant_name)
     email_service = SES::EmailService.new
 
     email_service.send(
       to: [ email ],
       from: @from_email,
+      tenant_name: tenant_name,
       reply_to: @newsletter.reply_to || @from_email,
       subject: @subject,
       html: html_content,
       text: ""
     )
+  end
+
+  def resolve_tenant_name
+    SES::TenantPreflightService.new(@newsletter).ensure_ready!
   end
 end

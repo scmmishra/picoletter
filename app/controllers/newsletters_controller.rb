@@ -22,6 +22,7 @@ class NewslettersController < ApplicationController
   def create
     @newsletter = Current.user.owned_newsletters.new(newsletter_params)
     if @newsletter.save
+      SyncSESTenantJob.perform_later(@newsletter.id)
       redirect_to posts_url(@newsletter.slug)
     else
       render :new, status: :unprocessable_entity, layout: "application", notice: @newsletter.errors.full_messages.to_sentence

@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe SendSubscriberReminderJob, type: :job do
   let(:user) { create(:user) }
-  let(:newsletter) { create(:newsletter, user: user) }
+  let(:newsletter) { create(:newsletter, :with_ready_ses_tenant, user: user) }
   let(:subscriber) { create(:subscriber, newsletter: newsletter, status: :unverified) }
   let(:ses_service) { instance_double(SES::EmailService) }
   let(:ses_response) { Struct.new(:message_id).new("ses-message-id-123") }
@@ -48,9 +48,18 @@ RSpec.describe SendSubscriberReminderJob, type: :job do
         hash_including(
           to: [ subscriber.email ],
           from: newsletter.full_sending_address,
+          tenant_name: newsletter.ses_tenant.name,
           subject: "Reminder: Confirm your subscription to #{newsletter.title}"
         )
       )
+    end
+
+    it "fails when tenant preflight is not ready" do
+      newsletter.ses_tenant.update!(status: :pending)
+
+      expect {
+        described_class.perform_now(subscriber.id, kind: :manual)
+      }.to raise_error(SES::TenantPreflightFailed)
     end
 
     it 'reports and re-raises errors from SES' do

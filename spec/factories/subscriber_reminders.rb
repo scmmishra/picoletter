@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: subscriber_reminders
+# Database name: primary
 #
 #  id            :bigint           not null, primary key
 #  kind          :integer          default("manual"), not null
