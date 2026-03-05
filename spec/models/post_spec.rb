@@ -164,6 +164,15 @@ RSpec.describe Post, type: :model do
       expect(post.reload.published_at).to be_nil
     end
 
+    it "allows retrying a failed post by moving it back to processing" do
+      post.update!(status: "failed")
+      expect(SendPostJob).to receive(:perform_later).with(post.id)
+
+      expect {
+        post.publish_and_send
+      }.to change { post.reload.status }.from("failed").to("processing")
+    end
+
     it "does not enqueue when post is not draft" do
       post.update!(status: "published", published_at: Time.current)
       expect(SendPostJob).not_to receive(:perform_later)

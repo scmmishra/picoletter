@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SendPostBatchJob, type: :job do
   let(:user) { create(:user) }
-  let(:newsletter) { create(:newsletter, user: user) }
+  let(:newsletter) { create(:newsletter, :with_ready_ses_tenant, user: user) }
   let(:post) { create(:post, newsletter: newsletter, title: "Scheduled post") }
   let(:subscriber) { create(:subscriber, newsletter: newsletter) }
 
@@ -56,7 +56,7 @@ RSpec.describe SendPostBatchJob, type: :job do
       allow(SES::EmailService).to receive(:new).and_return(ses_service)
       allow(ses_service).to receive(:send).and_return(double(message_id: "ses-message-id-2"))
 
-      job.perform(post.id, [ subscriber.id ])
+      job.perform(post.id, [ subscriber.id ], { tenant_name: newsletter.ses_tenant.name })
 
       expect(ses_service).to have_received(:send) do |params|
         headers = params.fetch(:headers)
@@ -68,7 +68,29 @@ RSpec.describe SendPostBatchJob, type: :job do
         expect(unsubscribe_parts.last).to start_with("<mailto:")
         expect(headers["List-Unsubscribe-Post"]).to eq("List-Unsubscribe=One-Click")
         expect(headers["List-ID"]).to eq(expected_list_id)
+        expect(params[:tenant_name]).to eq(newsletter.ses_tenant.name)
       end
+    end
+  end
+
+  describe "failure handling" do
+    it "marks the post failed when a send attempt raises" do
+      post.update!(status: "processing")
+      job = described_class.new
+      allow(job).to receive(:rendered_html_content).and_return("<p>hello</p>")
+      allow(job).to receive(:rendered_text_content).and_return("hello")
+      allow(job).to receive(:send_email).and_raise(StandardError.new("SES failed"))
+
+      expect(Rails.error).to receive(:report).with(
+        an_instance_of(StandardError),
+        hash_including(context: hash_including(post_id: post.id, newsletter_id: newsletter.id))
+      )
+
+      expect {
+        job.perform(post.id, [ subscriber.id ], { tenant_name: newsletter.ses_tenant.name })
+      }.to raise_error(StandardError, "SES failed")
+
+      expect(post.reload.status).to eq("failed")
     end
   end
 

@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe SendPostJob, type: :job do
   let(:user) { create(:user) }
-  let(:newsletter) { create(:newsletter, user: user) }
+  let(:newsletter) { create(:newsletter, :with_ready_ses_tenant, user: user) }
 
   before do
     ActiveJob::Base.queue_adapter.enqueued_jobs.clear
@@ -40,7 +40,20 @@ RSpec.describe SendPostJob, type: :job do
       expect(post.reload.status).to eq("processing")
       expect(SendPostBatchJob).to have_been_enqueued
       batch_job_payload = ActiveJob::Base.queue_adapter.enqueued_jobs.find { |job| job[:job] == SendPostBatchJob }
-      expect(batch_job_payload[:args]).to eq([ post.id, subscriber_ids ])
+      expect(batch_job_payload[:args].first(2)).to eq([ post.id, subscriber_ids ])
+      expect(batch_job_payload[:args].third).to include("tenant_name" => newsletter.ses_tenant.name)
+    end
+
+    it "marks post as failed and raises when tenant preflight fails" do
+      pending_newsletter = create(:newsletter, :with_pending_ses_tenant, user: user)
+      post = create(:post, newsletter: pending_newsletter, status: "processing")
+
+      expect {
+        described_class.new.perform(post.id)
+      }.to raise_error(SES::TenantPreflightFailed)
+
+      expect(post.reload.status).to eq("failed")
+      expect(SendPostBatchJob).not_to have_been_enqueued
     end
   end
 end
