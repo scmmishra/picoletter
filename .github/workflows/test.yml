@@ -26,7 +26,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -34,22 +34,26 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Restore Bootsnap cache
+        uses: actions/cache@v4
+        with:
+          path: tmp/cache
+          key: ${{ runner.os }}-bootsnap-${{ hashFiles('.ruby-version', 'Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-bootsnap-
+
       - name: Setup Databases
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
           CACHE_DATABASE_URL: postgres://postgres:postgres@localhost:5432
-        run: |
-          bin/rails db:create
-          bin/rails db:schema:load
-          bin/rails db:schema:load:queue
-          bin/rails db:schema:load:cache
+        run: bin/rails db:create db:schema:load db:schema:load:queue db:schema:load:cache
 
       - name: Run tests
         env:
           RAILS_ENV: test
-          COVERAGE: "true"
+          COVERAGE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && 'true' || 'false' }}
           ENABLE_BILLING: "true"
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           QUEUE_DATABASE_URL: postgres://postgres:postgres@localhost:5432

@@ -3,12 +3,14 @@ require 'spec_helper'
 require 'support/factory_bot'
 
 ENV['RAILS_ENV'] ||= 'test'
+if ENV['COVERAGE'] == 'true'
+  require 'simplecov'
+  SimpleCov.start 'rails'
+end
 require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
-require 'simplecov'
-SimpleCov.start 'rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
