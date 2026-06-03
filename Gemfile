@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.4.4"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.1.1"
+gem "rails", "~> 8.1.3"
 gem "lexxy", github: "basecamp/lexxy"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
@@ -22,7 +22,7 @@ gem "puma", ">= 5.0"
 gem "thruster", require: false
 
 # SolidQueue
-gem "solid_queue", "~> 1.2.3"
+gem "solid_queue", "~> 1.4"
 gem "mission_control-jobs", "~> 1.1.0"
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
@@ -59,15 +59,17 @@ gem "tzinfo-data"
 gem "bootsnap", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 2.0"
+gem "mini_magick"
+gem "ruby-vips"
 gem "aws-sdk-s3", require: false
 gem "resolv"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows]
-  gem "rspec-rails", "~> 6.1.0"
-  gem "byebug", "~> 11.1"
+  gem "rspec-rails", "~> 8.0"
+  gem "byebug", "~> 13.0"
   gem "factory_bot_rails"
   gem "faker"
   gem "shoulda-matchers"
@@ -89,7 +91,7 @@ group :development do
   gem "hotwire-spark"
 end
 
-gem "tailwindcss-rails", "~> 3.3.1"
+gem "tailwindcss-rails", "~> 4.4"
 gem "pagy"
 
 # HTML parsing
