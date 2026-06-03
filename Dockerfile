@@ -25,6 +25,7 @@ COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 # Install packages needed to build gems
 RUN apt-get update -qq && \
   apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config libyaml-dev && \
+  rm -f /usr/local/bin/yarn /usr/local/bin/yarnpkg && \
   npm install --global yarn@1.22.22
 
 # Install application gems
