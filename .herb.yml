@@ -1,0 +1,26 @@
+version: 0.10.1
+
+linter:
+  enabled: true
+  rules:
+    actionview-no-silent-helper:
+      enabled: false
+    erb-no-instance-variables-in-partials:
+      enabled: false
+    erb-no-empty-control-flow:
+      enabled: false
+    erb-no-interpolated-class-names:
+      enabled: false
+    erb-no-unsafe-raw:
+      enabled: false
+    erb-no-unsafe-script-interpolation:
+      enabled: false
+    html-img-require-alt:
+      enabled: false
+    html-no-unescaped-entities:
+      enabled: false
+    html-require-script-nonce:
+      enabled: false
+
+formatter:
+  enabled: false

@@ -11,4 +11,4 @@ jobs:
       - uses: oven-sh/setup-bun@v2
 
       - name: Run Herb Linter
-        run: bunx @herb-tools/linter
+        run: bunx @herb-tools/linter@0.10.1 --github
