@@ -19,8 +19,7 @@ ENV RAILS_ENV="production" \
 FROM base AS build
 
 # Lexxy builds JavaScript assets during git gem installation.
-COPY --from=node /usr/local/bin/node /usr/local/bin/node
-COPY --from=node /usr/local/bin/corepack /usr/local/bin/corepack
+COPY --from=node /usr/local/bin/ /usr/local/bin/
 COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 # Install packages needed to build gems
