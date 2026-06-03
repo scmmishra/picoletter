@@ -2,7 +2,8 @@
 
 # Make sure RUBY_VERSION matches the Ruby version in .ruby-version and Gemfile
 ARG RUBY_VERSION=3.4.4
-FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim as base
+FROM registry.docker.com/library/node:22-bookworm-slim AS node
+FROM registry.docker.com/library/ruby:$RUBY_VERSION-slim AS base
 
 # Rails app lives here
 WORKDIR /rails
@@ -15,11 +16,17 @@ ENV RAILS_ENV="production" \
 
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
+
+# Lexxy builds JavaScript assets during git gem installation.
+COPY --from=node /usr/local/bin/ /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-  apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config libyaml-dev
+  apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config libyaml-dev && \
+  rm -f /usr/local/bin/yarn /usr/local/bin/yarnpkg && \
+  npm install --global yarn@1.22.22
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./

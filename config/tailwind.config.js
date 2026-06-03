@@ -1,9 +1,7 @@
-const defaultTheme = require("tailwindcss/defaultTheme");
-
 module.exports = {
   content: [
     "./public/*.html",
-    "app/assets/stylesheets/application.tailwind.css",
+    "./app/assets/tailwind/application.css",
     "./app/helpers/**/*.rb",
     "./app/javascript/**/*.js",
     "./app/views/**/*.{erb,haml,html,slim}",
@@ -11,8 +9,17 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        serif: ["Lora Variable", ...defaultTheme.fontFamily.serif],
-        sans: ["Inter Variable", ...defaultTheme.fontFamily.sans],
+        serif: ["Lora Variable", "ui-serif", "Georgia", "Cambria", "Times New Roman", "Times", "serif"],
+        sans: [
+          "Inter Variable",
+          "ui-sans-serif",
+          "system-ui",
+          "sans-serif",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Segoe UI Symbol",
+          "Noto Color Emoji",
+        ],
       },
       boxShadow: {
         "with-inset":
@@ -22,10 +29,4 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/aspect-ratio"),
-    require("@tailwindcss/typography"),
-    require("@tailwindcss/container-queries"),
-  ],
 };
